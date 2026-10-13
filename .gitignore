@@ -1,0 +1,91 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Claude Code settings (exclude user-local settings but keep repo-level commands and skills)
+.claude/*
+!.claude/commands/
+!.claude/skills/
+
+# Private project configuration
+CLAUDE.local.md
+
+# Claude project-scope MCP registration: hardcodes absolute per-machine paths
+.mcp.json
+
+# Claude session manifest (parallel session tracking)
+.claude-session.md
+
+# Claude session mementos (working state, never source)
+.claude-memento.md
+.claude-memento-*.md
+io/mementos/
+
+# Claude heartbeat hold (runtime liveness-state file, rewritten every turn)
+.heartbeat-hold-*.json
+
+# Transient scratch
+.scratch/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Environment files
+.env
+.env.*
