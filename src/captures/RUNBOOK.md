@@ -1,6 +1,9 @@
 # Capture runbook: AGY (Part A) and Jetski (Part B)
 
-**Part A done 2026-10-15.** Reference results to compare Part B against: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md`.
+**Status 2026-10-15.**
+- **Part A (AGY):** done; results in `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md`.
+- **Part B (Jetski):** C1, C2, C4 and C9/C10 done; results in `src/rnd/v0.0.1/2026.10.15-phase0-part-b-jetski-results.md`.
+- **Remaining on the work laptop:** one command, in **§8 Part B follow-up**.
 
 How to run the Phase 0 captures on each machine, read the results, recover from the likely failures, and what to bring back. Background and the full capture list are in `src/rnd/v0.0.1/2026.10.14-uhw-implementation-planning-framework.md` §14.
 
@@ -170,11 +173,36 @@ rm -rf src/captures/out/*          # results, once you've pasted them
 rm -rf "${TMPDIR:-/tmp}"/tmp.*     # throwaway workspaces from mktemp; check the listing before deleting
 ```
 
+## 8. Part B follow-up (work laptop)
+
+One command finishes Part B. It answers the four questions the first Jetski bundle left open and writes one file to paste back.
+
+```bash
+git pull                                              # wip-v0.0.1-2026.10.15-planning-prep
+ls src/captures/jetski_followup.sh                    # must exist
+src/captures/jetski_followup.sh jetski                # about 1–2 minutes; needs the earlier C1 output in src/captures/out/
+```
+
+| Bundle section | Question | Why it matters |
+|---|---|---|
+| 1. names | Which model answered? Is `agentName` set? Do `parentConversationId`/`rootConversationId` mark a top-level session? | C9 numbers are per model; lineage replaces the bridge file for subagent governance (framework §8) |
+| 2. `--agent` | Does Jetski take a named agent definition? | possible persona bootstrap route (framework §13) |
+| 3. MCP | Where are MCP servers configured? Is the `mcpServers` format accepted? Then C3. | identity reaches cosa-voice through the inherited env (passed on AGY) |
+| 4. Chrome flag | Is `--use_ls_chrome_devtools_mcp=false` accepted? | keep the default Chrome DevTools MCP server out of persona launches |
+
+**How it behaves:**
+- **Read-only, except for one file.** Section 3 adds a `uhw-probe` entry to the MCP config (default `~/.gemini/config/mcp_config.json`; override with `MCP_CONFIG=<path>`). It restores the original on exit and removes the file if it didn't exist.
+- **If the format check fails,** the bundle includes `jetski mcp add --help` instead of C3. Paste it, and C3 gets switched to `mcp add`/`mcp remove`.
+- **What it prints from the hook log:** only names, booleans and counts, never `lastUserInput` or payload text.
+
+**Bring back:** `src/captures/out/jetski-followup-<timestamp>.txt`. Read it first, as in §6.
+
 ## Quick reference
 
 | Task | Command |
 |---|---|
 | Everything for one engine | `src/captures/run_engine.sh agy\|jetski` |
+| Part B follow-up | `src/captures/jetski_followup.sh jetski` |
 | One capture | `src/captures/c1_tool_veto.sh jetski` (same pattern for c2, c4) |
 | C3 | `MCP_CONFIG=<path> src/captures/c3_mcp_identity.sh jetski` |
 | Format probe only | `UHW_LABEL=jetski src/captures/c9_c10_pyramid_probe.py --family jetski -- jetski --input-format stream-json --output-format stream-json --dangerously-skip-permissions` |

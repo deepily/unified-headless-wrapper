@@ -5,6 +5,8 @@ One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven 
 
 **Prototype (v0.0.1).** The wrapper passes its test script against a mock engine that replays captured frames. It has not yet been run end to end against a real engine, and the Claude Code interrupt path is unverified.
 
+**Phase 0 captures (2026-10-15):** AGY done. Jetski done except C3, which `src/captures/jetski_followup.sh` finishes. Claude captures not started. How to run them: [`src/captures/RUNBOOK.md`](src/captures/RUNBOOK.md).
+
 ## What's here
 
 | Path | What it is |
@@ -13,6 +15,9 @@ One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven 
 | `src/fake_engine.py` | Mock engine reproducing the captured stream-json behavior of both protocol families |
 | `src/test_headless.py` | Scenario script that drives the wrapper through the mock |
 | `src/rnd/v0.0.1/` | [Design doc](src/rnd/v0.0.1/2026.10.12-unified-headless-wrapper-claude-code-jetski-and-agy.md): empirical findings, architecture, failure rules and open questions |
+| `src/rnd/v0.0.1/2026.10.14-uhw-implementation-planning-framework.md` | Planning framework: decisions, design per component, captures, phases and gates |
+| `src/rnd/v0.0.1/2026.10.15-phase0-part-*-results.md` | Phase 0 capture results: Part A (AGY), Part B (Jetski) |
+| `src/captures/` | Phase 0 capture scripts, probes and the [runbook](src/captures/RUNBOOK.md); outputs go to the gitignored `src/captures/out/` |
 
 ## Architecture
 
