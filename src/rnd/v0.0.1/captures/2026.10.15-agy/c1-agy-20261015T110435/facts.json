@@ -1,0 +1,44 @@
+{
+ "results": [
+  {
+   "t": 10.324,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "080bf945-d899-49ca-a17d-7d6e4b4224f9",
+   "text": "### Command Execution Results\n\n1. **`touch allowed.marker`**\n   - **Status:** **Succeeded** (exited with return code `0`).\n\n2. **`touch UHW_DENY_ME.marker`**\n   - **Status:** **Failed / Denied**\n   - **Error:**\n     > `tool call denied by pre-tool hook: UHW-VETO-7731: blocked by the capture hook`\n"
+  }
+ ],
+ "session": "080bf945-d899-49ca-a17d-7d6e4b4224f9",
+ "engine_pids": [
+  66415
+ ],
+ "stream_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_events": 3,
+ "hook_denies": 1,
+ "hook_payload_keys": [
+  "artifactDirectoryPath",
+  "conversationId",
+  "modelName",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "c1-agy"
+ ],
+ "veto_text_in_stream": true,
+ "mcp_servers": []
+}

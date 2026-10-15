@@ -1,0 +1,28 @@
+{
+ "uhw-probe": {
+  "PreToolUse": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "/home/rruiz/miniconda/bin/python3 /mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper/src/captures/probe_hook.py pre_tool",
+      "timeout": 10
+     }
+    ]
+   }
+  ],
+  "PostToolUse": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "/home/rruiz/miniconda/bin/python3 /mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper/src/captures/probe_hook.py post_tool",
+      "timeout": 10
+     }
+    ]
+   }
+  ]
+ }
+}

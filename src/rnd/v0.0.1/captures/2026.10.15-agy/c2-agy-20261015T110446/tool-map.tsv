@@ -1,0 +1,9 @@
+index	stream_tool	hook_tool	arg_keys	sample_args
+0	run_command	run_command	CommandLine,Cwd,WaitMsBeforeAsync,toolAction,toolSummary	{"CommandLine": "ls -la", "Cwd": "/tmp/tmp.hiixRg5dix", "WaitMsBeforeAsync": 10000, "toolAction": "L
+1	view_file	view_file	AbsolutePath,toolAction,toolSummary	{"AbsolutePath": "/tmp/tmp.hiixRg5dix/notes.txt", "toolAction": "Reading notes.txt", "toolSummary": 
+2	run_command	run_command	CommandLine,Cwd,WaitMsBeforeAsync,toolAction,toolSummary	{"CommandLine": "grep -rn \"zebra\" .", "Cwd": "/tmp/tmp.hiixRg5dix", "WaitMsBeforeAsync": 10000, "t
+3	run_command	run_command	CommandLine,Cwd,WaitMsBeforeAsync,toolAction,toolSummary	{"CommandLine": "find . -name \"*.txt\"", "Cwd": "/tmp/tmp.hiixRg5dix", "WaitMsBeforeAsync": 10000, 
+4	write_to_file	write_to_file	CodeContent,Description,Overwrite,TargetFile,toolAction,toolSummary	{"CodeContent": "hello\n", "Description": "Create new.txt containing hello", "Overwrite": true, "Tar
+5	replace_file_content	replace_file_content	AllowMultiple,Description,EndLine,Instruction,ReplacementContent,StartLine,TargetContent,TargetFile,toolAction,toolSummary	{"AllowMultiple": false, "Description": "Replace hello with goodbye", "EndLine": 1, "Instruction": "
+6	run_command	run_command	CommandLine,Cwd,WaitMsBeforeAsync,toolAction,toolSummary	{"CommandLine": "echo done", "Cwd": "/tmp/tmp.hiixRg5dix", "WaitMsBeforeAsync": 10000, "toolAction":
+7	read_url_content	read_url_content	Url,toolAction,toolSummary	{"Url": "https://example.com", "toolAction": "Fetching example.com", "toolSummary": "Fetch example.c
