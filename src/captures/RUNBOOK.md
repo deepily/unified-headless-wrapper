@@ -15,12 +15,13 @@ git add src/captures src/rnd/v0.0.1 && git commit -m "Phase 0 capture scripts an
 ## 2. Preflight (on each machine, about 2 minutes)
 
 ```bash
-git pull
+cd <repo root> && git pull                            # the unified-headless-wrapper checkout on this machine
+ENGINE=agy                                            # Part A: agy · Part B: jetski
+ls src/captures/run_engine.sh                         # fails = not pulled, or not at the repo root
 chmod +x src/captures/*.sh src/captures/*.py          # git keeps the bit, but cheap insurance
 command -v python3 && python3 --version               # 3.9+; standard library only, no venv needed
-command -v jetski || command -v agy                    # the engine must be on PATH
-jetski --version < /dev/null                           # or: agy --version
-ls -d ~/.gemini/*/                                     # app directories: note the one for this engine
+command -v "$ENGINE" && "$ENGINE" --version < /dev/null
+ls -d ~/.gemini/*/                                    # app directories: note the one for this engine
 ```
 
 | Check | Expected | If not |
@@ -33,7 +34,7 @@ ls -d ~/.gemini/*/                                     # app directories: note t
 Quick smoke test (about 5 s; it should print a sentence):
 
 ```bash
-jetski -p "say hi"            # or: agy -p "say hi"
+"$ENGINE" -p "say hi"
 ```
 
 ## 3. Run
@@ -46,11 +47,24 @@ This runs C1, C2, C4 and C9/C10 unattended, typically a few minutes. C3 is skipp
 
 **C3 next.**
 
-1. Find the MCP config file from the C3 section of the bundle, or under the app directory.
-2. Run:
+1. Find the MCP config file. On AGY 1.3.3 it is `~/.gemini/config/mcp_config.json` (confirmed 10-15). It's empty when no servers are configured, and `agy mcp add|remove|list` manages it. Jetski probably uses the same path, so check that first.
+2. Confirm the format in 10 seconds: write the probe entry, list it, restore the file.
 
     ```bash
-    MCP_CONFIG=~/.gemini/<app>/<file> src/captures/c3_mcp_identity.sh jetski
+    F=~/.gemini/config/mcp_config.json; cp "$F" /tmp/mcp_config.backup
+    python3 - "$F" "$PWD/src/captures/probe_mcp.py" <<'EOF'
+    import json, sys
+    path, probe = sys.argv[ 1: ]
+    json.dump( { "mcpServers": { "uhw-probe": { "command": sys.executable, "args": [ probe ] } } }, open( path, "w" ), indent=1 )
+    EOF
+    "$ENGINE" mcp list                     # uhw-probe listed as stdio/enabled = format is right
+    cp /tmp/mcp_config.backup "$F"
+    ```
+
+3. Run:
+
+    ```bash
+    MCP_CONFIG=~/.gemini/config/mcp_config.json src/captures/c3_mcp_identity.sh jetski
     ```
 
 The script backs the file up into its output directory and restores it on exit, even if it fails. If the file doesn't exist, it's created and removed afterwards.
