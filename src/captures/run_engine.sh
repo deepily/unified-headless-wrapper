@@ -22,6 +22,9 @@ for capture in c1_tool_veto c2_tool_names c4_pin_conversation; do
     [ "$label" = c2 ] && cat "$dir/tool-map.tsv" >> "$BUNDLE" 2>/dev/null
 done
 
+section "model"                                                       # engines update themselves: record what answered
+grep -ho '"modelName": "[^"]*"' "$( latest c1 )/hook.jsonl" 2> /dev/null | head -1 | cut -d '"' -f 4 >> "$BUNDLE"
+
 echo "=== c3_mcp_identity"; section "c3"
 if [ -n "${MCP_CONFIG:-}" ]; then
     "$HERE/c3_mcp_identity.sh" "$BIN"; dir=$( latest c3 ); cat "$dir/verdict.txt" "$dir/facts.json" >> "$BUNDLE" 2>/dev/null

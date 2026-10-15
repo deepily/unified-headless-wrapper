@@ -1,5 +1,7 @@
 # Capture runbook: AGY (Part A) and Jetski (Part B)
 
+**Part A done 2026-10-15.** Reference results to compare Part B against: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md`.
+
 How to run the Phase 0 captures on each machine, read the results, recover from the likely failures, and what to bring back. Background and the full capture list are in `src/rnd/v0.0.1/2026.10.14-uhw-implementation-planning-framework.md` §14.
 
 Everything below runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored).
@@ -47,7 +49,7 @@ This runs C1, C2, C4 and C9/C10 unattended, typically a few minutes. C3 is skipp
 
 **C3 next.**
 
-1. Find the MCP config file. On AGY 1.3.3 it is `~/.gemini/config/mcp_config.json` (confirmed 10-15). It's empty when no servers are configured, and `agy mcp add|remove|list` manages it. Jetski probably uses the same path, so check that first.
+1. Find the MCP config file. On AGY 1.3.5 it is `~/.gemini/config/mcp_config.json` (confirmed 10-15). It's empty when no servers are configured, and `agy mcp add|remove|list` manages it. Jetski probably uses the same path, so check that first.
 2. Confirm the format in 10 seconds: write the probe entry, list it, restore the file.
 
     ```bash
@@ -102,10 +104,10 @@ Try these in order. Stop at the first that passes and note which one it was.
 2. **The permission bypass may also skip hooks.** Back up `~/.gemini/<app>/settings.json`, then add a static allow rule for the shell tool, for example:
 
     ```json
-    { "permissions.allow": [ "command(*)" ] }
+    { "permissions.allow": [ "run_command" ] }
     ```
 
-    The rule syntax is unconfirmed; the design doc only saw `"permissions.allow"` as a flat dotted key. Then rerun C1 with the flag removed:
+    AGY's own `settings.json` lists plain tool names (`"write_file"`), and C2 named the shell tool `run_command`. Jetski may differ. This fallback was not needed on AGY: C1 passed with format A and the flag on. Then rerun C1 with the flag removed:
 
     ```bash
     sed -i.bak 's/ --dangerously-skip-permissions//' src/captures/common.sh   # undo afterwards: mv src/captures/common.sh.bak src/captures/common.sh
@@ -156,7 +158,7 @@ cp src/captures/out/c3-jetski-<ts>/mcp_config.backup <your MCP_CONFIG path>
 |---|---|
 | hook payloads | tokens |
 | tool names (including internal ones such as `code_search`) | credentials |
-| local paths | the environment, beyond `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DIR`, `PWD` |
+| local paths | the environment, beyond seven exact names: `UHW_PROBE_TAG`, `UHW_PROBE_BLOCK`, `UHW_PROBE_EXPANDED`, `LUPIN_PERSONA_ID`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DIR`, `PWD` |
 | the model's replies to the probe prompts | |
 
 Redact anything your work policy says shouldn't leave the laptop. The verdict lines alone carry most of the value.
