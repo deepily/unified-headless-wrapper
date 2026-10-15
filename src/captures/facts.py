@@ -122,8 +122,13 @@ elif check == "c3":
     say( "config env block applied", yes( any( s[ "block" ] == "block-static" for s in facts[ "mcp_servers" ] ) ) )
     say( "${VAR} expanded in env block", yes( any( s[ "expanded" ] and s[ "expanded" ] == s[ "tag" ] for s in facts[ "mcp_servers" ] ) )
          + f"  (raw: {sorted( { s[ 'expanded' ] for s in facts[ 'mcp_servers' ] } - { None } )})" )
-    say( "model called whoami", yes( any( "whoami" in str( t ) for t in facts[ "stream_tools" ] ) ) )
-    say( "hook fired on MCP tool (name)", [ t for t in facts[ "hook_tools" ] if t and "whoami" in t ] or "no" )
+    mcp_hooks = [ h for h in pre if hook_tool_name( h[ "payload" ] ) == "call_mcp_tool"            # AGY: one generic tool,
+                  or "whoami" in str( hook_tool_name( h[ "payload" ] ) ) ]                          # Claude: mcp__server__tool
+    say( "model called whoami", yes( mcp_hooks or any( "whoami" in json.dumps( f[ "frame" ] ) for f in frames
+                                                      if f[ "frame" ].get( "event" ) == "step_update" ) ) )
+    say( "hook fired on MCP tool (name, args)", [ ( hook_tool_name( h[ "payload" ] ), sorted( tool_call( h[ "payload" ] ).get( "args", {} ) ) )
+                                                  for h in mcp_hooks ][ :1 ] or "no" )
+    say( "tool calls before the MCP call", [ hook_tool_name( h[ "payload" ] ) for h in pre[ :pre.index( mcp_hooks[ 0 ] ) ] ] if mcp_hooks else "n/a" )
     per_process = len( tags ) >= 2 and len( { s[ "pid" ] for s in servers } ) >= 2
     verdict = ( "PASS: identity by inherited env, one server per engine" if per_process
                 else "PARTIAL: servers start, identity not per process" if servers else "FAIL: no server started" )

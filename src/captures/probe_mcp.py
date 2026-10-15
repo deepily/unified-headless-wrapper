@@ -11,10 +11,10 @@ Ensures:
 """
 import json, os, sys, time
 
-PREFIXES = ( "UHW_", "LUPIN_" )                                  # allow-list: never log tokens or credentials
-NAMES    = { "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD" }
+NAMES    = { "UHW_PROBE_TAG", "UHW_PROBE_BLOCK", "UHW_PROBE_EXPANDED",      # exact names only: a prefix match once
+             "LUPIN_PERSONA_ID", "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD" }   # logged LUPIN_DEV_PASSWORD (2026-10-15)
 IDENTITY = { "t": time.time(), "pid": os.getpid(), "ppid": os.getppid(), "cwd": os.getcwd(),
-             "env": { k: v for k, v in os.environ.items() if ( k.startswith( PREFIXES ) or k in NAMES ) } }
+             "env": { k: v for k, v in os.environ.items() if k in NAMES } }
 with open( os.environ.get( "UHW_PROBE_MCP_LOG", "/tmp/uhw-mcp-probe.jsonl" ), "a" ) as log:
     log.write( json.dumps( IDENTITY ) + "\n" )
 

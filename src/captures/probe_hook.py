@@ -14,8 +14,8 @@ import json, os, sys, time
 
 SENTINEL = "UHW_DENY_ME"
 REASON   = "UHW-VETO-7731: blocked by the capture hook"
-PREFIXES = ( "UHW_", "LUPIN_" )                                  # allow-list: never log tokens or credentials
-NAMES    = { "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD" }
+NAMES    = { "UHW_PROBE_TAG", "UHW_PROBE_BLOCK", "UHW_PROBE_EXPANDED",      # exact names only: a prefix match once
+             "LUPIN_PERSONA_ID", "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD" }   # logged LUPIN_DEV_PASSWORD (2026-10-15)
 
 
 def tool_part( payload ):
@@ -34,7 +34,7 @@ def main():
     deny = event == "pre_tool" and SENTINEL in json.dumps( tool_part( payload ) )
     with open( os.environ.get( "UHW_PROBE_LOG", "/tmp/uhw-hook-probe.jsonl" ), "a" ) as log:
         log.write( json.dumps( { "t": time.time(), "event": event, "deny": deny, "ppid": os.getppid(),
-                                 "env": { k: v for k, v in os.environ.items() if ( k.startswith( PREFIXES ) or k in NAMES ) },
+                                 "env": { k: v for k, v in os.environ.items() if k in NAMES },
                                  "payload": payload } ) + "\n" )
     if event == "pre_tool":
         print( json.dumps( { "allow_tool": False, "deny_reason": REASON } if deny else { "allow_tool": True } ) )
