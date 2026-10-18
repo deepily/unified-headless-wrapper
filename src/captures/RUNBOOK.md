@@ -197,12 +197,41 @@ src/captures/jetski_followup.sh jetski                # about 1–2 minutes; nee
 
 **Bring back:** `src/captures/out/jetski-followup-<timestamp>.txt`. Read it first, as in §6.
 
+## 9. Capabilities follow-up: C11–C14 (work laptop)
+
+One command, one bundle. It measures what the planning-is-prompting layer and the voice asks need from Jetski (inventory §19.5).
+
+```bash
+git pull                                                   # wip-v0.0.1-2026.10.15-planning-prep
+chmod +x src/captures/*.sh src/captures/*.py              # new files may arrive without the executable bit
+jetski models                                              # model ids; `auto` = Gemini Pro Next
+MODELS="opus-5.5-high gemini-3.8-flash-high gemini-launch-candidate-high gemini-flash-next" \
+    src/captures/capabilities_followup.sh jetski           # about 25 min + 10 min per model
+```
+
+| Capture | Question | What it does |
+|---|---|---|
+| C11 surfaces | Does Jetski load rules files, custom commands, skills and agent definitions itself? | Plants a unique codeword in each candidate location (project `GEMINI.md`, `AGENTS.md`, `CLAUDE.md` as a control, `.agents/rules`, `.agents/workflows`, `.gemini/commands/*.toml`, `.agents/skills`, `.agents/agents`, and global `~/.gemini/…`), then asks for codewords with **every tool denied by the hook**. Also lists `jetski agents` and runs `--agent` for each planted definition. |
+| C12 subagents and plan mode | What is the subagent tool called, do project hooks fire inside subagents, can a hook veto it by name? What does `--mode plan` do across "create a file" then "approved"? | Three short runs in throwaway repos. |
+| C13 pinned model | Do C9/C10 hold on the persona model, not `auto`? | Confirms `--model` reached the hook payload, then runs the pyramid probe 3 times and saves every reply's spoken lines. |
+| C14 long MCP calls | Will Jetski wait 45 s, 200 s, 620 s for one MCP call (a voice ask waiting on a human)? | One process, three calls to the probe's `wait_seconds` tool; logs answers, cancellations and server EOF. |
+
+**How it behaves:**
+- **Global files are planted only where nothing exists,** and removed on exit, Ctrl-C included. An existing `~/.gemini/GEMINI.md` or `AGENTS.md` is left untouched and reported as "not tested".
+- **C14 edits the MCP config** like C3: backed up and restored on exit.
+- **What it records from your machine:** `~/.gemini` file *names* matching agent/skill/command/rule, and the *keys* (never values) of up to four definition files; the first 30 lines of `jetski agents`; `--help` lines. No hook payload text, so `lastUserInput` stays out of the bundle.
+- **Knobs:** `SKIP_WAIT=1` skips C14; `WAITS="30 90"` changes its durations; `MODEL=<name>` pins C11, C12 and C14 too; leaving `MODELS` unset skips C13 and records `jetski models`.
+
+**Bring back:** `src/captures/out/jetski-capabilities-<timestamp>.txt`. AGY can run the same thing on the Linux server for comparison: `src/captures/capabilities_followup.sh agy`.
+
 ## Quick reference
 
 | Task | Command |
 |---|---|
 | Everything for one engine | `src/captures/run_engine.sh agy\|jetski` |
 | Part B follow-up | `src/captures/jetski_followup.sh jetski` |
+| C11–C14 | `MODELS="<model>" src/captures/capabilities_followup.sh jetski` |
+| One of them | `src/captures/c11_surfaces.py jetski` (same for c12, c14); `MODELS=… src/captures/c13_pinned_model.sh jetski` |
 | One capture | `src/captures/c1_tool_veto.sh jetski` (same pattern for c2, c4) |
 | C3 | `MCP_CONFIG=<path> src/captures/c3_mcp_identity.sh jetski` |
 | Format probe only | `UHW_LABEL=jetski src/captures/c9_c10_pyramid_probe.py --family jetski -- jetski --input-format stream-json --output-format stream-json --dangerously-skip-permissions` |

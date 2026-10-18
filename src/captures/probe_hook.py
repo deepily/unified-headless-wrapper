@@ -7,7 +7,8 @@ Requires:
     - UHW_PROBE_LOG names a writable JSONL file (default /tmp/uhw-hook-probe.jsonl)
 Ensures:
     - appends { t, event, deny, ppid, env subset, payload } to the log
-    - pre_tool: denies any call whose tool arguments contain UHW_DENY_ME, allows everything else
+    - pre_tool: denies any call whose tool arguments contain UHW_DENY_ME; also denies every call when UHW_DENY_ALL=1
+      (C11: the model can only answer from what the engine loaded), and calls to the tool named in UHW_DENY_TOOL (C12)
     - always exits 0: Jetski treats a non-zero exit as a hook failure, not a denial
 """
 import json, os, sys, time
@@ -15,7 +16,8 @@ import json, os, sys, time
 SENTINEL = "UHW_DENY_ME"
 REASON   = "UHW-VETO-7731: blocked by the capture hook"
 NAMES    = { "UHW_PROBE_TAG", "UHW_PROBE_BLOCK", "UHW_PROBE_EXPANDED",      # exact names only: a prefix match once
-             "LUPIN_PERSONA_ID", "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD" }   # logged LUPIN_DEV_PASSWORD (2026-10-15)
+             "LUPIN_PERSONA_ID", "CLAUDE_SESSION_ID", "CLAUDE_PROJECT_DIR", "PWD",    # logged LUPIN_DEV_PASSWORD (2026-10-15)
+             "UHW_DENY_ALL", "UHW_DENY_TOOL" }
 
 
 def tool_part( payload ):
@@ -31,7 +33,10 @@ def main():
     raw = sys.stdin.read()
     try: payload = json.loads( raw )
     except ValueError: payload = { "unparsed": raw }
-    deny = event == "pre_tool" and SENTINEL in json.dumps( tool_part( payload ) )
+    part = tool_part( payload )
+    name = part.get( "name" ) if isinstance( part, dict ) else None
+    deny = event == "pre_tool" and ( SENTINEL in json.dumps( part ) or os.environ.get( "UHW_DENY_ALL" ) == "1"
+                                     or bool( name ) and name == os.environ.get( "UHW_DENY_TOOL" ) )
     with open( os.environ.get( "UHW_PROBE_LOG", "/tmp/uhw-hook-probe.jsonl" ), "a" ) as log:
         log.write( json.dumps( { "t": time.time(), "event": event, "deny": deny, "ppid": os.getppid(),
                                  "env": { k: v for k, v in os.environ.items() if k in NAMES },

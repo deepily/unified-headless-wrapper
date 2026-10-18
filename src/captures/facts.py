@@ -43,7 +43,7 @@ def hook_tool_name( payload ):
 turns   = [ r for r in rows( "summary*.jsonl" ) if "turn" in r and "results" in r ]
 frames  = rows( "frames*.jsonl" )
 hooks   = rows( "hook.jsonl" )
-servers = rows( "mcp.jsonl" )
+servers = [ r for r in rows( "mcp.jsonl" ) if "pid" in r ]          # identity rows; C14 call/eof rows have no pid
 pre     = [ h for h in hooks if h[ "event" ] == "pre_tool" ]
 session = next( ( t[ "session" ] for t in turns if t.get( "session" ) ), None )
 facts = {
