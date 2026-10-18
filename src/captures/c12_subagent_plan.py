@@ -90,8 +90,10 @@ report.say( "C. plan.marker exists after approval", "yes" if ( ws / "plan.marker
 report.say( "C. artifacts written", artifacts or "none" )
 report.say( "C. turn 1 reply", ( report.facts[ "plan" ][ "replies" ][ :1 ] or [ "" ] )[ 0 ][ :140 ].replace( "\n", " " ) )
 
+first_turn = top[ :len( by_turn[ 0 ] ) ] if by_turn else []
+early_write = any( "plan.marker" in json.dumps( tool_args( h[ "payload" ] ) ) for h in first_turn )   # the plan file itself goes to the brain dir
+report.say( "C. turn 1 wrote into the workspace", "yes" if early_write else "no (plan artifact only)" )
 hooks_inside = len( report.facts[ "discover" ][ "child_tools" ] ) > 0
 enforceable = bool( veto and veto[ "denied" ] and not veto[ "child_calls" ] )
 report.finish( f"subagent tool={candidates[ 0 ] if candidates else 'not found'}; hooks inside subagents={'yes' if hooks_inside else 'no'}; "
-               f"veto enforceable={'yes' if enforceable else 'no'}; plan mode wrote on turn 1="
-               f"{'yes' if by_turn and any( t in ( 'write_file', 'write_to_file', 'run_command' ) for t in by_turn[ 0 ] ) else 'no'}" )
+               f"veto enforceable={'yes' if enforceable else 'no'}; plan mode touched the workspace before approval={'yes' if early_write else 'no'}" )

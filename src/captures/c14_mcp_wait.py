@@ -9,6 +9,7 @@ One engine process, one turn per duration; the probe server logs call start, cal
 Requires:
     - the engine on PATH; MCP_CONFIG optional (default ~/.gemini/config/mcp_config.json, measured for both binaries)
     - WAITS optional: seconds per turn, default "45 200 620" (about 15 minutes in all)
+    - MCP_TIMEOUT_MS optional: adds "timeout" to the probe's server entry (measured default: 180 s, 2026-10-18)
 Ensures:
     - the MCP config is backed up and restored on exit (removed if it did not exist)
     - out/c14-<bin>-<ts>/verdict.txt and facts.json
@@ -31,6 +32,9 @@ config = json.loads( CONFIG.read_text() ) if existed and CONFIG.stat().st_size e
 log = out / "mcp.jsonl"
 config.setdefault( "mcpServers", {} )[ "uhw-probe" ] = { "command": PY, "args": [ str( HERE / "probe_mcp.py" ) ],
                                                          "env": { "UHW_PROBE_MCP_LOG": str( log ) } }
+if os.environ.get( "MCP_TIMEOUT_MS" ):                       # Gemini-style per-server timeout: does it lift the 180 s limit?
+    config[ "mcpServers" ][ "uhw-probe" ][ "timeout" ] = int( os.environ[ "MCP_TIMEOUT_MS" ] )
+report.say( "per-server timeout in config (ms)", os.environ.get( "MCP_TIMEOUT_MS", "none" ) )
 CONFIG.parent.mkdir( parents=True, exist_ok=True ); CONFIG.write_text( json.dumps( config, indent=1 ) )
 
 ws = workspace(); write_hooks( ws )
@@ -50,7 +54,8 @@ for index, seconds in enumerate( WAITS ):
     summary = summaries[ index ] if index < len( summaries ) else {}
     start  = next( ( e for e in starts if e[ "seconds" ] == seconds ), None )
     end    = next( ( e for e in ends if start and e[ "seconds" ] == seconds and e[ "t" ] >= start[ "t" ] ), None )
-    cancel = next( ( c for c in cancels if start and c[ "t" ] >= start[ "t" ] ), None )
+    until  = end[ "t" ] if end else next( ( e[ "t" ] for e in starts if start and e[ "t" ] > start[ "t" ] ), float( "inf" ) )
+    cancel = next( ( c for c in cancels if start and start[ "t" ] <= c[ "t" ] <= until ), None )   # only while this call was pending
     text  = reply_text( [ summary ] ) if summary else ""
     ok    = f"waited {seconds} seconds" in text or ( f"waited {seconds - 1} seconds" in text )
     longest_ok = max( longest_ok, seconds if ok else 0 )
