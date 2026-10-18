@@ -1,2 +1,15 @@
-out/
 __pycache__/
+
+# Capture output: commit the readable results, keep the raw material local.
+#   tracked:  bundles (out/*.txt) and per-capture verdicts, facts, tables, spoken lines
+#   ignored:  frames/hook/mcp logs (*.jsonl: full payloads, incl. lastUserInput), engine stderr,
+#             and mcp_config.backup (C3/C14 copy your real MCP config, tokens and all)
+out/**
+!out/**/
+!out/*.txt
+!out/**/verdict.txt
+!out/**/facts.json
+!out/**/results*.tsv
+!out/**/spoken-*.txt
+!out/**/tool-map.tsv
+!out/**/version.txt
