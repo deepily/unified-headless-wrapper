@@ -1,0 +1,5 @@
+requested id                             5f133a1d-3f09-4943-aff6-0418d41e32e1
+id reported by engine                    9d37568f-07f2-473e-a594-312c8cc0f51c
+first turn status                        SUCCESS
+resume recalled PELICAN                  yes
+VERDICT c4: PARTIAL: engine assigns its own id

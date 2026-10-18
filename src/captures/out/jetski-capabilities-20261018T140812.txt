@@ -1,0 +1,453 @@
+# jetski capabilities 20261018T140812 · Darwin arm64 · version 2026.10.16 · MODEL=unset MODELS=unset
+
+## C11 surfaces
+version                                        2026.10.16
+A. help lines on agents/skills/commands/mode   24
+A. ~/.gemini entries matching surfaces         21
+A. existing ~/.gemini/GEMINI.md                absent
+A. existing ~/.gemini/AGENTS.md                absent
+B. instruction files loaded                    ['AGENTS.md', 'GEMINI.md', '~/.gemini/AGENTS.md', '~/.gemini/GEMINI.md']
+B. codewords not planted (hallucinated)        none
+B. tool attempts (all denied)                  0
+C. /uhwwfa (.agents/workflows/uhwwfa.md)       expanded=True status=['SUCCESS'] reply='The `/uhwwfa` command was not expanded before reaching the conversatio'
+C. /uhwwfb (.agent/workflows/uhwwfb.md)        expanded=False status=['SUCCESS'] reply='The `/uhwwfb` command was not expanded as a recognized workflow or sla'
+C. /uhwcmc (.agents/commands/uhwcmc.md)        expanded=False status=['SUCCESS'] reply='`/uhwcmc` is not a recognized built-in slash command and was not expan'
+C. /uhwcmd (.gemini/commands/uhwcmd.toml)      expanded=False status=['SUCCESS'] reply='`/uhwcmd` was not recognized or expanded as a slash command, and inspe'
+C. /uhwnosuchcommand (unknown command (control)) expanded=False status=['SUCCESS'] reply='`/uhwnosuchcommand` is not a recognized command.\n\nHere are the availab'
+D. uhw-skill-a (<ws>/.agents/skills/uhw-skill-a/SKILL.md) in index=True  codeword via use=True
+D. uhw-skill-b (<ws>/.agent/skills/uhw-skill-b/SKILL.md) in index=True  codeword via use=True
+D. uhw-skill-c (<ws>/.gemini/skills/uhw-skill-c/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-d (~/.gemini/skills/uhw-skill-d/SKILL.md) in index=False  codeword via use=False
+D. tools used to reach skills                  ['read_file']
+E. `agents` listing lines                      3
+E. uhw-agent-a (.agents/agents)                listed=True --agent status=['SUCCESS'] prompt carried=True agentName=[]
+E. uhw-agent-b (.agent/agents)                 listed=True --agent status=['SUCCESS'] prompt carried=True agentName=[]
+E. uhw-agent-c (.gemini/agents)                listed=False --agent status=['ERROR'] prompt carried=False agentName=[]
+E. uhw-agent-d (~/.gemini/agents)              listed=True --agent status=['SUCCESS'] prompt carried=True agentName=[]
+F. result-frame keys                           ['(top) event', '(top) result', 'conversation_id', 'duration_seconds', 'error', 'num_turns', 'response', 'status', 'usage']
+F. token/usage/context keys in any frame       ['cache_read_tokens', 'input_tokens', 'output_tokens', 'thinking_tokens', 'total_tokens', 'usage']
+VERDICT c11: native surfaces: rules=yes, commands=yes, skills=yes, agents=yes
+{
+ "help_lines": [
+  "--agent                                  Agent for the current CLI session",
+  "--app_data_dir                           Path where application data is stored, relative to GeminiDir (default jetski)",
+  "--cli_log_file                           Override log file path for CLI mode",
+  "--disable-slash-commands                 Disable slash command and skill expansion in print mode",
+  "--gemini_dir                             Path where Gemini files are stored. If absolute path, will set directly. If relative path, will be resolved relative to HomeDir. (default .gemini)",
+  "--inference_api_server_url               Inference API server host. If unset, uses default if not in enterprise mode",
+  "--input-format                           Input format for print mode (text, stream-json). stream-json reads one NDJSON message per line from stdin and runs a turn for each; it requires --output-format stream-json (default text)",
+  "--local_chrome_headless                  Whether Chrome runs in headless mode. (default true)",
+  "--mode                                   Set the agent execution mode for this session (accept-edits, auto, plan, bestn)",
+  "--model                                  Model for the current CLI session",
+  "--model_api_client_type                  Which model client to use: ccpa or gemini. Defaults to ccpa. (default ccpa)",
+  "--mquery_for_context_module              Whether to enable mquery in the core context module. (default true)",
+  "--output-format                          Output format for print mode (text, json, stream-json) (default text)",
+  "--override_user_agent_name               Override user agent name for HTTP requests (e.g. 'antigravity-dev')",
+  "--persistent_mode                        If true, run in persistent daemon mode: writes discovery file and doesn't exit when extension closes",
+  "--print-timeout                          Optional time limit for print mode; 0 waits until the turn completes (default 0s)",
+  "--repl_mode                              Whether to run CLI in REPL mode (stdin/stdout REPL)",
+  "--standalone                             Whether to run in standalone mode",
+  "--use_stubby_auth                        Use LOAS auth instead of OAuth browser flow. Only for use in Standalone + internal mode.",
+  "Available subcommands:",
+  "agent           List available agents",
+  "agents          List available agents",
+  "help            Show help for subcommands",
+  "models          List available models"
+ ],
+ "agents_help": [
+  "Usage: jetski agent [flags]",
+  "",
+  "List available agents",
+  "",
+  "Flags:",
+  "  -h      Show help",
+  "  --help  Show help"
+ ],
+ "gemini_layout": [
+  "antigravity-ide/builtin/skills/",
+  "antigravity-ide/builtin/skills/agy-customizations/",
+  "antigravity-ide/builtin/skills/antigravity_guide/",
+  "antigravity-ide/builtin/skills/permissioned-github/",
+  "jetski/bin/agentapi",
+  "jetski/builtin/contrib/skills/",
+  "jetski/builtin/plugins/memory/",
+  "jetski/builtin/skills/",
+  "jetski/builtin/skills/agentapi/",
+  "jetski/builtin/skills/automation/",
+  "jetski/builtin/skills/generative_ui/",
+  "jetski/builtin/skills/jetski-customizations/",
+  "jetski/builtin/skills/migrate-workflows/",
+  "jetski/builtin/skills/permissioned-github/",
+  "jetski/builtin/skills/plugin/",
+  "jetski/builtin/skills/run-workflow/",
+  "jetski/builtin/skills/ui-plugin-development/",
+  "jetski/builtin/skills/ui-plugin-navigation/",
+  "jetski/builtin/skills/web-app-development/",
+  "jetski/builtin/workflows/",
+  "jetski/builtin/workflows/advanced/"
+ ],
+ "definition_keys": {},
+ "rules": {
+  "planted": {
+   "PGEM": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/GEMINI.md",
+   "PAGT": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/AGENTS.md",
+   "PCLA": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/CLAUDE.md",
+   "PRUL": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/.agents/rules/uhw.md",
+   "PRLX": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/.agent/rules/uhw.md",
+   "PGDR": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-3kwf2711/.gemini/GEMINI.md",
+   "GGEM": "/Users/rickruiz/.gemini/GEMINI.md",
+   "GAGT": "/Users/rickruiz/.gemini/AGENTS.md"
+  },
+  "found": [
+   "UHWCODE-GAGT",
+   "UHWCODE-GGEM",
+   "UHWCODE-PAGT",
+   "UHWCODE-PGEM"
+  ],
+  "tool_attempts": [],
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "commands": {
+  "uhwwfa": {
+   "expanded": true,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "The `/uhwwfa` command was not expanded before reaching the conversation, and attempts to read the workflow definition from the workspace were blocked by the con",
+   "tool_attempts": [
+    "run_command",
+    "read_file",
+    "invoke_subagent",
+    "run_workflow"
+   ]
+  },
+  "uhwwfb": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "The `/uhwwfb` command was not expanded as a recognized workflow or slash command, and inspecting the workspace to locate its definition was blocked by the activ",
+   "tool_attempts": [
+    "run_command",
+    "read_file",
+    "run_workflow"
+   ]
+  },
+  "uhwcmc": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwcmc` is not a recognized built-in slash command and was not expanded in the prompt, and tool execution to inspect custom command files is currently blocked",
+   "tool_attempts": [
+    "run_command",
+    "read_file",
+    "read_file",
+    "read_file",
+    "read_file",
+    "read_file",
+    "invoke_subagent"
+   ]
+  },
+  "uhwcmd": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwcmd` was not recognized or expanded as a slash command, and inspecting the workspace for a custom command definition was blocked by the active pre-tool hoo",
+   "tool_attempts": [
+    "read_file",
+    "run_command"
+   ]
+  },
+  "uhwnosuchcommand": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwnosuchcommand` is not a recognized command.\n\nHere are the available slash commands:\n- `/goal` \u2013 Run a long-running task thoroughly until the goal is achiev",
+   "tool_attempts": []
+  }
+ },
+ "skills": {
+  "planted": {
+   "uhw-skill-a": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agents/skills/uhw-skill-a/SKILL.md",
+   "uhw-skill-b": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agent/skills/uhw-skill-b/SKILL.md",
+   "uhw-skill-c": "/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.gemini/skills/uhw-skill-c/SKILL.md",
+   "uhw-skill-d": "/Users/rickruiz/.gemini/skills/uhw-skill-d/SKILL.md"
+  },
+  "index_reply": "agentapi\njetski-customizations\nrun-workflow\nswarm\nswarm_monitor\nuhw-skill-a\nuhw-skill-b\nweb-app-development\n",
+  "use_reply": "Here are the available `uhw-skill` skills and their codewords:\n\n- **uhw-skill-a** ([SKILL.md](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agents/skills/uhw-skill-a/SKILL.md)): `UHWCODE-SKA`\n- **uhw-skill-b** ([SKILL.md](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agent/skills/uhw-skill-b/SKILL.md)): `UHWCODE-SKB`\n",
+  "use_calls": [
+   [
+    "read_file",
+    "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agents/skills/uhw-skill-a/SKILL.md\"}"
+   ],
+   [
+    "read_file",
+    "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-op_uy9t7/.agent/skills/uhw-skill-b/SKILL.md\"}"
+   ]
+  ]
+ },
+ "agents": {
+  "listing_head": [
+   "uhw-agent-a",
+   "uhw-agent-b",
+   "uhw-agent-d"
+  ],
+  "listing_lines": 3,
+  "runs": {
+   "uhw-agent-a": {
+    "listed": true,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "I do not have access to a shell execution tool to run `echo probe`.\n\nCodewords:\n- `UHWCODE-AGA`\n- `UHWCODE-GAGT`\n- `UHWCODE-GGEM`\n"
+   },
+   "uhw-agent-b": {
+    "listed": true,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "The shell execution tool is not available in this environment.\n\nCodewords:\n- `UHWCODE-AGB`\n- `UHWCODE-GAGT`\n- `UHWCODE-GGEM`\n"
+   },
+   "uhw-agent-c": {
+    "listed": false,
+    "status": [
+     "ERROR"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": ""
+   },
+   "uhw-agent-d": {
+    "listed": true,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "I do not have a shell execution tool available to run `echo probe`.\n\nCodewords:\n- `UHWCODE-AGD`\n- `UHWCODE-GAGT`\n- `UHWCODE-GGEM`\n"
+   }
+  }
+ },
+ "frames": {
+  "event_kinds": [
+   "init//",
+   "result//",
+   "step_update/agent_response/ACTIVE",
+   "step_update/agent_response/DONE",
+   "step_update/subagent/ERROR",
+   "step_update/tool/ACTIVE",
+   "step_update/tool/DONE",
+   "step_update/tool/ERROR",
+   "step_update/user_input/DONE"
+  ],
+  "init_keys": [
+   "conversation_id",
+   "event",
+   "init"
+  ],
+  "result_keys": [
+   "(top) event",
+   "(top) result",
+   "conversation_id",
+   "duration_seconds",
+   "error",
+   "num_turns",
+   "response",
+   "status",
+   "usage"
+  ],
+  "usage_like_keys": [
+   "cache_read_tokens",
+   "input_tokens",
+   "output_tokens",
+   "thinking_tokens",
+   "total_tokens",
+   "usage"
+  ]
+ },
+ "native": {
+  "rules": true,
+  "commands": true,
+  "skills": true,
+  "agents": true
+ }
+}
+## C12 subagent and plan mode
+version                                        2026.10.16
+A. top-level tools                             ['invoke_subagent']
+A. subagent tool candidates (non-basic)        ['invoke_subagent']
+A. hooks fired inside subagent                 2 calls ['run_command', 'send_message']
+A. subagent agentName / callerContext          ['self'] / ['""']
+A. conversation ids in stream                  1
+A. sub.marker created                          yes
+A. model named its tool as                     ory, creating [sub.marker](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-kq3oj_15/sub.marker), and reported back.  The exact name of th
+B. deny invoke_subagent: denied / child calls  1 / 0
+B. what the model did instead                  nothing
+C. --mode plan status per turn                 ['SUCCESS', 'SUCCESS']
+C. tools turn 1 / turn 2                       [['write_file'], ['write_file', 'read_file', 'write_file']]
+C. plan.marker exists after approval           yes
+C. artifacts written                           ['.system_generated', '.user_uploaded', 'implementation_plan.md', 'implementation_plan.md.metadata.json', 'scratch', 'walkthrough.md', 'walkthrough.md.metadata.json']
+C. turn 1 reply                                I have created the [implementation plan](file:///Users/rickruiz/.gemini/jetski/brain/d226ddd3-e6bb-4858-ac4b-0cb97262832b/implementation_pla
+VERDICT c12: subagent tool=invoke_subagent; hooks inside subagents=yes; veto enforceable=yes; plan mode wrote on turn 1=yes
+{
+ "discover": {
+  "top_tools": [
+   "invoke_subagent"
+  ],
+  "child_tools": [
+   "run_command",
+   "send_message"
+  ],
+  "candidate_args": {
+   "invoke_subagent": [
+    "Prompt",
+    "Role",
+    "TypeName"
+   ]
+  },
+  "child_agentName": [
+   "self"
+  ],
+  "child_callerContext": [
+   "\"\""
+  ],
+  "stream_tools": [
+   "invoke_subagent"
+  ],
+  "stream_conversation_ids": 1,
+  "marker": true,
+  "reply": "I have delegated the task to a subagent using `invoke_subagent` and am waiting for it to report back.\nThe subagent ([Marker File Creator](conversation://28326ea7-9738-4b06-acc4-44eecc3fcc1a)) has run `touch sub.marker` in the current directory, creating [sub.marker](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-kq3oj_15/sub.marker), and reported back.\n\nThe exact name of th",
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "veto": {
+  "target": "invoke_subagent",
+  "denied": 1,
+  "child_calls": 0,
+  "fallback_tools": [],
+  "marker": false,
+  "reply": "I attempted to delegate the task using the **`invoke_subagent`** tool, but the tool call was denied by a pre-tool hook with the following error:\n\n`UHW-VETO-7731: blocked by the capture hook`\n\nThe exact name of the tool used to delegate is `invoke_subagent`.\n"
+ },
+ "plan": {
+  "status": [
+   "SUCCESS",
+   "SUCCESS"
+  ],
+  "tools_by_turn": [
+   [
+    "write_file"
+   ],
+   [
+    "write_file",
+    "read_file",
+    "write_file"
+   ]
+  ],
+  "hook_tools": [
+   "write_file",
+   "write_file",
+   "read_file",
+   "write_file"
+  ],
+  "marker": true,
+  "artifacts": [
+   ".system_generated",
+   ".user_uploaded",
+   "implementation_plan.md",
+   "implementation_plan.md.metadata.json",
+   "scratch",
+   "walkthrough.md",
+   "walkthrough.md.metadata.json"
+  ],
+  "replies": [
+   "I have created the [implementation plan](file:///Users/rickruiz/.gemini/jetski/brain/d226ddd3-e6bb-4858-ac4b-0cb97262832b/implementation_plan.md). Please review and approve it when you're ready for me to proceed.\n",
+   "I created [plan.marker](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-w2zs8yom/plan.marker) in the current directory containing the word `hello` and verified its contents. See the [walkthrough](file:///Users/rickruiz/.gemini/jetski/brain/d226ddd3-e6bb-4858-ac4b-0cb97262832b/"
+  ]
+ }
+}
+## C14 long MCP calls
+version                                        2026.10.16
+wait   45 s                                    called=True answered_in_reply=True cancelled_after=240.5 status=['SUCCESS'] reply='```\nwaited 45 seconds\n```\n'
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+wait  620 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.140779, "tool_info": {"name": "read_file", "parameters": {"Path": "/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 45 s of 620 s tried (a timeout lies between the last success and the next try)
+{
+ "rows": [
+  {
+   "seconds": 45,
+   "called": true,
+   "server_finished": true,
+   "cancelled_after_s": 240.5,
+   "result_ok": true,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nwaited 45 seconds\n```\n"
+  },
+  {
+   "seconds": 200,
+   "called": true,
+   "server_finished": true,
+   "cancelled_after_s": 180.0,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nEncountered error in tool execution: MCP tool call to server \"uhw-probe\" timed out after 3m0s: context deadline exceeded\n```\n"
+  },
+  {
+   "seconds": 620,
+   "called": true,
+   "server_finished": false,
+   "cancelled_after_s": 180.0,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nEncountered error in tool execution: MCP tool call to server \"uhw-probe\" timed out after 3m0s: context deadline exceeded\n```\n"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"read_file\", \"duration_seconds\": 0.140779, \"tool_info\": {\"name\": \"read_file\", \"parameters\": {\"Path\": \"/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json\"}, \"output\": \"1 lines, 202 bytes\"}}}",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 4, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 45.459198, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 45}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"output\": \"waited 45 seconds\"}}}",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 8, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 180.11384, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 200}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\":",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 12, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 180.09875, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 620}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\""
+ ],
+ "server_eof_after_s": 452.8
+}
+## C13 pinned model
+skipped: MODELS not set. Available models:
+Fetching available models...
+auto	Gemini Pro Next
+gemini-flash-next	Gemini Flash Next
+gemini-launch-candidate-high	Gemini 4 Argon (High)
+gemini-launch-candidate-medium	Gemini 4 Argon (Medium)
+gemini-launch-candidate-low	Gemini 4 Argon (Low)
+gemini-pro-coordinator	Gemini Pro Orchestrator
+gemini-3.8-flash-high	Gemini 3.8 Flash (High)
+gemini-3.8-flash-medium	Gemini 3.8 Flash (Medium)
+gemini-3.8-flash-low	Gemini 3.8 Flash (Low)
+gemini-3.5-flash-lite	Gemini 3.5 Flash Lite
+gemini-3.1-pro-high	Gemini 3.1 Pro
+fable-5.1-max	Claude Fable 5.1 (Max)
+fable-5.1-high	Claude Fable 5.1 (High)
+fable-5.1-medium	Claude Fable 5.1 (Medium)
+fable-5.1-low	Claude Fable 5.1 (Low)
+opus-5.5-max	Claude Opus 5.5 (Max)
+opus-5.5-high	Claude Opus 5.5 (High)
+opus-5.5-medium	Claude Opus 5.5 (Medium)
+opus-5.5-low	Claude Opus 5.5 (Low)

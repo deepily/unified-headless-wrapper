@@ -1,0 +1,9 @@
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	3	False	False	14.651	14.755	14.755	0.0
+1	0	False	3	False	False	16.956	17.338	17.338	0.0
+2	0	False	3	True	False	14.908	15.505	17.068	1.56
+3	0	False	3	False	False	52.515	53.053	53.053	0.0
+4	0	False	3	True	False	42.157	43.112	45.222	2.11
+5	0	False	3	True	True	21.816	22.59	31.273	8.68
+6	0	False	3	True	False	17.376	18.021	19.293	1.27
+7	0	False	2	False	False	16.675	16.804	16.804	0.0

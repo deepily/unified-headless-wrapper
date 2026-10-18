@@ -1,0 +1,14 @@
+version                                        2026.10.16
+A. /uhwwfa (tools allowed)                     codeword=True tools=['run_command', 'run_command', 'read_file', 'read_file', 'read_file']
+A. /uhwwfb (tools allowed)                     codeword=True tools=['run_command', 'run_command', 'read_file', 'read_file', 'read_file']
+A. slash commands offered                      ['/goal', '/grill-me', '/plan', '/review-agent', '/uhwnosuchcommand']
+A. planted workflows among them                none
+B. uhw-skill-e (~/.gemini/jetski/skills)       in index=False
+B. uhw-skill-f (~/.agents/skills)              in index=False
+B. uhw-skill-g (~/.agent/skills)               in index=False
+C. uhw-agent-t0 (no tools key)                 tools=[] agentName=[] status=['SUCCESS']
+C. uhw-agent-t1 tools: [run_command]           tools=['run_command'] agentName=['uhw-agent-t1'] status=['SUCCESS']
+C. uhw-agent-t2 tools: ["*"]                   tools=[] agentName=[] status=['ERROR']
+C. uhw-agent-t3 tools:   - run_command   - read_file tools=['run_command'] agentName=['uhw-agent-t3'] status=['SUCCESS']
+D. customization docs read (headings, field and path lines only) ['jetski/builtin/skills/jetski-customizations/SKILL.md', 'jetski/builtin/skills/jetski-customizations/docs/json_configs.md', 'jetski/builtin/skills/jetski-customizations/docs/skills.md', 'jetski/builtin/skills/jetski-customizations/docs/plugins.md', 'jetski/builtin/skills/jetski-customizations/docs/hooks.md', 'jetski/builtin/skills/jetski-customizations/docs/rules.md', 'antigravity-cli/builtin/skills/agy-customizations/SKILL.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/json_configs.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/skills.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/rules.md', 'jetski/builtin/skills/migrate-workflows/SKILL.md', 'jetski/builtin/skills/run-workflow/SKILL.md']
+VERDICT c11b: workflows run via ['read_file', 'run_command']; global skills at none found; agent tools granted by frontmatter=yes

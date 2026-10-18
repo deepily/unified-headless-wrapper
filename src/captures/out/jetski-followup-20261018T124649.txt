@@ -1,0 +1,48 @@
+# jetski follow-up 20261018T124649 · Darwin arm64 · version 2026.10.16
+
+## 1. names from the latest C1 hook log
+source: c1-jetski-20261015T132958
+modelName: ['auto']
+agentName: ['']
+isBattleMode: ['False']
+callerContext: 
+executionId distinct values across 3 hook calls: 1
+parentConversationId empty: True · equals conversationId: False
+rootConversationId equals conversationId: True
+
+## 2. --agent and agent definitions
+3:  --agent                                  Agent for the current CLI session
+4-  --analytics_server_url                   Analytics server host
+--
+44:  --mode                                   Set the agent execution mode for this session (accept-edits, auto, plan, bestn)
+45-  --model                                  Model for the current CLI session
+--
+56:  --override_user_agent_name               Override user agent name for HTTP requests (e.g. 'antigravity-dev')
+57-  -p                                       Short alias for --print
+--
+82:  agent           List available agents
+83:  agents          List available agents
+84-  changelog       Show changelog and release notes
+
+## 3. MCP configuration
+$ jetski mcp list
+No MCP servers configured.
+candidate files:
+/Users/rickruiz/.gemini/config/mcp_config.json
+config under test: /Users/rickruiz/.gemini/config/mcp_config.json (exists: yes)
+format check: PASS (jetski mcp list shows uhw-probe from /Users/rickruiz/.gemini/config/mcp_config.json)
+
+## 3b. C3
+MCP servers started                      2
+distinct server pids                     2
+server ppids / engine pids               [53878, 53879] / [53878, 53879]
+parent env inherited (tags)              ['persona-1', 'persona-2']
+config env block applied                 yes
+${VAR} expanded in env block             no  (raw: ['${UHW_PROBE_TAG}'])
+model called whoami                      yes
+hook fired on MCP tool (name, args)      [('call_mcp_tool', ['Arguments', 'ServerName', 'ToolName'])]
+tool calls before the MCP call           ['read_file', 'read_file']
+VERDICT c3: PASS: identity by inherited env, one server per engine
+
+## 4. --use_ls_chrome_devtools_mcp=false
+reply: ok

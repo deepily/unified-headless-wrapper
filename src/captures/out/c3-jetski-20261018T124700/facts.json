@@ -1,0 +1,79 @@
+{
+ "results": [
+  {
+   "t": 26.283,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "6a9f6aab-57dc-4c89-a32b-6b3ff5301908",
+   "text": "```json\n{\"t\": 1792342021.530773, \"pid\": 53884, \"ppid\": 53878, \"cwd\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.lFg4NDRyr4\", \"env\": {\"UHW_PROBE_TAG\": \"persona-1\", \"PWD\": \"/Users/rickruiz/projects/unified-headless-wrapper\", \"UHW_PROBE_BLOCK\": \"block-static\", \"UHW_PROBE_EXPANDED\": \"${UHW_PROBE_TAG}\"}}\n```\n"
+  },
+  {
+   "t": 23.995,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9e713f5a-7596-44f6-9ec5-f466f2b4807c",
+   "text": "```json\n{\"t\": 1792342021.535006, \"pid\": 53885, \"ppid\": 53879, \"cwd\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.EWDsP5vCRO\", \"env\": {\"UHW_PROBE_TAG\": \"persona-2\", \"PWD\": \"/Users/rickruiz/projects/unified-headless-wrapper\", \"UHW_PROBE_BLOCK\": \"block-static\", \"UHW_PROBE_EXPANDED\": \"${UHW_PROBE_TAG}\"}}\n```\n"
+  }
+ ],
+ "session": "6a9f6aab-57dc-4c89-a32b-6b3ff5301908",
+ "engine_pids": [
+  53878,
+  53879
+ ],
+ "stream_tools": [
+  "read_file",
+  "call_mcp_tool",
+  "read_file",
+  "call_mcp_tool"
+ ],
+ "hook_events": 8,
+ "hook_denies": 0,
+ "hook_payload_keys": [
+  "agentName",
+  "artifactDirectoryPath",
+  "callerContext",
+  "conversationId",
+  "executionId",
+  "isBattleMode",
+  "lastUserInput",
+  "modelName",
+  "parentConversationId",
+  "rootConversationId",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "read_file",
+  "read_file",
+  "call_mcp_tool",
+  "call_mcp_tool"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "persona-1",
+  "persona-2"
+ ],
+ "veto_text_in_stream": false,
+ "mcp_servers": [
+  {
+   "pid": 53884,
+   "ppid": 53878,
+   "tag": "persona-1",
+   "block": "block-static",
+   "expanded": "${UHW_PROBE_TAG}"
+  },
+  {
+   "pid": 53885,
+   "ppid": 53879,
+   "tag": "persona-2",
+   "block": "block-static",
+   "expanded": "${UHW_PROBE_TAG}"
+  }
+ ]
+}

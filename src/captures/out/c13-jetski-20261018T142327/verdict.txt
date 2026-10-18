@@ -1,0 +1,21 @@
+skipped: MODELS not set. Available models:
+Fetching available models...
+auto	Gemini Pro Next
+gemini-flash-next	Gemini Flash Next
+gemini-launch-candidate-high	Gemini 4 Argon (High)
+gemini-launch-candidate-medium	Gemini 4 Argon (Medium)
+gemini-launch-candidate-low	Gemini 4 Argon (Low)
+gemini-pro-coordinator	Gemini Pro Orchestrator
+gemini-3.8-flash-high	Gemini 3.8 Flash (High)
+gemini-3.8-flash-medium	Gemini 3.8 Flash (Medium)
+gemini-3.8-flash-low	Gemini 3.8 Flash (Low)
+gemini-3.5-flash-lite	Gemini 3.5 Flash Lite
+gemini-3.1-pro-high	Gemini 3.1 Pro
+fable-5.1-max	Claude Fable 5.1 (Max)
+fable-5.1-high	Claude Fable 5.1 (High)
+fable-5.1-medium	Claude Fable 5.1 (Medium)
+fable-5.1-low	Claude Fable 5.1 (Low)
+opus-5.5-max	Claude Opus 5.5 (Max)
+opus-5.5-high	Claude Opus 5.5 (High)
+opus-5.5-medium	Claude Opus 5.5 (Medium)
+opus-5.5-low	Claude Opus 5.5 (Low)

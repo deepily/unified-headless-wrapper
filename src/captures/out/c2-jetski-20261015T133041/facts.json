@@ -1,0 +1,63 @@
+{
+ "results": [
+  {
+   "t": 40.182,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "fe8cbc1d-ca9e-4cdc-9d5d-6b515992e565",
+   "text": "Here are the results for each step and the tool names used:\n\n1. **List files in directory** \u2014 `run_command` (`ls -la`): `.agents`, [notes.txt](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt), `sub`\n2. **Read [notes.txt](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt)** \u2014 `read_file`: `the zebra is here`\n3. **Search"
+  }
+ ],
+ "session": "fe8cbc1d-ca9e-4cdc-9d5d-6b515992e565",
+ "engine_pids": [
+  8329
+ ],
+ "stream_tools": [
+  "run_command",
+  "read_file",
+  "run_command",
+  "run_command",
+  "write_file",
+  "edit_file",
+  "run_command",
+  "run_command"
+ ],
+ "hook_events": 16,
+ "hook_denies": 0,
+ "hook_payload_keys": [
+  "agentName",
+  "artifactDirectoryPath",
+  "callerContext",
+  "conversationId",
+  "executionId",
+  "isBattleMode",
+  "lastUserInput",
+  "modelName",
+  "parentConversationId",
+  "rootConversationId",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "run_command",
+  "read_file",
+  "run_command",
+  "run_command",
+  "write_file",
+  "edit_file",
+  "run_command",
+  "run_command"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "c2-jetski"
+ ],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}

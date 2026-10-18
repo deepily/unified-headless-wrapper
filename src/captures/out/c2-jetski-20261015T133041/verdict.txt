@@ -1,0 +1,5 @@
+tool calls seen in stream                8
+tool calls seen by hook                  8
+names agree (stream vs hook)             yes
+distinct tool names                      ['edit_file', 'read_file', 'run_command', 'write_file']
+VERDICT c2: PASS: see tool-map.tsv

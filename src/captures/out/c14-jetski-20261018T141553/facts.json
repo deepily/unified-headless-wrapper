@@ -1,0 +1,47 @@
+{
+ "rows": [
+  {
+   "seconds": 45,
+   "called": true,
+   "server_finished": true,
+   "cancelled_after_s": 240.5,
+   "result_ok": true,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nwaited 45 seconds\n```\n"
+  },
+  {
+   "seconds": 200,
+   "called": true,
+   "server_finished": true,
+   "cancelled_after_s": 180.0,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nEncountered error in tool execution: MCP tool call to server \"uhw-probe\" timed out after 3m0s: context deadline exceeded\n```\n"
+  },
+  {
+   "seconds": 620,
+   "called": true,
+   "server_finished": false,
+   "cancelled_after_s": 180.0,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "```\nEncountered error in tool execution: MCP tool call to server \"uhw-probe\" timed out after 3m0s: context deadline exceeded\n```\n"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"read_file\", \"duration_seconds\": 0.140779, \"tool_info\": {\"name\": \"read_file\", \"parameters\": {\"Path\": \"/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json\"}, \"output\": \"1 lines, 202 bytes\"}}}",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 4, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 45.459198, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 45}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"output\": \"waited 45 seconds\"}}}",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 8, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 180.11384, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 200}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\":",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0\", \"step_index\": 12, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 180.09875, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 620}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\""
+ ],
+ "server_eof_after_s": 452.8
+}

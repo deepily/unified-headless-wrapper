@@ -1,0 +1,11 @@
+hook fired                               yes
+hook denied a call                       yes
+allowed call ran                         yes
+sentinel call blocked                    yes
+model saw the deny_reason                yes
+turn results                             ['SUCCESS']
+hook payload keys                        ['agentName', 'artifactDirectoryPath', 'callerContext', 'conversationId', 'executionId', 'isBattleMode', 'lastUserInput', 'modelName', 'parentConversationId', 'rootConversationId', 'stepIdx', 'toolCall', 'transcriptPath', 'workspacePaths']
+toolCall keys                            ['args', 'name']
+session id inside hook payload           yes
+parent env reached hook                  ['c1-jetski']
+VERDICT c1: PASS

@@ -1,0 +1,216 @@
+# jetski capture bundle 20261015T132957 · Darwin arm64
+version: 2026.10.14
+
+## c1
+hook fired                               yes
+hook denied a call                       yes
+allowed call ran                         yes
+sentinel call blocked                    yes
+model saw the deny_reason                yes
+turn results                             ['SUCCESS']
+hook payload keys                        ['agentName', 'artifactDirectoryPath', 'callerContext', 'conversationId', 'executionId', 'isBattleMode', 'lastUserInput', 'modelName', 'parentConversationId', 'rootConversationId', 'stepIdx', 'toolCall', 'transcriptPath', 'workspacePaths']
+toolCall keys                            ['args', 'name']
+session id inside hook payload           yes
+parent env reached hook                  ['c1-jetski']
+VERDICT c1: PASS
+{
+ "results": [
+  {
+   "t": 40.957,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "ca80219f-5839-4090-a5c2-9c0cb0125468",
+   "text": "The first command, `touch allowed.marker` (creating [allowed.marker](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.PmH7jNl80J/allowed.marker)), **succeeded** with exit code `0`.\n\nThe second command, `touch UHW_DENY_ME.marker`, **failed** with the following error:\n\n> `Encountered error in tool execution: tool call denied by pre-tool hook: UHW-VETO-7731: blocked by the capture "
+  }
+ ],
+ "session": "ca80219f-5839-4090-a5c2-9c0cb0125468",
+ "engine_pids": [
+  8234
+ ],
+ "stream_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_events": 3,
+ "hook_denies": 1,
+ "hook_payload_keys": [
+  "agentName",
+  "artifactDirectoryPath",
+  "callerContext",
+  "conversationId",
+  "executionId",
+  "isBattleMode",
+  "lastUserInput",
+  "modelName",
+  "parentConversationId",
+  "rootConversationId",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "c1-jetski"
+ ],
+ "veto_text_in_stream": true,
+ "mcp_servers": []
+}
+## c2
+tool calls seen in stream                8
+tool calls seen by hook                  8
+names agree (stream vs hook)             yes
+distinct tool names                      ['edit_file', 'read_file', 'run_command', 'write_file']
+VERDICT c2: PASS: see tool-map.tsv
+{
+ "results": [
+  {
+   "t": 40.182,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "fe8cbc1d-ca9e-4cdc-9d5d-6b515992e565",
+   "text": "Here are the results for each step and the tool names used:\n\n1. **List files in directory** \u2014 `run_command` (`ls -la`): `.agents`, [notes.txt](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt), `sub`\n2. **Read [notes.txt](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt)** \u2014 `read_file`: `the zebra is here`\n3. **Search"
+  }
+ ],
+ "session": "fe8cbc1d-ca9e-4cdc-9d5d-6b515992e565",
+ "engine_pids": [
+  8329
+ ],
+ "stream_tools": [
+  "run_command",
+  "read_file",
+  "run_command",
+  "run_command",
+  "write_file",
+  "edit_file",
+  "run_command",
+  "run_command"
+ ],
+ "hook_events": 16,
+ "hook_denies": 0,
+ "hook_payload_keys": [
+  "agentName",
+  "artifactDirectoryPath",
+  "callerContext",
+  "conversationId",
+  "executionId",
+  "isBattleMode",
+  "lastUserInput",
+  "modelName",
+  "parentConversationId",
+  "rootConversationId",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "run_command",
+  "read_file",
+  "run_command",
+  "run_command",
+  "write_file",
+  "edit_file",
+  "run_command",
+  "run_command"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "c2-jetski"
+ ],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}index	stream_tool	hook_tool	arg_keys	sample_args
+0	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "ls -la", "WaitMsBeforeAsync": 5000, "toolSummary": "List files in directory"}
+1	read_file	read_file	Path	{"Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt"}
+2	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "grep -rn \"zebra\" .", "WaitMsBeforeAsync": 5000, "toolSummary": "Search files for 
+3	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "find . -name \"*.txt\"", "WaitMsBeforeAsync": 5000, "toolSummary": "Find all txt fi
+4	write_file	write_file	Content,Overwrite,Path	{"Content": "hello\n", "Overwrite": true, "Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh0
+5	edit_file	edit_file	Path,Replacement,Target	{"Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/new.txt", "Replace
+6	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "echo done", "WaitMsBeforeAsync": 5000, "toolSummary": "Run echo done"}
+7	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "curl -sL https://example.com", "WaitMsBeforeAsync": 5000, "toolSummary": "Fetch exa
+
+## c4
+requested id                             5f133a1d-3f09-4943-aff6-0418d41e32e1
+id reported by engine                    9d37568f-07f2-473e-a594-312c8cc0f51c
+first turn status                        SUCCESS
+resume recalled PELICAN                  yes
+VERDICT c4: PARTIAL: engine assigns its own id
+{
+ "results": [
+  {
+   "t": 14.354,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+   "text": "OK\n"
+  },
+  {
+   "t": 11.704,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+   "text": "PELICAN\n"
+  }
+ ],
+ "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+ "engine_pids": [
+  8479,
+  8511
+ ],
+ "stream_tools": [],
+ "hook_events": 0,
+ "hook_denies": 0,
+ "hook_payload_keys": [],
+ "hook_toolcall_keys": [],
+ "hook_tools": [],
+ "hook_has_session": false,
+ "hook_env_tags": [],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}
+## c3
+skipped: MCP_CONFIG not set. MCP-related --help lines:
+4:  --analytics_server_url                   Analytics server host
+5:  --api_server_url                         API server host (default http://0.0.0.0:50001)
+17:  --csrf_token                             CSRF token for language server
+24:  --extension_server_csrf_token            CSRF token for extension server
+25:  --extension_server_port                  Port to connect to the extension server. If unset, the extension server is not used. (default 0)
+29:  --http_server_port                       Port for HTTP language server. 0 means random. (default 0)
+30:  --https_server_port                      Port for HTTPS language server. 0 means random. (default 0)
+33:  --inference_api_server_url               Inference API server host. If unset, uses default if not in enterprise mode
+67:  --release_base_url                       Base URL of the release server for the auto-updater
+76:  --use_ls_chrome_devtools_mcp             Whether to start the Chrome DevTools MCP server (default true)
+88:  mcp             Manage MCP servers (add, remove, list, enable, disable)
+95:Usage: jetski mcp <subcommand> [flags] [args]
+98:  add      Add or update an MCP server configuration
+99:  remove   Remove an MCP server configuration
+100:  list     List all configured MCP servers
+101:  enable   Enable an MCP server
+102:  disable  Disable an MCP server
+104:Run "jetski mcp <subcommand> --help" for flags, argument rules, and examples.
+
+## c9/c10
+C9 compliance: 8/8 well formed
+C10 median gap spoken-close -> result: 0.635 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-20261015T133156)
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	3	False	False	14.651	14.755	14.755	0.0
+1	0	False	3	False	False	16.956	17.338	17.338	0.0
+2	0	False	3	True	False	14.908	15.505	17.068	1.56
+3	0	False	3	False	False	52.515	53.053	53.053	0.0
+4	0	False	3	True	False	42.157	43.112	45.222	2.11
+5	0	False	3	True	True	21.816	22.59	31.273	8.68
+6	0	False	3	True	False	17.376	18.021	19.293	1.27
+7	0	False	2	False	False	16.675	16.804	16.804	0.0

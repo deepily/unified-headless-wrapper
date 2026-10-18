@@ -1,0 +1,51 @@
+{
+ "results": [
+  {
+   "t": 40.957,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "ca80219f-5839-4090-a5c2-9c0cb0125468",
+   "text": "The first command, `touch allowed.marker` (creating [allowed.marker](file:///private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.PmH7jNl80J/allowed.marker)), **succeeded** with exit code `0`.\n\nThe second command, `touch UHW_DENY_ME.marker`, **failed** with the following error:\n\n> `Encountered error in tool execution: tool call denied by pre-tool hook: UHW-VETO-7731: blocked by the capture "
+  }
+ ],
+ "session": "ca80219f-5839-4090-a5c2-9c0cb0125468",
+ "engine_pids": [
+  8234
+ ],
+ "stream_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_events": 3,
+ "hook_denies": 1,
+ "hook_payload_keys": [
+  "agentName",
+  "artifactDirectoryPath",
+  "callerContext",
+  "conversationId",
+  "executionId",
+  "isBattleMode",
+  "lastUserInput",
+  "modelName",
+  "parentConversationId",
+  "rootConversationId",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "run_command",
+  "run_command"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "c1-jetski"
+ ],
+ "veto_text_in_stream": true,
+ "mcp_servers": []
+}

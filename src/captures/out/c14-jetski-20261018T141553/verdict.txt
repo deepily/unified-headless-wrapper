@@ -1,0 +1,6 @@
+version                                        2026.10.16
+wait   45 s                                    called=True answered_in_reply=True cancelled_after=240.5 status=['SUCCESS'] reply='```\nwaited 45 seconds\n```\n'
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+wait  620 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "4624d2a8-8c2b-4b16-8e0e-a674b2a75aa0", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.140779, "tool_info": {"name": "read_file", "parameters": {"Path": "/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 45 s of 620 s tried (a timeout lies between the last success and the next try)

@@ -1,0 +1,33 @@
+{
+ "results": [
+  {
+   "t": 14.354,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+   "text": "OK\n"
+  },
+  {
+   "t": 11.704,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+   "text": "PELICAN\n"
+  }
+ ],
+ "session": "9d37568f-07f2-473e-a594-312c8cc0f51c",
+ "engine_pids": [
+  8479,
+  8511
+ ],
+ "stream_tools": [],
+ "hook_events": 0,
+ "hook_denies": 0,
+ "hook_payload_keys": [],
+ "hook_toolcall_keys": [],
+ "hook_tools": [],
+ "hook_has_session": false,
+ "hook_env_tags": [],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}

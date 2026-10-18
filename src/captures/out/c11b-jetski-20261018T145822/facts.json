@@ -1,0 +1,272 @@
+{
+ "workflows": {
+  "uhwwfa": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la /private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww /Users/rickruiz/.gemini/jetski\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace and jetski d"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find .agent .agents -type f\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/workflows/uhwwfa.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agent/workflows/uhwwfb.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/hooks.json\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFA\n"
+  },
+  "uhwwfb": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace files\"}"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find .agent .agents -maxdepth 4 -ls\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agent/workflows/uhwwfb.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/workflows/uhwwfa.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/hooks.json\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFB\n"
+  }
+ },
+ "slash_list": "`/uhwnosuchcommand` is not a recognized command. \n\nHere are the available slash commands you can use:\n- `/goal` \u2014 Run a thorough, long-running task until the goal is fully achieved.\n- `/plan` \u2014 Create a step-by-step plan for complex tasks before execution.\n- `/grill-me` \u2014 Align on a plan through an interactive interview to resolve design decisions.\n- `/review-agent` \u2014 Run a deep code review of loc",
+ "global_skills": {
+  "planted": {
+   "uhw-skill-e": "/Users/rickruiz/.gemini/jetski/skills",
+   "uhw-skill-f": "/Users/rickruiz/.agents/skills",
+   "uhw-skill-g": "/Users/rickruiz/.agent/skills"
+  },
+  "index": "agentapi\njetski-customizations\nrun-workflow\nswarm\nswarm_monitor\nweb-app-development\n"
+ },
+ "agent_tools": {
+  "uhw-agent-t0": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I do not have a shell execution tool available to run `echo probe`.\n\nUHWCODE-T0\n"
+  },
+  "uhw-agent-t1": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "uhw-agent-t1"
+   ],
+   "reply": "UHWCODE-T1\n"
+  },
+  "uhw-agent-t2": {
+   "status": [
+    "ERROR"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": ""
+  },
+  "uhw-agent-t3": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "uhw-agent-t3"
+   ],
+   "reply": "UHWCODE-T3\n"
+  }
+ },
+ "format_docs": {
+  "jetski/builtin/skills/jetski-customizations/SKILL.md": [
+   "name: jetski-customizations",
+   "description: >-",
+   "# Jetski Customization System Guide",
+   "## Customization Types: Quick Reference",
+   "## Customization Discovery and Locations",
+   "### Google3 (Piper/CitC) Discovery Locations",
+   "## Loading Priority and Precedence",
+   "## How Customizations are Applied",
+   "### Progressive Disclosure (Skills and Rules)",
+   "### Deduplication",
+   "## Advanced Management: JSON Configs"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/json_configs.md": [
+   "# JSON Configuration Files",
+   "`~/.gemini/config/` globally, or within a plugin):",
+   "## Configuration Schema",
+   "### Top-Level Fields",
+   "### Path Entry Fields",
+   "### Scan Depth and Migrating Nested Directories",
+   "## Explicitly Configured Paths",
+   "## Path Resolution Rules",
+   "### Pro-Tip: Stable Team Sharing in Google3"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/skills.md": [
+   "# Workspace Skills",
+   "## Directory Structure",
+   "## Main Instruction File (`SKILL.md`)",
+   "name: my-specialized-skill",
+   "description: >-",
+   "# My Specialized Skill",
+   "## Steps",
+   "### Frontmatter Fields",
+   "## Best Practices for Writing Skills",
+   "## Google3 Contribution and Validation"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/plugins.md": [
+   "# Plugins",
+   "## Directory Structure",
+   "## Manifest (`plugin.json`)",
+   "### Name versus directory",
+   "    key: two plugins claiming the same `name` collide and only the first",
+   "## How Plugins Work",
+   "## Registering Plugins",
+   "## Turning Plugins On and Off"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/hooks.md": [
+   "# Lifecycle Hooks (`hooks.json`)",
+   "## File Format",
+   "## Hook Spec Fields",
+   "## Supported Event Types",
+   "### The Matcher",
+   "## Hook Handler Fields",
+   "## Input/Output Contract",
+   "### Common Input Fields",
+   "### 1. `PreToolUse` Contract",
+   "### 2. `PostToolUse` Contract",
+   "### 3. `SessionStart` Contract",
+   "### 4. `PreInvocation` Contract",
+   "### 5. `PostInvocation` Contract",
+   "### 6. `Stop` Contract",
+   "## Current Limitations"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/rules.md": [
+   "# Workspace Rules",
+   "## Rule Locations",
+   "## Rule Format and Frontmatter",
+   "trigger: model_decision",
+   "description: \"Use these rules when modifying C++ files to ensure style compliance.\"",
+   "# C++ Style Guidelines",
+   "### Frontmatter Fields",
+   "## Sharing Rules Across Projects (`rules.json`)",
+   "## Rule Merging and Deduplication",
+   "## Size Limits and Context Budget"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/SKILL.md": [
+   "name: agy-customizations",
+   "description: >-",
+   "# Antigravity Customization System Guide",
+   "## Customization Types: Quick Reference",
+   "## Customization Discovery and Locations",
+   "### Discovery Locations",
+   "## Loading Priority and Precedence",
+   "## How Customizations are Applied",
+   "### Progressive Disclosure (Skills and Rules)",
+   "### Deduplication",
+   "## Advanced Management: JSON Configs"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/json_configs.md": [
+   "# JSON Configuration Files",
+   "`~/.gemini/config/` globally):",
+   "## Configuration Schema",
+   "### Top-Level Fields",
+   "### Path Entry Fields",
+   "## Path Resolution Rules",
+   "### Pro-Tip: Team Sharing via VCS"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/skills.md": [
+   "# Workspace Skills",
+   "## Directory Structure",
+   "## Main Instruction File (`SKILL.md`)",
+   "name: my-specialized-skill",
+   "description: >-",
+   "# My Specialized Skill",
+   "## Steps",
+   "### Frontmatter Fields",
+   "## Best Practices for Writing Skills"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md": [
+   "# Plugins",
+   "## Directory Structure",
+   "## Manifest (`plugin.json`)",
+   "## How Plugins Work",
+   "## Enabling Plugins"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md": [
+   "# Lifecycle Hooks (`hooks.json`)",
+   "## File Format",
+   "## Hook Spec Fields",
+   "## Supported Event Types",
+   "### The Matcher",
+   "## Hook Handler Fields",
+   "## Input/Output Contract",
+   "### Common Input Fields",
+   "### 1. `PreToolUse` Contract",
+   "### 2. `PostToolUse` Contract",
+   "### 3. `PreInvocation` Contract",
+   "### 4. `PostInvocation` Contract",
+   "### 5. `Stop` Contract",
+   "## Current Limitations"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/rules.md": [
+   "# Workspace Rules",
+   "## Rule Locations",
+   "## Rule Format",
+   "## Rule Merging and Deduplication"
+  ],
+  "jetski/builtin/skills/migrate-workflows/SKILL.md": [
+   "name: migrate-workflows",
+   "description: Automatically migrate legacy workflows to modern skills across global and workspace configurations. Scans for existing workflows, creates target SKILL.md files, and safely archives old workflow files.",
+   "# Migrate Workflows to Skills",
+   "## Instructions for the Agent",
+   "### Step 1: Discover Existing Workflows",
+   "### Step 2: Convert Each Workflow to a Skill (Idempotent Execution)",
+   "        name: <name>",
+   "        description: <concise one-sentence description of what the skill does and when to use it>",
+   "        # <Title>",
+   "        `<workspace>/.agents/skills/<name>/` or",
+   "        `~/.gemini/config/skills/<name>/`)",
+   "### Step 3: Verify and Confirm"
+  ],
+  "jetski/builtin/skills/run-workflow/SKILL.md": [
+   "name: run-workflow",
+   "description: >-",
+   "# Dynamic workflows with `run_workflow`",
+   "## Steps",
+   "## Script rules",
+   "## Primitives",
+   "## Agents that keep their context",
+   "## Calling tools from the script",
+   "## Behavior to know",
+   "## Example"
+  ]
+ }
+}

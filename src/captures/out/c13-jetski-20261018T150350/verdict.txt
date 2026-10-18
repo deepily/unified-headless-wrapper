@@ -1,0 +1,13 @@
+model opus-5.5-high -> modelName in hook payload: opus-5.5-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.79 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-opus-5.5-high-20261018T150402)
+model gemini-3.8-flash-high -> modelName in hook payload: gemini-3.8-flash-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.25 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-3.8-flash-high-20261018T150905)
+model gemini-launch-candidate-high -> modelName in hook payload: gemini-launch-candidate-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.0 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-launch-candidate-high-20261018T151649)
+model gemini-flash-next -> modelName in hook payload: gemini-flash-next  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.25 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-flash-next-20261018T152942)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines

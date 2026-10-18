@@ -1,0 +1,9 @@
+index	stream_tool	hook_tool	arg_keys	sample_args
+0	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "ls -la", "WaitMsBeforeAsync": 5000, "toolSummary": "List files in directory"}
+1	read_file	read_file	Path	{"Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/notes.txt"}
+2	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "grep -rn \"zebra\" .", "WaitMsBeforeAsync": 5000, "toolSummary": "Search files for 
+3	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "find . -name \"*.txt\"", "WaitMsBeforeAsync": 5000, "toolSummary": "Find all txt fi
+4	write_file	write_file	Content,Overwrite,Path	{"Content": "hello\n", "Overwrite": true, "Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh0
+5	edit_file	edit_file	Path,Replacement,Target	{"Path": "/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/tmp.yXEloDGiKY/new.txt", "Replace
+6	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "echo done", "WaitMsBeforeAsync": 5000, "toolSummary": "Run echo done"}
+7	run_command	run_command	CommandLine,WaitMsBeforeAsync,toolSummary	{"CommandLine": "curl -sL https://example.com", "WaitMsBeforeAsync": 5000, "toolSummary": "Fetch exa

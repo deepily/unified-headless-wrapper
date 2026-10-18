@@ -1,0 +1,5 @@
+version                                        2026.10.16
+per-server timeout in config (ms)              900000
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "139a4c7f-9560-4de9-b8bd-ae23107387d0", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.171764, "tool_info": {"name": "read_file", "parameters": {"Path": "/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 0 s of 200 s tried (a timeout lies between the last success and the next try)

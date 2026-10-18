@@ -1,0 +1,514 @@
+# jetski round 2 20261018T145821 · Darwin arm64 · version 2026.10.16 · MODELS=opus-5.5-high gemini-3.8-flash-high gemini-launch-candidate-high gemini-flash-next
+
+## C11b
+version                                        2026.10.16
+A. /uhwwfa (tools allowed)                     codeword=True tools=['run_command', 'run_command', 'read_file', 'read_file', 'read_file']
+A. /uhwwfb (tools allowed)                     codeword=True tools=['run_command', 'run_command', 'read_file', 'read_file', 'read_file']
+A. slash commands offered                      ['/goal', '/grill-me', '/plan', '/review-agent', '/uhwnosuchcommand']
+A. planted workflows among them                none
+B. uhw-skill-e (~/.gemini/jetski/skills)       in index=False
+B. uhw-skill-f (~/.agents/skills)              in index=False
+B. uhw-skill-g (~/.agent/skills)               in index=False
+C. uhw-agent-t0 (no tools key)                 tools=[] agentName=[] status=['SUCCESS']
+C. uhw-agent-t1 tools: [run_command]           tools=['run_command'] agentName=['uhw-agent-t1'] status=['SUCCESS']
+C. uhw-agent-t2 tools: ["*"]                   tools=[] agentName=[] status=['ERROR']
+C. uhw-agent-t3 tools:   - run_command   - read_file tools=['run_command'] agentName=['uhw-agent-t3'] status=['SUCCESS']
+D. customization docs read (headings, field and path lines only) ['jetski/builtin/skills/jetski-customizations/SKILL.md', 'jetski/builtin/skills/jetski-customizations/docs/json_configs.md', 'jetski/builtin/skills/jetski-customizations/docs/skills.md', 'jetski/builtin/skills/jetski-customizations/docs/plugins.md', 'jetski/builtin/skills/jetski-customizations/docs/hooks.md', 'jetski/builtin/skills/jetski-customizations/docs/rules.md', 'antigravity-cli/builtin/skills/agy-customizations/SKILL.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/json_configs.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/skills.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md', 'antigravity-cli/builtin/skills/agy-customizations/docs/rules.md', 'jetski/builtin/skills/migrate-workflows/SKILL.md', 'jetski/builtin/skills/run-workflow/SKILL.md']
+VERDICT c11b: workflows run via ['read_file', 'run_command']; global skills at none found; agent tools granted by frontmatter=yes
+{
+ "workflows": {
+  "uhwwfa": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la /private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww /Users/rickruiz/.gemini/jetski\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace and jetski d"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find .agent .agents -type f\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/workflows/uhwwfa.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agent/workflows/uhwwfb.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/hooks.json\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFA\n"
+  },
+  "uhwwfb": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace files\"}"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find .agent .agents -maxdepth 4 -ls\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agent/workflows/uhwwfb.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/workflows/uhwwfa.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/private/var/folders/_k/bff45b910377tmy_1pdc5gqh017rcw/T/uhw-ws-lvlmkpww/.agents/hooks.json\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFB\n"
+  }
+ },
+ "slash_list": "`/uhwnosuchcommand` is not a recognized command. \n\nHere are the available slash commands you can use:\n- `/goal` \u2014 Run a thorough, long-running task until the goal is fully achieved.\n- `/plan` \u2014 Create a step-by-step plan for complex tasks before execution.\n- `/grill-me` \u2014 Align on a plan through an interactive interview to resolve design decisions.\n- `/review-agent` \u2014 Run a deep code review of loc",
+ "global_skills": {
+  "planted": {
+   "uhw-skill-e": "/Users/rickruiz/.gemini/jetski/skills",
+   "uhw-skill-f": "/Users/rickruiz/.agents/skills",
+   "uhw-skill-g": "/Users/rickruiz/.agent/skills"
+  },
+  "index": "agentapi\njetski-customizations\nrun-workflow\nswarm\nswarm_monitor\nweb-app-development\n"
+ },
+ "agent_tools": {
+  "uhw-agent-t0": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I do not have a shell execution tool available to run `echo probe`.\n\nUHWCODE-T0\n"
+  },
+  "uhw-agent-t1": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "uhw-agent-t1"
+   ],
+   "reply": "UHWCODE-T1\n"
+  },
+  "uhw-agent-t2": {
+   "status": [
+    "ERROR"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": ""
+  },
+  "uhw-agent-t3": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "uhw-agent-t3"
+   ],
+   "reply": "UHWCODE-T3\n"
+  }
+ },
+ "format_docs": {
+  "jetski/builtin/skills/jetski-customizations/SKILL.md": [
+   "name: jetski-customizations",
+   "description: >-",
+   "# Jetski Customization System Guide",
+   "## Customization Types: Quick Reference",
+   "## Customization Discovery and Locations",
+   "### Google3 (Piper/CitC) Discovery Locations",
+   "## Loading Priority and Precedence",
+   "## How Customizations are Applied",
+   "### Progressive Disclosure (Skills and Rules)",
+   "### Deduplication",
+   "## Advanced Management: JSON Configs"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/json_configs.md": [
+   "# JSON Configuration Files",
+   "`~/.gemini/config/` globally, or within a plugin):",
+   "## Configuration Schema",
+   "### Top-Level Fields",
+   "### Path Entry Fields",
+   "### Scan Depth and Migrating Nested Directories",
+   "## Explicitly Configured Paths",
+   "## Path Resolution Rules",
+   "### Pro-Tip: Stable Team Sharing in Google3"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/skills.md": [
+   "# Workspace Skills",
+   "## Directory Structure",
+   "## Main Instruction File (`SKILL.md`)",
+   "name: my-specialized-skill",
+   "description: >-",
+   "# My Specialized Skill",
+   "## Steps",
+   "### Frontmatter Fields",
+   "## Best Practices for Writing Skills",
+   "## Google3 Contribution and Validation"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/plugins.md": [
+   "# Plugins",
+   "## Directory Structure",
+   "## Manifest (`plugin.json`)",
+   "### Name versus directory",
+   "    key: two plugins claiming the same `name` collide and only the first",
+   "## How Plugins Work",
+   "## Registering Plugins",
+   "## Turning Plugins On and Off"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/hooks.md": [
+   "# Lifecycle Hooks (`hooks.json`)",
+   "## File Format",
+   "## Hook Spec Fields",
+   "## Supported Event Types",
+   "### The Matcher",
+   "## Hook Handler Fields",
+   "## Input/Output Contract",
+   "### Common Input Fields",
+   "### 1. `PreToolUse` Contract",
+   "### 2. `PostToolUse` Contract",
+   "### 3. `SessionStart` Contract",
+   "### 4. `PreInvocation` Contract",
+   "### 5. `PostInvocation` Contract",
+   "### 6. `Stop` Contract",
+   "## Current Limitations"
+  ],
+  "jetski/builtin/skills/jetski-customizations/docs/rules.md": [
+   "# Workspace Rules",
+   "## Rule Locations",
+   "## Rule Format and Frontmatter",
+   "trigger: model_decision",
+   "description: \"Use these rules when modifying C++ files to ensure style compliance.\"",
+   "# C++ Style Guidelines",
+   "### Frontmatter Fields",
+   "## Sharing Rules Across Projects (`rules.json`)",
+   "## Rule Merging and Deduplication",
+   "## Size Limits and Context Budget"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/SKILL.md": [
+   "name: agy-customizations",
+   "description: >-",
+   "# Antigravity Customization System Guide",
+   "## Customization Types: Quick Reference",
+   "## Customization Discovery and Locations",
+   "### Discovery Locations",
+   "## Loading Priority and Precedence",
+   "## How Customizations are Applied",
+   "### Progressive Disclosure (Skills and Rules)",
+   "### Deduplication",
+   "## Advanced Management: JSON Configs"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/json_configs.md": [
+   "# JSON Configuration Files",
+   "`~/.gemini/config/` globally):",
+   "## Configuration Schema",
+   "### Top-Level Fields",
+   "### Path Entry Fields",
+   "## Path Resolution Rules",
+   "### Pro-Tip: Team Sharing via VCS"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/skills.md": [
+   "# Workspace Skills",
+   "## Directory Structure",
+   "## Main Instruction File (`SKILL.md`)",
+   "name: my-specialized-skill",
+   "description: >-",
+   "# My Specialized Skill",
+   "## Steps",
+   "### Frontmatter Fields",
+   "## Best Practices for Writing Skills"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md": [
+   "# Plugins",
+   "## Directory Structure",
+   "## Manifest (`plugin.json`)",
+   "## How Plugins Work",
+   "## Enabling Plugins"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md": [
+   "# Lifecycle Hooks (`hooks.json`)",
+   "## File Format",
+   "## Hook Spec Fields",
+   "## Supported Event Types",
+   "### The Matcher",
+   "## Hook Handler Fields",
+   "## Input/Output Contract",
+   "### Common Input Fields",
+   "### 1. `PreToolUse` Contract",
+   "### 2. `PostToolUse` Contract",
+   "### 3. `PreInvocation` Contract",
+   "### 4. `PostInvocation` Contract",
+   "### 5. `Stop` Contract",
+   "## Current Limitations"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/rules.md": [
+   "# Workspace Rules",
+   "## Rule Locations",
+   "## Rule Format",
+   "## Rule Merging and Deduplication"
+  ],
+  "jetski/builtin/skills/migrate-workflows/SKILL.md": [
+   "name: migrate-workflows",
+   "description: Automatically migrate legacy workflows to modern skills across global and workspace configurations. Scans for existing workflows, creates target SKILL.md files, and safely archives old workflow files.",
+   "# Migrate Workflows to Skills",
+   "## Instructions for the Agent",
+   "### Step 1: Discover Existing Workflows",
+   "### Step 2: Convert Each Workflow to a Skill (Idempotent Execution)",
+   "        name: <name>",
+   "        description: <concise one-sentence description of what the skill does and when to use it>",
+   "        # <Title>",
+   "        `<workspace>/.agents/skills/<name>/` or",
+   "        `~/.gemini/config/skills/<name>/`)",
+   "### Step 3: Verify and Confirm"
+  ],
+  "jetski/builtin/skills/run-workflow/SKILL.md": [
+   "name: run-workflow",
+   "description: >-",
+   "# Dynamic workflows with `run_workflow`",
+   "## Steps",
+   "## Script rules",
+   "## Primitives",
+   "## Agents that keep their context",
+   "## Calling tools from the script",
+   "## Behavior to know",
+   "## Example"
+  ]
+ }
+}
+## C14b
+version                                        2026.10.16
+per-server timeout in config (ms)              900000
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "139a4c7f-9560-4de9-b8bd-ae23107387d0", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.171764, "tool_info": {"name": "read_file", "parameters": {"Path": "/Users/rickruiz/.gemini/jetski/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 0 s of 200 s tried (a timeout lies between the last success and the next try)
+
+## C13
+model opus-5.5-high -> modelName in hook payload: opus-5.5-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.79 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-opus-5.5-high-20261018T150402)
+model gemini-3.8-flash-high -> modelName in hook payload: gemini-3.8-flash-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.25 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-3.8-flash-high-20261018T150905)
+model gemini-launch-candidate-high -> modelName in hook payload: gemini-launch-candidate-high  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.0 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-launch-candidate-high-20261018T151649)
+model gemini-flash-next -> modelName in hook payload: gemini-flash-next  · status: "status": "SUCCESS"
+C9 compliance: 24/24 well formed
+C10 median gap spoken-close -> result: 0.25 s   (results: /Users/rickruiz/projects/unified-headless-wrapper/src/captures/out/pyramid-jetski-gemini-flash-next-20261018T152942)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines
+--- results-jetski-gemini-3.8-flash-high.tsv
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	3	False	False	11.62	11.696	11.696	0.0
+1	0	False	3	False	False	11.791	11.843	11.843	0.0
+2	0	False	3	True	False	12.435	12.698	13.146	0.45
+3	0	False	3	True	False	31.386	31.542	31.777	0.23
+4	0	False	3	True	False	13.359	13.813	14.465	0.65
+5	0	False	3	False	True	70.096	70.331	71.661	1.33
+6	0	False	3	True	False	15.484	15.724	16.062	0.34
+7	0	False	3	False	False	13.784	13.887	13.887	0.0
+0	1	False	3	False	False	9.774	10.039	10.039	0.0
+1	1	False	2	False	False	10.807	10.909	10.909	0.0
+2	1	False	3	True	False	11.7	11.912	12.18	0.27
+3	1	False	3	True	False	26.361	26.542	26.726	0.18
+4	1	False	3	True	False	15.21	15.533	16.317	0.78
+5	1	False	3	False	True	26.047	26.339	29.525	3.19
+6	1	False	3	True	False	11.975	12.184	12.497	0.31
+7	1	False	3	False	False	10.808	10.861	10.861	0.0
+0	2	False	3	False	False	9.998	9.998	9.998	0.0
+1	2	False	3	False	False	10.651	10.731	10.731	0.0
+2	2	False	3	True	False	11.304	11.649	12.039	0.39
+3	2	False	3	True	False	28.32	28.476	28.611	0.14
+4	2	False	3	True	False	13.043	13.37	13.893	0.52
+5	2	False	3	False	True	19.109	19.373	21.321	1.95
+6	2	False	3	True	False	14.246	14.403	14.799	0.4
+7	2	False	3	False	False	15.692	15.78	15.78	0.0
+--- results-jetski-gemini-flash-next.tsv
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	3	False	False	11.685	11.762	11.762	0.0
+1	0	False	3	False	False	10.323	10.429	10.429	0.0
+2	0	False	3	True	False	15.741	16.003	16.663	0.66
+3	0	False	3	True	False	25.787	25.968	26.175	0.21
+4	0	False	3	True	False	11.958	12.246	13.141	0.89
+5	0	False	3	True	True	13.315	13.691	16.954	3.26
+6	0	False	3	True	False	15.814	16.019	16.259	0.24
+7	0	False	3	False	False	9.804	9.857	9.857	0.0
+0	1	False	3	False	False	10.285	10.312	10.312	0.0
+1	1	False	3	False	False	12.145	12.195	12.195	0.0
+2	1	False	3	True	False	12.8	13.115	13.588	0.47
+3	1	False	3	True	False	42.325	42.483	42.744	0.26
+4	1	False	3	True	False	11.587	11.881	12.693	0.81
+5	1	False	3	False	True	40.576	40.888	43.47	2.58
+6	1	False	3	True	False	10.96	11.195	11.51	0.31
+7	1	False	3	False	False	10.057	10.162	10.162	0.0
+0	2	False	3	False	False	9.569	9.622	9.622	0.0
+1	2	False	3	False	False	10.592	10.696	10.696	0.0
+2	2	False	3	True	False	15.833	16.045	16.828	0.78
+3	2	False	3	True	False	31.296	31.542	31.723	0.18
+4	2	False	3	True	False	19.71	19.947	20.578	0.63
+5	2	False	3	False	True	122.937	123.196	125.726	2.53
+6	2	False	3	True	False	12.656	12.892	13.317	0.43
+7	2	False	3	False	False	13.804	13.988	13.988	0.0
+--- results-jetski-gemini-launch-candidate-high.tsv
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	3	False	False	13.412	13.94	13.94	0.0
+1	0	False	3	False	False	15.472	15.472	15.472	0.0
+2	0	False	3	True	False	17.18	17.844	19.793	1.95
+3	0	False	3	False	False	60.465	60.76	60.76	0.0
+4	0	False	3	False	False	53.017	53.486	53.486	0.0
+5	0	False	3	True	True	21.663	22.237	29.933	7.7
+6	0	False	3	True	False	18.571	19.232	20.421	1.19
+7	0	False	3	False	False	14.513	14.925	14.925	0.0
+0	1	False	3	False	False	14.202	14.308	14.308	0.0
+1	1	False	3	False	False	13.298	13.454	13.454	0.0
+2	1	False	3	True	False	19.493	20.308	22.777	2.47
+3	1	False	3	False	False	73.756	73.939	73.939	0.0
+4	1	False	3	True	False	70.837	71.555	72.612	1.06
+5	1	False	3	True	True	28.035	28.856	38.444	9.59
+6	1	False	3	True	False	23.376	23.851	25.108	1.26
+7	1	False	2	False	False	13.469	13.579	13.579	0.0
+0	2	False	3	False	False	14.55	14.835	14.835	0.0
+1	2	False	3	False	False	15.09	15.277	15.277	0.0
+2	2	False	3	True	False	17.251	17.804	19.833	2.03
+3	2	False	3	False	False	83.504	83.776	83.776	0.0
+4	2	False	3	False	False	33.437	33.912	33.912	0.0
+5	2	False	3	True	True	22.961	24.178	34.576	10.4
+6	2	False	3	True	False	20.668	21.375	22.584	1.21
+7	2	False	2	False	False	18.138	18.269	18.269	0.0
+--- results-jetski-opus-5.5-high.tsv
+prompt	repeat	needs_repair	spoken_lines	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	2	False	False	7.327	7.641	7.641	0.0
+1	0	False	2	False	False	7.564	8.19	8.19	0.0
+2	0	False	2	True	False	7.43	8.563	11.197	2.63
+3	0	False	2	True	False	14.528	14.528	14.555	0.03
+4	0	False	2	True	False	9.837	10.284	13.673	3.39
+5	0	False	3	False	True	10.569	10.698	18.521	7.82
+6	0	False	2	True	False	8.473	8.91	17.412	8.5
+7	0	False	2	False	False	7.513	7.719	7.719	0.0
+0	1	False	2	False	False	8.35	8.693	8.693	0.0
+1	1	False	2	False	False	7.348	8.817	8.817	0.0
+2	1	False	2	True	False	8.888	9.044	11.526	2.48
+3	1	False	2	True	False	13.5	13.527	13.527	0.0
+4	1	False	2	True	False	8.302	9.0	13.325	4.32
+5	1	False	3	False	True	9.921	10.077	18.799	8.72
+6	1	False	2	True	False	9.42	9.577	11.126	1.55
+7	1	False	2	False	False	7.891	8.072	8.072	0.0
+0	2	False	2	False	False	7.211	7.551	7.551	0.0
+1	2	False	2	False	False	8.076	8.935	8.935	0.0
+2	2	False	2	True	False	7.348	8.216	10.62	2.4
+3	2	False	2	True	False	12.914	12.94	12.94	0.0
+4	2	False	3	True	False	8.52	9.302	12.965	3.66
+5	2	False	2	False	True	9.923	10.0	17.462	7.46
+6	2	False	2	True	False	7.882	8.887	11.3	2.41
+7	2	False	2	False	False	8.192	8.426	8.426	0.0
+--- spoken-jetski-gemini-3.8-flash-high.txt
+[0-0] Hello, it is great to speak with you today. | I am ready to help with any projects or questions you have. | Let me know what you would like to work on.
+[0-1] Hello, it is great to connect with you today. | I am ready to help you with whatever you need. | Let me know what you would like to work on.
+[0-2] Hello, it is great to speak with you today. | I am ready to help you with whatever you need. | Feel free to let me know what you would like to work on.
+[1-0] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between Sydney and Melbourne. | The planned city is located within the Australian Capital Territory.
+[1-1] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between Sydney and Melbourne. The planned city is located within the Australian Capital Territory.
+[1-2] The capital of Australia is Canberra. | It was selected in 1908 as a compromise between Sydney and Melbourne. | The planned city is located in the Australian Capital Territory and houses the federal government.
+[2-0] TCP guarantees reliable data delivery, while UDP focuses on speed with minimal overhead. | TCP checks that every packet arrives intact, which suits tasks like web browsing and file transfers. | UDP sends packets immediately without confirmation, making it ideal for live streaming and gaming.
+[2-1] TCP provides reliable, ordered data transmission, whereas UDP delivers faster communication without delivery guarantees. | TCP verifies that every packet arrives intact before continuing. | UDP sends data continuously without waiting for confirmations or handshakes.
+[2-2] TCP provides reliable and ordered data delivery, while UDP offers faster transmission with lower latency and minimal overhead. | TCP guarantees delivery by establishing a formal connection and resending any lost packets. | UDP sends data immediately without a handshake or delivery checks, making it ideal for real-time streaming and gaming.
+[3-0] This directory contains two files: budget.csv and notes.txt. | The budget file is a spreadsheet formatted to track expenses in US dollars. | The notes file is a plain text document containing meeting notes.
+[3-1] This directory contains a budget spreadsheet and a meeting notes text file. | The budget csv file is a spreadsheet formatted to track items and dollar amounts. | The notes text file is a plain text document containing meeting notes.
+[3-2] This directory contains two files: a budget spreadsheet and a meeting notes text file. | The file budget.csv is a spreadsheet for tracking items and dollar amounts. | The file notes.txt is a plain text document containing meeting notes.
+[4-0] A hash map is a data structure that pairs keys with values to enable nearly instantaneous data lookups. | It uses a calculation called a hash function to turn a key into an exact memory slot where the value is stored. | When you want the data back, that same calculation lets the computer jump directly to the right location without searching through the rest.
+[4-1] A hash map stores key-value pairs by converting keys into array indices for near-instant data retrieval. | When you add or search for an item, a hash function calculates the exact memory slot where that value lives. | If two different keys produce the same slot, the map resolves the conflict using techniques like linked lists or probing.
+[4-2] A hash map stores key-value pairs by using a hash function to turn keys into array indices for rapid access. | When you look up a key, the map calculates its exact position to retrieve the value almost instantly. | If two different keys produce the same index, the map resolves the collision through methods like chaining or probing.
+[5-0] Here is a straightforward plan to back up your laptop using the three-two-one rule. | It combines regular local backups to an external drive with an automatic cloud backup for disaster recovery. | You can follow the step-by-step instructions in the document below to get everything set up.
+[5-1] Here is a comprehensive backup plan to keep your laptop safe from hardware failure, loss, and ransomware. | It uses the trusted 3-2-1 rule by pairing an external hard drive for fast local recovery with an automated cloud service for offsite security. | Review the complete document below to follow the setup steps and maintenance schedule.
+[5-2] Here is a complete backup plan designed to keep your laptop data safe and easy to restore. | It uses the standard three-two-one rule with both an external drive and secure cloud storage. | The setup steps and maintenance routine are laid out in the document below.
+[6-0] You can significantly improve your sleep quality by keeping a consistent routine and optimizing your environment. | Sticking to regular sleep hours and creating a dark, cool bedroom build the strongest foundation for rest. | Cutting out screens before bed and avoiding late caffeine will help your mind unwind naturally.
+[6-1] Here are five practical tips to improve your sleep quality. | Sticking to a steady routine and winding down before bed can transform your rest. | Keeping your sleeping space quiet, dark, and cool will also help you fall asleep faster.
+[6-2] Here are five proven habits to help you get more restful sleep. | Going to bed and waking up at the same time every day anchors your internal body clock. | Keeping your bedroom cool, dark, and screen-free allows your mind and body to relax.
+[7-0] You are welcome, and I am set up to reply using this format. | I will keep my answers brief, clear, and easy to hear. | Just speak whenever you are ready to begin.
+[7-1] You are very welcome, and I am ready whenever you need me. | I will keep my replies brief and follow this structure going forward. | Have a wonderful day.
+[7-2] You are all set, and I will use this format. | I will keep future answers brief and direct. | Let me know whenever you need anything else.
+--- spoken-jetski-gemini-flash-next.txt
+[0-0] Hello, it is wonderful to meet you. | I am here and ready to help. | Just let me know what you would like to work on today.
+[0-1] Hello, it is wonderful to connect with you today. | I am here and ready to help you with whatever you need. | Please let me know what you would like to work on.
+[0-2] Hello, it is wonderful to meet you today. | I am here and ready to help you with anything you need. | Please let me know what you would like to work on.
+[1-0] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between Sydney and Melbourne. | The planned city is located within the Australian Capital Territory.
+[1-1] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between Sydney and Melbourne. | The planned city is located within the Australian Capital Territory.
+[1-2] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between rivals Sydney and Melbourne. | The planned city is located within the Australian Capital Territory.
+[2-0] TCP delivers data reliably and in order, while UDP delivers data faster with minimal overhead. | TCP establishes a connection and retransmits any lost packets to guarantee delivery. | UDP sends independent packets without handshakes or delivery confirmation.
+[2-1] TCP provides reliable, ordered data delivery, whereas UDP prioritizes speed and low latency without delivery guarantees. | TCP verifies that every packet arrives intact, making it essential for web browsing and file downloads. | UDP sends data without handshakes or retransmissions, which works best for live streaming and online gaming.
+[2-2] TCP delivers data reliably and in order, while UDP prioritizes speed with minimal overhead. | TCP checks for errors and resends lost packets to guarantee complete delivery. | UDP transmits data continuously without handshakes or confirmation checks.
+[3-0] There are two files in this directory: budget.csv and notes.txt. | Budget.csv is a spreadsheet for tracking expenses in US dollars. | Notes.txt is a plain text document containing meeting notes.
+[3-1] This directory contains two files, budget.csv and notes.txt. | The file budget.csv is a spreadsheet for tracking items and dollar amounts. | The file notes.txt is a text document containing meeting notes.
+[3-2] This directory contains two files: a spreadsheet named budget.csv and a text document named notes.txt. | The file budget.csv is a comma-separated values file designed to track items and amounts in US dollars. | The file notes.txt is a plain text document containing brief meeting notes.
+[4-0] A hash map stores data in key-value pairs so you can look up information almost instantly. | It uses a formula called a hash function to turn a key into a specific storage slot in an internal array. | When you want that data back, it runs the same calculation to jump directly to the right slot without searching through the rest.
+[4-1] A hash map stores key-value pairs by converting each key into a specific memory location using a hash function. | When you look up a key, the map calculates its direct address rather than searching through every item one by one. | This enables near-instant lookups, additions, and deletions even when managing massive collections of data.
+[4-2] A hash map organizes key-value pairs by converting keys into array positions for near-instant lookup. | When you provide a key, a hash function calculates a numeric position in an underlying list. | It stores or retrieves the value at that spot, resolving any conflicts if two keys share the same position.
+[5-0] Here is a reliable backup plan designed to keep your laptop data safe and easily recoverable. | It combines an external hard drive with secure cloud storage using the industry-standard three-two-one rule. | The full document below details setup steps, automated scheduling, and regular restore testing.
+[5-1] Here is a complete laptop backup plan designed to keep your files secure and easy to recover. | It follows the three-two-one rule by pairing an encrypted external drive for quick local recovery with an automated cloud service for offsite protection. | The setup steps, schedule, and recovery procedure are detailed in the document below.
+[5-2] Here is a straightforward plan to back up your laptop using the three-two-one rule. | It combines regular local backups to an external hard drive with an automatic cloud backup service. | This setup ensures your files stay safe and easy to recover if disaster strikes.
+[6-0] Here are five effective habits to help you get better sleep. | Keeping a consistent schedule and creating a dark, quiet bedroom set a strong foundation. | Cutting out late caffeine and winding down without screens will help you fall asleep faster.
+[6-1] To get better sleep, focus on a consistent routine, a restful environment, and mindful daily habits. | Stick to the same wake-up time every day and keep your bedroom cool, dark, and quiet. | Avoid bright screens, caffeine, and heavy meals in the hours leading up to bedtime.
+[6-2] Here are five proven habits to help you fall asleep faster and rest more deeply. | Going to bed at the same time each day and keeping your bedroom dark and cool set a strong foundation. | Avoiding bright screens and caffeine later in the day will also help your body wind down naturally.
+[7-0] You are very welcome, and I am glad I could help. | Have a wonderful day. | Reach out anytime if you need anything else.
+[7-1] You are very welcome, and I am ready whenever you need anything else. | Have a wonderful rest of your day. | Feel free to speak up whenever you would like to continue.
+[7-2] You are very welcome. | Have a wonderful rest of your day. | Feel free to reach out whenever you need anything else.
+--- spoken-jetski-gemini-launch-candidate-high.txt
+[0-0] Hello, it is great to speak with you today. | I am ready to help with whatever you are working on. | Just let me know what you would like to do first.
+[0-1] Hello there, it is great to talk with you. | I am ready to help with any questions or tasks you have in mind. | Just let me know what you would like to work on first.
+[0-2] Hello, it is great to talk with you today. | I am ready to help you with whatever you are working on. | Tell me what you would like to do first.
+[1-0] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between the larger cities of Sydney and Melbourne. | The city sits inland in the southeast within the Australian Capital Territory.
+[1-1] The capital of Australia is Canberra. | It was chosen in 1908 as a compromise between the larger cities of Sydney and Melbourne. | Today it sits inland within the Australian Capital Territory.
+[1-2] The capital of Australia is Canberra. | It sits inland in the Australian Capital Territory between Sydney and Melbourne. | The city was chosen in 1908 as a compromise between those two rival cities.
+[2-0] TCP prioritizes reliable and ordered data delivery, while UDP focuses on speed and low latency. | TCP establishes a connection and retransmits lost packets, making it ideal for web browsing and emails. | UDP sends data without waiting for acknowledgments, which works best for live streaming and online gaming.
+[2-1] TCP prioritizes reliable, ordered data delivery, while UDP prioritizes speed and low latency. | TCP establishes a formal connection and resends lost packets, making it ideal for web browsing and file transfers. | UDP sends data immediately without verifying receipt, which works best for live streaming and online gaming.
+[2-2] TCP prioritizes reliable and ordered delivery, while UDP focuses on fast and low-overhead transmission. | Use TCP when every piece of data must arrive intact, such as for web browsing or file transfers. | Use UDP when real-time speed matters more than perfection, such as for live streaming or online gaming.
+[3-0] This directory contains two files, budget.csv and notes.txt. | The file budget.csv is a spreadsheet header with columns for item and usd. | The file notes.txt is a short text file containing the phrase meeting notes.
+[3-1] This directory contains two files, budget.csv and notes.txt. | The budget.csv file is a comma separated table with item and USD columns. | The notes.txt file is a plain text file containing meeting notes.
+[3-2] This directory contains two files named budget.csv and notes.txt. | The budget.csv file is a spreadsheet table with columns for item and usd. | The notes.txt file is a plain text file containing meeting notes.
+[4-0] A hash map stores pairs of keys and values by using a math formula to turn each key into a numbered slot in a list. | When you look up a key later, it runs the same formula to jump straight to that slot and grab the value instantly. | If two different keys end up in the same slot, the map keeps a small chain of items there or picks the next open spot.
+[4-1] A hash map stores and retrieves data by using a hash function to turn each key into an array index. | When you look up a key, the map jumps straight to that index in a single step instead of searching through every item. | If two keys land on the same index, the map keeps both by linking them together or placing the second one in the next open spot.
+[4-2] A hash map stores and retrieves key-value pairs by using a mathematical function to turn each key into an array index. | When you insert or look up a key, the hash function computes the exact slot in memory where its value lives, making searches nearly instant. | If two different keys map to the same slot, the hash map handles the collision by grouping them in a list or placing the new item in the next open slot.
+[5-0] Here is a simple three-step plan to back up your laptop safely. | It combines a local external drive with automatic cloud storage so your files are protected against both hardware failure and theft. | Once you complete the initial setup, your backups will run automatically in the background.
+[5-1] Here is a practical plan to back up your laptop and keep your files safe. | You will set up one local backup on an external drive and one automatic backup in the cloud. | Testing your restore process afterward ensures you can recover everything quickly if your laptop fails.
+[5-2] Here is a complete plan to back up your laptop safely and automatically. | The best approach combines a local external hard drive with an automatic cloud backup service. | Follow the steps in the attached document to set up your backups today and keep your files safe.
+[6-0] You can sleep better by keeping a steady schedule, winding down without screens, and making your bedroom cool and dark. | Skipping afternoon caffeine and getting daytime exercise round out the five habits. | Start with one or two changes tonight and build from there.
+[6-1] You can sleep better by keeping a fixed schedule, cooling your room, avoiding late caffeine, putting screens away early, and relaxing before bed. | Going to sleep and waking up at the same time every day trains your body to rest naturally. | A quiet, dark room and an hour away from bright screens make it much easier to drift off.
+[6-2] You can sleep better by keeping a steady schedule, winding down early, and setting up a cool, dark bedroom. | Stick to the same wake time every day and skip caffeine and screens in the hours before bed. | A quiet room and a relaxing nighttime routine will help your body fall asleep faster.
+[7-0] You are welcome, and I am glad I could help. | Feel free to reach out whenever you need anything else. | Have a great rest of your day.
+[7-1] You're welcome, and I'm glad I could help. | Have a great rest of your day, and reach out anytime you need a hand.
+[7-2] You are welcome, and I am glad I could help. | Let me know anytime you need a hand with anything else, and have a great rest of your day.
+--- spoken-jetski-opus-5.5-high.txt
+[0-0] Hello, nice to hear from you! | I'm here and ready to help with whatever you need.
+[0-1] Hello there, it's good to hear from you! | I'm here and ready whenever you need something.
+[0-2] Hello, it's good to hear from you! | I'm here and ready to help with whatever you need this afternoon.
+[1-0] The capital of Australia is Canberra. | Many people guess Sydney or Melbourne, but Canberra was picked as a compromise between those two rival cities. It became the seat of the federal government in 1
+[1-1] The capital of Australia is Canberra. | Lots of people guess Sydney or Melbourne, but Canberra was built to be the capital as a compromise between those two cities. It's in the Australian Capital Terr
+[1-2] The capital of Australia is Canberra. | Many people guess Sydney or Melbourne, but Canberra was chosen as a compromise between those two rival cities. It has been the seat of the federal government si
+[2-0] TCP gives you reliable, ordered delivery over a connection, and UDP trades those guarantees for speed and low overhead. | Use TCP when every byte has to arrive correctly, like web pages, email or file transfers. Use UDP when speed matters more than the odd lost packet, like video c
+[2-1] TCP gives you reliable, ordered delivery, while UDP trades those guarantees for speed and low overhead. | Use TCP when every byte has to arrive correctly, as with web pages, email or file transfers. Use UDP when speed matters more than perfection, as with video call
+[2-2] TCP is reliable and ordered but slower, and UDP is fast and lightweight but makes no delivery guarantees. | Use TCP when every byte has to arrive correctly, like web pages, email or file transfers. Use UDP when speed matters more than perfection, like live video, voic
+[3-0] This directory has two small files: budget.csv and notes.txt. | The budget file is a spreadsheet with two column headings, item and usd, and no other data yet. The notes file contains only the words "meeting notes."
+[3-1] There are two files here: a budget spreadsheet with no data yet, and a short notes file. | The budget file has only its column headers, item and US dollars, and no rows. The notes file holds just the words "meeting notes".
+[3-2] This directory has two small files: a budget spreadsheet called budget.csv and a text file called notes.txt. | The budget file only has its column headings, item and US dollars, and no rows of data yet. The notes file holds just the words "meeting notes", so it looks lik
+[4-0] A hash map stores each value under a key and uses a hash function to turn that key into a slot number in an array, so it can find the value almost instantly. | When two keys land in the same slot, it keeps both there, in a small list or in the next free slot. As it fills up, it moves everything into a bigger array so l
+[4-1] A hash map stores key-value pairs by running each key through a hash function, which turns the key into an index in an array of slots. |  | To look up a key, it hashes the key again and goes straight to that slot, so finding, adding and removing items usually takes about the same time however big th
+[4-2] A hash map stores key-value pairs in an array and uses a hash function to turn each key into the slot where its value lives. | To look up or insert a key, it hashes the key, goes straight to that slot, and reads or writes there, which usually takes about the same short time however larg | When two keys land in the same slot, the map keeps both, either in a small list at that slot or by moving one to a nearby free slot, and it grows the array when
+[5-0] Here's a short laptop backup plan built on the 3-2-1 rule: keep three copies of your data, on two kinds of storage, with one copy off-site. | It pairs automatic backups to an external drive with a cloud backup, and adds a quick monthly check that you can actually restore your files. | The full plan is in the document below.
+[5-1] Here's a simple laptop backup plan based on the 3-2-1 rule: three copies of your data, on two kinds of storage, with one kept off-site. | It pairs automatic local backups to an external drive with continuous cloud backup, and adds a monthly check that restoring actually works. | You can set it all up in about an hour.
+[5-2] Here's a short plan to back up your laptop using the 3-2-1 rule. | Keep three copies of your data, on two different kinds of storage, with one copy somewhere other than your home. The full plan is in the document below.
+[6-0] Here are five tips for better sleep: keep a steady schedule, limit late caffeine, dim screens before bed, keep your room cool and dark, and wind down with a cal | Waking up at the same time every day matters most, because it sets your body clock. If you still sleep badly for weeks despite these changes, talk to a doctor.
+[6-1] Here are five tips for better sleep: keep a steady schedule, cut screens before bed, keep your room cool and dark, limit caffeine and alcohol, and wind down wit | A steady wake time matters most, even on weekends. If you still sleep badly after a few weeks of these habits, talk to a doctor.
+[6-2] Here are five tips for better sleep: keep a steady schedule, dim screens before bed, keep your room cool and dark, cut caffeine after noon, and wind down with a | Going to bed and waking up at the same time every day, weekends included, does the most good. The rest help your body notice that night has come.
+[7-0] You're welcome, glad I could help. | Come back any time you need something else.
+[7-1] You're welcome, glad I could help. | Come back anytime you need something else.
+[7-2] You're welcome, glad I could help. | Come back anytime you need something else.
