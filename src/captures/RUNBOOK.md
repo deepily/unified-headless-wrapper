@@ -2,8 +2,8 @@
 
 **Status 2026-10-15.**
 - **Part A (AGY):** done; results in `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md`.
-- **Part B (Jetski):** C1, C2, C4 and C9/C10 done; results in `src/rnd/v0.0.1/2026.10.15-phase0-part-b-jetski-results.md`.
-- **Remaining on the work laptop:** one command, in **§8 Part B follow-up**.
+- **Part B (Jetski):** done, including the §8 follow-up (2026-10-18); results in `src/rnd/v0.0.1/2026.10.15-phase0-part-b-jetski-results.md`.
+- **Phase 0 is complete for the Jetski family.** Optional: rerun C9/C10 on Jetski with a pinned `--model`, since the first run used `auto`.
 
 How to run the Phase 0 captures on each machine, read the results, recover from the likely failures, and what to bring back. Background and the full capture list are in `src/rnd/v0.0.1/2026.10.14-uhw-implementation-planning-framework.md` §14.
 

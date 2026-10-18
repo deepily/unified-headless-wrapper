@@ -5,7 +5,7 @@ One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven 
 
 **Prototype (v0.0.1).** The wrapper passes its test script against a mock engine that replays captured frames. It has not yet been run end to end against a real engine, and the Claude Code interrupt path is unverified.
 
-**Phase 0 captures (2026-10-15):** AGY done. Jetski done except C3, which `src/captures/jetski_followup.sh` finishes. Claude captures not started. How to run them: [`src/captures/RUNBOOK.md`](src/captures/RUNBOOK.md).
+**Phase 0 captures (2026-10-18):** complete for AGY and Jetski; both pass Gate G1. Claude captures (C5–C7) belong to Phase 3. How to run them: [`src/captures/RUNBOOK.md`](src/captures/RUNBOOK.md).
 
 ## What's here
 
