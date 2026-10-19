@@ -1,27 +1,35 @@
 # Capture runbook
 
-**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11, C12 and C14 ran on Jetski (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). **Next: round 2 below.** Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
+## Run this now (work laptop, from the repo root)
+
+```bash
+git pull && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/c11c_final.py jetski                          # round 3, about 5 min
+git add src/captures/out && git commit -m "Round 3 capture results" && git push
+```
+
+**What it checks:**
+- global skills in `~/.gemini/config/skills/`
+- rules with `trigger: always_on` / `model_decision`
+- Jetski's default tool list
+- which agent `tools:` list reaches the cosa-voice MCP server (`[call_mcp_tool]` alone, or plus `read_file`)
+
+**Bring back:** nothing to paste; the `.gitignore` keeps only `verdict.txt` and `facts.json`, and leaves the MCP config backup and raw logs local.
+
+**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). **Next: round 3 above.** Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
 
 Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
 
 ---
 
-## Current run: round 2 (work laptop)
+## Done 2026-10-18: round 2 (`src/captures/capabilities_round2.sh jetski`)
 
-C13 was skipped in the first run (the script predated the model defaults), and C11/C14 raised three questions. One command:
-
-```bash
-git pull && chmod +x src/captures/*.sh src/captures/*.py
-src/captures/capabilities_round2.sh jetski                 # about 50 min: C11b, C14b, then C13 on four models
-```
-
+C13 was skipped in the first run (the script predated the model defaults), and C11/C14 raised three questions. 
 | Part | Question |
 |---|---|
 | C11b | How does `/workflow` run when tools are allowed (C11 denied `run_workflow`)? Which slash commands are offered? Where do *global* skills live (`~/.gemini/jetski/skills`, `~/.agents/skills`, `~/.agent/skills`)? Which agent-definition frontmatter grants tools? Field names from Jetski's builtin customization docs (headings and `key:` lines only; skim section D of the bundle before pasting if that matters at work). |
 | C14b | One 200 s MCP call with `"timeout": 900000` on the server entry: is the 180 s limit configurable? |
 | C13 | Pyramid format on `opus-5.5-high`, `gemini-3.8-flash-high`, `gemini-launch-candidate-high`, `gemini-flash-next` (`MODELS=…` overrides, `MODELS=none` skips). |
-
-**Bring back:** `src/captures/out/jetski-round2-<timestamp>.txt`.
 
 ## Done 2026-10-18: C11–C14 (work laptop)
 
@@ -54,7 +62,8 @@ src/captures/capabilities_followup.sh jetski              # about 65 min: C11, C
 
 | Task | Command |
 |---|---|
-| Round 2 (current) | `src/captures/capabilities_round2.sh jetski` |
+| Round 3 (current) | `src/captures/c11c_final.py jetski` |
+| Round 2 | `src/captures/capabilities_round2.sh jetski` |
 | C11–C14 | `src/captures/capabilities_followup.sh jetski` (four default models; `MODELS=none` skips C13) |
 | One of them | `src/captures/c11_surfaces.py jetski` (same for c12, c14); `MODELS=… src/captures/c13_pinned_model.sh jetski` |
 | Everything for one engine | `src/captures/run_engine.sh agy\|jetski` |
