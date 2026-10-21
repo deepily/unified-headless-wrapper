@@ -1,0 +1,27 @@
+{
+ "results": [
+  {
+   "t": 17.523,
+   "status": "success",
+   "is_error": false,
+   "session": "63dfcea9-2356-46a8-9d19-508f2b09676f",
+   "text": "The command ran and printed `slept`.\n\nAPPLE\n\nBANANA"
+  }
+ ],
+ "session": "63dfcea9-2356-46a8-9d19-508f2b09676f",
+ "engine_pids": [
+  1811754
+ ],
+ "stream_tools": [
+  "Bash"
+ ],
+ "hook_events": 0,
+ "hook_denies": 0,
+ "hook_payload_keys": [],
+ "hook_toolcall_keys": [],
+ "hook_tools": [],
+ "hook_has_session": false,
+ "hook_env_tags": [],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}

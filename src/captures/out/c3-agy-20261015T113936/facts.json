@@ -1,0 +1,72 @@
+{
+ "results": [
+  {
+   "t": 12.115,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "9b0e2158-a13b-4799-92a9-d4bd2d24e87d",
+   "text": "```json\n{\"t\": 1792078777.113593, \"pid\": 3093283, \"ppid\": 3093194, \"cwd\": \"/tmp/tmp.LuvT6AhoDR\", \"env\": {\"UHW_PROBE_TAG\": \"persona-1\", \"PWD\": \"/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper\", \"UHW_PROBE_EXPANDED\": \"${UHW_PROBE_TAG}\", \"UHW_PROBE_BLOCK\": \"block-static\"}}\n```\n"
+  },
+  {
+   "t": 12.309,
+   "status": "SUCCESS",
+   "error": null,
+   "session": "1d6de930-d123-4dfb-aef9-fbdb74fb3221",
+   "text": "```json\n{\"t\": 1792078777.23747, \"pid\": 3093310, \"ppid\": 3093201, \"cwd\": \"/tmp/tmp.XqPKyeInQg\", \"env\": {\"UHW_PROBE_TAG\": \"persona-2\", \"PWD\": \"/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper\", \"UHW_PROBE_BLOCK\": \"block-static\", \"UHW_PROBE_EXPANDED\": \"${UHW_PROBE_TAG}\"}}\n```\n"
+  }
+ ],
+ "session": "9b0e2158-a13b-4799-92a9-d4bd2d24e87d",
+ "engine_pids": [
+  3093194,
+  3093201
+ ],
+ "stream_tools": [
+  "view_file",
+  "call_mcp_tool",
+  "view_file",
+  "call_mcp_tool"
+ ],
+ "hook_events": 8,
+ "hook_denies": 0,
+ "hook_payload_keys": [
+  "artifactDirectoryPath",
+  "conversationId",
+  "modelName",
+  "stepIdx",
+  "toolCall",
+  "transcriptPath",
+  "workspacePaths"
+ ],
+ "hook_toolcall_keys": [
+  "args",
+  "name"
+ ],
+ "hook_tools": [
+  "view_file",
+  "view_file",
+  "call_mcp_tool",
+  "call_mcp_tool"
+ ],
+ "hook_has_session": true,
+ "hook_env_tags": [
+  "persona-1",
+  "persona-2"
+ ],
+ "veto_text_in_stream": false,
+ "mcp_servers": [
+  {
+   "pid": 3093283,
+   "ppid": 3093194,
+   "tag": "persona-1",
+   "block": "block-static",
+   "expanded": "${UHW_PROBE_TAG}"
+  },
+  {
+   "pid": 3093310,
+   "ppid": 3093201,
+   "tag": "persona-2",
+   "block": "block-static",
+   "expanded": "${UHW_PROBE_TAG}"
+  }
+ ]
+}

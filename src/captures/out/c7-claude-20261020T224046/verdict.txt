@@ -1,0 +1,5 @@
+injected at (s)                          1.848
+result frames in turn                    1
+BANANA in result index                   [0]
+replayed user frame at (s)               [16.902]
+VERDICT c7: ABSORBED: mid-turn message joined the running turn

@@ -1,0 +1,6 @@
+A baseline           1 hook-events.jsonl 3 post_tool_use 3 pre_tool_use 1 session_end 1 session_start 1 stop 1 user_prompt_submit
+B -user              
+C -user +base        
+D disableAll         
+E -user +guards      1 hook-events.jsonl 1 pre_tool_use
+strict MCP           []

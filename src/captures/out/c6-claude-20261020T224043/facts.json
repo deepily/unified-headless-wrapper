@@ -1,0 +1,32 @@
+{
+ "results": [
+  {
+   "t": 2.081,
+   "status": "error_during_execution",
+   "is_error": true,
+   "session": "2f0053f0-eef5-40d5-a047-66ad58b70928",
+   "text": ""
+  },
+  {
+   "t": 3.301,
+   "status": "success",
+   "is_error": false,
+   "session": "2f0053f0-eef5-40d5-a047-66ad58b70928",
+   "text": "74"
+  }
+ ],
+ "session": "2f0053f0-eef5-40d5-a047-66ad58b70928",
+ "engine_pids": [
+  1811344
+ ],
+ "stream_tools": [],
+ "hook_events": 0,
+ "hook_denies": 0,
+ "hook_payload_keys": [],
+ "hook_toolcall_keys": [],
+ "hook_tools": [],
+ "hook_has_session": false,
+ "hook_env_tags": [],
+ "veto_text_in_stream": false,
+ "mcp_servers": []
+}

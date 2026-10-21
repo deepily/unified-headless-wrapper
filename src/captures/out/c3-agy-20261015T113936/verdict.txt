@@ -1,0 +1,9 @@
+MCP servers started                      2
+distinct server pids                     2
+server ppids / engine pids               [3093194, 3093201] / [3093194, 3093201]
+parent env inherited (tags)              ['persona-1', 'persona-2']
+config env block applied                 yes
+${VAR} expanded in env block             no  (raw: ['${UHW_PROBE_TAG}'])
+model called whoami                      yes
+hook fired on MCP tool (name, args)      [('view_file', ['AbsolutePath', 'toolAction', 'toolSummary'])]
+VERDICT c3: PASS: identity by inherited env, one server per engine

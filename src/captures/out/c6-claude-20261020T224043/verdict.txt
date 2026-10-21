@@ -1,0 +1,8 @@
+driver sent interrupt                    yes
+control_response frame                   [{"type": "control_response", "response": {"subtype": "success", "request_id": "capture-0", "response": {"still_queued": []}}}]
+interrupted result (status, is_error)    [('error_during_execution', True)]
+process alive after interrupt            yes
+same pid for next turn                   yes
+next turn                                [('success', '74')]
+session ids == pinned                    yes
+VERDICT c6: PASS: control interrupt, process survives

@@ -1,0 +1,132 @@
+# Claude round 20261020T223945 · Linux x86_64 · claude 2.1.305 (Claude Code) · agy 1.3.5
+
+## C5 hook isolation
+A baseline           1 hook-events.jsonl 3 post_tool_use 3 pre_tool_use 1 session_end 1 session_start 1 stop 1 user_prompt_submit
+B -user              
+C -user +base        
+D disableAll         
+E -user +guards      1 hook-events.jsonl 1 pre_tool_use
+strict MCP           []
+
+## c6
+driver sent interrupt                    yes
+control_response frame                   [{"type": "control_response", "response": {"subtype": "success", "request_id": "capture-0", "response": {"still_queued": []}}}]
+interrupted result (status, is_error)    [('error_during_execution', True)]
+process alive after interrupt            yes
+same pid for next turn                   yes
+next turn                                [('success', '74')]
+session ids == pinned                    yes
+VERDICT c6: PASS: control interrupt, process survives
+
+## c7
+injected at (s)                          1.848
+result frames in turn                    1
+BANANA in result index                   [0]
+replayed user frame at (s)               [16.902]
+VERDICT c7: ABSORBED: mid-turn message joined the running turn
+
+## C9 v2 Claude Code (opus)
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.95 s   (results: /mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper/src/captures/out/pyramid-claude-v2-20261020T224204)
+prompt	repeat	needs_repair	spoken_lines	spoken_words	max_sentences_per_line	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	1	8	2	False	False	1.234	1.824	1.824	0.0
+1	0	False	1	6	1	False	False	1.143	1.84	1.84	0.0
+2	0	False	2	33	1	True	False	1.351	2.334	5.297	2.96
+3	0	False	3	46	1	True	False	6.523	6.524	6.54	0.02
+4	0	False	3	66	1	True	False	2.412	3.555	9.421	5.87
+5	0	False	2	25	1	False	True	1.455	2.354	13.267	10.91
+6	0	False	2	41	1	True	False	3.074	3.971	7.371	3.4
+7	0	False	1	6	1	False	False	3.287	3.394	3.394	0.0
+0	1	False	1	6	1	False	False	0.919	1.573	1.573	0.0
+1	1	False	1	6	1	False	False	2.043	2.613	2.613	0.0
+2	1	False	2	38	1	True	False	1.719	2.814	6.318	3.5
+3	1	False	3	45	1	True	False	6.177	6.18	6.194	0.01
+4	1	False	3	63	1	True	False	2.318	3.411	10.517	7.11
+5	1	False	2	27	1	False	True	1.09	1.75	11.943	10.19
+6	1	False	3	56	1	True	False	2.428	3.465	5.344	1.88
+7	1	False	1	6	1	False	False	2.835	3.429	3.429	0.0
+0	2	False	2	13	1	False	False	1.724	1.989	1.989	0.0
+1	2	False	1	6	1	False	False	1.504	2.141	2.141	0.0
+2	2	False	2	31	1	True	False	0.953	1.739	4.638	2.9
+3	2	False	3	40	1	True	False	7.586	7.587	7.605	0.02
+4	2	False	3	69	1	True	False	1.241	2.518	6.525	4.01
+5	2	False	2	39	1	False	True	1.33	2.291	12.327	10.04
+6	2	False	2	43	1	True	False	4.481	5.288	8.347	3.06
+7	2	False	1	6	1	False	False	1.6	2.336	2.336	0.0
+[0-0] Hello! What can I help you with today?
+[1-0] The capital of Australia is Canberra.
+[2-0] TCP is reliable and connection-based, while UDP is faster and lighter but makes no delivery guarantees. | Use TCP when every byte must arrive in order, and UDP when speed matters more than perfection.
+[3-0] There are two files here, budget.csv and notes.txt, and both are nearly empty. | budget.csv is a spreadsheet with only its column headers, item and usd, and no data rows. | notes.txt holds just the words "meeting notes", which looks like a title with nothing under it yet.
+[4-0] A hash map stores key-value pairs by running each key through a hash function that picks an array slot, so lookups usually take constant time. | When two keys land in the same slot, the map either chains them in a small list or probes for another open slot. | As it fills up, the map grows its array and rehashes everything, which keeps lookups fast on average.
+[5-0] Here's a short laptop backup plan built on the 3-2-1 rule. | It covers what to back up, an automatic routine, and a monthly restore test.
+[6-0] Keep a steady schedule, cut caffeine after noon, dim screens before bed, keep your room cool and dark, and get morning daylight. | If you still can't sleep after about twenty minutes, get up and do something calm until you feel drowsy.
+[7-0] You're welcome, glad I could help.
+[0-1] Hello, nice to hear from you!
+[1-1] The capital of Australia is Canberra.
+[2-1] TCP gives you reliable, ordered delivery over a connection, and UDP trades those guarantees for speed and simplicity. | Choose TCP when every byte must arrive intact, and UDP when low delay matters more than the odd lost packet.
+[3-1] There are two tiny files here: a budget spreadsheet with no data yet, and a one-line notes file. | budget.csv has only a header row with "item" and "usd" columns, and no entries. | notes.txt contains only the words "meeting notes", so it's really just a title.
+[4-1] A hash map stores key-value pairs in an array, using a hash function to turn each key into the index where its value lives. | Because the index is computed straight from the key, lookups, inserts and deletes usually take constant time. | When two keys land on the same slot, called a collision, the map either chains them together or probes for another slot.
+[5-1] Here's a short plan for backing up your laptop, built on the 3-2-1 rule. | It uses a local drive, a cloud service and a regular restore test.
+[6-1] Keep a steady sleep schedule, get morning light, cut caffeine after noon, keep your bedroom cool and dark, and put screens away an hour before bed. | If you can't fall asleep within about twenty minutes, get up and do something calm until you feel sleepy. | If poor sleep keeps going for weeks, talk to a doctor.
+[7-1] You're welcome, glad I could help.
+[0-2] Hello, good to hear from you! | What can I help you with today?
+[1-2] The capital of Australia is Canberra.
+[2-2] TCP trades speed for reliability, while UDP trades reliability for speed and low overhead. | Use TCP when every byte must arrive in order, and UDP when latency matters more than perfection.
+[3-2] There are two files here, and both are essentially empty placeholders. | budget.csv is a spreadsheet with column headers for item and cost in US dollars, but no rows. | notes.txt contains only the words "meeting notes", with nothing else in it.
+[4-2] A hash map stores key-value pairs by running each key through a hash function that picks an array slot, so lookups take roughly constant time. | When two keys land in the same slot, the map handles the collision by chaining them in a list or by probing for another open slot. | As it fills up, it grows a bigger array and moves every entry over, which keeps lookups fast.
+[5-2] Here's a short laptop backup plan built on the 3-2-1 rule: three copies, on two kinds of storage, with one kept offsite. | It covers daily automatic backups, monthly checks that you can restore files, and a one-time setup checklist.
+[6-2] Keep a steady sleep schedule, avoid caffeine after noon, keep your room cool and dark, put screens away before bed, and get morning sunlight. | If you can't fall asleep within about twenty minutes, get up and do something calm until you feel sleepy.
+[7-2] You're welcome, have a good one!
+
+## C9 v2 AGY
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.9550000000000001 s   (results: /mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper/src/captures/out/pyramid-agy-v2-20261020T224435)
+prompt	repeat	needs_repair	spoken_lines	spoken_words	max_sentences_per_line	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	False	1	7	1	False	False	7.887	7.938	7.938	0.0
+1	0	False	1	6	1	False	False	5.496	5.522	5.522	0.0
+2	0	False	1	14	1	True	False	7.424	7.678	9.148	1.47
+3	0	False	3	37	1	True	False	11.016	11.574	11.804	0.23
+4	0	False	3	50	1	True	False	8.403	8.96	11.039	2.08
+5	0	False	2	22	1	True	True	4.535	4.89	10.102	5.21
+6	0	False	2	30	1	True	False	7.626	8.033	8.87	0.84
+7	0	False	1	11	1	False	False	6.194	6.245	6.245	0.0
+0	1	False	1	7	1	False	False	7.398	7.449	7.449	0.0
+1	1	False	1	6	1	False	False	4.876	4.901	4.901	0.0
+2	1	False	1	15	1	True	False	5.456	5.785	7.307	1.52
+3	1	False	2	28	1	True	False	19.141	19.649	20.715	1.07
+4	1	False	3	55	1	True	False	9.498	10.03	12.745	2.71
+5	1	False	2	25	1	True	True	8.435	8.715	14.574	5.86
+6	1	False	3	46	1	True	False	4.797	5.563	8.027	2.46
+7	1	False	1	11	1	False	False	5.514	5.539	5.539	0.0
+0	2	False	1	7	1	False	False	4.751	4.878	4.878	0.0
+1	2	False	1	6	1	False	False	5.442	5.468	5.468	0.0
+2	2	False	2	22	1	True	False	11.302	11.555	13.661	2.11
+3	2	False	2	30	1	True	False	19.732	19.961	20.724	0.76
+4	2	False	3	53	1	True	False	7.098	8.212	11.105	2.89
+5	2	False	2	34	1	True	True	11.641	12.327	19.296	6.97
+6	2	False	2	31	1	True	False	4.836	5.495	7.066	1.57
+7	2	False	1	12	1	False	False	6.214	6.24	6.24	0.0
+[0-0] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[2-0] TCP prioritizes reliable and ordered data delivery while UDP prioritizes speed and low latency.
+[3-0] There are two files in this directory, a budget spreadsheet and a text file of meeting notes. | The budget file only contains column headers for item and dollars. | The notes file simply contains the phrase meeting notes.
+[4-0] A hash map stores key and value pairs by converting each key into an array index using a hash function. | This lets you look up, insert, or delete items in constant time on average. | When two keys produce the same index, the map resolves the collision by chaining or probing.
+[5-0] I created a laptop backup plan that follows the standard three-two-one rule. | It covers local drives, cloud storage, and regular recovery testing.
+[6-0] Keep a regular schedule, cool your bedroom, avoid screens and late caffeine, and get morning sunlight. | Starting with a consistent wake time each day usually makes the biggest difference first.
+[7-0] You are welcome, let me know if you need anything else.
+[0-1] Hello, how can I help you today?
+[1-1] The capital of Australia is Canberra.
+[2-1] TCP prioritizes reliable ordered delivery while UDP favors speed and low overhead without guaranteed delivery.
+[3-1] This directory contains two files, budget dot csv and notes dot txt. | The budget file has headers for items and dollars, while the notes file contains meeting notes.
+[4-1] A hash map stores key and value pairs by converting each key into an array index for instant lookup. | A hash function turns the key into a number that points to a specific bucket in memory. | When two keys land on the same bucket, the map links them together or finds the next open spot.
+[5-1] I have put together a laptop backup plan using the standard three-two-one method. | It covers local external drives, automatic cloud syncing, and monthly recovery checks.
+[6-1] To sleep better, keep a consistent schedule, limit late caffeine and screens, and optimize your bedroom environment. | Go to bed and wake up at the same time every day, even on weekends. | Keep your room cool, dark, and quiet, and exercise regularly earlier in the day.
+[7-1] You are welcome, let me know if you need anything else.
+[0-2] Hello, how can I help you today?
+[1-2] The capital of Australia is Canberra.
+[2-2] TCP prioritizes reliable, ordered data delivery, while UDP focuses on speed and low latency. | Here is a table comparing their key differences.
+[3-2] There are two files in this directory, a budget spreadsheet and a text file. | The budget file has columns for item and dollars, while the text file contains meeting notes.
+[4-2] A hash map stores key and value pairs by converting each key into an array index using a hash function. | This lets you look up, insert, or delete items in nearly constant time. | When two keys land on the same index, the map resolves the collision using linked lists or nearby empty slots.
+[5-2] Here is a laptop backup plan using the three two one rule to keep your files safe. | It combines a local external drive for fast recovery with automatic cloud storage for off site protection.
+[6-2] To sleep better, keep a consistent schedule, optimize your bedroom environment, and wind down before bed. | Avoid screens and caffeine in the evening, and get regular daylight exercise during the day.
+[7-2] You are welcome, and let me know whenever you need help again.
