@@ -1,6 +1,37 @@
 # Capture runbook
 
-## Run this now (work laptop, from the repo root)
+## Run this now: Claude round (Linux dev server, from the repo root)
+
+```bash
+git pull && chmod +x src/captures/*.sh src/captures/*.py
+export LUPIN_ROOT=~/projects/lupin                          # your lupin checkout on the server; C5 reads its hooks file
+src/captures/claude_round.sh                               # about 25 min: C5, C6, C7, then format probe v2 on Claude Code and AGY
+git add src/captures && git commit -m "Claude round results" && git push
+```
+
+**What it does:**
+- **C5:** do the launch flags keep AH4L's user-scope hooks out of a headless Claude?
+- **C6:** does a `control_request` interrupt leave the process alive?
+- **C7:** is a message written mid-turn absorbed, queued or dropped?
+- **Format probe v2:** one sentence per line, a 20-word ceiling, one line allowed. Three repeats on Claude Code (`opus`), then on AGY for comparison.
+
+**Heads-up:**
+- C5's first probe (A) is a real AH4L session, so a notification listener may start and you may hear an "anything else?".
+- `jq` must be installed.
+
+**Knobs:**
+- `CLAUDE_MODEL=sonnet` changes the Claude model.
+- `SKIP_AGY=1` skips the AGY comparison.
+
+**Bring back:** nothing to paste. Push, and tell me; I read the results from your MacBook checkout after you pull there.
+
+**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). **Next: the Claude round above.** Jetski C11–C14 are closed. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
+
+Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
+
+---
+
+## Done 2026-10-18: Jetski round 3 (work laptop)
 
 ```bash
 git pull && chmod +x src/captures/*.sh src/captures/*.py
@@ -15,12 +46,6 @@ git add src/captures/out && git commit -m "Round 3 capture results" && git push
 - which agent `tools:` list reaches the cosa-voice MCP server (`[call_mcp_tool]` alone, or plus `read_file`)
 
 **Bring back:** nothing to paste; the `.gitignore` keeps only `verdict.txt` and `facts.json`, and leaves the MCP config backup and raw logs local.
-
-**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). **Next: round 3 above.** Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
-
-Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
-
----
 
 ## Done 2026-10-18: round 2 (`src/captures/capabilities_round2.sh jetski`)
 
@@ -62,7 +87,8 @@ src/captures/capabilities_followup.sh jetski              # about 65 min: C11, C
 
 | Task | Command |
 |---|---|
-| Round 3 (current) | `src/captures/c11c_final.py jetski` |
+| Claude round (current) | `LUPIN_ROOT=… src/captures/claude_round.sh` |
+| Round 3 | `src/captures/c11c_final.py jetski` |
 | Round 2 | `src/captures/capabilities_round2.sh jetski` |
 | C11–C14 | `src/captures/capabilities_followup.sh jetski` (four default models; `MODELS=none` skips C13) |
 | One of them | `src/captures/c11_surfaces.py jetski` (same for c12, c14); `MODELS=… src/captures/c13_pinned_model.sh jetski` |

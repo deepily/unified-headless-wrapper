@@ -11,5 +11,6 @@ out/**
 !out/**/facts.json
 !out/**/results*.tsv
 !out/**/spoken-*.txt
+!out/**/spoken.txt
 !out/**/tool-map.tsv
 !out/**/version.txt

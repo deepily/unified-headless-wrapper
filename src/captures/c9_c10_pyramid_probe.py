@@ -25,6 +25,16 @@ Only if the person asked for a document, or the detail is too long for a card, a
 <<<document persistent (if they asked for it) or <<<document transient, then the full markdown.
 Most replies need only the first lines."""
 
+RULES_V2 = """You are speaking to one person through a voice interface. Write your final reply in this exact shape:
+Line 1: one sentence that answers the request. One line is enough when one line answers.
+At most two more lines, only if they add something the listener needs. One sentence per line, at most 20 words each,
+plain words, no markdown, lists, links or code.
+If there is detail worth showing, add a line containing only <<<abstract, then that detail in markdown.
+Only if the person asked for a document, or the detail is too long for a card, add a line containing only
+<<<document persistent (if they asked for it) or <<<document transient, then the full markdown."""
+if os.environ.get( "UHW_RULES", "v1" ) == "v2":      # v1 stays the default so earlier runs remain comparable
+    RULES = RULES_V2
+
 PROMPTS = [ "Say hello.",
             "What is the capital of Australia?",
             "Compare TCP and UDP in a table.",
@@ -55,6 +65,13 @@ def parse_pyramid( text ):
     return spoken, abstract, document
 
 
+SENTENCE = re.compile( r"[.!?](?:\s|$)" )
+
+
+def sentences( line ):
+    return max( 1, len( SENTENCE.findall( line ) ) )
+
+
 def needs_repair( spoken ):
     return not ( 1 <= len( spoken ) <= SPOKEN_LINE_LIMIT )
 
@@ -81,7 +98,7 @@ out  = here / "out" / f"pyramid-{label}-{time.strftime( '%Y%m%dT%H%M%S' )}"
 out.mkdir( parents=True )
 workspace = Path( tempfile.mkdtemp() )
 ( workspace / "notes.txt" ).write_text( "meeting notes\n" ); ( workspace / "budget.csv" ).write_text( "item,usd\n" )
-rows = [ "prompt\trepeat\tneeds_repair\tspoken_lines\tabstract\tdocument\tt_first_delta\tt_spoken_closed\tt_result\tgap_s" ]
+rows = [ "prompt\trepeat\tneeds_repair\tspoken_lines\tspoken_words\tmax_sentences_per_line\tabstract\tdocument\tt_first_delta\tt_spoken_closed\tt_result\tgap_s" ]
 repairs, gaps = 0, []
 
 for repeat in range( arguments.repeat ):
@@ -109,11 +126,14 @@ for repeat in range( arguments.repeat ):
         closed = closed or t_result
         gap = round( t_result - closed, 2 ) if t_result and closed else None
         if gap is not None: gaps.append( gap )
-        rows.append( "\t".join( map( str, [ number, repeat, repair, len( spoken ), abstract is not None, document is not None,
+        with open( out / "spoken.txt", "a" ) as said:
+            said.write( f"[{number}-{repeat}] " + " | ".join( spoken ) + "\n" )
+        rows.append( "\t".join( map( str, [ number, repeat, repair, len( spoken ), sum( len( l.split() ) for l in spoken ),
+                                            max( ( sentences( l ) for l in spoken ), default=0 ), abstract is not None, document is not None,
                                             first, closed, t_result, gap ] ) ) )
         print( rows[ -1 ], flush=True )
 
 ( out / "results.tsv" ).write_text( "\n".join( rows ) + "\n" )
 total = len( PROMPTS ) * arguments.repeat
-print( f"C9 compliance: {total - repairs}/{total} well formed" )
+print( f"C9 compliance ({os.environ.get( 'UHW_RULES', 'v1' )} rules): {total - repairs}/{total} well formed" )
 print( f"C10 median gap spoken-close -> result: {statistics.median( gaps ) if gaps else 'n/a'} s   (results: {out})" )
