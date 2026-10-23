@@ -57,11 +57,12 @@ agents_help = run_quiet( [ BIN, "agents", "--help" ], 30 )
 ( out / "agents-help.txt" ).write_text( agents_help )
 report.fact( "agents_help", agents_help.splitlines()[ :40 ] )
 layout, definition_keys = [], {}
+OTHER_BINARY_DIR = "jetski" if BIN == "agy" else "antigravity-cli"          # list only this binary's own tree
 gemini = home / ".gemini"
 if gemini.exists():
     for path in sorted( gemini.rglob( "*" ) ):
         relative = path.relative_to( gemini )
-        if len( relative.parts ) > 4 or any( p in ( "tmp", "history", "cache", "antigravity-cli", "conversations" ) for p in relative.parts ):
+        if len( relative.parts ) > 4 or any( p in ( "tmp", "history", "cache", "conversations", OTHER_BINARY_DIR ) for p in relative.parts ):
             continue
         if re.search( r"agent|skill|command|workflow|rule|GEMINI|AGENTS|instruction|memor", str( relative ), re.I ):
             layout.append( str( relative ) + ( "/" if path.is_dir() else "" ) )

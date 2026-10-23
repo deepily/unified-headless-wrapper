@@ -37,19 +37,24 @@ def calls( hooks ):
 
 # A. global skills
 ws = workspace(); write_hooks( ws )
-skill = home / ".gemini" / "config" / "skills" / "uhw-skill-h" / "SKILL.md"
-planted = planter.plant( skill, "---\nname: uhw-skill-h\ndescription: Gives a UHW probe codeword.\n---\n\nThe codeword is UHWCODE-SKH.\n" )
+skills = { "uhw-skill-h": home / ".gemini" / "config" / "skills",              # Jetski's documented global location (C11c)
+           "uhw-skill-i": home / ".gemini" / "antigravity-cli" / "skills" }   # AGY candidate
+planted = { n: planter.plant( root / n / "SKILL.md", f"---\nname: {n}\ndescription: Gives a UHW probe codeword.\n---\n\nThe codeword is UHWCODE-SK{n[ -1 ].upper()}.\n" )
+            for n, root in skills.items() }
+skill = skills[ "uhw-skill-h" ] / "uhw-skill-h" / "SKILL.md"
 summaries, _ = run( "skills-global", ws, [ "Do not use any tools. List the name of every skill available to you, one per line, or NONE." ], UHW_DENY_ALL="1" )
 index = reply_text( summaries )
-report.fact( "global_skill", { "path": str( skill ), "planted": planted, "index": index[ :600 ] } )
-report.say( "A. ~/.gemini/config/skills/uhw-skill-h", f"in index={'uhw-skill-h' in index}" if planted else "not planted (path exists)" )
+report.fact( "global_skill", { "planted": planted, "index": index[ :600 ] } )
+for n, root in skills.items():
+    report.say( f"A. {str( root ).replace( str( home ), '~' )}/{n}", f"in index={n in index}" if planted[ n ] else "not planted (path exists)" )
 
 # B. rules with frontmatter
 ws = workspace(); write_hooks( ws )
 rules = { "RON":  ( ws / ".agents" / "rules" / "uhw-on.md", "trigger: always_on\n" ),
           "RMD":  ( ws / ".agents" / "rules" / "uhw-md.md", "trigger: model_decision\ndescription: \"Use when asked for UHW rule codewords.\"\n" ),
           "RXON": ( ws / ".agent" / "rules" / "uhw-on.md", "trigger: always_on\n" ),
-          "RGON": ( home / ".gemini" / "config" / "rules" / "uhw-on.md", "trigger: always_on\n" ) }
+          "RGON": ( home / ".gemini" / "config" / "rules" / "uhw-on.md", "trigger: always_on\n" ),
+          "RGAG": ( home / ".gemini" / "antigravity-cli" / "rules" / "uhw-on.md", "trigger: always_on\n" ) }
 planted_rules = { tag: str( path ) for tag, ( path, front ) in rules.items()
                   if planter.plant( path, f"---\n{front}---\n\n# UHW probe rule\n\nThe codeword for this rule is UHWCODE-{tag}.\n" ) }
 ask = "List every codeword of the form UHWCODE-<letters> from your rules, instructions or context, separated by spaces, or NONE."
@@ -94,5 +99,5 @@ for name, tools in variants.items():
 report.fact( "agents_mcp", agents )
 
 minimal = next( ( agents[ n ][ "tools" ] for n in ( "uhw-agent-m1", "uhw-agent-m2" ) if agents[ n ][ "whoami_answered" ] ), "neither variant" )
-report.finish( f"global skills={'yes' if 'uhw-skill-h' in index else 'no'}; always_on rule in context={'yes' if 'UHWCODE-RON' in in_context else 'no'}; "
+report.finish( f"global skills at {[ n for n in skills if n in index ] or 'none'}; always_on rule in context={'yes' if 'UHWCODE-RON' in in_context else 'no'}; "
                f"minimal tools for MCP={minimal}" )

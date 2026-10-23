@@ -1,6 +1,32 @@
 # Capture runbook
 
-## Run this now: Claude round (Linux dev server, from the repo root)
+## Run this now: AGY round (test VM, from the repo root)
+
+```bash
+git pull && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/agy_round.sh                                  # about 75 min
+git add src/captures && git commit -m "AGY round results" && git push
+```
+
+**What it does:** reruns every Jetski capability capture on AGY, because the adapter is built against AGY (D32):
+- **C11, C11b, C11c:** instruction files, rules, skills, agent definitions and their tools lists, and the default tool list. Global locations are checked under both `~/.gemini/config/` and `~/.gemini/antigravity-cli/`.
+- **C12:** the subagent tool, veto by name, plan mode.
+- **C14, C14b:** how long one MCP call can block, and whether the limit is configurable.
+- **C13:** the format probe (shape rules) on `opus-5.5-high`, `gemini-3.8-flash-high`, `gemini-launch-candidate-high` and `gemini-flash-next`, the same four as the Jetski run.
+
+**Knobs:**
+- `SKIP_WAIT=1` drops the MCP-timeout captures, saving about 20 minutes.
+- `MODELS="…"` changes the C13 models; `MODELS=none` skips C13.
+
+**Bring back:** nothing to paste. Push, then pull on the MacBook and tell me.
+
+**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
+
+Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
+
+---
+
+## Done 2026-10-20: Claude round (Linux dev server)
 
 ```bash
 git pull && chmod +x src/captures/*.sh src/captures/*.py
@@ -24,12 +50,6 @@ git add src/captures && git commit -m "Claude round results" && git push
 - `SKIP_AGY=1` skips the AGY comparison.
 
 **Bring back:** nothing to paste. Push, and tell me; I read the results from your MacBook checkout after you pull there.
-
-**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). **Next: the Claude round above.** Jetski C11–C14 are closed. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
-
-Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
-
----
 
 ## Done 2026-10-18: Jetski round 3 (work laptop)
 
@@ -87,7 +107,8 @@ src/captures/capabilities_followup.sh jetski              # about 65 min: C11, C
 
 | Task | Command |
 |---|---|
-| Claude round (current) | `LUPIN_ROOT=… src/captures/claude_round.sh` |
+| AGY round (current) | `src/captures/agy_round.sh` |
+| Claude round | `LUPIN_ROOT=… src/captures/claude_round.sh` |
 | Round 3 | `src/captures/c11c_final.py jetski` |
 | Round 2 | `src/captures/capabilities_round2.sh jetski` |
 | C11–C14 | `src/captures/capabilities_followup.sh jetski` (four default models; `MODELS=none` skips C13) |
