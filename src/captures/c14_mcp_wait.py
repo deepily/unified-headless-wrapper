@@ -14,7 +14,7 @@ Ensures:
     - the MCP config is backed up and restored on exit (removed if it did not exist)
     - out/c14-<bin>-<ts>/verdict.txt and facts.json
 """
-import atexit, json, os, shutil, sys
+import atexit, json, os, signal, shutil, sys
 from capture_lib import *
 
 BIN    = sys.argv[ 1 ] if len( sys.argv ) > 1 else "jetski"
@@ -28,6 +28,8 @@ backup = out / "mcp_config.backup"
 existed = CONFIG.exists()
 if existed: shutil.copy( CONFIG, backup )
 atexit.register( lambda: shutil.copy( backup, CONFIG ) if existed else CONFIG.unlink( missing_ok=True ) )
+for number in ( signal.SIGINT, signal.SIGTERM, signal.SIGHUP ):     # run the restore above on any way out
+    signal.signal( number, lambda *_: sys.exit( 130 ) )
 config = json.loads( CONFIG.read_text() ) if existed and CONFIG.stat().st_size else {}
 log = out / "mcp.jsonl"
 config.setdefault( "mcpServers", {} )[ "uhw-probe" ] = { "command": PY, "args": [ str( HERE / "probe_mcp.py" ) ],

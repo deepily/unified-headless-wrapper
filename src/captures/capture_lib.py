@@ -107,7 +107,7 @@ class Planter:
     def __init__( self ):
         self.created = []
         atexit.register( self.cleanup )
-        for number in ( signal.SIGINT, signal.SIGTERM ):
+        for number in ( signal.SIGINT, signal.SIGTERM, signal.SIGHUP ):     # SIGHUP: the SSH session dropped (2026-10-24)
             signal.signal( number, lambda *_: sys.exit( 130 ) )
 
     def plant( self, path, text ):

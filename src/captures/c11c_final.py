@@ -16,7 +16,7 @@ Ensures:
     - planted files only where absent, removed on exit; MCP config backed up and restored
     - out/c11c-<bin>-<ts>/verdict.txt and facts.json (tracked by git, like the other results)
 """
-import atexit, json, os, re, shutil, sys
+import atexit, json, os, signal, re, shutil, sys
 from capture_lib import *
 
 BIN = sys.argv[ 1 ] if len( sys.argv ) > 1 else "jetski"
@@ -81,6 +81,8 @@ config_path = Path( os.environ.get( "MCP_CONFIG", home / ".gemini" / "config" / 
 backup, existed = out / "mcp_config.backup", config_path.exists()
 if existed: shutil.copy( config_path, backup )
 atexit.register( lambda: shutil.copy( backup, config_path ) if existed else config_path.unlink( missing_ok=True ) )
+for number in ( signal.SIGINT, signal.SIGTERM, signal.SIGHUP ):     # run the restore above on any way out
+    signal.signal( number, lambda *_: sys.exit( 130 ) )
 config = json.loads( config_path.read_text() ) if existed and config_path.stat().st_size else {}
 config.setdefault( "mcpServers", {} )[ "uhw-probe" ] = { "command": PY, "args": [ str( HERE / "probe_mcp.py" ) ],
                                                          "env": { "UHW_PROBE_MCP_LOG": str( out / "mcp.jsonl" ) } }

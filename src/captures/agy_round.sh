@@ -4,6 +4,9 @@
 #   MODELS="a b"  overrides the four default models; MODELS=none skips C13; SKIP_WAIT=1 skips the 15-min C14
 source "$( dirname "$0" )/common.sh"
 command -v agy > /dev/null || { echo "agy is not on PATH on this machine"; exit 2; }
+case "$( command -v agy )" in /snap/*)                     # 2026-10-23: a snap AGY can't see /tmp workspaces, ~/.gemini or project hooks
+    echo "agy is a snap ($( command -v agy )): its confinement hides workspaces, hooks and ~/.gemini, so every capture is invalid."
+    echo "Install AGY the non-snap way (as on the dev server), make sure 'command -v agy' no longer points into /snap, then rerun."; exit 2;; esac
 STAMP=$( date +%Y%m%dT%H%M%S ); mkdir -p "$HERE/out"; BUNDLE="$HERE/out/agy-round-$STAMP.txt"
 latest()  { ls -td "$HERE"/out/"$1"-agy-* 2> /dev/null | head -1; }
 section() { printf '\n## %s\n' "$1" >> "$BUNDLE"; }

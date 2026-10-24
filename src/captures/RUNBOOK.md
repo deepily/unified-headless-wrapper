@@ -1,29 +1,25 @@
 # Capture runbook
 
-## Run this now: AGY round, again (test VM, from the repo root)
+## Run this now: finish the AGY round (test VM, from the repo root)
 
-The 2026-10-23 run is invalid: AGY on the VM is a **snap**, and snap confinement hid the workspaces, hooks and `~/.gemini` from it (`src/rnd/v0.0.1/2026.10.23-agy-round-results.md`). Reinstall AGY first.
+The 2026-10-24 run (AGY 1.4.7, non-snap) finished C11, C12, C14, C11b and C11c, then died in C14b when SSH dropped. C13 never ran.
 
+**1. Check that the dropped run didn't leave the probe server in AGY's MCP config:**
 ```bash
-command -v agy; agy --version                              # a path under /snap means the snap is still in use
-sudo snap remove antigravity-cli                           # then install AGY the non-snap way, as on the dev server
-hash -r; command -v agy; agy --version                     # expect a non-/snap path and 1.3.x or later
-git pull && chmod +x src/captures/*.sh src/captures/*.py
-src/captures/agy_round.sh                                  # about 75 min; refuses to start under a snap AGY
+grep -n uhw-probe ~/.gemini/config/mcp_config.json                         # no output = clean
+cp src/captures/out/c14-agy-20261024T164113/mcp_config.backup ~/.gemini/config/mcp_config.json   # only if it printed a match
+```
+If there's no `mcp_config.backup` in that folder, the file didn't exist before the run, and `rm ~/.gemini/config/mcp_config.json` restores it.
+
+**2. Finish inside tmux, so a dropped connection can't kill it again:**
+```bash
+git pull                                                   # scripts now restore the config even on a dropped connection
+tmux new -s agy                                            # reattach later with: tmux attach -t agy
+WAITS=200 MCP_TIMEOUT_MS=900000 python3 src/captures/c14_mcp_wait.py agy                # C14b, about 4 min
+UHW_RULES=v2 MODELS="opus-5.5-high gemini-3.8-flash-high gemini-launch-candidate-high gemini-flash-next" \
+    src/captures/c13_pinned_model.sh agy                                                # C13, about 40 min
 git add src/captures && git commit -m "AGY round results (non-snap)" && git push
 ```
-
-**What it does:** reruns every Jetski capability capture on AGY, because the adapter is built against AGY (D32):
-- **C11, C11b, C11c:** instruction files, rules, skills, agent definitions and their tools lists, and the default tool list. Global locations are checked under both `~/.gemini/config/` and `~/.gemini/antigravity-cli/`.
-- **C12:** the subagent tool, veto by name, plan mode.
-- **C14, C14b:** how long one MCP call can block, and whether the limit is configurable.
-- **C13:** the format probe (shape rules) on `opus-5.5-high`, `gemini-3.8-flash-high`, `gemini-launch-candidate-high` and `gemini-flash-next`, the same four as the Jetski run.
-
-**Knobs:**
-- `SKIP_WAIT=1` drops the MCP-timeout captures, saving about 20 minutes.
-- `MODELS="…"` changes the C13 models; `MODELS=none` skips C13.
-
-**Bring back:** nothing to paste. Push, then pull on the MacBook and tell me.
 
 **Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
 
