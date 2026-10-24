@@ -1,0 +1,5 @@
+version                                        1.2.11
+per-server timeout in config (ms)              900000
+wait  200 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is n'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "18b3ed44-00ba-4d39-b7c0-45d2c2959bc6", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "view_file", "duration_seconds": 0.047577251, "tool_info": {"name": "view_file", "parameters": {"AbsolutePath": "/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization']
+VERDICT c14: longest call answered = 0 s of 200 s tried (a timeout lies between the last success and the next try)

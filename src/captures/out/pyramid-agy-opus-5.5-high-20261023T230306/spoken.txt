@@ -1,0 +1,24 @@
+[0-0] Hello, it's nice to hear from you!
+[1-0] The capital of Australia is Canberra. | Many people guess Sydney or Melbourne, but Canberra was chosen as a compromise between those two cities.
+[2-0] TCP is reliable, ordered, and connection-based, while UDP is faster and lighter but skips delivery guarantees. | Use TCP for web pages, email, and file transfers, and UDP for gaming, voice calls, and live video.
+[3-0] I couldn't list the files because this folder is locked so nobody but root can read its contents. | It's snapd's "void" folder, which is normally empty on purpose and is used as a safe starting place for snap apps. | If you want, I can try again with sudo, or you can point me to a different folder.
+[4-0] A hash map stores each value under a key, and uses a hash function to turn that key into a slot number in an array. | To look something up, it hashes the key again and goes straight to that slot, so lookups are usually instant. | When two keys land in the same slot, it keeps both there, and it grows the array once it gets too full.
+[5-0] Here's a short laptop backup plan built on the 3-2-1 rule. | You keep three copies of your data on two kinds of storage, with one copy offsite. | The most important step is testing a restore every few months.
+[6-0] Keep a steady sleep schedule, cut screens an hour before bed, keep your room cool and dark, skip afternoon caffeine, and get morning sunlight. | If poor sleep lasts more than a few weeks, it's worth talking to a doctor.
+[7-0] You're welcome, glad I could help.
+[0-1] Hello, it's nice to hear from you.
+[1-1] The capital of Australia is Canberra. | Many people guess Sydney, but Canberra was chosen as a compromise between Sydney and Melbourne.
+[2-1] TCP is reliable and ordered but slower, while UDP is faster and lighter but makes no delivery guarantees. | Use TCP for web pages, email and file transfers, and UDP for gaming, voice calls and live video.
+[3-1] I couldn't list the files, because this folder is locked so only the system can see what's inside. | It's /var/lib/snapd/void, an empty placeholder folder that Snap uses on purpose, so there's almost certainly nothing in it. | You probably meant to open a project folder instead, so tell me which one and I'll list it.
+[4-1] A hash map stores key-value pairs by running each key through a hash function that picks a slot in an array. | When two keys land in the same slot, the map keeps both, either in a small list or by probing nearby slots. | Lookups, inserts, and deletes usually take constant time, as long as the map grows before it gets too full.
+[5-1] Here's a short plan to back up your laptop, built on the 3-2-1 rule. | It uses automatic daily backups to an external drive plus a cloud copy, and a restore test every month.
+[6-1] Keep a steady sleep schedule, keep your room cool and dark, skip caffeine after noon, put screens away an hour before bed, and get morning sunlight. | If you can't sleep after about twenty minutes, get up and do something calm until you feel sleepy.
+[7-1] You're welcome, have a great night!
+[0-2] Hello, it's nice to hear from you!
+[1-2] The capital of Australia is Canberra. | Many people guess Sydney or Melbourne, but Canberra was purpose-built as a compromise between them.
+[2-2] TCP is reliable, ordered and connection-based, while UDP is faster and lighter but gives no delivery guarantees. | Use TCP when every byte must arrive, and UDP when low delay matters more than losing an occasional packet.
+[3-2] I couldn't list the files, because this folder is locked so no one but root can see what's in it. | It's snap's "void" folder, which is normally empty and used as a safe placeholder location. | I can look inside with admin rights if you want, but I didn't do that without asking.
+[4-2] A hash map stores each value under a key, and runs the key through a hash function to pick which slot of an array it goes in. | When two keys land in the same slot, the map keeps both, either in a small list or by trying the next free slot. | Lookups, inserts and deletes usually take about the same short time no matter how big the map gets.
+[5-2] Here's a short laptop backup plan built on the 3-2-1 rule: three copies, two kinds of storage, one kept off-site. | It uses an automatic cloud backup plus a weekly external drive, so you're covered if the laptop or the house has a problem.
+[6-2] Keep a steady sleep schedule, put screens away an hour before bed, cut caffeine after noon, keep your bedroom cool and dark, and get daylight and exercise during the day. | It's past eleven now, so tonight is a good night to start with the screen tip.
+[7-2] You're welcome, take care!

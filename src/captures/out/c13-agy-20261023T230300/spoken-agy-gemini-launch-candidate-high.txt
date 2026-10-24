@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[0-1] Hello there, how can I help you today?
+[0-2] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP guarantees reliable and ordered delivery, while UDP prioritizes speed with minimal overhead. | Use TCP for web browsing and file transfers, and UDP for streaming and gaming.
+[2-1] TCP focuses on reliable ordered delivery, while UDP focuses on speed and low overhead. | Use TCP for web pages and emails, and UDP for gaming and live video.
+[2-2] TCP guarantees reliable and ordered delivery, while UDP prioritizes speed with minimal overhead. | Choose TCP for accuracy like web browsing, and UDP for real-time applications like gaming.
+[3-0] I cannot list the files because the current directory is an unreadable system folder. | You are currently in the snap void directory, which restricts read access. | Please open a project folder in your home directory to view your files.
+[3-1] The active working folder is an unreadable snap sandbox directory, so I inspected your home directory instead. | Your home folder contains three regular files, a snap folder, and standard hidden configuration files. | Those three files are a contract prompt, a short marker file, and a Python timeout test script.
+[3-2] I cannot read the current directory because snap confinement placed this session inside an unreadable system void folder. | Your home folder is readable and holds three main files for a contract prompt, a marker, and testing.
+[4-0] A hash map stores data by turning each key into an array index using a hash function. | This lets you find, add, or remove values almost instantly without checking every item. | If two keys land on the same spot, the map groups them or finds the next open slot.
+[4-1] A hash map stores data by turning each key into an array index using a hash function. | This lets you look up, insert, or delete values almost instantly without searching the whole collection. | If two keys produce the same index, the map links them together or picks the next empty spot.
+[4-2] A hash map stores key and value pairs by using a hash function to compute an array index. | This lets you look up, insert, or delete items almost instantly without searching through every element. | When two keys land on the same index, the map resolves the collision using a list or probing.
+[5-0] I created a laptop backup plan using a local external drive and automatic cloud storage. | Schedule automatic backups daily and test restoring a file once a month.
+[5-1] Back up your laptop automatically to both a local external drive and an offsite cloud service. | I saved the full step by step backup plan as a document for you.
+[5-2] Here is a laptop backup plan using both a local drive and cloud storage. | Start with a full drive backup today, then set both methods to run automatically.
+[6-0] To sleep better, keep a steady schedule, cool your room, avoid screens, skip late caffeine, and relax before bed.
+[6-1] Stick to a sleep schedule, keep your bedroom dark, avoid screens and late caffeine, and exercise daily.
+[6-2] Keep a consistent schedule, cool your bedroom, avoid late caffeine, turn off screens early, and relax before bed.
+[7-0] You are welcome, let me know if you need anything else.
+[7-1] You are welcome, and let me know if you need anything else.
+[7-2] You are welcome, let me know if you need anything else.

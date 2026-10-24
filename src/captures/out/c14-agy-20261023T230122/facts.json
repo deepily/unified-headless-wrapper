@@ -1,0 +1,31 @@
+{
+ "rows": [
+  {
+   "seconds": 200,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool from the `uhw-probe` MCP server is not available in the current session's toolset and cannot be called.\n\n### Diagnostic Details\n`agy` (`/snap/antigravity-cli/23/bin/agy`) is ru"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.047577251, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 4, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.047289261, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 6, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 5.066567212, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"find /home/admin_rickruiz_altostrat_com -name \\\"*mcp*\\\" -o -name \\\"*uhw*\\\" 2>/dev/null\"}, \"output\": \"/home/admin_ric",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 8, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.04262663, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/config/mcp_config.json\"}, \"output\": \"1 lines, 0 b",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 10, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 1.69782122, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ps aux; ls -la /home/admin_rickruiz_altostrat_com/ /home/admin_rickruiz_altostrat_com/.gemini/ /home/admin_rickruiz_",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 12, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.047326711, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/cli.log\"}, \"output\": \"206 lines",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 14, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 0.066470751, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ls -laR /home/admin_rickruiz_altostrat_com/.gemini /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 16, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 0.054622611, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ls -lt /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain\"}, \"output\": \"t",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 18, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 0.068264281, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ps -efww\"}, \"output\": \"<truncated 81 lines>\\nroot          95       2  0 Oct19 ?        00:00:00 [kworker/R-nvme-]\\",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 20, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.04611761, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain/2409f410-fa10-4b26-8e79-83",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 22, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.02995875, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain/2409f410-fa10-4b26-8e79-83",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"18b3ed44-00ba-4d39-b7c0-45d2c2959bc6\", \"step_index\": 23, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.049271661, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain/d4f75f6f-7400-4101-a67c-d"
+ ],
+ "server_eof_after_s": null
+}

@@ -1,0 +1,110 @@
+# AGY round 20261023T224254 · Linux x86_64 · agy 1.2.11 · MODELS=opus-5.5-high gemini-3.8-flash-high gemini-launch-candidate-high gemini-flash-next
+
+## c11
+version                                        1.2.11
+A. help lines on agents/skills/commands/mode   12
+A. ~/.gemini entries matching surfaces         0
+A. existing ~/.gemini/GEMINI.md                absent
+A. existing ~/.gemini/AGENTS.md                absent
+B. instruction files loaded                    none
+B. codewords not planted (hallucinated)        none
+B. tool attempts (all denied)                  0
+C. /uhwwfa (.agents/workflows/uhwwfa.md)       expanded=False status=['SUCCESS'] reply="`/uhwwfa` isn't a recognized command. Did you mean to run one of the a"
+C. /uhwwfb (.agent/workflows/uhwwfb.md)        expanded=False status=['SUCCESS'] reply="It looks like `/uhwwfb` isn't a recognized command. How can I help you"
+C. /uhwcmc (.agents/commands/uhwcmc.md)        expanded=False status=['SUCCESS'] reply="It looks like `/uhwcmc` isn't a recognized command. \n\nIf you were look"
+C. /uhwcmd (.gemini/commands/uhwcmd.toml)      expanded=False status=['SUCCESS'] reply="`/uhwcmd` isn't a recognized slash command or custom workflow.\n\nHere a"
+C. /uhwnosuchcommand (unknown command (control)) expanded=False status=['SUCCESS'] reply='`/uhwnosuchcommand` is not a recognized slash command. \n\nYou can run `'
+D. uhw-skill-a (<ws>/.agents/skills/uhw-skill-a/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-b (<ws>/.agent/skills/uhw-skill-b/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-c (<ws>/.gemini/skills/uhw-skill-c/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-d (~/.gemini/skills/uhw-skill-d/SKILL.md) in index=False  codeword via use=False
+D. tools used to reach skills                  none
+E. `agents` listing lines                      0
+E. uhw-agent-a (.agents/agents)                listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-b (.agent/agents)                 listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-c (.gemini/agents)                listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-d (~/.gemini/agents)              listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+F. result-frame keys                           ['(top) event', '(top) result', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+F. token/usage/context keys in any frame       ['cache_read_tokens', 'input_tokens', 'output_tokens', 'thinking_tokens', 'total_tokens', 'usage']
+VERDICT c11: native surfaces: rules=no, commands=no, skills=no, agents=no
+
+## c12
+version                                        1.2.11
+A. top-level tools                             none
+A. subagent tool candidates (non-basic)        none
+A. hooks fired inside subagent                 0 calls []
+A. subagent agentName / callerContext          [] / []
+A. conversation ids in stream                  1
+A. sub.marker created                          no
+A. model named its tool as                      executed `touch sub.marker` in the current workspace directory (`/var/lib/snapd/void`) and reported back (noting that `/var/lib/snapd/void` returned `Permissio
+B. veto                                        skipped: no candidate tool in A
+C. --mode plan status per turn                 ['SUCCESS', 'SUCCESS']
+C. tools turn 1 / turn 2                       [['write_to_file', 'write_to_file', 'run_command', 'run_command', 'run_command', 'run_command', 'write_to_file'], ['write_to_file', 'view_file']]
+C. plan.marker exists after approval           no
+C. artifacts written                           none
+C. turn 1 reply                                I have created the [implementation plan](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain
+C. turn 1 wrote into the workspace             no (plan artifact only)
+VERDICT c12: subagent tool=not found; hooks inside subagents=no; veto enforceable=no; plan mode touched the workspace before approval=no
+
+## c14
+version                                        1.2.11
+per-server timeout in config (ms)              none
+wait   45 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='I cannot call the `wait_seconds` tool because the **`uhw-pro'
+wait  200 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is u'
+wait  620 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is u'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "f824f32e-4079-492b-abbc-807852b8605e", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "view_file", "duration_seconds": 0.046848667, "tool_info": {"name": "view_file", "parameters": {"AbsolutePath": "/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization']
+VERDICT c14: longest call answered = 0 s of 620 s tried (a timeout lies between the last success and the next try)
+
+## c11b
+version                                        1.2.11
+A. /uhwwfa (tools allowed)                     codeword=False tools=[]
+A. /uhwwfb (tools allowed)                     codeword=False tools=[]
+A. slash commands offered                      ['/goal', '/grill-me', '/plan', '/schedule', '/uhwnosuchcommand']
+A. planted workflows among them                none
+B. uhw-skill-e (~/.gemini/jetski/skills)       in index=False
+B. uhw-skill-f (~/.agents/skills)              in index=False
+B. uhw-skill-g (~/.agent/skills)               in index=False
+C. uhw-agent-t0 (no tools key)                 tools=[] agentName=[] status=['SUCCESS']
+C. uhw-agent-t1 tools: [run_command]           tools=[] agentName=[] status=['SUCCESS']
+C. uhw-agent-t2 tools: ["*"]                   tools=[] agentName=[] status=['SUCCESS']
+C. uhw-agent-t3 tools:   - run_command   - read_file tools=[] agentName=[] status=['SUCCESS']
+D. customization docs read (headings, field and path lines only) none found
+VERDICT c11b: workflows run via no tool; global skills at none found; agent tools granted by frontmatter=no
+
+## c11c
+version                                        1.2.11
+A. ~/.gemini/config/skills/uhw-skill-h         in index=False
+A. ~/.gemini/antigravity-cli/skills/uhw-skill-i in index=False
+B. <ws>/.agents/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. <ws>/.agents/rules/uhw-md.md (trigger: model_decision) in context=False  read on demand=False
+B. <ws>/.agent/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. ~/.gemini/config/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. ~/.gemini/antigravity-cli/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. tools used on demand                        none
+C. default tools (as the model lists them)     ['run_command', 'manage_task', 'view_file', 'write_to_file', 'replace_file_content', 'search_web', 'read_url_content', 'generate_image', 'define_subagent', 'invoke_subagent', 'send_message', 'manage_subagents', 'schedule', 'ask_question']
+C. uhw-agent-m0 tools: [run_command]           whoami answered=False calls=[] status=['SUCCESS']
+C. uhw-agent-m1 tools: [call_mcp_tool]         whoami answered=False calls=[] status=['SUCCESS']
+C. uhw-agent-m2 tools: [call_mcp_tool, read_file] whoami answered=False calls=[] status=['SUCCESS']
+VERDICT c11c: global skills at none; always_on rule in context=no; minimal tools for MCP=neither variant
+
+## c14b
+version                                        1.2.11
+per-server timeout in config (ms)              900000
+wait  200 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is n'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "18b3ed44-00ba-4d39-b7c0-45d2c2959bc6", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "view_file", "duration_seconds": 0.047577251, "tool_info": {"name": "view_file", "parameters": {"AbsolutePath": "/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization']
+VERDICT c14: longest call answered = 0 s of 200 s tried (a timeout lies between the last success and the next try)
+
+## c13
+model opus-5.5-high -> modelName in hook payload: none · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 1.1449999999999998 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-opus-5.5-high-20261023T230306)
+model gemini-3.8-flash-high -> modelName in hook payload: none · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.41500000000000004 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-3.8-flash-high-20261023T230557)
+model gemini-launch-candidate-high -> modelName in hook payload: none · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 1.48 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-launch-candidate-high-20261023T231515)
+model gemini-flash-next -> modelName in hook payload: none · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.49 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-flash-next-20261023T232314)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines

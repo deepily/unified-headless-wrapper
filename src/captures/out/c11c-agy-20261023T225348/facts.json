@@ -1,0 +1,69 @@
+{
+ "global_skill": {
+  "planted": {
+   "uhw-skill-h": true,
+   "uhw-skill-i": true
+  },
+  "index": "agy-customizations\nantigravity-guide\n"
+ },
+ "rules": {
+  "planted": {
+   "RON": "/tmp/uhw-ws-kx_x36vd/.agents/rules/uhw-on.md",
+   "RMD": "/tmp/uhw-ws-kx_x36vd/.agents/rules/uhw-md.md",
+   "RXON": "/tmp/uhw-ws-kx_x36vd/.agent/rules/uhw-on.md",
+   "RGON": "/home/admin_rickruiz_altostrat_com/.gemini/config/rules/uhw-on.md",
+   "RGAG": "/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/rules/uhw-on.md"
+  },
+  "in_context": [],
+  "on_demand": [],
+  "on_demand_calls": []
+ },
+ "default_tools": [
+  "run_command",
+  "manage_task",
+  "view_file",
+  "write_to_file",
+  "replace_file_content",
+  "search_web",
+  "read_url_content",
+  "generate_image",
+  "define_subagent",
+  "invoke_subagent",
+  "send_message",
+  "manage_subagents",
+  "schedule",
+  "ask_question"
+ ],
+ "agents_mcp": {
+  "uhw-agent-m0": {
+   "tools": "[run_command]",
+   "status": [
+    "SUCCESS"
+   ],
+   "calls": [],
+   "whoami_answered": false,
+   "agentName": [],
+   "reply": "The `whoami` tool from the `uhw-probe` MCP server is not available in the current toolset.\n\nThis is because `agy` is running inside a Snap environment where:\n1. The global MCP config at [mcp_config.js"
+  },
+  "uhw-agent-m1": {
+   "tools": "[call_mcp_tool]",
+   "status": [
+    "SUCCESS"
+   ],
+   "calls": [],
+   "whoami_answered": false,
+   "agentName": [],
+   "reply": "I have launched a subagent with MCP tools enabled to check for and invoke the `uhw-probe` `whoami` tool once. Waiting for its response.\nThe `whoami` tool from the `uhw-probe` MCP server is not availab"
+  },
+  "uhw-agent-m2": {
+   "tools": "[call_mcp_tool, read_file]",
+   "status": [
+    "SUCCESS"
+   ],
+   "calls": [],
+   "whoami_answered": false,
+   "agentName": [],
+   "reply": "The `uhw-probe` MCP server (and its `whoami` tool) is not available in the current toolset, so it cannot be called.\n\nDiagnostic details from [cli-20261023_225946.log](file:///home/admin_rickruiz_altos"
+  }
+ }
+}

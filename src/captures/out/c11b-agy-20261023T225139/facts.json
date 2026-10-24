@@ -1,0 +1,58 @@
+{
+ "workflows": {
+  "uhwwfa": {
+   "codeword": false,
+   "calls": [],
+   "reply": "`/uhwwfa` isn't a recognized slash command. \n\nAvailable slash commands include:\n- `/plan` \u2014 Create a step-by-step plan before execution\n- `/grill-me` \u2014 Align on a plan through an interactive interview\n- `/goal` \u2014 Run a thorough, long-runnin"
+  },
+  "uhwwfb": {
+   "codeword": false,
+   "calls": [],
+   "reply": "It looks like `/uhwwfb` isn't a recognized command. How can I help you today?\n"
+  }
+ },
+ "slash_list": "`/uhwnosuchcommand` is not a recognized slash command. \n\nHere are some of the available slash commands you can use:\n- **`/plan`** \u2014 Create a step-by-step plan before executing a complex task.\n- **`/grill-me`** \u2014 Align on a plan through an interactive interview to resolve design decisions.\n- **`/goal`** \u2014 Run a thorough, long-running task until the goal is fully achieved.\n- **`/schedule`** \u2014 Run an",
+ "global_skills": {
+  "planted": {
+   "uhw-skill-e": "/home/admin_rickruiz_altostrat_com/.gemini/jetski/skills",
+   "uhw-skill-f": "/home/admin_rickruiz_altostrat_com/.agents/skills",
+   "uhw-skill-g": "/home/admin_rickruiz_altostrat_com/.agent/skills"
+  },
+  "index": "agy-customizations\nantigravity-guide\n"
+ },
+ "agent_tools": {
+  "uhw-agent-t0": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I ran `echo probe` (which output `probe`), but no codeword was provided in the prompt, system context, or command output.\n"
+  },
+  "uhw-agent-t1": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I ran `echo probe` once (which output `probe`), and no codeword was provided in the conversation context or command output.\n"
+  },
+  "uhw-agent-t2": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I ran `echo probe` (which returned `probe`). I wasn't provided with a specific codeword in this session\u2014unless you meant `probe`!\n"
+  },
+  "uhw-agent-t3": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I ran `echo probe` (which output `probe`), but I do not have a codeword\u2014none was provided in my instructions or returned by the command.\n"
+  }
+ },
+ "format_docs": {}
+}

@@ -1,0 +1,179 @@
+{
+ "help_lines": [
+  "--agent                         Agent for the current CLI session",
+  "--disable-slash-commands        Disable slash command and skill expansion in print mode",
+  "--input-format                  Input format for print mode (text, stream-json). stream-json reads one NDJSON message per line from stdin and runs a turn for each; it requires --output-format stream-json (default text)",
+  "--mode                          Set the agent execution mode for this session (accept-edits, plan)",
+  "--model                         Model for the current CLI session",
+  "--output-format                 Output format for print mode (text, json, stream-json) (default text)",
+  "--print-timeout                 Optional time limit for print mode; 0 waits until the turn completes (default 0s)",
+  "Available subcommands:",
+  "agent           List available agents",
+  "agents          List available agents",
+  "help            Show help for subcommands",
+  "models          List available models"
+ ],
+ "agents_help": [
+  "Usage: agy agent [flags]",
+  "",
+  "List available agents",
+  "",
+  "Flags:",
+  "  -h      Show help",
+  "  --help  Show help"
+ ],
+ "gemini_layout": [],
+ "definition_keys": {},
+ "rules": {
+  "planted": {
+   "PGEM": "/tmp/uhw-ws-l0hb5hjr/GEMINI.md",
+   "PAGT": "/tmp/uhw-ws-l0hb5hjr/AGENTS.md",
+   "PCLA": "/tmp/uhw-ws-l0hb5hjr/CLAUDE.md",
+   "PRUL": "/tmp/uhw-ws-l0hb5hjr/.agents/rules/uhw.md",
+   "PRLX": "/tmp/uhw-ws-l0hb5hjr/.agent/rules/uhw.md",
+   "PGDR": "/tmp/uhw-ws-l0hb5hjr/.gemini/GEMINI.md",
+   "GGEM": "/home/admin_rickruiz_altostrat_com/.gemini/GEMINI.md",
+   "GAGT": "/home/admin_rickruiz_altostrat_com/.gemini/AGENTS.md"
+  },
+  "found": [],
+  "tool_attempts": [],
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "commands": {
+  "uhwwfa": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwwfa` isn't a recognized command. Did you mean to run one of the available slash commands, or can I help you with something else?\n\nAvailable slash commands:",
+   "tool_attempts": []
+  },
+  "uhwwfb": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "It looks like `/uhwwfb` isn't a recognized command. How can I help you today? \n\nIf you were looking for a slash command, some available commands include `/plan`",
+   "tool_attempts": []
+  },
+  "uhwcmc": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "It looks like `/uhwcmc` isn't a recognized command. \n\nIf you were looking for a slash command, here are the available ones:\n- `/plan` \u2013 Create a step-by-step pl",
+   "tool_attempts": []
+  },
+  "uhwcmd": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwcmd` isn't a recognized slash command or custom workflow.\n\nHere are some built-in slash commands you can use:\n- `/help` \u2014 View all available CLI slash comm",
+   "tool_attempts": []
+  },
+  "uhwnosuchcommand": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwnosuchcommand` is not a recognized slash command. \n\nYou can run `/help` to view all built-in CLI commands, or try one of the available workflow commands:\n-",
+   "tool_attempts": []
+  }
+ },
+ "skills": {
+  "planted": {
+   "uhw-skill-a": "/tmp/uhw-ws-dpilu2fs/.agents/skills/uhw-skill-a/SKILL.md",
+   "uhw-skill-b": "/tmp/uhw-ws-dpilu2fs/.agent/skills/uhw-skill-b/SKILL.md",
+   "uhw-skill-c": "/tmp/uhw-ws-dpilu2fs/.gemini/skills/uhw-skill-c/SKILL.md",
+   "uhw-skill-d": "/home/admin_rickruiz_altostrat_com/.gemini/skills/uhw-skill-d/SKILL.md"
+  },
+  "index_reply": "agy-customizations\nantigravity-guide\n",
+  "use_reply": "No skills starting with `uhw-skill` are currently available in this session.\n\n### Available Skills\nOnly the following built-in skills are loaded:\n- `agy-customizations` ([SKILL.md](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customizations/SKILL.md))\n- `antigravity-guide` ([SKILL.md](file:///home/admin_rickruiz_altostrat_com/snap",
+  "use_calls": []
+ },
+ "agents": {
+  "listing_head": [],
+  "listing_lines": 0,
+  "runs": {
+   "uhw-agent-a": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "I do not have a codeword assigned in my instructions or context (the command output was `probe`).\n"
+   },
+   "uhw-agent-b": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and output `probe`. \n\nI do not have a codeword assigned in my instructions or context.\n"
+   },
+   "uhw-agent-c": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and returned `probe`. \n\nI do not have a codeword configured or assigned in this session.\n"
+   },
+   "uhw-agent-d": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and returned `probe`. I do not have a codeword assigned in my instructions.\n"
+   }
+  }
+ },
+ "frames": {
+  "event_kinds": [
+   "init//",
+   "result//",
+   "step_update/agent_response/ACTIVE",
+   "step_update/agent_response/DONE",
+   "step_update/tool/ACTIVE",
+   "step_update/tool/DONE",
+   "step_update/user_input/DONE"
+  ],
+  "init_keys": [
+   "conversation_id",
+   "event",
+   "init"
+  ],
+  "result_keys": [
+   "(top) event",
+   "(top) result",
+   "conversation_id",
+   "duration_seconds",
+   "num_turns",
+   "response",
+   "status",
+   "usage"
+  ],
+  "usage_like_keys": [
+   "cache_read_tokens",
+   "input_tokens",
+   "output_tokens",
+   "thinking_tokens",
+   "total_tokens",
+   "usage"
+  ]
+ },
+ "native": {
+  "rules": false,
+  "commands": false,
+  "skills": false,
+  "agents": false
+ }
+}

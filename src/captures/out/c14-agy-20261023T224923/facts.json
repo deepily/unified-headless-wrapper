@@ -1,0 +1,53 @@
+{
+ "rows": [
+  {
+   "seconds": 45,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "I cannot call the `wait_seconds` tool because the **`uhw-probe` MCP server is not loaded** in this session (no MCP tools are registered in my toolset).\n\n### Root Cause (Snap Confinement)\n\n`agy` is run"
+  },
+  {
+   "seconds": 200,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool from the `uhw-probe` MCP server is unavailable in this session because no MCP servers are loaded (due to the Snap confinement issue described above: [mcp_config.json](file:///h"
+  },
+  {
+   "seconds": 620,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool from the `uhw-probe` MCP server is unavailable in this session because no MCP servers are loaded (due to Snap confinement isolating `$HOME` at `/home/admin_rickruiz_altostrat_c"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.046848667, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 4, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.044297347, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 6, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.702593309, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/mcp_config.json\"}, \"error\": {\"t",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 7, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.030312554, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/.gemini/config/mcp_config.json\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\": \"decla",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 8, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.044742406, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/config/mcp_config.json\"}, \"output\": \"1 lines, 0 ",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 10, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 1.546147996, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"env; ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/ /home/admin_rickruiz_altostrat_",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 12, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 1.396401975, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ps aux | grep -E \\\"agy|uhw|mcp|antigravity\\\"; ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 14, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.045915176, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/cli.log\"}, \"output\": \"213 lines",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 16, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 0.057898848, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/config/projects\"}, \"output\": \"total 1",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 18, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.040337336, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/mnt/lupin-data/unified-headless-wrapper/src/captures/c14_mcp_wait.py\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\": \""
+ ],
+ "server_eof_after_s": null
+}

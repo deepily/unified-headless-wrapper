@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[0-1] Hello, how can I help you today?
+[0-2] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP provides reliable, ordered data delivery, while UDP is faster and connectionless.
+[2-1] TCP provides reliable, ordered data delivery, whereas UDP delivers faster speeds with minimal overhead. | Here is a comparison of their key differences.
+[2-2] TCP provides reliable and ordered data delivery, while UDP offers faster transmission without connection overhead.
+[3-0] I cannot list the files in this directory because permission was denied. | The current working directory is a restricted system folder used by the snap package. | Please launch the tool from an accessible project directory to inspect your files.
+[3-1] I cannot list the files in this directory because access was denied. | This directory is the snap fallback void folder which only allows execution without read permission. | You can run the assistant from an accessible directory or grant read permissions.
+[3-2] I cannot list the files in this directory because access was denied. | The directory is owned by root and only has execute permissions. | You need root permissions on the host system to view its contents.
+[4-0] A hash map stores key-value pairs by converting keys into array indexes using a hash function. | If two keys produce the same index, collision resolution techniques like chaining store both values safely. | This approach enables constant time performance on average for lookups, insertions, and deletions.
+[4-1] A hash map stores key and value pairs by converting keys into array positions using a hash function. | This allows it to find, add, and remove data almost instantly on average. | When different keys share the same position, it resolves the conflict using techniques like linked lists.
+[4-2] A hash map stores key-value pairs by converting keys into array indexes using a hash function. | This allows it to find, add, or remove data almost instantly on average. | When two keys produce the same index, collision techniques store both entries safely.
+[5-0] I have created a backup plan document for your laptop. | It follows the three two one rule using an external drive and secure cloud storage.
+[5-1] I have created a laptop backup plan document for you. | It uses the three two one strategy combining local drives and automated cloud storage.
+[5-2] I have created a backup plan document for your laptop based on the three two one rule.
+[6-0] To sleep better, keep a regular schedule, cool your bedroom, exercise daily, and limit late caffeine and screens.
+[6-1] Keep a consistent schedule, limit evening screen time, cool your bedroom, avoid afternoon caffeine, and exercise daily.
+[6-2] To improve your sleep, keep a regular schedule, dim screens, avoid late caffeine, cool your room, and wind down.
+[7-0] You are welcome, let me know if you need anything else.
+[7-1] You are welcome, and I am ready whenever you need assistance.
+[7-2] Understood, I am ready to assist you in this format.

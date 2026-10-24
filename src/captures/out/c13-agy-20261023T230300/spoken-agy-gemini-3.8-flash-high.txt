@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[0-1] Hello, how can I help you today?
+[0-2] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP provides reliable, ordered data delivery, whereas UDP offers faster transmission with lower overhead.
+[2-1] TCP provides reliable, ordered data delivery, while UDP offers faster transmission with lower overhead. | A comparison table is displayed on your screen.
+[2-2] TCP provides reliable and ordered data delivery, while UDP offers faster transmission without delivery guarantees. | I have displayed a side-by-side comparison table on your screen.
+[3-0] I cannot list the files in this directory because read access was denied. | The directory is a restricted system placeholder used by snapd. | Please switch to a project directory to inspect your files.
+[3-1] I cannot list files here because reading the directory was blocked by a permission denied error. | The current path is a special empty void folder managed by snapd. | To inspect your project, switch the workspace to a readable directory or adjust permissions.
+[3-2] I cannot list the files in this directory because access was denied. | The current folder has restricted permissions that prevent viewing its contents. | You can switch to another directory or check permissions with administrator access.
+[4-0] A hash map stores data in pairs by converting keys into array positions using a hash function. | This mechanism enables the system to store and retrieve data almost instantly. | If two keys target the same slot, collision resolution techniques preserve both entries.
+[4-1] A hash map stores key-value pairs by converting keys into array indexes using a hash function. | This allows it to find, add, and remove items almost instantly regardless of collection size. | When different keys produce the same index, the map resolves the collision using chains or open addressing.
+[4-2] A hash map converts keys into array indexes using a hash function to store and retrieve values quickly. | When two keys map to the same index, it resolves the collision using methods like chaining. | This design allows lookups, insertions, and deletions to complete in near constant time.
+[5-0] I have prepared a short document with a complete laptop backup plan. | It uses the three two one strategy with both local drives and cloud storage. | You should set up automatic backups and test file restoration regularly.
+[5-1] I have created a backup plan document for your laptop. | It outlines a three-two-one strategy using external drives and secure cloud storage.
+[5-2] Here is a short backup plan document for your laptop based on the three two one rule. | It combines automatic local drive backups with secure cloud storage and regular restore testing.
+[6-0] To sleep better, keep a regular schedule, limit screens, cut late caffeine, cool your room, and wind down.
+[6-1] To sleep better, keep a consistent schedule, cool your bedroom, dim evening screens, avoid late caffeine, and unwind.
+[6-2] To sleep better, keep a regular schedule, cool your bedroom, avoid late caffeine, limit screens, and unwind before bed.
+[7-0] You are welcome, and I will use this format whenever you need me.
+[7-1] Understood, I will keep my spoken replies brief and follow this format.
+[7-2] Understood, I will answer in this format from now on.

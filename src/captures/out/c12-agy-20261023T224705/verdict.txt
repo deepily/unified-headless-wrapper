@@ -1,0 +1,16 @@
+version                                        1.2.11
+A. top-level tools                             none
+A. subagent tool candidates (non-basic)        none
+A. hooks fired inside subagent                 0 calls []
+A. subagent agentName / callerContext          [] / []
+A. conversation ids in stream                  1
+A. sub.marker created                          no
+A. model named its tool as                      executed `touch sub.marker` in the current workspace directory (`/var/lib/snapd/void`) and reported back (noting that `/var/lib/snapd/void` returned `Permissio
+B. veto                                        skipped: no candidate tool in A
+C. --mode plan status per turn                 ['SUCCESS', 'SUCCESS']
+C. tools turn 1 / turn 2                       [['write_to_file', 'write_to_file', 'run_command', 'run_command', 'run_command', 'run_command', 'write_to_file'], ['write_to_file', 'view_file']]
+C. plan.marker exists after approval           no
+C. artifacts written                           none
+C. turn 1 reply                                I have created the [implementation plan](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain
+C. turn 1 wrote into the workspace             no (plan artifact only)
+VERDICT c12: subagent tool=not found; hooks inside subagents=no; veto enforceable=no; plan mode touched the workspace before approval=no

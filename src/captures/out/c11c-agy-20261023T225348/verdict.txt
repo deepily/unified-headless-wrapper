@@ -1,0 +1,14 @@
+version                                        1.2.11
+A. ~/.gemini/config/skills/uhw-skill-h         in index=False
+A. ~/.gemini/antigravity-cli/skills/uhw-skill-i in index=False
+B. <ws>/.agents/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. <ws>/.agents/rules/uhw-md.md (trigger: model_decision) in context=False  read on demand=False
+B. <ws>/.agent/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. ~/.gemini/config/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. ~/.gemini/antigravity-cli/rules/uhw-on.md (trigger: always_on) in context=False  read on demand=False
+B. tools used on demand                        none
+C. default tools (as the model lists them)     ['run_command', 'manage_task', 'view_file', 'write_to_file', 'replace_file_content', 'search_web', 'read_url_content', 'generate_image', 'define_subagent', 'invoke_subagent', 'send_message', 'manage_subagents', 'schedule', 'ask_question']
+C. uhw-agent-m0 tools: [run_command]           whoami answered=False calls=[] status=['SUCCESS']
+C. uhw-agent-m1 tools: [call_mcp_tool]         whoami answered=False calls=[] status=['SUCCESS']
+C. uhw-agent-m2 tools: [call_mcp_tool, read_file] whoami answered=False calls=[] status=['SUCCESS']
+VERDICT c11c: global skills at none; always_on rule in context=no; minimal tools for MCP=neither variant

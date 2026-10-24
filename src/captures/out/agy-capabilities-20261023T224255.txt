@@ -1,0 +1,388 @@
+# agy capabilities 20261023T224255 · Linux x86_64 · version 1.2.11 · MODEL=unset MODELS=none
+
+## C11 surfaces
+version                                        1.2.11
+A. help lines on agents/skills/commands/mode   12
+A. ~/.gemini entries matching surfaces         0
+A. existing ~/.gemini/GEMINI.md                absent
+A. existing ~/.gemini/AGENTS.md                absent
+B. instruction files loaded                    none
+B. codewords not planted (hallucinated)        none
+B. tool attempts (all denied)                  0
+C. /uhwwfa (.agents/workflows/uhwwfa.md)       expanded=False status=['SUCCESS'] reply="`/uhwwfa` isn't a recognized command. Did you mean to run one of the a"
+C. /uhwwfb (.agent/workflows/uhwwfb.md)        expanded=False status=['SUCCESS'] reply="It looks like `/uhwwfb` isn't a recognized command. How can I help you"
+C. /uhwcmc (.agents/commands/uhwcmc.md)        expanded=False status=['SUCCESS'] reply="It looks like `/uhwcmc` isn't a recognized command. \n\nIf you were look"
+C. /uhwcmd (.gemini/commands/uhwcmd.toml)      expanded=False status=['SUCCESS'] reply="`/uhwcmd` isn't a recognized slash command or custom workflow.\n\nHere a"
+C. /uhwnosuchcommand (unknown command (control)) expanded=False status=['SUCCESS'] reply='`/uhwnosuchcommand` is not a recognized slash command. \n\nYou can run `'
+D. uhw-skill-a (<ws>/.agents/skills/uhw-skill-a/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-b (<ws>/.agent/skills/uhw-skill-b/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-c (<ws>/.gemini/skills/uhw-skill-c/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-d (~/.gemini/skills/uhw-skill-d/SKILL.md) in index=False  codeword via use=False
+D. tools used to reach skills                  none
+E. `agents` listing lines                      0
+E. uhw-agent-a (.agents/agents)                listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-b (.agent/agents)                 listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-c (.gemini/agents)                listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+E. uhw-agent-d (~/.gemini/agents)              listed=False --agent status=['SUCCESS'] prompt carried=False agentName=[]
+F. result-frame keys                           ['(top) event', '(top) result', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+F. token/usage/context keys in any frame       ['cache_read_tokens', 'input_tokens', 'output_tokens', 'thinking_tokens', 'total_tokens', 'usage']
+VERDICT c11: native surfaces: rules=no, commands=no, skills=no, agents=no
+{
+ "help_lines": [
+  "--agent                         Agent for the current CLI session",
+  "--disable-slash-commands        Disable slash command and skill expansion in print mode",
+  "--input-format                  Input format for print mode (text, stream-json). stream-json reads one NDJSON message per line from stdin and runs a turn for each; it requires --output-format stream-json (default text)",
+  "--mode                          Set the agent execution mode for this session (accept-edits, plan)",
+  "--model                         Model for the current CLI session",
+  "--output-format                 Output format for print mode (text, json, stream-json) (default text)",
+  "--print-timeout                 Optional time limit for print mode; 0 waits until the turn completes (default 0s)",
+  "Available subcommands:",
+  "agent           List available agents",
+  "agents          List available agents",
+  "help            Show help for subcommands",
+  "models          List available models"
+ ],
+ "agents_help": [
+  "Usage: agy agent [flags]",
+  "",
+  "List available agents",
+  "",
+  "Flags:",
+  "  -h      Show help",
+  "  --help  Show help"
+ ],
+ "gemini_layout": [],
+ "definition_keys": {},
+ "rules": {
+  "planted": {
+   "PGEM": "/tmp/uhw-ws-l0hb5hjr/GEMINI.md",
+   "PAGT": "/tmp/uhw-ws-l0hb5hjr/AGENTS.md",
+   "PCLA": "/tmp/uhw-ws-l0hb5hjr/CLAUDE.md",
+   "PRUL": "/tmp/uhw-ws-l0hb5hjr/.agents/rules/uhw.md",
+   "PRLX": "/tmp/uhw-ws-l0hb5hjr/.agent/rules/uhw.md",
+   "PGDR": "/tmp/uhw-ws-l0hb5hjr/.gemini/GEMINI.md",
+   "GGEM": "/home/admin_rickruiz_altostrat_com/.gemini/GEMINI.md",
+   "GAGT": "/home/admin_rickruiz_altostrat_com/.gemini/AGENTS.md"
+  },
+  "found": [],
+  "tool_attempts": [],
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "commands": {
+  "uhwwfa": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwwfa` isn't a recognized command. Did you mean to run one of the available slash commands, or can I help you with something else?\n\nAvailable slash commands:",
+   "tool_attempts": []
+  },
+  "uhwwfb": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "It looks like `/uhwwfb` isn't a recognized command. How can I help you today? \n\nIf you were looking for a slash command, some available commands include `/plan`",
+   "tool_attempts": []
+  },
+  "uhwcmc": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "It looks like `/uhwcmc` isn't a recognized command. \n\nIf you were looking for a slash command, here are the available ones:\n- `/plan` \u2013 Create a step-by-step pl",
+   "tool_attempts": []
+  },
+  "uhwcmd": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwcmd` isn't a recognized slash command or custom workflow.\n\nHere are some built-in slash commands you can use:\n- `/help` \u2014 View all available CLI slash comm",
+   "tool_attempts": []
+  },
+  "uhwnosuchcommand": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwnosuchcommand` is not a recognized slash command. \n\nYou can run `/help` to view all built-in CLI commands, or try one of the available workflow commands:\n-",
+   "tool_attempts": []
+  }
+ },
+ "skills": {
+  "planted": {
+   "uhw-skill-a": "/tmp/uhw-ws-dpilu2fs/.agents/skills/uhw-skill-a/SKILL.md",
+   "uhw-skill-b": "/tmp/uhw-ws-dpilu2fs/.agent/skills/uhw-skill-b/SKILL.md",
+   "uhw-skill-c": "/tmp/uhw-ws-dpilu2fs/.gemini/skills/uhw-skill-c/SKILL.md",
+   "uhw-skill-d": "/home/admin_rickruiz_altostrat_com/.gemini/skills/uhw-skill-d/SKILL.md"
+  },
+  "index_reply": "agy-customizations\nantigravity-guide\n",
+  "use_reply": "No skills starting with `uhw-skill` are currently available in this session.\n\n### Available Skills\nOnly the following built-in skills are loaded:\n- `agy-customizations` ([SKILL.md](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customizations/SKILL.md))\n- `antigravity-guide` ([SKILL.md](file:///home/admin_rickruiz_altostrat_com/snap",
+  "use_calls": []
+ },
+ "agents": {
+  "listing_head": [],
+  "listing_lines": 0,
+  "runs": {
+   "uhw-agent-a": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "I do not have a codeword assigned in my instructions or context (the command output was `probe`).\n"
+   },
+   "uhw-agent-b": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and output `probe`. \n\nI do not have a codeword assigned in my instructions or context.\n"
+   },
+   "uhw-agent-c": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and returned `probe`. \n\nI do not have a codeword configured or assigned in this session.\n"
+   },
+   "uhw-agent-d": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": "The command `echo probe` executed and returned `probe`. I do not have a codeword assigned in my instructions.\n"
+   }
+  }
+ },
+ "frames": {
+  "event_kinds": [
+   "init//",
+   "result//",
+   "step_update/agent_response/ACTIVE",
+   "step_update/agent_response/DONE",
+   "step_update/tool/ACTIVE",
+   "step_update/tool/DONE",
+   "step_update/user_input/DONE"
+  ],
+  "init_keys": [
+   "conversation_id",
+   "event",
+   "init"
+  ],
+  "result_keys": [
+   "(top) event",
+   "(top) result",
+   "conversation_id",
+   "duration_seconds",
+   "num_turns",
+   "response",
+   "status",
+   "usage"
+  ],
+  "usage_like_keys": [
+   "cache_read_tokens",
+   "input_tokens",
+   "output_tokens",
+   "thinking_tokens",
+   "total_tokens",
+   "usage"
+  ]
+ },
+ "native": {
+  "rules": false,
+  "commands": false,
+  "skills": false,
+  "agents": false
+ }
+}
+## C12 subagent and plan mode
+version                                        1.2.11
+A. top-level tools                             none
+A. subagent tool candidates (non-basic)        none
+A. hooks fired inside subagent                 0 calls []
+A. subagent agentName / callerContext          [] / []
+A. conversation ids in stream                  1
+A. sub.marker created                          no
+A. model named its tool as                      executed `touch sub.marker` in the current workspace directory (`/var/lib/snapd/void`) and reported back (noting that `/var/lib/snapd/void` returned `Permissio
+B. veto                                        skipped: no candidate tool in A
+C. --mode plan status per turn                 ['SUCCESS', 'SUCCESS']
+C. tools turn 1 / turn 2                       [['write_to_file', 'write_to_file', 'run_command', 'run_command', 'run_command', 'run_command', 'write_to_file'], ['write_to_file', 'view_file']]
+C. plan.marker exists after approval           no
+C. artifacts written                           none
+C. turn 1 reply                                I have created the [implementation plan](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain
+C. turn 1 wrote into the workspace             no (plan artifact only)
+VERDICT c12: subagent tool=not found; hooks inside subagents=no; veto enforceable=no; plan mode touched the workspace before approval=no
+{
+ "discover": {
+  "top_tools": [],
+  "child_tools": [],
+  "candidate_args": {},
+  "child_agentName": [],
+  "child_callerContext": [],
+  "stream_tools": [
+   "invoke_subagent"
+  ],
+  "stream_conversation_ids": 1,
+  "marker": false,
+  "reply": "I have delegated the task to a subagent using the **`invoke_subagent`** tool. Waiting for the subagent to complete `touch sub.marker` and report back.\nThe subagent ([File Marker Creator](conversation://ff033ec0-76ae-461b-a64e-17797704f864)) executed `touch sub.marker` in the current workspace directory (`/var/lib/snapd/void`) and reported back (noting that `/var/lib/snapd/void` returned `Permissio",
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "plan": {
+  "status": [
+   "SUCCESS",
+   "SUCCESS"
+  ],
+  "tools_by_turn": [
+   [
+    "write_to_file",
+    "write_to_file",
+    "run_command",
+    "run_command",
+    "run_command",
+    "run_command",
+    "write_to_file"
+   ],
+   [
+    "write_to_file",
+    "view_file"
+   ]
+  ],
+  "hook_tools": [],
+  "marker": false,
+  "artifacts": [],
+  "replies": [
+   "I have created the [implementation plan](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain/17f3f8d4-de9c-4e8c-adc4-af57c46dec90/implementation_plan.md). Please review and approve it when you're ready for me to proceed.\nI created [plan.marker](file://",
+   "I carried out the approved plan by creating [plan.marker](file:///tmp/uhw-ws-gqduw7se/plan.marker) containing the word `hello` and verifying its contents. The summary is available in the [walkthrough](file:///home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/brain"
+  ]
+ }
+}
+## C14 long MCP calls
+version                                        1.2.11
+per-server timeout in config (ms)              none
+wait   45 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='I cannot call the `wait_seconds` tool because the **`uhw-pro'
+wait  200 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is u'
+wait  620 s                                    called=False answered_in_reply=False cancelled_after=None status=['SUCCESS'] reply='The `wait_seconds` tool from the `uhw-probe` MCP server is u'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "f824f32e-4079-492b-abbc-807852b8605e", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "view_file", "duration_seconds": 0.046848667, "tool_info": {"name": "view_file", "parameters": {"AbsolutePath": "/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization']
+VERDICT c14: longest call answered = 0 s of 620 s tried (a timeout lies between the last success and the next try)
+{
+ "rows": [
+  {
+   "seconds": 45,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "I cannot call the `wait_seconds` tool because the **`uhw-probe` MCP server is not loaded** in this session (no MCP tools are registered in my toolset).\n\n### Root Cause (Snap Confinement)\n\n`agy` is run"
+  },
+  {
+   "seconds": 200,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool from the `uhw-probe` MCP server is unavailable in this session because no MCP servers are loaded (due to the Snap confinement issue described above: [mcp_config.json](file:///h"
+  },
+  {
+   "seconds": 620,
+   "called": false,
+   "server_finished": false,
+   "cancelled_after_s": null,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool from the `uhw-probe` MCP server is unavailable in this session because no MCP servers are loaded (due to Snap confinement isolating `$HOME` at `/home/admin_rickruiz_altostrat_c"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.046848667, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 4, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.044297347, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/builtin/skills/agy-customization",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 6, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.702593309, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/mcp_config.json\"}, \"error\": {\"t",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 7, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.030312554, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/.gemini/config/mcp_config.json\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\": \"decla",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 8, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.044742406, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/config/mcp_config.json\"}, \"output\": \"1 lines, 0 ",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 10, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 1.546147996, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"env; ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/ /home/admin_rickruiz_altostrat_",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 12, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 1.396401975, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ps aux | grep -E \\\"agy|uhw|mcp|antigravity\\\"; ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 14, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.045915176, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/antigravity-cli/cli.log\"}, \"output\": \"213 lines",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 16, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"run_command\", \"duration_seconds\": 0.057898848, \"tool_info\": {\"name\": \"run_command\", \"parameters\": {\"CommandLine\": \"ls -la /home/admin_rickruiz_altostrat_com/snap/antigravity-cli/common/.gemini/config/projects\"}, \"output\": \"total 1",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"f824f32e-4079-492b-abbc-807852b8605e\", \"step_index\": 18, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"view_file\", \"duration_seconds\": 0.040337336, \"tool_info\": {\"name\": \"view_file\", \"parameters\": {\"AbsolutePath\": \"/mnt/lupin-data/unified-headless-wrapper/src/captures/c14_mcp_wait.py\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"message\": \""
+ ],
+ "server_eof_after_s": null
+}
+## C13 pinned model
+model none -> modelName in hook payload: none · status: "status": "ERROR"
+C9 compliance (v1 rules): 0/24 well formed
+C10 median gap spoken-close -> result: 0.0 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-none-20261023T225110)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines
+--- results-agy-none.tsv
+prompt	repeat	needs_repair	spoken_lines	spoken_words	max_sentences_per_line	abstract	document	t_first_delta	t_spoken_closed	t_result	gap_s
+0	0	True	0	0	0	False	False	None	1.105	1.105	0.0
+1	0	True	0	0	0	False	False	None	0.992	0.992	0.0
+2	0	True	0	0	0	False	False	None	0.994	0.994	0.0
+3	0	True	0	0	0	False	False	None	0.998	0.998	0.0
+4	0	True	0	0	0	False	False	None	0.945	0.945	0.0
+5	0	True	0	0	0	False	False	None	0.927	0.927	0.0
+6	0	True	0	0	0	False	False	None	1.006	1.006	0.0
+7	0	True	0	0	0	False	False	None	1.026	1.026	0.0
+0	1	True	0	0	0	False	False	None	1.0	1.0	0.0
+1	1	True	0	0	0	False	False	None	1.041	1.041	0.0
+2	1	True	0	0	0	False	False	None	0.924	0.924	0.0
+3	1	True	0	0	0	False	False	None	1.044	1.044	0.0
+4	1	True	0	0	0	False	False	None	0.886	0.886	0.0
+5	1	True	0	0	0	False	False	None	1.086	1.086	0.0
+6	1	True	0	0	0	False	False	None	1.076	1.076	0.0
+7	1	True	0	0	0	False	False	None	1.047	1.047	0.0
+0	2	True	0	0	0	False	False	None	1.097	1.097	0.0
+1	2	True	0	0	0	False	False	None	1.036	1.036	0.0
+2	2	True	0	0	0	False	False	None	1.109	1.109	0.0
+3	2	True	0	0	0	False	False	None	1.026	1.026	0.0
+4	2	True	0	0	0	False	False	None	1.18	1.18	0.0
+5	2	True	0	0	0	False	False	None	1.074	1.074	0.0
+6	2	True	0	0	0	False	False	None	1.073	1.073	0.0
+7	2	True	0	0	0	False	False	None	1.078	1.078	0.0
+--- spoken-agy-none.txt
+[0-0] 
+[0-1] 
+[0-2] 
+[1-0] 
+[1-1] 
+[1-2] 
+[2-0] 
+[2-1] 
+[2-2] 
+[3-0] 
+[3-1] 
+[3-2] 
+[4-0] 
+[4-1] 
+[4-2] 
+[5-0] 
+[5-1] 
+[5-2] 
+[6-0] 
+[6-1] 
+[6-2] 
+[7-0] 
+[7-1] 
+[7-2] 
