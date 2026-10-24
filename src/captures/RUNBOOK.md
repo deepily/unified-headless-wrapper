@@ -1,11 +1,16 @@
 # Capture runbook
 
-## Run this now: AGY round (test VM, from the repo root)
+## Run this now: AGY round, again (test VM, from the repo root)
+
+The 2026-10-23 run is invalid: AGY on the VM is a **snap**, and snap confinement hid the workspaces, hooks and `~/.gemini` from it (`src/rnd/v0.0.1/2026.10.23-agy-round-results.md`). Reinstall AGY first.
 
 ```bash
+command -v agy; agy --version                              # a path under /snap means the snap is still in use
+sudo snap remove antigravity-cli                           # then install AGY the non-snap way, as on the dev server
+hash -r; command -v agy; agy --version                     # expect a non-/snap path and 1.3.x or later
 git pull && chmod +x src/captures/*.sh src/captures/*.py
-src/captures/agy_round.sh                                  # about 75 min
-git add src/captures && git commit -m "AGY round results" && git push
+src/captures/agy_round.sh                                  # about 75 min; refuses to start under a snap AGY
+git add src/captures && git commit -m "AGY round results (non-snap)" && git push
 ```
 
 **What it does:** reruns every Jetski capability capture on AGY, because the adapter is built against AGY (D32):
