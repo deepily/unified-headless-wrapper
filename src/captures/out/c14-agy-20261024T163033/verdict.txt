@@ -1,0 +1,7 @@
+version                                        1.4.7
+per-server timeout in config (ms)              none
+wait   45 s                                    called=True answered_in_reply=True cancelled_after=None status=['SUCCESS'] reply='```\nwaited 45 seconds\n```\n'
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+wait  620 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='```\nEncountered error in tool execution: MCP tool call to se'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "87a06aae-97f6-4f14-aa80-b9a2dd6cdee2", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.098345503, "tool_info": {"name": "read_file", "parameters": {"Path": "/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 45 s of 620 s tried (a timeout lies between the last success and the next try)

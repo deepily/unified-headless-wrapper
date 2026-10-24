@@ -1,0 +1,92 @@
+{
+ "global_skill": {
+  "planted": {
+   "uhw-skill-h": true,
+   "uhw-skill-i": true
+  },
+  "index": "agy-customizations\nantigravity-guide\nuhw-skill-h\nuhw-skill-i\n"
+ },
+ "rules": {
+  "planted": {
+   "RON": "/tmp/uhw-ws-cqtm9x10/.agents/rules/uhw-on.md",
+   "RMD": "/tmp/uhw-ws-cqtm9x10/.agents/rules/uhw-md.md",
+   "RXON": "/tmp/uhw-ws-cqtm9x10/.agent/rules/uhw-on.md",
+   "RGON": "/home/admin_rickruiz_altostrat_com/.gemini/config/rules/uhw-on.md",
+   "RGAG": "/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/rules/uhw-on.md"
+  },
+  "in_context": [
+   "UHWCODE-RGON",
+   "UHWCODE-RON",
+   "UHWCODE-RXON"
+  ],
+  "on_demand": [
+   "UHWCODE-RGON",
+   "UHWCODE-RMD",
+   "UHWCODE-RON",
+   "UHWCODE-RXON"
+  ],
+  "on_demand_calls": [
+   [
+    "read_file",
+    "{\"Path\": \"/tmp/uhw-ws-cqtm9x10/.agents/rules/uhw-md.md\"}"
+   ]
+  ]
+ },
+ "default_tools": [
+  "run_command",
+  "manage_task",
+  "read_file",
+  "write_file",
+  "edit_file",
+  "search_web",
+  "define_subagent",
+  "invoke_subagent",
+  "send_message",
+  "manage_subagents",
+  "schedule",
+  "ask_question"
+ ],
+ "agents_mcp": {
+  "uhw-agent-m0": {
+   "tools": "[run_command]",
+   "status": [
+    "SUCCESS"
+   ],
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"cat /home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/mcp/uhw-probe/whoami.json\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Read whoa"
+    ],
+    [
+     "call_mcp_tool",
+     "{\"Arguments\": {}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"whoami\"}"
+    ]
+   ],
+   "whoami_answered": true,
+   "agentName": [
+    "None"
+   ],
+   "reply": "```json\n{\"t\": 1792860050.8874612, \"pid\": 19046, \"ppid\": 19031, \"cwd\": \"/tmp/uhw-ws-4gq0s28f\", \"env\": {\"PWD\": \"/mnt/lupin-data/unified-headless-wrapper\", \"UHW_PROBE_TAG\": \"uhw-agent-m0\"}}\n```\n"
+  },
+  "uhw-agent-m1": {
+   "tools": "[call_mcp_tool]",
+   "status": [
+    "ERROR"
+   ],
+   "calls": [],
+   "whoami_answered": false,
+   "agentName": [],
+   "reply": ""
+  },
+  "uhw-agent-m2": {
+   "tools": "[call_mcp_tool, read_file]",
+   "status": [
+    "ERROR"
+   ],
+   "calls": [],
+   "whoami_answered": false,
+   "agentName": [],
+   "reply": ""
+  }
+ }
+}

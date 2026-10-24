@@ -1,0 +1,4 @@
+model none -> modelName in hook payload: none · status: "status": "ERROR"
+C9 compliance (v1 rules): 0/24 well formed
+C10 median gap spoken-close -> result: 0.0 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-none-20261024T163804)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines

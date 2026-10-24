@@ -1,0 +1,206 @@
+{
+ "workflows": {
+  "uhwwfa": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la /tmp/uhw-ws-k5grert7\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace files\"}"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find /tmp/uhw-ws-k5grert7/.agent /tmp/uhw-ws-k5grert7/.agents -maxdepth 4\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/builtin/skills/agy-customizations/SKILL.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/tmp/uhw-ws-k5grert7/.agents/workflows/uhwwfa.md\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFA\n"
+  },
+  "uhwwfb": {
+   "codeword": true,
+   "calls": [
+    [
+     "run_command",
+     "{\"CommandLine\": \"ls -la /tmp/uhw-ws-k5grert7 ~/.gemini\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"List workspace and .gemini directory\"}"
+    ],
+    [
+     "run_command",
+     "{\"CommandLine\": \"find /tmp/uhw-ws-k5grert7/.agent /tmp/uhw-ws-k5grert7/.agents -type f\", \"WaitMsBeforeAsync\": 5000, \"toolSummary\": \"Find files in .agent and .agents\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/builtin/skills/agy-customizations/SKILL.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/tmp/uhw-ws-k5grert7/.agent/workflows/uhwwfb.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/tmp/uhw-ws-k5grert7/.agents/workflows/uhwwfa.md\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/tmp/uhw-ws-k5grert7/.agents/hooks.json\"}"
+    ],
+    [
+     "read_file",
+     "{\"Path\": \"/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/builtin/skills/antigravity_guide/SKILL.md\"}"
+    ]
+   ],
+   "reply": "UHWCODE-WFB\n"
+  }
+ },
+ "slash_list": "`/uhwnosuchcommand` is not a recognized slash command. \n\nHere are the available slash commands you can use:\n\n- **`/plan`** \u2014 Create a step-by-step plan before executing a complex task.\n- **`/grill-me`** \u2014 Align on a plan through an interactive interview to resolve design decisions.\n- **`/goal`** \u2014 Run a long-running task thoroughly until the goal is fully achieved.\n- **`/browser`** \u2014 Browse the we",
+ "global_skills": {
+  "planted": {
+   "uhw-skill-e": "/home/admin_rickruiz_altostrat_com/.gemini/jetski/skills",
+   "uhw-skill-f": "/home/admin_rickruiz_altostrat_com/.agents/skills",
+   "uhw-skill-g": "/home/admin_rickruiz_altostrat_com/.agent/skills"
+  },
+  "index": "agy-customizations\nantigravity-guide\n"
+ },
+ "agent_tools": {
+  "uhw-agent-t0": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": "I do not have access to a shell execution tool to run `echo probe`.\n\nUHWCODE-T0\n"
+  },
+  "uhw-agent-t1": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "None"
+   ],
+   "reply": "UHWCODE-T1\n"
+  },
+  "uhw-agent-t2": {
+   "status": [
+    "ERROR"
+   ],
+   "tools": [],
+   "agentName": [],
+   "reply": ""
+  },
+  "uhw-agent-t3": {
+   "status": [
+    "SUCCESS"
+   ],
+   "tools": [
+    "run_command"
+   ],
+   "agentName": [
+    "None"
+   ],
+   "reply": "UHWCODE-T3\n"
+  }
+ },
+ "format_docs": {
+  "antigravity-cli/builtin/skills/agy-customizations/SKILL.md": [
+   "name: agy-customizations",
+   "description: >-",
+   "# Antigravity Customization System Guide",
+   "## Customization Types: Quick Reference",
+   "## Customization Discovery and Locations",
+   "### Discovery Locations",
+   "## Loading Priority and Precedence",
+   "## How Customizations are Applied",
+   "### Progressive Disclosure (Skills and Rules)",
+   "### Deduplication",
+   "## Advanced Management: JSON Configs"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/plugins.md": [
+   "# Plugins",
+   "## Directory Structure",
+   "## Manifest (`plugin.json`)",
+   "## How Plugins Work",
+   "## Registering Plugins",
+   "## Turning Plugins On and Off"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/rules.md": [
+   "# Workspace Rules",
+   "## Rule Locations",
+   "## Rule Format",
+   "## Rule Merging and Deduplication",
+   "## Size Limits and Context Budget"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/skills.md": [
+   "# Workspace Skills",
+   "## Directory Structure",
+   "## Main Instruction File (`SKILL.md`)",
+   "name: my-specialized-skill",
+   "description: >-",
+   "# My Specialized Skill",
+   "## Steps",
+   "### Frontmatter Fields",
+   "## Best Practices for Writing Skills"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/hooks.md": [
+   "# Lifecycle Hooks (`hooks.json`)",
+   "## File Format",
+   "## Hook Spec Fields",
+   "## Supported Event Types",
+   "### The Matcher",
+   "## Hook Handler Fields",
+   "## Input/Output Contract",
+   "### Common Input Fields",
+   "### 1. `PreToolUse` Contract",
+   "### 2. `PostToolUse` Contract",
+   "### 3. `SessionStart` Contract",
+   "### 4. `PreInvocation` Contract",
+   "### 5. `PostInvocation` Contract",
+   "### 6. `Stop` Contract",
+   "## Current Limitations"
+  ],
+  "antigravity-cli/builtin/skills/agy-customizations/docs/mcp_servers.md": [
+   "# MCP Servers (`mcp_config.json`)",
+   "## Configuration File (`mcp_config.json`)",
+   "### Location",
+   "## Configuration Schema",
+   "### 1. Stdio Transport (Local)",
+   "### 2. Streamable HTTP Transport (Remote)",
+   "## How the Agent Uses MCP",
+   "## Scoping and Scannability"
+  ],
+  "antigravity-cli/builtin/skills/migrate-workflows/SKILL.md": [
+   "name: migrate-workflows",
+   "description: Automatically migrate legacy workflows to modern skills across global and workspace configurations. Scans for existing workflows, creates target SKILL.md files, and safely archives old workflow files.",
+   "# Migrate Workflows to Skills",
+   "## Instructions for the Agent",
+   "### Step 1: Discover Existing Workflows",
+   "### Step 2: Convert Each Workflow to a Skill (Idempotent Execution)",
+   "        name: <name>",
+   "        description: <concise one-sentence description of what the skill does and when to use it>",
+   "        # <Title>",
+   "        `<workspace>/.agents/skills/<name>/` or",
+   "        `~/.gemini/config/skills/<name>/`)",
+   "### Step 3: Verify and Confirm"
+  ],
+  "antigravity-cli/builtin/skills/run-workflow/SKILL.md": [
+   "name: run-workflow",
+   "description: >-",
+   "# Dynamic workflows with `run_workflow`",
+   "## Steps",
+   "## Script rules",
+   "## Primitives",
+   "## Agents that keep their context",
+   "## Calling tools from the script",
+   "## Reading earlier conversation steps",
+   "## Behavior to know",
+   "## Example"
+  ]
+ }
+}

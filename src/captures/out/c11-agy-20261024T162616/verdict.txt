@@ -1,0 +1,26 @@
+version                                        1.4.7
+A. help lines on agents/skills/commands/mode   12
+A. ~/.gemini entries matching surfaces         10
+A. existing ~/.gemini/GEMINI.md                absent
+A. existing ~/.gemini/AGENTS.md                absent
+B. instruction files loaded                    ['AGENTS.md', 'GEMINI.md', '~/.gemini/AGENTS.md', '~/.gemini/GEMINI.md']
+B. codewords not planted (hallucinated)        none
+B. tool attempts (all denied)                  0
+C. /uhwwfa (.agents/workflows/uhwwfa.md)       expanded=False status=['SUCCESS'] reply='The command `/uhwwfa` was not expanded or recognized as a built-in sla'
+C. /uhwwfb (.agent/workflows/uhwwfb.md)        expanded=False status=['SUCCESS'] reply='The command `/uhwwfb` was not automatically expanded as a slash comman'
+C. /uhwcmc (.agents/commands/uhwcmc.md)        expanded=False status=['SUCCESS'] reply='The command `/uhwcmc` was not recognized or expanded as a built-in or '
+C. /uhwcmd (.gemini/commands/uhwcmd.toml)      expanded=False status=['SUCCESS'] reply='`/uhwcmd` is not a recognized built-in slash command, and inspecting t'
+C. /uhwnosuchcommand (unknown command (control)) expanded=False status=['SUCCESS'] reply='`/uhwnosuchcommand` is not a recognized slash command.\n\nAvailable slas'
+D. uhw-skill-a (<ws>/.agents/skills/uhw-skill-a/SKILL.md) in index=True  codeword via use=True
+D. uhw-skill-b (<ws>/.agent/skills/uhw-skill-b/SKILL.md) in index=True  codeword via use=True
+D. uhw-skill-c (<ws>/.gemini/skills/uhw-skill-c/SKILL.md) in index=False  codeword via use=False
+D. uhw-skill-d (~/.gemini/skills/uhw-skill-d/SKILL.md) in index=True  codeword via use=False
+D. tools used to reach skills                  ['read_file']
+E. `agents` listing lines                      1
+E. uhw-agent-a (.agents/agents)                listed=False --agent status=['SUCCESS'] prompt carried=True agentName=[]
+E. uhw-agent-b (.agent/agents)                 listed=False --agent status=['SUCCESS'] prompt carried=True agentName=[]
+E. uhw-agent-c (.gemini/agents)                listed=False --agent status=['ERROR'] prompt carried=False agentName=[]
+E. uhw-agent-d (~/.gemini/agents)              listed=True --agent status=['SUCCESS'] prompt carried=True agentName=[]
+F. result-frame keys                           ['(top) event', '(top) result', 'conversation_id', 'duration_seconds', 'error', 'num_turns', 'response', 'status', 'usage']
+F. token/usage/context keys in any frame       ['cache_read_tokens', 'input_tokens', 'output_tokens', 'thinking_tokens', 'total_tokens', 'usage']
+VERDICT c11: native surfaces: rules=yes, commands=no, skills=yes, agents=yes

@@ -1,0 +1,224 @@
+{
+ "help_lines": [
+  "--agent                         Agent for the current CLI session",
+  "--disable-slash-commands        Disable slash command and skill expansion in print mode",
+  "--input-format                  Input format for print mode (text, stream-json). stream-json reads one NDJSON message per line from stdin and runs a turn for each; it requires --output-format stream-json (default text)",
+  "--mode                          Set the agent execution mode for this session (accept-edits, auto, plan)",
+  "--model                         Model for the current CLI session",
+  "--output-format                 Output format for print mode (text, json, stream-json) (default text)",
+  "--print-timeout                 Optional time limit for print mode; 0 waits until the turn completes (default 0s)",
+  "Available subcommands:",
+  "agent           List available agents",
+  "agents          List available agents",
+  "help            Show help for subcommands",
+  "models          List available models"
+ ],
+ "agents_help": [
+  "Usage: agy agent [flags]",
+  "",
+  "List available agents",
+  "",
+  "Flags:",
+  "  -h      Show help",
+  "  --help  Show help"
+ ],
+ "gemini_layout": [
+  "antigravity-cli/builtin/skills/",
+  "antigravity-cli/builtin/skills/agy-customizations/",
+  "antigravity-cli/builtin/skills/antigravity_guide/",
+  "antigravity-cli/builtin/skills/automation/",
+  "antigravity-cli/builtin/skills/generative_ui/",
+  "antigravity-cli/builtin/skills/migrate-workflows/",
+  "antigravity-cli/builtin/skills/permissioned-github/",
+  "antigravity-cli/builtin/skills/plugin/",
+  "antigravity-cli/builtin/skills/run-workflow/",
+  "antigravity-cli/builtin/skills/ui-plugin-navigation/"
+ ],
+ "definition_keys": {},
+ "rules": {
+  "planted": {
+   "PGEM": "/tmp/uhw-ws-vl_4y4b0/GEMINI.md",
+   "PAGT": "/tmp/uhw-ws-vl_4y4b0/AGENTS.md",
+   "PCLA": "/tmp/uhw-ws-vl_4y4b0/CLAUDE.md",
+   "PRUL": "/tmp/uhw-ws-vl_4y4b0/.agents/rules/uhw.md",
+   "PRLX": "/tmp/uhw-ws-vl_4y4b0/.agent/rules/uhw.md",
+   "PGDR": "/tmp/uhw-ws-vl_4y4b0/.gemini/GEMINI.md",
+   "GGEM": "/home/admin_rickruiz_altostrat_com/.gemini/GEMINI.md",
+   "GAGT": "/home/admin_rickruiz_altostrat_com/.gemini/AGENTS.md"
+  },
+  "found": [
+   "UHWCODE-GAGT",
+   "UHWCODE-GGEM",
+   "UHWCODE-PAGT",
+   "UHWCODE-PGEM"
+  ],
+  "tool_attempts": [],
+  "status": [
+   "SUCCESS"
+  ]
+ },
+ "commands": {
+  "uhwwfa": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "The command `/uhwwfa` was not expanded or recognized as a built-in slash command, and attempting to inspect the workspace for a corresponding workflow definitio",
+   "tool_attempts": [
+    "run_command",
+    "read_file"
+   ]
+  },
+  "uhwwfb": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "The command `/uhwwfb` was not automatically expanded as a slash command or workflow, and attempts to read files or run commands in the workspace to locate a cor",
+   "tool_attempts": [
+    "run_command",
+    "read_file"
+   ]
+  },
+  "uhwcmc": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "The command `/uhwcmc` was not recognized or expanded as a built-in or custom slash command, and tool calls to inspect the workspace are currently blocked by the",
+   "tool_attempts": [
+    "run_command",
+    "read_file"
+   ]
+  },
+  "uhwcmd": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwcmd` is not a recognized built-in slash command, and inspecting the workspace for a custom command or workflow definition failed because tool execution was",
+   "tool_attempts": [
+    "read_file",
+    "run_command"
+   ]
+  },
+  "uhwnosuchcommand": {
+   "expanded": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "reply": "`/uhwnosuchcommand` is not a recognized slash command.\n\nAvailable slash commands include:\n- `/goal` \u2014 Run a thorough, long-running task until the goal is achiev",
+   "tool_attempts": []
+  }
+ },
+ "skills": {
+  "planted": {
+   "uhw-skill-a": "/tmp/uhw-ws-lm4oboin/.agents/skills/uhw-skill-a/SKILL.md",
+   "uhw-skill-b": "/tmp/uhw-ws-lm4oboin/.agent/skills/uhw-skill-b/SKILL.md",
+   "uhw-skill-c": "/tmp/uhw-ws-lm4oboin/.gemini/skills/uhw-skill-c/SKILL.md",
+   "uhw-skill-d": "/home/admin_rickruiz_altostrat_com/.gemini/skills/uhw-skill-d/SKILL.md"
+  },
+  "index_reply": "agy-customizations\nantigravity-guide\nuhw-skill-a\nuhw-skill-b\nuhw-skill-d\n",
+  "use_reply": "Here are the available `uhw-skill` skills and their corresponding codewords:\n\n- **`uhw-skill-a`** ([SKILL.md](file:///tmp/uhw-ws-lm4oboin/.agents/skills/uhw-skill-a/SKILL.md)): `UHWCODE-SKA`\n- **`uhw-skill-b`** ([SKILL.md](file:///tmp/uhw-ws-lm4oboin/.agent/skills/uhw-skill-b/SKILL.md)): `UHWCODE-SKB`\n- **`uhw-skill-d`** ([SKILL.md](file:///home/admin_rickruiz_altostrat_com/.gemini/skills/uhw-skil",
+  "use_calls": [
+   [
+    "read_file",
+    "{\"Path\": \"/tmp/uhw-ws-lm4oboin/.agents/skills/uhw-skill-a/SKILL.md\"}"
+   ],
+   [
+    "read_file",
+    "{\"Path\": \"/tmp/uhw-ws-lm4oboin/.agent/skills/uhw-skill-b/SKILL.md\"}"
+   ],
+   [
+    "read_file",
+    "{\"Path\": \"/home/admin_rickruiz_altostrat_com/.gemini/skills/uhw-skill-d/SKILL.md\"}"
+   ]
+  ]
+ },
+ "agents": {
+  "listing_head": [
+   "uhw-agent-d"
+  ],
+  "listing_lines": 1,
+  "runs": {
+   "uhw-agent-a": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "The shell execution tool is not available in this environment, so `echo probe` could not be run.\n\nCodewords:\n- `UHWCODE-AGA`\n- `UHWCODE-GAGT`\n- `UHWCODE-GGEM`\n"
+   },
+   "uhw-agent-b": {
+    "listed": false,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "The shell execution tool is unavailable in this environment, so `echo probe` cannot be run.\n\nCodewords:\n- `UHWCODE-AGB`\n- `UHWCODE-GAGT`\n- `UHWCODE-GGEM`\n"
+   },
+   "uhw-agent-c": {
+    "listed": false,
+    "status": [
+     "ERROR"
+    ],
+    "codeword": false,
+    "agentName": [],
+    "reply": ""
+   },
+   "uhw-agent-d": {
+    "listed": true,
+    "status": [
+     "SUCCESS"
+    ],
+    "codeword": true,
+    "agentName": [],
+    "reply": "I do not have access to a shell command tool in this environment, so I cannot run `echo probe`.\n\nMy codeword is `UHWCODE-AGD`.\n"
+   }
+  }
+ },
+ "frames": {
+  "event_kinds": [
+   "init//",
+   "result//",
+   "step_update/agent_response/ACTIVE",
+   "step_update/agent_response/DONE",
+   "step_update/tool/ACTIVE",
+   "step_update/tool/DONE",
+   "step_update/tool/ERROR",
+   "step_update/user_input/DONE"
+  ],
+  "init_keys": [
+   "conversation_id",
+   "event",
+   "init"
+  ],
+  "result_keys": [
+   "(top) event",
+   "(top) result",
+   "conversation_id",
+   "duration_seconds",
+   "error",
+   "num_turns",
+   "response",
+   "status",
+   "usage"
+  ],
+  "usage_like_keys": [
+   "cache_read_tokens",
+   "input_tokens",
+   "output_tokens",
+   "thinking_tokens",
+   "total_tokens",
+   "usage"
+  ]
+ },
+ "native": {
+  "rules": true,
+  "commands": false,
+  "skills": true,
+  "agents": true
+ }
+}
