@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[2-0] TCP is a reliable, connection-oriented protocol that guarantees ordered data delivery, while UDP is a faster, connectionless protocol that prioritizes speed over delivery checks. | Use TCP for web browsing and file transfers where accuracy is vital, and UDP for live streaming or online gaming where speed matters most.
+[3-0] This directory contains two files, budget.csv, which is a budget spreadsheet, and notes.txt, which contains meeting notes.
+[4-0] A hash map stores key-value pairs by converting each key into an array index using a hash function. | That index points directly to the memory slot where the value is stored for near-instant retrieval. | When two keys map to the same slot, the hash map resolves the collision using techniques like chaining or probing.
+[5-0] Here is a laptop backup plan based on the three-two-one rule. | It keeps three copies of your data on two different types of storage, with one offsite in the cloud.
+[6-0] To improve your sleep, maintain a consistent schedule, keep your bedroom cool and dark, avoid caffeine in the afternoon, disconnect from screens before bed, and exercise regularly.
+[7-0] Understood, I will follow this format for your voice interface.
+[0-1] Hello, how can I help you today?
+[1-1] The capital of Australia is Canberra.
+[2-1] TCP provides reliable, ordered data transmission with error checking, while UDP offers faster, connectionless transmission without delivery guarantees.
+[3-1] This directory contains two files: budget.csv, which is a spreadsheet for tracking expenses, and notes.txt, which is a plain text file for meeting notes.
+[4-1] A hash map stores key-value pairs by converting keys into numeric array indexes using a hash function. | This direct indexing allows the computer to store, retrieve, or remove data almost instantly on average. | When two different keys produce the same index, the map resolves the collision by chaining items together or searching for the next empty slot.
+[5-1] Here is a laptop backup plan based on the three-two-one strategy. | It keeps three copies of your data across two different media types with one copy stored offsite in the cloud.
+[6-1] To get better sleep, stick to a consistent schedule, keep your bedroom cool and dark, limit screen time before bed, avoid caffeine late in the day, and practice a relaxing wind-down routine.
+[7-1] Understood, I will follow this format for our conversation.
+[0-2] Hello, how can I help you today?
+[1-2] The capital of Australia is Canberra.
+[2-2] TCP guarantees reliable, ordered data delivery through a dedicated connection, while UDP sends data without a connection to maximize speed. | TCP is best for tasks like file transfers and web browsing where accuracy is essential, while UDP suits real-time streaming and gaming where low latency is critical.
+[3-2] This directory contains budget.csv, which is a budget spreadsheet, and notes.txt, which is a text file containing meeting notes.
+[4-2] A hash map stores keys and values by passing each key through a hash function to calculate its position in an internal array. | This calculation allows the system to look up, add, or remove items in constant average time. | When two different keys map to the same slot, the map resolves the collision using methods like chaining or open addressing.
+[5-2] I have created a laptop backup plan document for you. | It outlines a three-two-one strategy using an external drive and automated cloud storage.
+[6-2] To improve your sleep, maintain a consistent schedule, keep your bedroom cool and dark, avoid screens before bedtime, cut off caffeine by early afternoon, and exercise regularly. | Keeping a steady wake-up time every morning is the most effective habit to start with.
+[7-2] Understood, I will follow this format for our conversation.

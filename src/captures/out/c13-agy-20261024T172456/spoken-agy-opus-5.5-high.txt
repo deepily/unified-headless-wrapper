@@ -1,0 +1,24 @@
+[0-0] Hello, it's nice to hear from you!
+[0-1] Hello, it's good to hear from you!
+[0-2] Hello, it's good to hear from you!
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra. | Many people guess Sydney, but Canberra was purpose-built as the capital and has been the seat of government since 1927.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP is reliable and ordered but slower, while UDP is faster and lighter but gives no delivery guarantees. | Pick TCP when every byte must arrive intact, and UDP when speed matters more than the odd lost packet.
+[2-1] TCP gives you reliable, ordered delivery over a connection, while UDP trades those guarantees for speed and low overhead. | Pick TCP when every byte must arrive intact, and UDP when being on time matters more than being perfect.
+[2-2] TCP is reliable and ordered but slower, while UDP is faster and lighter but gives no delivery guarantees. | Use TCP when every byte must arrive intact, and UDP when speed matters more than the odd lost packet.
+[3-0] There are two files here: budget.csv, a spreadsheet with no data yet, and notes.txt, a short text note. | The budget file has only its column headers, item and usd, and no rows. | The notes file contains just the words "meeting notes" and nothing more.
+[3-1] There are two files here: budget.csv and notes.txt. | budget.csv is a spreadsheet file with columns for item and dollar amount, but no rows filled in yet. | notes.txt is a short text file that only says "meeting notes", with nothing else in it.
+[3-2] This folder has two small files: budget.csv and notes.txt. | The budget file is a spreadsheet with only its column headings, item and usd, and no rows of data. | The notes file holds just the words "meeting notes", so it looks like an empty placeholder.
+[4-0] A hash map stores key-value pairs by running each key through a hash function that turns it into an index in an array of buckets, so it can jump straight to the | When two keys land in the same bucket, it handles the clash by keeping a small list there or by probing for the next free slot. | As it fills up, it grows the array and moves every entry to a new spot, which keeps lookups, inserts and deletes fast on average.
+[4-1] A hash map stores key-value pairs by running each key through a hash function, which turns it into an index in an array of slots called buckets, so you can jump | When two keys land in the same bucket, that's a collision, and the map handles it by keeping a small list in that bucket or by probing for the next free slot. | Because of this, lookups, inserts and deletes usually take constant time, and the map grows and rehashes its entries once it gets too full.
+[4-2] A hash map stores key-value pairs by running each key through a hash function, which turns it into an array index, so it can find the value almost instantly. | When two keys land on the same index, called a collision, the map either keeps a small list at that slot or moves on to the next free slot. | As the map fills up, it grows into a bigger array and moves every entry to its new spot, so lookups stay fast, usually constant time on average.
+[5-0] I wrote you a short laptop backup plan that follows the 3-2-1 rule: three copies, on two kinds of storage, with one kept off-site. | It pairs an automatic local backup to an external drive with continuous cloud backup, and adds a monthly restore test.
+[5-1] Here's a short laptop backup plan based on the 3-2-1 rule. | It uses one automatic local backup, one automatic cloud backup and a monthly restore test.
+[5-2] Here's a short plan to back up your laptop using the 3-2-1 rule. | Keep three copies of your data on two kinds of storage, with one copy kept away from home. | The full plan is in the document below.
+[6-0] Keep a steady sleep schedule, get morning light, cut caffeine after lunch, keep your bedroom cool and dark, and put screens away an hour before bed. | If you can't fall asleep after about twenty minutes, get up and do something calm until you feel sleepy.
+[6-1] Keep a steady sleep and wake time, get morning light, cut caffeine after noon, keep your bedroom cool and dark, and put screens away an hour before bed. | If you can't fall asleep within about twenty minutes, get up and do something calm until you feel sleepy.
+[6-2] Go to bed and wake up at the same times every day, keep your bedroom cool, dark and quiet, stop caffeine after early afternoon, put screens away an hour before  | If you lie awake for more than about twenty minutes, get up and do something calm until you feel sleepy.
+[7-0] You're welcome, glad I could help.
+[7-1] You're welcome, glad I could help.
+[7-2] You're welcome, glad I could help.

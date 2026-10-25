@@ -1,0 +1,21 @@
+{
+ "rows": [
+  {
+   "seconds": 200,
+   "called": true,
+   "server_finished": false,
+   "cancelled_after_s": 180.0,
+   "result_ok": false,
+   "status": [
+    "SUCCESS"
+   ],
+   "timeout": null,
+   "reply": "The `wait_seconds` tool call returned the following output verbatim:\n\n```text\nEncountered error in tool execution: MCP tool call to server \"uhw-probe\" timed out after 3m0s: context deadline exceeded\n`"
+  }
+ ],
+ "tool_done_frames": [
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"9ea61fe3-c55b-49b5-8630-d52e9d7a1138\", \"step_index\": 2, \"state\": \"DONE\", \"step_type\": \"tool\", \"tool_name\": \"read_file\", \"duration_seconds\": 0.101247413, \"tool_info\": {\"name\": \"read_file\", \"parameters\": {\"Path\": \"/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/mcp/uhw-probe/wait_seconds.json\"}, \"output\": \"1 lines, 202 bytes\"}}}",
+  "{\"event\": \"step_update\", \"step_update\": {\"conversation_id\": \"9ea61fe3-c55b-49b5-8630-d52e9d7a1138\", \"step_index\": 4, \"state\": \"ERROR\", \"step_type\": \"tool\", \"tool_name\": \"call_mcp_tool\", \"duration_seconds\": 181.134794247, \"tool_info\": {\"name\": \"call_mcp_tool\", \"parameters\": {\"Arguments\": {\"seconds\": 200}, \"ServerName\": \"uhw-probe\", \"ToolName\": \"wait_seconds\"}, \"error\": {\"type\": \"TOOL_ERROR\", \"messa"
+ ],
+ "server_eof_after_s": 200.6
+}

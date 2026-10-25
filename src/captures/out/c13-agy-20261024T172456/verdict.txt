@@ -1,0 +1,13 @@
+model opus-5.5-high -> modelName in hook payload: opus-5.5-high  · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 1.1649999999999998 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-opus-5.5-high-20261024T172501)
+model gemini-3.8-flash-high -> modelName in hook payload: gemini-3.8-flash-high  · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.22 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-3.8-flash-high-20261024T172730)
+model gemini-launch-candidate-high -> modelName in hook payload: gemini-launch-candidate-high  · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.905 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-launch-candidate-high-20261024T173612)
+model gemini-flash-next -> modelName in hook payload: gemini-flash-next  · status: "status": "SUCCESS"
+C9 compliance (v2 rules): 24/24 well formed
+C10 median gap spoken-close -> result: 0.27999999999999997 s   (results: /mnt/lupin-data/unified-headless-wrapper/src/captures/out/pyramid-agy-gemini-flash-next-20261024T174414)
+VERDICT c13: see per-model lines above; spoken-*.txt holds every reply's spoken lines

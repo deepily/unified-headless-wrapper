@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[0-1] Hello, how can I help you today?
+[0-2] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP provides reliable, ordered data delivery with error recovery, whereas UDP prioritizes speed and low latency without delivery guarantees.
+[2-1] TCP is a connection-oriented protocol that guarantees reliable and ordered data delivery, whereas UDP is a connectionless protocol that favors speed and low lat
+[2-2] TCP provides reliable, ordered data delivery through a connection-oriented stream, whereas UDP offers faster, connectionless transmission without delivery guara
+[3-0] This directory contains two files, budget dot csv, which is a budget spreadsheet, and notes dot txt, which is a text file containing meeting notes.
+[3-1] This directory contains two files: budget.csv, which is a budget spreadsheet, and notes.txt, which is a text document for meeting notes.
+[3-2] There are two files in this directory: budget.csv, which is a budget spreadsheet, and notes.txt, which is a plain text file for meeting notes.
+[4-0] A hash map stores key-value pairs by using a hash function to turn each key into a specific array index. | This allows the computer to retrieve, insert, or delete data almost instantly without scanning through the entire collection. | When two different keys produce the same index, the map resolves the collision using methods like chaining or open addressing.
+[4-1] A hash map stores key-value pairs by using a mathematical hash function to convert each key into an array index where the value lives. | If two keys map to the same index, the system handles the collision by chaining items together or searching for the next empty slot. | This setup allows the system to look up, insert, and delete items almost instantly on average.
+[4-2] A hash map stores key-value pairs by using a hash function to convert each key into an index in an underlying array. | This allows the computer to find or store data almost instantly by jumping directly to that slot rather than searching item by item. | When two different keys produce the same index, the map resolves the collision using methods like linked lists or searching for the next open slot.
+[5-0] I have created a backup plan for your laptop. | It covers local drive backups, cloud storage, and regular restore tests.
+[5-1] I have created a backup plan for your laptop. | It uses the three two one strategy with both local storage and cloud backups.
+[5-2] I have created a backup plan document for your laptop. | It follows the three two one method using a local external drive and cloud storage.
+[6-0] To improve your sleep, stick to a consistent schedule, keep your bedroom cool and dark, avoid screens before bed, limit late caffeine, and establish a relaxing 
+[6-1] To improve your sleep, stick to a consistent schedule, keep your bedroom dark and cool, avoid screens before bed, limit afternoon caffeine, and unwind with a ca
+[6-2] To improve your sleep, maintain a consistent schedule, optimize your bedroom environment, limit screen time before bed, avoid caffeine late in the day, and prac
+[7-0] Understood, I will follow this format.
+[7-1] Understood, I will follow this format.
+[7-2] Understood, I will keep my voice replies concise and use this format.

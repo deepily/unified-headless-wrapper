@@ -1,0 +1,24 @@
+[0-0] Hello, how can I help you today?
+[0-1] Hello, how can I help you today?
+[0-2] Hello, how can I help you today?
+[1-0] The capital of Australia is Canberra.
+[1-1] The capital of Australia is Canberra.
+[1-2] The capital of Australia is Canberra.
+[2-0] TCP guarantees reliable, ordered data delivery, while UDP sacrifices reliability for speed and low latency. | That makes TCP ideal for web browsing and file transfers, whereas UDP fits live streaming and online gaming.
+[2-1] TCP guarantees reliable and ordered delivery over a connection, while UDP sends packets directly for faster speed without delivery guarantees. | Choose TCP when accuracy matters and UDP when low latency is more important than occasional lost packets.
+[2-2] TCP guarantees reliable and ordered data delivery over a connection, while UDP sends packets immediately for higher speed and lower delay. | Choose TCP when accuracy matters most, and UDP for real-time traffic like streaming or gaming.
+[3-0] This directory contains two files, budget.csv and notes.txt. | The budget.csv file is a comma-separated table with columns for item and USD. | The notes.txt file is a plain text file containing meeting notes.
+[3-1] This directory contains two files: budget.csv, which is a comma-separated header for items and dollar amounts, and notes.txt, which is a short text file for mee
+[3-2] This directory contains two files, budget.csv with item and USD columns, and notes.txt with meeting notes.
+[4-0] A hash map stores key and value pairs by using a hash function to turn each key into an array index. | Because it jumps straight to that index instead of searching through every item, lookups, insertions, and deletions happen almost instantly. | If two keys land on the same index, the map handles the collision by linking both items at that spot or finding the next open slot.
+[4-1] A hash map stores key and value pairs by using a hash function to turn each key into an array index. | This lets you look up, insert, or delete values almost instantly without searching through every item. | When two keys land on the same index, the map resolves the collision by linking them in a list or probing for the next open slot.
+[4-2] A hash map stores key and value pairs by using a hash function to turn each key into an array index. | Because it jumps straight to that index, looking up, adding, or removing an item takes nearly constant time. | If two keys produce the same index, the map handles the collision by chaining entries together or probing for the next empty slot.
+[5-0] I created a laptop backup plan for you that covers both local drives and cloud storage. | Start with a full copy on an external drive today, then turn on automatic daily backups so you never have to think about it.
+[5-1] I put together a laptop backup plan that uses both an external drive and cloud storage to keep your files safe. | Start by plugging in a portable drive today and turning on your built in backup software.
+[5-2] I have created a laptop backup plan that uses an external drive for full system recovery and cloud storage for daily automatic backups.
+[6-0] To sleep better, stick to a consistent schedule, keep your bedroom dark and cool, put away screens an hour before bed, avoid afternoon caffeine, and wind down w
+[6-1] Keep a consistent sleep schedule, make your bedroom cool and dark, and put away screens an hour before bed. | Avoid caffeine and heavy meals late in the day, and wind down with a calm routine each night.
+[6-2] To sleep better, stick to a regular schedule, keep your bedroom cool and dark, put away screens an hour before bed, avoid late caffeine, and wind down with a ca
+[7-0] You're welcome, let me know whenever you need anything else.
+[7-1] You are welcome, have a great rest of your day.
+[7-2] You are welcome, let me know if you need anything else.

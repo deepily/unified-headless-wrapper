@@ -1,0 +1,5 @@
+version                                        1.4.7
+per-server timeout in config (ms)              900000
+wait  200 s                                    called=True answered_in_reply=False cancelled_after=180.0 status=['SUCCESS'] reply='The `wait_seconds` tool call returned the following output v'
+tool result frames (first, truncated)          ['{"event": "step_update", "step_update": {"conversation_id": "9ea61fe3-c55b-49b5-8630-d52e9d7a1138", "step_index": 2, "state": "DONE", "step_type": "tool", "tool_name": "read_file", "duration_seconds": 0.101247413, "tool_info": {"name": "read_file", "parameters": {"Path": "/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/mcp/uhw-probe/wait_seconds.json"}, "output": "1 lines, 202 bytes"}}}']
+VERDICT c14: longest call answered = 0 s of 200 s tried (a timeout lies between the last success and the next try)
