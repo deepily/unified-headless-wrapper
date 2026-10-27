@@ -1,6 +1,21 @@
 # Capture runbook
 
-## Run this now: finish the AGY round (test VM, from the repo root)
+## Run this now: nothing
+
+No captures are pending. Phase 0 and the capability rounds are complete for AGY, Jetski and Claude. Results:
+- AGY: `src/rnd/v0.0.1/2026.10.25-agy-capabilities-results.md`
+- Jetski: `…/2026.10.18-jetski-capabilities-c11-c14-results.md`
+- Claude: `…/2026.10.20-claude-round-results.md`
+
+The next work is the Phase 1 build (`…/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`).
+
+**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
+
+Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
+
+---
+
+## Done 2026-10-24: AGY round, finished (test VM)
 
 The 2026-10-24 run (AGY 1.4.7, non-snap) finished C11, C12, C14, C11b and C11c, then died in C14b when SSH dropped. C13 never ran.
 
@@ -20,12 +35,6 @@ UHW_RULES=v2 MODELS="opus-5.5-high gemini-3.8-flash-high gemini-launch-candidate
     src/captures/c13_pinned_model.sh agy                                                # C13, about 40 min
 git add src/captures && git commit -m "AGY round results (non-snap)" && git push
 ```
-
-**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
-
-Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
-
----
 
 ## Done 2026-10-20: Claude round (Linux dev server)
 
