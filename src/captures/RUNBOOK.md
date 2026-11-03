@@ -3,13 +3,13 @@
 ## Run this now: nothing
 
 No captures are pending. Phase 0 and the capability rounds are complete for AGY, Jetski and Claude. Results:
-- AGY: `src/rnd/v0.0.1/2026.10.25-agy-capabilities-results.md`
-- Jetski: `…/2026.10.18-jetski-capabilities-c11-c14-results.md`
-- Claude: `…/2026.10.20-claude-round-results.md`
+- AGY: `src/rnd/v0.0.1/evidence/2026.10.25-agy-capabilities-results.md`
+- Jetski: `…/evidence/2026.10.18-jetski-capabilities-c11-c14-results.md`
+- Claude: `…/evidence/2026.10.20-claude-round-results.md`
 
-The next work is the Phase 1 build (`…/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`).
+The next work is the Phase 1 build (`…/specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`).
 
-**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's §14.
+**Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/evidence/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's Section 14.
 
 Everything runs from the **repo root**. Outputs go to `src/captures/out/` (gitignored). Newest runs are at the top; completed Phase 0 instructions are kept below for reruns.
 
@@ -88,7 +88,7 @@ C13 was skipped in the first run (the script predated the model defaults), and C
 
 ## Done 2026-10-18: C11–C14 (work laptop)
 
-One command, one bundle. It measures what the planning-is-prompting layer and the voice asks need from Jetski (inventory §19.5).
+One command, one bundle. It measures what the planning-is-prompting layer and the voice asks need from Jetski (inventory Section 19.5).
 
 ```bash
 git pull                                                   # wip-v0.0.1-2026.10.15-planning-prep
@@ -213,7 +213,7 @@ Each capture prints its verdict lines and writes `verdict.txt` and `facts.json` 
 
 | Capture | PASS means | Anything else |
 |---|---|---|
-| **C1 tool veto** | hook fired, `UHW_DENY_ME` call blocked, allowed call ran | see §5.1 before running anything else |
+| **C1 tool veto** | hook fired, `UHW_DENY_ME` call blocked, allowed call ran | see Section 5.1 before running anything else |
 | C2 tool names | `tool-map.tsv` lists a name and argument keys per tool | PARTIAL (stream names only) is still useful: hooks didn't fire |
 | C3 MCP identity | each of two concurrent servers sees its own `persona-N` tag | PARTIAL: identity must go through a config file per persona; record which lines said yes |
 | C4 conversation id | the requested id came back and the resume recalled PELICAN | PARTIAL is fine: the harness reads the id from `init` instead |
@@ -247,7 +247,7 @@ Try these in order. Stop at the first that passes and note which one it was.
 
 3. **Global hooks file instead of project level.** Copy `out/c1-*/hooks.json` into `~/.gemini/<app>/hooks.json` (back up any existing one first), rerun C1, then restore.
 
-If none of these fire the hook, record "no hook route in headless mode". The fallback is the MCP-indirection veto in framework §14.3, and C2 and C3 still matter.
+If none of these fire the hook, record "no hook route in headless mode". The fallback is the MCP-indirection veto in framework Section 14.3, and C2 and C3 still matter.
 
 ### 5.2 A run hangs
 
@@ -262,7 +262,7 @@ If none of these fire the hook, record "no hook route in headless mode". The fal
 ### 5.3 A turn ends empty
 
 - An empty stdout with exit code 0 is the permission auto-deny (design doc, 10-12). The reason is in `frames.jsonl.stderr`.
-- Usually it means `--dangerously-skip-permissions` was removed (see §5.1 step 2) without a matching allow rule.
+- Usually it means `--dangerously-skip-permissions` was removed (see Section 5.1 step 2) without a matching allow rule.
 
 ### 5.4 C3 left your MCP config modified
 
@@ -280,7 +280,7 @@ cp src/captures/out/c3-jetski-<ts>/mcp_config.backup <your MCP_CONFIG path>
 ## 6. What to bring back
 
 - **One file per part:** `src/captures/out/<engine>-bundle-<timestamp>.txt`, plus the C3 `verdict.txt` if you ran C3 separately.
-- **Notes from this runbook:** which §5.1 step passed, the app directory, and the MCP config path.
+- **Notes from this runbook:** which Section 5.1 step passed, the app directory, and the MCP config path.
 
 **Before pasting anything from the work laptop, read the bundle.**
 
@@ -312,8 +312,8 @@ src/captures/jetski_followup.sh jetski                # about 1–2 minutes; nee
 
 | Bundle section | Question | Why it matters |
 |---|---|---|
-| 1. names | Which model answered? Is `agentName` set? Do `parentConversationId`/`rootConversationId` mark a top-level session? | C9 numbers are per model; lineage replaces the bridge file for subagent governance (framework §8) |
-| 2. `--agent` | Does Jetski take a named agent definition? | possible persona bootstrap route (framework §13) |
+| 1. names | Which model answered? Is `agentName` set? Do `parentConversationId`/`rootConversationId` mark a top-level session? | C9 numbers are per model; lineage replaces the bridge file for subagent governance (framework Section 8) |
+| 2. `--agent` | Does Jetski take a named agent definition? | possible persona bootstrap route (framework Section 13) |
 | 3. MCP | Where are MCP servers configured? Is the `mcpServers` format accepted? Then C3. | identity reaches cosa-voice through the inherited env (passed on AGY) |
 | 4. Chrome flag | Is `--use_ls_chrome_devtools_mcp=false` accepted? | keep the default Chrome DevTools MCP server out of persona launches |
 
@@ -322,5 +322,5 @@ src/captures/jetski_followup.sh jetski                # about 1–2 minutes; nee
 - **If the format check fails,** the bundle includes `jetski mcp add --help` instead of C3. Paste it, and C3 gets switched to `mcp add`/`mcp remove`.
 - **What it prints from the hook log:** only names, booleans and counts, never `lastUserInput` or payload text.
 
-**Bring back:** `src/captures/out/jetski-followup-<timestamp>.txt`. Read it first, as in §6.
+**Bring back:** `src/captures/out/jetski-followup-<timestamp>.txt`. Read it first, as in Section 6.
 

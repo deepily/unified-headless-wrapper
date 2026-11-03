@@ -1,10 +1,10 @@
 # UHW and the Lupin kernel: master design and implementation framework
 
-**As of:** 2026-10-26 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (§21) hold detail and evidence, and branch out from here.
+**As of:** 2026-11-02 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
 
 **How to read it:**
-- Decisions are locked in §1.
-- Everything not yet designed or decided carries a `TODO(Tnn)` marker where it belongs. All of them are listed in the register in §20, which is the single list of remaining work.
+- Decisions are locked in Section 1.
+- Everything not yet designed or decided carries a `TODO(Tnn)` marker where it belongs. All of them are listed in the register in Section 20, which is the single list of remaining work.
 - Search for `TODO(` to find them in place.
 
 ---
@@ -13,7 +13,7 @@
 
 The Unified Headless Wrapper (UHW) replaces the ad hoc harness for Lupin (AH4L) completely. AH4L drives Claude Code inside tmux through eight user-scope hooks, a notification listener per session, and tmux keystroke injection. UHW drives Claude Code, Jetski and AGY as headless subprocesses that speak stream-json, from one host-side kernel. All voice enters and leaves through the Lupin notifications API.
 
-The kernel is on the **control path, not the data path** (D35). It starts every agent, decides every tool call and holds the inbound sockets. Agents still call Lupin's REST endpoints themselves, through cosa-voice, so Lupin stays the system of record and its endpoints stay largely as they are (§18).
+The kernel is on the **control path, not the data path** (D35). It starts every agent, decides every tool call and holds the inbound sockets. Agents still call Lupin's REST endpoints themselves, through cosa-voice, so Lupin stays the system of record and its endpoints stay largely as they are (Section 18).
 
 The work happens on one dedicated branch. The Jetski/AGY family is built first, then Claude reaches full parity, then there is a one-week switch-over, after which AH4L is deleted. The two modes never run at the same time.
 
@@ -57,16 +57,17 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D32 | Build platform | The Jetski-family adapter is built and tested against **AGY on the GCP test VM**, alongside a test Lupin instance with a dedicated destructive-test server. AGY reaches Gemini, Opus and Fable, with OpenAI models expected. Jetski is checked occasionally on the internal cloud workstation, not used day to day. Claude is installed on the VM, but Claude adapter testing there is constrained (see open items). | 10-23 |
 | D33 | Name: Lupin kernel | The host service every persona goes through is the **Lupin kernel**: "the kernel" in prose, `lupin kernel …` on the CLI. It replaces "supervisor", which collided with the manager hierarchy. Definition for docs and persona instructions: the kernel brokers everything — voice, tools, spawns, Lupin — and a persona acts only through its system calls (cosa-voice tools), which the hook shim traps. "Brokers" means authorizes, not relays (D35). | 10-23, clarified 10-26 |
 | D34 | No snap engines | Engines run from a non-snap install. A snap's confinement hides `/tmp` workspaces, project hooks and `~/.gemini` (the 2026-10-23 AGY round on the test VM was invalid for this reason). The kernel checks this at spawn and refuses a snap binary. | 10-23 |
-| D35 | Control path, not data path | The kernel gates and configures; it does not proxy. Each agent's own cosa-voice MCP server calls Lupin's REST endpoints directly, as AH4L sessions do. The kernel starts and configures that server (identity in its env, role-filtered tool list) and gates every MCP call through the hook shim, arguments included, before the server sees it. Lupin endpoints authenticate the account (`X-API-Key` or JWT); role logic lives in the kernel (§8.1). | 10-26 |
+| D35 | Control path, not data path | The kernel gates and configures; it does not proxy. Each agent's own cosa-voice MCP server calls Lupin's REST endpoints directly, as AH4L sessions do. The kernel starts and configures that server (identity in its env, role-filtered tool list) and gates every MCP call through the hook shim, arguments included, before the server sees it. Lupin endpoints authenticate the account (`X-API-Key` or JWT); role logic lives in the kernel (Section 8.1). | 10-26 |
 | D36 | Inbound sockets | One WebSocket per persona, all held by the kernel in one asyncio process, at `/ws/queue/cc-listener-{persona_id}`. Lupin routes persona-targeted notifications to a session named exactly `cc-listener-{job_id}` (`websocket_manager.emit_to_user_or_listener_sync`), so this needs no server change. One socket per kernel would need the auth message to register job ids (a later, optional server change). Replaces AH4L's per-session listener processes. | 10-26 |
-| D37 | Ticketed asks | Every ask the model makes (`converse`, `ask_*`, `commons_ask_sync`) opens a ticket and holds at most 150 s, because AGY and Jetski cut MCP calls at 180 s. Deadline = the ask's `timeout_seconds`. An answer before the deadline is kept on the ticket, or delivered as the persona's next inbound message. An answer after the deadline is rejected and the respondent told. New tool `ask_wait( ticket )`; ticket store at `/api/asks/{ticket}`. Same contract on every engine. Detail: `2026.10.20-ticketed-asks-spec.md`. | 10-20 |
-| D38 | Code location | The kernel lives in the lupin repo at `src/lupin_kernel/` from day one, on the dedicated branch (D3), importing lupin modules rather than copying them. The UHW repo keeps captures and R&D. | 10-26 |
+| D37 | Ticketed asks | Every ask the model makes (`converse`, `ask_*`, `commons_ask_sync`) opens a ticket and holds at most 150 s, because AGY and Jetski cut MCP calls at 180 s. Deadline = the ask's `timeout_seconds`. An answer before the deadline is kept on the ticket, or delivered as the persona's next inbound message. An answer after the deadline is rejected and the respondent told. New tool `ask_wait( ticket )`; ticket store at `/api/asks/{ticket}`. Same contract on every engine. Detail: `specs/2026.10.20-ticketed-asks-spec.md`. | 10-20 |
+| D38 | Code location | The kernel lives in the lupin repo at `src/lupin_kernel/` ~~from day one~~, on the dedicated branch (D3), importing lupin modules rather than copying them. The UHW repo keeps captures and R&D. **Amended by D45:** it moves there after Phase 1 acceptance; until then the code is in the UHW repo. | 10-26, amended 11-02 |
 | D39 | Subagents on AGY | `invoke_subagent` is denied on AGY for every role, chief of staff included, because AGY hooks don't fire inside subagents. The chief of staff staffs through `spawn_sessions` there. Revisit if AGY adds subagent hooks. Jetski and Claude keep the role table's rule. | 10-26 |
 | D40 | Dogfooding | Once Phase 1 acceptance (A1–A8) passes on the test VM, an AGY persona running under the kernel implements the kernel from Phase 2 on. Planning stays in Claude. | 10-26 |
 | D41 | Skills and commands on every engine | Per D30, every command is a skill. The kernel installs each persona's skills into its workspace's `.agents/skills/` (Jetski family) or `.claude/skills/` (Claude). A turn that starts with `/name` is expanded by the kernel from that skill's `SKILL.md` before the engine sees it, the same behavior as Claude Code's command loader. No `load_skill` MCP tool. Installer paths and Claude-only workflow content (`/clear`, `TodoWrite`, hook events, tmux) remain part of T18. | 10-26 |
 | D42 | `sender_id` names the engine | Non-Claude personas use `agy@<project>.deepily.ai#<8 hex>` and `jetski@…`; Claude personas keep `claude.code@…`. `parseSenderId` already accepts any local part as `agentType`. Display code that matches `claude.code` literally must be found and generalized (T27). | 10-26 |
 | D43 | Instruction files in worktrees | The kernel writes each persona's `AGENTS.md` and `.agents/` into its lupin worktree and adds both to that worktree's `.git/info/exclude` at provisioning. No global `--agent` definitions on AGY. | 10-26 |
 | D44 | Default model per role | Jetski-family model ids (`agy models`): `chief_of_staff`, `manager`, `steward`, `author` → `fable-5.1-high` (Claude Fable 5.1, High); `implementer`, `reviewer`, `tester` → `opus-5.5-high` (Claude Opus 5.5, High). These are defaults in the persona manifest, overridable per persona. Claude Code personas use the same models under Claude Code's own model ids. D31 stays open for any change beyond these defaults. | 10-26 |
+| D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After A1–A8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
 
 ---
 
@@ -129,11 +130,11 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
   - `agentName` is the string `"None"`;
   - `invoke_subagent` adds `Model` and `Workspace` arguments.
 - The dev server is assumed to run AGY 1.4.7 too (D32).
-- Evidence: `2026.10.25-agy-capabilities-results.md`.
+- Evidence: `evidence/2026.10.25-agy-capabilities-results.md`.
 
 ### 2.6 Measured on Jetski 2026.10.14 (Phase 0 Part B, 2026-10-15)
 - The hook contract matches AGY's. A project hook blocks real calls (C1 PASS), and an unknown `--conversation` id is silently replaced (C4).
-- **The tool surface differs from AGY's** (`read_file`/`write_file`/`edit_file`, no `Cwd`, no fetch tool), so tool maps are per binary (§8).
+- **The tool surface differs from AGY's** (`read_file`/`write_file`/`edit_file`, no `Cwd`, no fetch tool), so tool maps are per binary (Section 8).
 - The hook payload adds `agentName`, `callerContext`, `executionId`, `isBattleMode`, `lastUserInput`, `parentConversationId`, `rootConversationId`.
 - Jetski starts a Chrome DevTools MCP server by default (`--use_ls_chrome_devtools_mcp`).
 - Follow-up (2026-10-18, Jetski 2026.10.16):
@@ -202,7 +203,7 @@ The shareable explainer with diagrams is `kernel-explainer/`.
 
 - `TODO(T08)` **Kernel lifecycle:**
   - unit name;
-  - restart behavior (respawn lazily from the registry, verifying `init.conversation_id`, §5.4);
+  - restart behavior (respawn lazily from the registry, verifying `init.conversation_id`, Section 5.4);
   - one engine crashing;
   - upgrading the kernel while personas are live.
 - `TODO(T09)` **Control API contract:** spawn, dismiss, list, interrupt, respin, send, status. Phase 1 has a first cut (`/personas`, `/personas/{id}/messages`, `/gate`, `/health`).
@@ -252,7 +253,7 @@ Prototype renames: `Ev`→`EngineEvent`, `sid`→`session_id`, `self.e`/`self.p`
 | per-turn usage in result frame | yes | Jetski: yes, `usage{input,output,cache_read,thinking,total}_tokens` (C11) |
 | `permission_prompt_tool` | yes | no |
 | session id pinning | `--session-id` | **no**: an unknown `--conversation` id is silently replaced (C4, AGY and Jetski) |
-| tool surface | one | **per binary**: AGY and Jetski differ in tool names and arguments (§8) |
+| tool surface | one | **per binary**: AGY and Jetski differ in tool names and arguments (Section 8) |
 | session lineage in hook payload | not yet measured | Jetski: subagent iff `parentConversationId` non-empty; `rootConversationId` = top-level id. AGY: none |
 | hooks and MCP servers inherit env | yes (docs) | **yes** on both binaries (C1, C3) |
 | model selection | `--model` | Jetski defaults to `auto`: pin `--model` per persona |
@@ -412,8 +413,8 @@ sequenceDiagram
   - Workers ask you only through their manager, by DM.
   - Managers ask you directly, and fall back to the chief of staff when you don't answer by the fallback point.
   - The chief of staff asks you directly. On escalation it consults the preference learner, and may answer as a marked surrogate.
-- **Tickets:** the timing rules are in D37; the full contract is in `2026.10.20-ticketed-asks-spec.md`.
-- **Lupin changes:** see §18.
+- **Tickets:** the timing rules are in D37; the full contract is in `specs/2026.10.20-ticketed-asks-spec.md`.
+- **Lupin changes:** see Section 18.
 
 `TODO(T13)` **Voice-out details:**
 - the system prompt text for the format, per engine;
@@ -443,7 +444,7 @@ flowchart LR
 - **Gate G1:** passed for **AGY and Jetski** on 2026-10-15 (C1 on each).
 - On a deny, the model sees `tool call denied by pre-tool hook: <deny_reason>`. Jetski prefixes it with `Encountered error in tool execution:`. The turn continues on both, so guards only return a reason string.
 
-Tool map per binary (C2 on both, C3 on AGY). **AGY 1.4.7 uses the Jetski column's names** (§2.5a); the AGY column below is AGY 1.3, kept as aliases because both binaries update themselves. The adapter maps each binary's calls into one common shape, and guards only see that shape:
+Tool map per binary (C2 on both, C3 on AGY). **AGY 1.4.7 uses the Jetski column's names** (Section 2.5a); the AGY column below is AGY 1.3, kept as aliases because both binaries update themselves. The adapter maps each binary's calls into one common shape, and guards only see that shape:
 
 | Common shape | AGY 1.3 (aliases) | Jetski and AGY 1.4.7 | Claude |
 |---|---|---|---|
@@ -470,7 +471,7 @@ Port rules:
 
 ### 8.1 Roles and authorization
 
-Roles: `chief_of_staff`, `manager`, `steward`, `author`, `implementer`, `reviewer`, `tester`. The full matrix is in `2026.10.18-uhw-role-table.md`. In short:
+Roles: `chief_of_staff`, `manager`, `steward`, `author`, `implementer`, `reviewer`, `tester`. The full matrix is in `specs/2026.10.18-uhw-role-table.md`. In short:
 - **native tools** are an allow-list at launch per role;
 - **cosa-voice tools** are filtered on `tools/list` per role (exposure);
 - **rules** run in the gate, in enforce or observe mode;
@@ -501,7 +502,7 @@ Moved out of `stop.py` and triggered when a turn ends:
 - which signals carry over as they are and which get redesigned: owed-work poke from the task store (D21), heartbeat, "anything else?" timer with backoff, genuine-idle beacon, board sweep, role-goal and proactive-manager pokes, declared hold files (`.heartbeat-hold-*`), poke caps and mutes (`stop_poke`);
 - how each is expressed as a kernel timer or a next-turn message.
 
-Source: inventory §10.
+Source: inventory Section 10.
 
 ---
 
@@ -517,7 +518,7 @@ Source: inventory §10.
 - seat worktree provisioning and reaping;
 - harvest-before-reap (steward ack);
 - self-respin as close + respawn with the memento;
-- what the folded arbiter consumes (§11);
+- what the folded arbiter consumes (Section 11);
 - the `--vertex` equivalent, or a ruling that it is Claude-only.
 
 `TODO(T25)` **Host capacity:** engine processes per VM, memory per AGY process, and the `cc_memory_watch` equivalent keyed on registry pids.
@@ -532,7 +533,7 @@ Source: inventory §10.
 - Terminal console (D15) and web view (D16) are both readers of the log.
 - Arbiter inputs, written by an event sink: liveness (replaces bridge timestamp touches), heartbeat events, context pressure from `usage` (works for Jetski too; replaces transcript tailing), turn age.
 
-- Each spawn records engine `--version` and `modelName`, since engines update themselves (§2.5). For AGY, context pressure can read `transcriptPath` from the hook payload.
+- Each spawn records engine `--version` and `modelName`, since engines update themselves (Section 2.5). For AGY, context pressure can read `transcriptPath` from the hook payload.
 
 `TODO(T17)` **Observability:**
 - log schema and rotation;
@@ -552,16 +553,16 @@ Source: inventory §10.
 
 | AH4L capability | AH4L mechanism | UHW component |
 |---|---|---|
-| Spawn, fleet, worktrees | `start-cc-with-tmux.sh`, `session_spawner.py` | kernel + control API (§10) |
-| Identity / registry | bridge `cc-{PPID}.json` | stable persona identity (§4) |
-| Voice in, between turns | listener → buffer → tmux Enter → UserPromptSubmit | inbox (§6) |
+| Spawn, fleet, worktrees | `start-cc-with-tmux.sh`, `session_spawner.py` | kernel + control API (Section 10) |
+| Identity / registry | bridge `cc-{PPID}.json` | stable persona identity (Section 4) |
+| Voice in, between turns | listener → buffer → tmux Enter → UserPromptSubmit | inbox (Section 6) |
 | Voice in, mid-turn | Pre/PostToolUse drain | queue; Claude native path if captured |
-| Pre-tool guards | `pre_tool_use.py` | tool gate (§8) |
+| Pre-tool guards | `pre_tool_use.py` | tool gate (Section 8) |
 | Voice permission | `permission_request.py` | `--permission-prompt-tool` / Jetski `allow_tool` |
-| Turn-end policy | `stop.py` | §9 |
+| Turn-end policy | `stop.py` | Section 9 |
 | Peer DMs | `deliver_pending_peer_dms` | inbox `source="peer"` |
-| Speech out | PostToolUse TTS, Stop auto-narrate | response pyramid (§7) |
-| Liveness / context pressure / turn age | bridge timestamps, transcript tail, tmux pane | event sink (§11) |
+| Speech out | PostToolUse TTS, Stop auto-narrate | response pyramid (Section 7) |
+| Liveness / context pressure / turn age | bridge timestamps, transcript tail, tmux pane | event sink (Section 11) |
 | Self-respin | `/clear` via tmux | memento-seeded new session |
 | Human attach | tmux TUI | terminal console + web view |
 | Session end | SessionEnd kills listener | `Session.close()` |
@@ -582,7 +583,7 @@ Skills and commands reach every engine per D41.
 - assembly rules per engine;
 - memento format and first-turn rehydration;
 - charter briefs for SWE crew and cascade seats;
-- the planning-is-prompting installer and deploy target for `.agents/` and `~/.gemini/config/` (52 workflow files assume `~/.claude` paths; inventory §19.1).
+- the planning-is-prompting installer and deploy target for `.agents/` and `~/.gemini/config/` (52 workflow files assume `~/.claude` paths; inventory Section 19.1).
 
 ---
 
@@ -594,26 +595,26 @@ Skills and commands reach every engine per D41.
 - **Part A (AGY 1.3.5, `gemini-3.8-flash-high`):** done. C1 PASS, C2 PASS, C3 PASS, C4 PARTIAL, C9 8/8, C10 median 0.7 s.
 - **Part B (Jetski 2026.10.14 → 2026.10.16, model `auto`):** C1 PASS, C2 PASS with a different tool surface, **C3 PASS** (2026-10-18), C4 PARTIAL, C9 8/8, C10 median 0.64 s. Rerun C9 with a pinned `--model`.
 - **Claude (2026-10-20):** C5 hook isolation PASS, C6 control interrupt PASS (the process survives), C7 mid-turn message absorbed. C8 not run.
-- **Jetski C11–C14 (2026-10-18), AGY 1.4.7 C11–C14 (2026-10-24/25):** see §2.5a and the results documents. C14: MCP calls are cut at 180 s on both (D37).
+- **Jetski C11–C14 (2026-10-18), AGY 1.4.7 C11–C14 (2026-10-24/25):** see Section 2.5a and the results documents. C14: MCP calls are cut at 180 s on both (D37).
 
 ### 14.1 Summary
 
 | # | Question | Engine | Blocks | Script | Pass means |
 |---|---|---|---|---|---|
 | C1 | Can a PreToolUse hook veto a real tool call in headless stream-json mode? | Jetski/AGY | **Gate G1** | `c1_tool_veto.sh jetski\|agy` | hook fired, sentinel call blocked, allowed call ran |
-| C2 | Which tool names and argument keys appear in the stream and in hook payloads? | Jetski/AGY | tool gate mapping (§8) | `c2_tool_names.sh jetski\|agy` | `tool-map.tsv` covers list, read, search, glob, write, edit, shell, fetch |
+| C2 | Which tool names and argument keys appear in the stream and in hook payloads? | Jetski/AGY | tool gate mapping (Section 8) | `c2_tool_names.sh jetski\|agy` | `tool-map.tsv` covers list, read, search, glob, write, edit, shell, fetch |
 | C3 | Does persona identity reach a stdio MCP server, one server per engine? | Jetski/AGY | asks, DMs, `spawn_sessions` | `MCP_CONFIG=<path> c3_mcp_identity.sh jetski\|agy` | each of two concurrent servers sees its own inherited tag |
 | C4 | Can the conversation id be chosen before spawn? | Jetski/AGY | nothing (convenience) | `c4_pin_conversation.sh jetski\|agy` | engine reports the requested id; resume recalls |
 | C5 | Do the D4 launch flags keep user-scope AH4L hooks out? | Claude | **Phase 3** (every later Claude capture) | `c5_hook_isolation.sh` (from `$LUPIN_ROOT`) | A = full stack; B, C, D = none; E = `pre_tool_use` only; strict MCP = `[]` |
 | C6 | What does a `control_request` interrupt return; does the process survive? | Claude | interrupt path | `c6_claude_interrupt.sh` | interrupted result, same pid answers the next turn, session id = pinned |
-| C7 | A user message written to stdin mid-turn: absorbed, queued or dropped? | Claude | soft injection (§6) | `c7_claude_midturn.sh` | any of the three is a valid finding |
-| C8 | Is each in-place update of a progress card spoken, or only the first? | client | §7.3 | `c8_progress_group.py` (lupin venv) | manual: listen and record A ?/3, B ?/3 |
-| C9 | How often does each model follow the response-pyramid format? | all | §7.1 tuning | `c9_c10_pyramid_probe.py` | a compliance rate per model (no threshold yet) |
+| C7 | A user message written to stdin mid-turn: absorbed, queued or dropped? | Claude | soft injection (Section 6) | `c7_claude_midturn.sh` | any of the three is a valid finding |
+| C8 | Is each in-place update of a progress card spoken, or only the first? | client | Section 7.3 | `c8_progress_group.py` (lupin venv) | manual: listen and record A ?/3, B ?/3 |
+| C9 | How often does each model follow the response-pyramid format? | all | Section 7.1 tuning | `c9_c10_pyramid_probe.py` | a compliance rate per model (no threshold yet) |
 | C10 | Gap from spoken block closing to `result` | all | D13 early-speech decision | same script | a median gap per model |
-| C11 | Which instruction and extension surfaces does the engine load natively (rules files, commands, skills, agent definitions)? | Jetski/AGY | planning-is-prompting route (inventory §19.5), persona bootstrap (§13) | `c11_surfaces.py jetski\|agy` | per surface: codeword reached the model with every tool denied |
-| C12 | Subagent tool name; do hooks fire inside subagents; can the tool be vetoed by name; what does `--mode plan` do? | Jetski/AGY | SWE-crew cardinal rule (§8), plan-mode steps | `c12_subagent_plan.py jetski\|agy` | tool found, child hook rows present, veto leaves no child calls |
-| C13 | C9/C10 with a pinned `--model` | Jetski/AGY | §7.1 tuning per persona model | `MODELS="…" c13_pinned_model.sh jetski\|agy` | `modelName` = pinned; compliance rate and readable spoken lines |
-| C14 | How long can one MCP tool call block before the engine times out or cancels? | Jetski/AGY | sync asks / `awaiting_human` (§5.2, §6) | `c14_mcp_wait.py jetski\|agy` | 620 s call answered; otherwise the timeout bracket |
+| C11 | Which instruction and extension surfaces does the engine load natively (rules files, commands, skills, agent definitions)? | Jetski/AGY | planning-is-prompting route (inventory Section 19.5), persona bootstrap (Section 13) | `c11_surfaces.py jetski\|agy` | per surface: codeword reached the model with every tool denied |
+| C12 | Subagent tool name; do hooks fire inside subagents; can the tool be vetoed by name; what does `--mode plan` do? | Jetski/AGY | SWE-crew cardinal rule (Section 8), plan-mode steps | `c12_subagent_plan.py jetski\|agy` | tool found, child hook rows present, veto leaves no child calls |
+| C13 | C9/C10 with a pinned `--model` | Jetski/AGY | Section 7.1 tuning per persona model | `MODELS="…" c13_pinned_model.sh jetski\|agy` | `modelName` = pinned; compliance rate and readable spoken lines |
+| C14 | How long can one MCP tool call block before the engine times out or cancels? | Jetski/AGY | sync asks / `awaiting_human` (Sections 5.2, 6) | `c14_mcp_wait.py jetski\|agy` | 620 s call answered; otherwise the timeout bracket |
 
 ### 14.2 Files
 
@@ -633,7 +634,7 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 - *Method:* a throwaway workspace with `.agents/hooks.json` (project level, so nothing global changes) and the engine launched exactly as the harness will (`--input-format/--output-format stream-json --dangerously-skip-permissions`). The model is asked to `touch allowed.marker`, then `touch UHW_DENY_ME.marker`.
 - *Also records:* hook payload keys, `toolCall` keys, whether the session id is in the payload, whether the parent env reached the hook, whether the model saw the deny reason.
 - *If the hook never fires:* rerun with `HOOKS_FORMAT=B` (bare `"hooks"` key instead of a named set). If it still never fires, the likely cause is that `--dangerously-skip-permissions` bypasses hooks. Then add a static `"permissions.allow"` rule for the shell tool in `~/.gemini/<app>/settings.json`, drop the flag, and run again.
-- *If no route works:* fall back to the design doc's MCP indirection (deny the native shell tool, allow a Lupin-owned MCP `run` tool that consults the guards). This changes §8.
+- *If no route works:* fall back to the design doc's MCP indirection (deny the native shell tool, allow a Lupin-owned MCP `run` tool that consults the guards). This changes Section 8.
 
 **C2 tool names (Jetski/AGY).**
 - *Method:* one turn asking for eight steps, one tool each, in a seeded workspace. The hook allows everything.
@@ -645,7 +646,7 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 - *Method:* with `MCP_CONFIG` set, the script backs the file up, registers `uhw-probe` with an env block (`UHW_PROBE_BLOCK=block-static`, `UHW_PROBE_EXPANDED=${UHW_PROBE_TAG}`), runs two engines concurrently with `UHW_PROBE_TAG=persona-1` and `persona-2`, then restores the file on exit.
 - *One run answers:* inheritance, env block, `${VAR}` expansion, one server per engine vs shared, and whether PreToolUse fires on MCP tools (and the name format).
 - *Pass:* identity by inherited env. The harness sets `LUPIN_PERSONA_ID` at spawn and cosa-voice reads it. That works because the persona id is known before spawn (D7).
-- *Partial:* block applied but not inherited means a config file per persona, which needs a per-session config path (see §14.5).
+- *Partial:* block applied but not inherited means a config file per persona, which needs a per-session config path (see Section 14.5).
 
 **C4 conversation id pinning (Jetski/AGY).**
 - *Method:* spawn with `--conversation <new uuid>`, then resume with the reported id and check recall.
@@ -663,7 +664,7 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 
 **C7 mid-turn message (Claude).**
 - *Method:* during `sleep 15`, the driver writes "say BANANA" to stdin; `--replay-user-messages` shows when Claude consumed it.
-- *Absorbed* means the inbox writes normal-priority messages straight to stdin while busy (native soft injection, no hook). *Queued* means the harness's own queue-and-merge (§6) is enough and the engine queue is redundant. *Dropped* means never write while busy.
+- *Absorbed* means the inbox writes normal-priority messages straight to stdin while busy (native soft injection, no hook). *Queued* means the harness's own queue-and-merge (Section 6) is enough and the engine queue is redundant. *Dropped* means never write while busy.
 
 **C8 progress groups (client).**
 - *Method:* from the lupin venv, series A sends three high-priority updates sharing one `progress_group_id` (format `pg-<8 hex>`); series B (control) gives each a new id. The sender id uses the `claude.code@lupin.deepily.ai#<8 hex>` shape `parseSenderId` expects.
@@ -691,11 +692,11 @@ Not needed for Phase 0. Each is scripted when its section is expanded.
 
 | Item | Needed by |
 |---|---|
-| System-prompt route for Jetski (`--agent`, agent definitions) | §13 persona bootstrap |
-| Separate `--app_data_dir` per persona (settings, conversations, token isolation) | §10 fleet, C3 partial case |
-| Shutdown latency when interrupted mid-tool (≈0 s vs ≈6 s seen) | §6 barge-in latency |
-| `permissions.deny` and rule syntax for MCP tools | §8 fallback (MCP indirection) |
-| Protocol interrupt for Jetski (`control_request` "not supported yet") | §5.1 `interrupt_mode` |
+| System-prompt route for Jetski (`--agent`, agent definitions) | Section 13 persona bootstrap |
+| Separate `--app_data_dir` per persona (settings, conversations, token isolation) | Section 10 fleet, C3 partial case |
+| Shutdown latency when interrupted mid-tool (≈0 s vs ≈6 s seen) | Section 6 barge-in latency |
+| `permissions.deny` and rule syntax for MCP tools | Section 8 fallback (MCP indirection) |
+| Protocol interrupt for Jetski (`control_request` "not supported yet") | Section 5.1 `interrupt_mode` |
 | Cross-turn prompt caching with a large prefix | cost model |
 
 ---
@@ -709,17 +710,17 @@ flowchart TD
     P1["Phase 1 · Core and Jetski adapter<br/>engine-agnostic core, interim guards,<br/>voice via the notifications API"]
     P2["Phase 2 · Persona bootstrap and fleet on Jetski<br/>managers, workers, spawn_sessions"]
     P3["Phase 3 · Claude adapter<br/>C5–C7 first"]
-    P4["Phase 4 · Parity on Claude<br/>every row of §12 tested on Claude"]
+    P4["Phase 4 · Parity on Claude<br/>every row of Section 12 tested on Claude"]
     G2{"Gate: Claude parity"}
     SO["Switch-over week<br/>dedicated branch, then AH4L deleted"]
     P0 --> G1 --> P1 --> P2 --> P3 --> P4 --> G2 --> SO
 ```
 
-Phase 0 status: **complete** for AGY 1.4.7, Jetski and Claude (C5–C7). G1 passed for AGY and Jetski. Pinned-model format runs done (C13). Phase 1 code lives in `lupin/src/lupin_kernel/` (D38).
+Phase 0 status: **complete** for AGY 1.4.7, Jetski and Claude (C5–C7). G1 passed for AGY and Jetski. Pinned-model format runs done (C13). Phase 1 code lives in `unified-headless-wrapper/src/uhw_kernel/` on the test VM (D45) and moves to `lupin/src/lupin_kernel/` after A1–A8 (D38). No code written yet as of 2026-11-02.
 
-Testing throughout: `fake_engine` simulates both families from the first day; parity tests per §12 row.
+Testing throughout: `fake_engine` simulates both families from the first day; parity tests per Section 12 row.
 
-Phase 1 is specified in `2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`: one AGY persona by voice on the test VM, acceptance A1–A8. Platform per D32. Claude adapter testing is the last phase.
+Phase 1 is specified in `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`: one AGY persona by voice on the test VM, acceptance A1–A8. Platform per D32. Claude adapter testing is the last phase.
 
 `TODO(T19)` **Exit criteria and switch-over:**
 - exit criteria per phase;
@@ -734,17 +735,17 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 
 ## 16. Fill-in order
 
-1. ~~§14 Captures~~ done 2026-10-14.
+1. ~~Section 14 Captures~~ done 2026-10-14.
 2. ~~Record decisions made since 10-20~~ done 2026-10-26 (D35–D37, amendments to D6, D9, D12, D18, D25, D33).
-3. ~~Rule on the pending decisions~~ T01–T07 resolved 10-26 as D38–D44.
+3. ~~Rule on the pending decisions~~ T01–T07 resolved 10-26 as D38–D44; D45 (where Phase 1 is built, by whom) 11-02.
 4. Then, in order:
-   - §4 (T10);
-   - §5 (T11, T24);
-   - §8 (T14, T26, T32);
-   - §6 and §7 (T12, T13, T27);
-   - §11 (T17, T23, T20);
-   - §13, §10, §9 (T18, T16, T25, T28, T15);
-   - §15 (T19, T31).
+   - Section 4 (T10);
+   - Section 5 (T11, T24);
+   - Section 8 (T14, T26, T32);
+   - Sections 6 and 7 (T12, T13, T27);
+   - Section 11 (T17, T23, T20);
+   - Sections 13, 10, 9 (T18, T16, T25, T28, T15);
+   - Section 15 (T19, T31).
 
 ---
 
@@ -759,7 +760,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 | Pyramid prompt tuned on Gemini doesn't transfer to Opus | measure per model; don't share baselines |
 | Loss of the tmux TUI for humans | console + web view from the log |
 | Engine updates itself mid-experiment | record `--version` and `modelName` per spawn and per capture |
-| Stale conversation id silently resets a persona | verify `init.conversation_id` on every resume (§5.4) |
+| Stale conversation id silently resets a persona | verify `init.conversation_id` on every resume (Section 5.4) |
 | Tool names differ between engines of one family | per-binary tool tables behind one common shape; C2 rerun on every engine update |
 | An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | `TODO(T24)`: at spawn, compare `--version` with the last vetted version; on change, run the C2 smoke check before admitting the persona, and refuse with a narrated reason on failure |
 | AGY subagents act outside the gate | D39: denied on AGY for every role |
@@ -786,7 +787,7 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 | `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh` | — |
 | Web and mobile clients | `TODO(T27)`: ticket state and the "answered too late" notice; an engine/model label on cards; `sender_id` per D42; generalize any display code matching `claude.code`. `parseSenderId` already accepts any local part | — |
 
-`TODO(T30)` **Claude-coupled components outside the harness** (inventory §17: the `swe_team` orchestrator, bug-fix and test-fix expediters, `cosa/orchestration/claude_code/dispatcher.py`). Each needs its own migration path, or an explicit ruling that it stays on the Claude Agent SDK.
+`TODO(T30)` **Claude-coupled components outside the harness** (inventory Section 17: the `swe_team` orchestrator, bug-fix and test-fix expediters, `cosa/orchestration/claude_code/dispatcher.py`). Each needs its own migration path, or an explicit ruling that it stays on the Claude Agent SDK.
 
 ---
 
@@ -798,9 +799,9 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
   - rate limits per model;
   - a cost baseline comparable to the Max plan reference;
   - the deferred capture on cross-turn prompt caching (T34).
-- `TODO(T24)` **Engine self-update:** see §17.
+- `TODO(T24)` **Engine self-update:** see Section 17.
 - Default models per role are set by D44.
-- `TODO(T34)` **Deferred captures** (§14.5):
+- `TODO(T34)` **Deferred captures** (Section 14.5):
   - a separate `--app_data_dir` per persona;
   - shutdown latency when interrupted mid-tool;
   - `permissions.deny` syntax for MCP tools;
@@ -817,74 +818,78 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 
 | Id | Item | Where | Recommendation | Blocks |
 |---|---|---|---|---|
-| T01 | ~~AGY subagents~~ | §8 | **resolved: D39** | — |
-| T02 | ~~Where the kernel code lives~~ | §15 | **resolved: D38** | — |
-| T03 | ~~When an AGY persona implements the kernel~~ | §15 | **resolved: D40** | — |
-| T04 | ~~Skills and slash commands on AGY and Jetski~~ | §13 | **resolved: D41** | — |
-| T05 | ~~`sender_id` local part~~ | §4 | **resolved: D42** | — |
-| T06 | ~~Default model per role~~ | §19 | **resolved: D44** | — |
-| T07 | ~~Instruction files in lupin worktrees~~ | §5.4 | **resolved: D43** | — |
+| T01 | ~~AGY subagents~~ | Section 8 | **resolved: D39** | — |
+| T02 | ~~Where the kernel code lives~~ | Section 15 | **resolved: D38** | — |
+| T03 | ~~When an AGY persona implements the kernel~~ | Section 15 | **resolved: D40** | — |
+| T04 | ~~Skills and slash commands on AGY and Jetski~~ | Section 13 | **resolved: D41** | — |
+| T05 | ~~`sender_id` local part~~ | Section 4 | **resolved: D42** | — |
+| T06 | ~~Default model per role~~ | Section 19 | **resolved: D44** | — |
+| T07 | ~~Instruction files in lupin worktrees~~ | Section 5.4 | **resolved: D43** | — |
 
 ### 20.2 Designs not yet written
 
 | Id | Item | Section | Status |
 |---|---|---|---|
-| T08 | Kernel lifecycle: unit name, restart, engine crash, kernel upgrade with personas live | §3.3 | design |
-| T09 | Kernel control API contract | §3.3 | design |
-| T10 | Stable id derivation and id migration | §4 | design |
-| T11 | `--mode` per persona; system prompt contents per engine | §5.4 | design |
-| T12 | Merged-turn envelope; ledger persistence; Claude mid-turn write policy | §6 | design |
-| T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | §7 | design |
-| T14 | Jetski internal tools; files read before the first MCP call | §8 | measure |
-| T15 | Turn-end policy (largest area) | §9 | design |
-| T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex | §10 | design |
-| T17 | Log schema and rotation; watchdog; tailer; `cc_transcript` and `claude_code_queue` routers | §11, §18 | design |
-| T18 | Persona bootstrap: assembly, memento, charters, planning-is-prompting installer | §13 | design |
-| T19 | Exit criteria per phase; switch-over checklist; deletion list | §15 | design |
-| T20 | Console (D15) | §11 | design |
-| T21 | Tasks router manager guard off bridge files | §8.1, §18 | design |
+| T08 | Kernel lifecycle: unit name, restart, engine crash, kernel upgrade with personas live | Section 3.3 | design |
+| T09 | Kernel control API contract | Section 3.3 | design |
+| T10 | Stable id derivation and id migration | Section 4 | design |
+| T11 | `--mode` per persona; system prompt contents per engine | Section 5.4 | design |
+| T12 | Merged-turn envelope; ledger persistence; Claude mid-turn write policy | Section 6 | design |
+| T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | Section 7 | design |
+| T14 | Jetski internal tools; files read before the first MCP call | Section 8 | measure |
+| T15 | Turn-end policy (largest area) | Section 9 | design |
+| T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex | Section 10 | design |
+| T17 | Log schema and rotation; watchdog; tailer; `cc_transcript` and `claude_code_queue` routers | Sections 11, 18 | design |
+| T18 | Persona bootstrap: assembly, memento, charters, planning-is-prompting installer | Section 13 | design |
+| T19 | Exit criteria per phase; switch-over checklist; deletion list | Section 15 | design |
+| T20 | Console (D15) | Section 11 | design |
+| T21 | Tasks router manager guard off bridge files | Sections 8.1, 18 | design |
 
 ### 20.3 Never discussed until 2026-10-26
 
 | Id | Item | Section | Status |
 |---|---|---|---|
-| T22 | Engine authentication, quota and cost baseline for an AGY fleet | §19 | design + measure |
-| T23 | Context exhaustion on AGY and Jetski; respin trigger | §11 | measure |
-| T24 | Engine self-update in a live fleet; version vetting at spawn | §17, §19 | design |
-| T25 | Host capacity and memory watch | §10 | measure |
-| T26 | Permission prompts: what replaces voice-approved permissions | §8 | decide + design |
-| T27 | Web and mobile client changes (tickets, late answers, engine label) | §18 | design |
-| T28 | System broadcasts and DM tutor through the inbox; per-engine reminder wrapper | §10 | design |
-| T29 | Preference-learner surrogate policy and learner improvement | §7.4 | separate |
-| T30 | Claude-coupled components outside the harness | §18 | separate |
-| T31 | Switch-over data migration | §15 | design |
-| T32 | Credential exposure: observe rule for direct REST and key reads | §8.1 | design |
-| T33 | Claude MCP call timeout (moot under D37) | §5.1 | measure |
+| T22 | Engine authentication, quota and cost baseline for an AGY fleet | Section 19 | design + measure |
+| T23 | Context exhaustion on AGY and Jetski; respin trigger | Section 11 | measure |
+| T24 | Engine self-update in a live fleet; version vetting at spawn | Sections 17, 19 | design |
+| T25 | Host capacity and memory watch | Section 10 | measure |
+| T26 | Permission prompts: what replaces voice-approved permissions | Section 8 | decide + design |
+| T27 | Web and mobile client changes (tickets, late answers, engine label) | Section 18 | design |
+| T28 | System broadcasts and DM tutor through the inbox; per-engine reminder wrapper | Section 10 | design |
+| T29 | Preference-learner surrogate policy and learner improvement | Section 7.4 | separate |
+| T30 | Claude-coupled components outside the harness | Section 18 | separate |
+| T31 | Switch-over data migration | Section 15 | design |
+| T32 | Credential exposure: observe rule for direct REST and key reads | Section 8.1 | design |
+| T33 | Claude MCP call timeout (moot under D37) | Section 5.1 | measure |
 
 ### 20.4 Carried over
 
 | Id | Item | Section | Status |
 |---|---|---|---|
-| T34 | Deferred captures (`--app_data_dir`, interrupt latency mid-tool, MCP deny syntax, Jetski protocol interrupt, prompt caching) | §14.5, §19 | measure |
+| T34 | Deferred captures (`--app_data_dir`, interrupt latency mid-tool, MCP deny syntax, Jetski protocol interrupt, prompt caching) | Sections 14.5, 19 | measure |
 
 ---
 
 ## 21. Companion documents
 
-All in `unified-headless-wrapper/src/rnd/v0.0.1/` and in the claude.ai project under `uhw/`.
+All in `unified-headless-wrapper/src/rnd/v0.0.1/` and in the claude.ai project under `uhw/`, with the same layout: two living documents at the top, dated records below them.
 
-| Document | Holds |
+| Path | Holds |
 |---|---|
-| `2026.10.12-unified-headless-wrapper-claude-code-jetski-and-agy.md` | protocol captures and the prototype design |
-| `2026.10.12-uhw-build-order-jetski-and-agy-first.md` | build order and gates |
-| `2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
-| `2026.10.18-ah4l-capability-inventory.md` | everything AH4L does today, with UHW dispositions |
-| `2026.10.18-uhw-role-table.md` | roles, tool exposure, rules |
-| `2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
-| `2026.10.20-claude-round-results.md` | Claude C5–C7 |
-| `2026.10.20-ticketed-asks-spec.md` | D37 in full |
-| `2026.10.23-agy-round-results.md` | the invalid snap run (D34) |
-| `2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md` | Phase 1 |
-| `2026.10.25-agy-capabilities-results.md` | AGY 1.4.7 C11–C14 |
-| `2026.10.26-design-gap-review.md` | the review that produced D35–D37 and the register (superseded by §20) |
+| `00-status.md` | **living** · where the work stands: phase, open items, next three, session log newest first. Read first, update last |
+| `01-framework.md` | **living** · this document |
+| `specs/2026.10.18-ah4l-capability-inventory.md` | everything AH4L does today, with UHW dispositions |
+| `specs/2026.10.18-uhw-role-table.md` | roles, tool exposure, rules |
+| `specs/2026.10.20-ticketed-asks-spec.md` | D37 in full |
+| `specs/2026.10.23-uhw-interfaces.svg` | the interface partition diagram (D29) |
+| `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md` | Phase 1 |
+| `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
+| `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
+| `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
+| `evidence/2026.10.23-agy-round-results.md` | the invalid snap run (D34) |
+| `evidence/2026.10.25-agy-capabilities-results.md` | AGY 1.4.7 C11–C14 |
+| `archive/2026.10.12-unified-headless-wrapper-claude-code-jetski-and-agy.md` | protocol captures and the prototype design (superseded by Sections 2.4, 5 and Phase 1 spec Section 3) |
+| `archive/2026.10.12-uhw-build-order-jetski-and-agy-first.md` | build order and gates (absorbed into D17–D19, Sections 15, 17) |
+| `archive/2026.10.26-design-gap-review.md` | the review that produced D35–D37 and the register (superseded by Section 20) |
+| `captures/` | raw capture output pasted back from the engines |
 | `kernel-explainer/` | the shareable explainer and diagrams |

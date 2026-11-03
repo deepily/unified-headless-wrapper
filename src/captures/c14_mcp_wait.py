@@ -2,7 +2,7 @@
 """
 c14_mcp_wait.py jetski|agy -- C14: how long may one MCP tool call block before the engine gives up?
 
-A cosa-voice ask blocks until a human answers (the session sits in awaiting_human, framework §5.2). If the engine times
+A cosa-voice ask blocks until a human answers (the session sits in awaiting_human, framework Section 5.2). If the engine times
 MCP calls out, sync asks need a different shape (return a ticket, poll, or deliver the answer as the next turn).
 One engine process, one turn per duration; the probe server logs call start, call end, cancellation and EOF.
 

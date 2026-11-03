@@ -3,7 +3,7 @@
 c11_surfaces.py jetski|agy -- C11: which instruction and extension surfaces does the engine load natively?
 
 Decides whether planning-is-prompting installs into the engine's own surfaces or goes through the harness
-(inventory §19.5). Every planted file carries a unique codeword UHWCODE-<TAG>. Where the question is "did the engine
+(inventory Section 19.5). Every planted file carries a unique codeword UHWCODE-<TAG>. Where the question is "did the engine
 put this in the model's context", a hook denies every tool call, so the model can only answer from what was loaded.
 
     A. static     --help lines, `agents --help`, ~/.gemini layout (names only; agent-definition keys, never values)

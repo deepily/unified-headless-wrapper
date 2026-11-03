@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# capabilities_followup.sh [jetski|agy] -- C11-C14 in one run, one bundle to paste back (runbook §9).
+# capabilities_followup.sh [jetski|agy] -- C11-C14 in one run, one bundle to paste back (runbook Section 9).
 #   C11 instruction and extension surfaces       about 5 min
 #   C12 subagent tool, veto by name, --mode plan  about 3 min
 #   C14 long MCP calls (45, 200, 620 s)           about 15 min; SKIP_WAIT=1 skips, WAITS="..." overrides

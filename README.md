@@ -14,9 +14,11 @@ One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven 
 | `src/lupin_headless.py` | The wrapper: engine adapters, `Session`, `PersonaStore`, `Speaker` and the single-persona loop |
 | `src/fake_engine.py` | Mock engine reproducing the captured stream-json behavior of both protocol families |
 | `src/test_headless.py` | Scenario script that drives the wrapper through the mock |
-| `src/rnd/v0.0.1/` | [Design doc](src/rnd/v0.0.1/2026.10.12-unified-headless-wrapper-claude-code-jetski-and-agy.md): empirical findings, architecture, failure rules and open questions |
-| `src/rnd/v0.0.1/2026.10.14-uhw-implementation-planning-framework.md` | Planning framework: decisions, design per component, captures, phases and gates |
-| `src/rnd/v0.0.1/2026.10.15-phase0-part-*-results.md` | Phase 0 capture results: Part A (AGY), Part B (Jetski) |
+| `src/rnd/v0.0.1/00-status.md` | Where the work stands: phase, open items, next three, session log. Read first |
+| `src/rnd/v0.0.1/01-framework.md` | The master design: decisions D1–D44, design per component, captures, phases and gates, TODO register |
+| `src/rnd/v0.0.1/specs/` | Role table, AH4L capability inventory, ticketed-asks spec, Phase 1 spec |
+| `src/rnd/v0.0.1/evidence/` | Capture results: Phase 0 Parts A/B, Jetski and AGY C11–C14, Claude C5–C7 |
+| `src/rnd/v0.0.1/archive/` | Superseded: the 10-12 prototype [design doc](src/rnd/v0.0.1/archive/2026.10.12-unified-headless-wrapper-claude-code-jetski-and-agy.md), build order, design gap review |
 | `src/captures/` | Phase 0 capture scripts, probes and the [runbook](src/captures/RUNBOOK.md); outputs go to the gitignored `src/captures/out/` |
 
 ## Architecture

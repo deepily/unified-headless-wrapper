@@ -5,7 +5,7 @@ c12_subagent_plan.py jetski|agy -- C12: the subagent tool and --mode plan.
     A. discover   ask for delegation to a subagent; which top-level tool did it, and do project hooks fire inside the
                   subagent (rows with a non-empty parentConversationId)?
     B. veto       same prompt, the hook denies the discovered tool by name: is in-process staffing enforceable?
-                  (the SWE crew's cardinal rule, inventory §19.3)
+                  (the SWE crew's cardinal rule, inventory Section 19.3)
     C. plan mode  --mode plan, two turns in one process: "create plan.marker", then "approved, go ahead".
                   Does turn 1 write? Which tools does plan mode expose? Does approval in-band unlock writes?
 
