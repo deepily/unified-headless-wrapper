@@ -1,6 +1,6 @@
 # UHW and the Lupin kernel: master design and implementation framework
 
-**As of:** 2026-11-02 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
+**As of:** 2026-11-03 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
 
 **How to read it:**
 - Decisions are locked in Section 1.
@@ -42,7 +42,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D17 | Switch-over scope | **Full parity**: managers, workers, `spawn_sessions`, arbiter inputs and owed-work pokes all run on UHW before switch-over week. | 10-13 |
 | D18 | Kernel placement | A new host-side service with its own systemd user unit. **Amended:** its API listens on a Unix socket (mode 0600, default `~/.lupin/kernel/kernel.sock`), not a TCP port. It replaces `lupin-arbiter-app` rather than sitting beside it (D24). | 10-13, amended 10-26 |
 | D19 | Build order | Jetski/AGY first, Claude second. Parity is still measured on Claude. | 10-13 |
-| D20 | Document venue | A Claude doc in the project plus Markdown in `unified-headless-wrapper/src/rnd/`. | 10-13 |
+| D20 | Document venue | ~~A Claude doc in the project plus Markdown in `unified-headless-wrapper/src/rnd/`.~~ **Amended 11-03:** the repo is the single source of truth. Every UHW document lives only in `unified-headless-wrapper/src/rnd/v0.0.1/`; edits are made live in the laptop checkout when the laptop is connected, and pushed at the end of every working night; sessions without the laptop read the pushed branch from GitHub. The claude.ai project copies under `uhw/` carry a superseded header from 11-03 and are deleted after one week (on or after 11-10). | 10-13, amended 11-03 |
 | D21 | Owed-work source | The global task store is the only source of owed work. Retire `heartbeat_task_state` (native `Task*` transcript replay) and the deprecated mirror. | 10-18 |
 | D22 | Native task tools | Ignored in every engine (Claude `TodoWrite`/`TaskCreate`, any Jetski-family equivalent). Workflows that reference them are rewritten to use the store. | 10-18 |
 | D23 | Jetski behavior layer | planning-is-prompting: all of its skills, with explicit use of the cascade review and adversarial SWE crew workflows. Inventoried before the interface decision. | 10-18 |
@@ -68,6 +68,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D43 | Instruction files in worktrees | The kernel writes each persona's `AGENTS.md` and `.agents/` into its lupin worktree and adds both to that worktree's `.git/info/exclude` at provisioning. No global `--agent` definitions on AGY. | 10-26 |
 | D44 | Default model per role | Jetski-family model ids (`agy models`): `chief_of_staff`, `manager`, `steward`, `author` → `fable-5.1-high` (Claude Fable 5.1, High); `implementer`, `reviewer`, `tester` → `opus-5.5-high` (Claude Opus 5.5, High). These are defaults in the persona manifest, overridable per persona. Claude Code personas use the same models under Claude Code's own model ids. D31 stays open for any change beyond these defaults. | 10-26 |
 | D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After A1–A8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
+| D46 | Persona id | **One identifier, eight lowercase hex characters** (`[0-9a-f]{8}`), minted at random by the kernel when a persona is created and checked for uniqueness against the registry and every known memento id. It is, unchanged, the `job_id`, the `sender_id` suffix, the inbound socket name `cc-listener-{persona_id}` and the persona directory name. No UUID form exists; today's `stable_session_id` and the two-width join in the roster disappear. The id survives respins and engine changes; dismiss followed by spawn mints a new one. Engine ids (`conversation_id`, Claude `--session-id`) are registry fields, never identity. At switch-over every live persona keeps `stable_session_id[:8]`, so `job_id`, socket name, suffix, client mute state and memento matches are byte-identical before and after. Detail: `specs/2026.11.03-t10-stable-id-spec.md`. Resolves T10. | 11-03 |
 
 ---
 
@@ -218,18 +219,55 @@ The shareable explainer with diagrams is `kernel-explainer/`.
 | `InboundMessage` | `notification_id`, `persona_id`, `text`, `source` (human / peer / answer), `priority` (normal / urgent) |
 | `ResponsePyramid` | `spoken`, `abstract`, `document`, `document_mode` |
 | `SessionState` | idle / busy / awaiting_human / interrupting / respawning / closed |
-| Persona identity | One stable id per persona: `job_id`, `sender_id`, log directory |
-| Identity transport | `LUPIN_PERSONA_ID` in the spawn environment, inherited by hooks and MCP servers (C3, AGY). No bridge-file lookup. |
+| Persona identity | `persona_id`, eight hex characters (D46). It is the `job_id`, the `sender_id` suffix, the socket name and the persona directory name; see 4.1 |
+| Identity transport | `LUPIN_PERSONA_ID` and `LUPIN_SENDER_ID` in the spawn environment, inherited by hooks and MCP servers (C3, both families). Nothing downstream derives identity; no bridge-file lookup. |
 
 Prototype renames: `Ev`→`EngineEvent`, `sid`→`session_id`, `self.e`/`self.p`→`self.engine`/`self.process`, `rid`→`request_id`, `pid` (persona)→`persona_id`, `tool`/`tool_done`→`tool_start`/`tool_end`.
 
-`sender_id` format the client parses: `claude.code@lupin.deepily.ai#<8 hex>` (`parseSenderId`); keep the 8-hex suffix stable per persona.
+### 4.1 Persona id (D46; T10 resolved 2026-11-03)
 
-`TODO(T10)` **Stable id:**
-- how `persona_id` derives `job_id`, the `sender_id` suffix and the log directory (building on `resolve_stable_session_id`);
-- how today's personas keep their ids across the switch-over.
+**One identifier.** `persona_id` is eight lowercase hex characters, minted once by the kernel (`secrets.token_hex( 4 )`) at `POST /personas` and stored in the registry. There is no longer form. Today the 8-hex key is already the only thing on the wire and on disk (`job_id`, `cc-listener-{key}`, the sender suffix, `cc-buffer-{key}.jsonl`, memento `-{key}.md`); the UUID behind it (`stable_session_id`) survives only in AH4L plumbing that UHW replaces. The client fixes the contract: it posts human messages with `job_id = parseSenderId( sender_id ).sessionId`, so `job_id`, suffix and socket name must be the same string.
 
-`sender_id` names the engine (D42).
+**Uniqueness.** At mint the kernel rejects a candidate present in the registry (live or dismissed rows) or matching any `io/mementos/*-<id>.md` in a repo it knows, because the memento resolver treats a session-id match as identity. Thirty-two bits is enough under D25: ids are routing keys, not secrets.
+
+**What it derives.** All of it is one pure leaf module, `identity.py` (`uhw_kernel` now, `lupin_kernel` after the move, imported by cosa-voice too):
+
+| Derived | Value | Consumer |
+|---|---|---|
+| `job_id` | `persona_id` | `POST /api/notify` out; `user_initiated_message` in |
+| inbound socket | `cc-listener-{persona_id}` | `emit_to_user_or_listener_sync` (D36) |
+| `sender_id` | `{local}@{project}.deepily.ai#{persona_id}`, local part `claude.code` / `agy` / `jetski` (D42) | speech out; client quiet mode keyed on the suffix |
+| `project` | `detect_project_for_path( workspace )`, computed **once** at creation and stored in the registry, never re-derived from a live cwd (the two-identities-per-seat defect, lupin row 2184bebb) | the `sender_id` project segment |
+| persona directory | `~/.lupin/kernel/personas/{persona_id}/`: `manifest.yaml` (rendered), `session.jsonl` (D14; rotation T17), `engine.stderr`, rendered engine config | logs, console, arbiter |
+| spawn environment | `LUPIN_PERSONA_ID`, `LUPIN_SENDER_ID` | hooks, cosa-voice |
+| memento match | `-{persona_id}.md`, `session_id={persona_id}` | unchanged from today |
+
+```python
+# identity.py — the whole derivation; no state
+import re, secrets
+
+PERSONA_ID_PATTERN = re.compile( r"^[0-9a-f]{8}$" )
+LOCAL_PART         = { "claude": "claude.code", "agy": "agy", "jetski": "jetski" }
+
+def mint_persona_id( taken: set[ str ] ) -> str:
+    while True:
+        candidate = secrets.token_hex( 4 )
+        if candidate not in taken: return candidate
+
+def sender_id( engine: str, project: str, persona_id: str ) -> str:
+    return f"{LOCAL_PART[ engine ]}@{project}.deepily.ai#{persona_id}"
+
+def listener_session( persona_id: str ) -> str:
+    return f"cc-listener-{persona_id}"
+```
+
+**What it is not.** Engine ids are not identity. `conversation_id` (Jetski family) and the Claude `--session-id` (a fresh `uuid4` per conversation) are registry fields, replaced on respin and verified on resume (Section 5.4). A persona keeps its `persona_id` across respins and across an engine change; only the `sender_id` local part follows the engine, so client mute state follows the persona.
+
+**Lifetime.** Self-respin keeps the id. Dismiss followed by spawn mints a new one; continuity is then the memento's persona match, as today.
+
+**Names are not identity.** The persona's name (`María`, `Mr. Radio`) circulates today in at least five forms: display, INI key (`maria`, `mr radio`, read through the `ConfigurationManager` singleton), the mixed-case pool line, and the three derivations in `lupin_mcp/persona_normalization.py`, plus four surviving local folding copies. Rule now: **only `persona_id` crosses a kernel interface; a name is never a routing argument; the registry holds one name field, `voice_persona`, in canonical-key form, and derives the display form at the edge.** `TODO(T35)` **Canonical persona name:** declare the one internal representation, make the configuration manager expose the pool already normalized, delete the local folding copies, and audit every seam that compares a name with `==`. Detail: the T10 spec, Section 7.
+
+**Switch-over.** For every live bridge: `persona_id := stable_session_id[:8]`, `manager_id := manager_session_id[:8]`; `role`, `project`, `model`, `work_dir`, `voice_persona`, `session_topic`, `owner_user_id` copy into the registry row. `session_ids[]` is dropped; conversation ids live in the session log from then on. The field map and the lupin ground truth are in `specs/2026.11.03-t10-stable-id-spec.md`.
 
 ---
 
@@ -739,7 +777,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 2. ~~Record decisions made since 10-20~~ done 2026-10-26 (D35–D37, amendments to D6, D9, D12, D18, D25, D33).
 3. ~~Rule on the pending decisions~~ T01–T07 resolved 10-26 as D38–D44; D45 (where Phase 1 is built, by whom) 11-02.
 4. Then, in order:
-   - Section 4 (T10);
+   - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
    - Section 5 (T11, T24);
    - Section 8 (T14, T26, T32);
    - Sections 6 and 7 (T12, T13, T27);
@@ -754,7 +792,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 | Risk | Mitigation |
 |---|---|
 | Jetski runs without guards | Gate G1; static deny rules; worktrees only |
-| Persona identity drifts across respins (routing breaks, un-mutes) | D7; test respin keeps `job_id` / `sender_id` |
+| Persona identity drifts across respins (routing breaks, un-mutes) | D7, D46: one eight-hex id, minted once; test that respin and engine change keep `job_id` / `sender_id` suffix |
 | Plain-text pyramid format proves unreliable | `needs_repair` + 14B rewrite; fall back to `--json-schema` |
 | Core shaped around the simpler engine | capability flags; fake engine covers both families |
 | Pyramid prompt tuned on Gemini doesn't transfer to Opus | measure per model; don't share baselines |
@@ -781,11 +819,11 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 | v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37) | PostgreSQL |
 | decision_proxy | none now; surrogate hook later (`TODO(T29)`) | PostgreSQL (ProxyDecision, TrustState) |
 | docs_files, io_files | none | `io/` |
-| voice_persona, speakerphone | none; the kernel allocates at spawn and releases at reap | — |
+| voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
 | arbiter (:8001) | folds into the kernel (D24) | kernel host disk |
 | cc_transcript, claude_code_queue | `TODO(T17)`: delete or repoint | — |
 | `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh` | — |
-| Web and mobile clients | `TODO(T27)`: ticket state and the "answered too late" notice; an engine/model label on cards; `sender_id` per D42; generalize any display code matching `claude.code`. `parseSenderId` already accepts any local part | — |
+| Web and mobile clients | `TODO(T27)`: ticket state and the "answered too late" notice; an engine/model label on cards; `sender_id` per D42; generalize any display code matching `claude.code` (one such: `isCCSession = parsed.agentType === 'claude.code'`, `notifications.js:23117`). `parseSenderId` already accepts any local part. **11-03:** the TypeScript multiplexer client replaces `notifications.js`; Rick wants that cut-over sooner rather than later, so T27 lands in the multiplexer, not in `notifications.js` | — |
 
 `TODO(T30)` **Claude-coupled components outside the harness** (inventory Section 17: the `swe_team` orchestrator, bug-fix and test-fix expediters, `cosa/orchestration/claude_code/dispatcher.py`). Each needs its own migration path, or an explicit ruling that it stays on the Claude Agent SDK.
 
@@ -832,7 +870,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 |---|---|---|---|
 | T08 | Kernel lifecycle: unit name, restart, engine crash, kernel upgrade with personas live | Section 3.3 | design |
 | T09 | Kernel control API contract | Section 3.3 | design |
-| T10 | Stable id derivation and id migration | Section 4 | design |
+| T10 | ~~Stable id derivation and id migration~~ | Section 4 | **resolved: D46** (11-03) |
 | T11 | `--mode` per persona; system prompt contents per engine | Section 5.4 | design |
 | T12 | Merged-turn envelope; ledger persistence; Claude mid-turn write policy | Section 6 | design |
 | T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | Section 7 | design |
@@ -858,7 +896,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 | T28 | System broadcasts and DM tutor through the inbox; per-engine reminder wrapper | Section 10 | design |
 | T29 | Preference-learner surrogate policy and learner improvement | Section 7.4 | separate |
 | T30 | Claude-coupled components outside the harness | Section 18 | separate |
-| T31 | Switch-over data migration | Section 15 | design |
+| T31 | Switch-over data migration; the voice-persona pool store (found 11-03, Section 18) | Section 15 | design |
 | T32 | Credential exposure: observe rule for direct REST and key reads | Section 8.1 | design |
 | T33 | Claude MCP call timeout (moot under D37) | Section 5.1 | measure |
 
@@ -868,11 +906,17 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 |---|---|---|---|
 | T34 | Deferred captures (`--app_data_dir`, interrupt latency mid-tool, MCP deny syntax, Jetski protocol interrupt, prompt caching) | Sections 14.5, 19 | measure |
 
+### 20.5 Found during fill-in
+
+| Id | Item | Section | Status |
+|---|---|---|---|
+| T35 | Canonical persona name: one internal representation for `María` / `Mr. Radio` style names across the configuration manager, the voice-persona pool, DM topics, mementos and the task store; delete the local folding copies; no name ever crosses a kernel interface (found 11-03 during T10) | Section 4.1; T10 spec Section 7 | design |
+
 ---
 
 ## 21. Companion documents
 
-All in `unified-headless-wrapper/src/rnd/v0.0.1/` and in the claude.ai project under `uhw/`, with the same layout: two living documents at the top, dated records below them.
+All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D20 as amended 11-03): two living documents at the top, dated records below them. The claude.ai project copies under `uhw/` are superseded and go away after 11-10.
 
 | Path | Holds |
 |---|---|
@@ -883,6 +927,7 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/` and in the claude.ai project u
 | `specs/2026.10.20-ticketed-asks-spec.md` | D37 in full |
 | `specs/2026.10.23-uhw-interfaces.svg` | the interface partition diagram (D29) |
 | `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md` | Phase 1 |
+| `specs/2026.11.03-t10-stable-id-spec.md` | D46 in full: the lupin ground truth on identity, the derivation table, `identity.py`, the switch-over field map |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
