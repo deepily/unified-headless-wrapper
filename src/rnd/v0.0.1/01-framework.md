@@ -69,6 +69,8 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D44 | Default model per role | Jetski-family model ids (`agy models`): `chief_of_staff`, `manager`, `steward`, `author` → `fable-5.1-high` (Claude Fable 5.1, High); `implementer`, `reviewer`, `tester` → `opus-5.5-high` (Claude Opus 5.5, High). These are defaults in the persona manifest, overridable per persona. Claude Code personas use the same models under Claude Code's own model ids. D31 stays open for any change beyond these defaults. | 10-26 |
 | D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After A1–A8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
 | D46 | Persona id | **One identifier, eight lowercase hex characters** (`[0-9a-f]{8}`), minted at random by the kernel when a persona is created and checked for uniqueness against the registry and every known memento id. It is, unchanged, the `job_id`, the `sender_id` suffix, the inbound socket name `cc-listener-{persona_id}` and the persona directory name. No UUID form exists; today's `stable_session_id` and the two-width join in the roster disappear. The id survives respins and engine changes; dismiss followed by spawn mints a new one. Engine ids (`conversation_id`, Claude `--session-id`) are registry fields, never identity. At switch-over every live persona keeps `stable_session_id[:8]`, so `job_id`, socket name, suffix, client mute state and memento matches are byte-identical before and after. Detail: `specs/2026.11.03-t10-stable-id-spec.md`. Resolves T10. | 11-03 |
+| D47 | Launch per persona | **Every Jetski-family persona runs `--mode auto`**; manifest validation admits no other value until a later item asks for one (`plan` is a second approve-then-execute loop whose artifact sits outside the worktree; `bestn` is unmeasured). `--mode` is passed explicitly on every spawn. Claude's counterpart is `--permission-mode`, value owned by T26. Instructions reach the model in six kernel-rendered layers with identical text on every engine: kernel contract, role charter, persona instructions and format rules through `--append-system-prompt` (Claude) or the `--agent <role>` definition body in the worktree (Jetski family, with the role's native `tools:` allow-list in its frontmatter); project mandates through the worktree's `CLAUDE.md` (Claude) or a kernel-written `AGENTS.md` that copies it (Jetski family, D43); memento and charter brief in the first turn. The kernel depends on no global instruction file. Detail: `specs/2026.11.03-t11-launch-per-persona-spec.md`. Resolves T11. | 11-03 |
+| D48 | Engine vetting at spawn | The kernel keeps `~/.lupin/kernel/engines/vetted-engines.json` (binary → version → tool table id, vetted time, run directory). At spawn it stats the binary; when inode and mtime match a vetted entry nothing more runs. Otherwise `--version`, and for an unseen version one vetting run under a per-binary lock: the C2 turn in a throwaway workspace plus one probe-MCP call, checked against the adapter's tool table, plus `modelName == pinned`. Pass: record and admit. Fail: refuse the spawn, the persona enters `respawn_blocked`, the reason is narrated. `engine_update_policy: vet | refuse | trust`, default `vet`. The shim identifies the binary from `LUPIN_ENGINE` in its environment, never from payload keys. Resolves T24's design; C16 measures the update mechanics. | 11-03 |
 
 ---
 
@@ -280,7 +282,7 @@ def listener_session( persona_id: str ) -> str:
 | `interrupt_mode` | `control`: **verified** (C6): result `error_during_execution`, same process answers the next turn | `signal` (SIGINT; measured; process exits after its result frame) |
 | `accepts_input_mid_turn` | **yes, absorbed** into the running turn (C7) | no |
 | `tool_veto` | PreToolUse hook in `--settings` | project `.agents/hooks.json`, `deny_reason`: **confirmed on AGY and Jetski** (C1) |
-| `system_prompt_flag` | yes (`--append-system-prompt`, every spawn) | no flag; Jetski loads workspace `AGENTS.md`/`GEMINI.md` and `--agent` definitions natively (C11) |
+| `system_prompt_flag` | yes (`--append-system-prompt`, every spawn) | no flag; the `--agent <role>` definition body carries the kernel-rendered prompt and workspace `AGENTS.md` carries the project mandates (C11, D47) |
 | MCP call timeout | not yet measured, `TODO(T33)`; moot under D37 | **180 s on Jetski and AGY 1.4.7, not configurable** per server (C14, C14b); asks are ticketed (D37) |
 | subagent tool | `Task`/`Agent` | Jetski: `invoke_subagent` (`Prompt`, `Role`, `TypeName`); hooks fire inside; vetoable by name (C12) |
 | custom slash commands | `.claude/commands` | **none** (built-ins only); workflows are legacy, skills replace them (C11b) |
@@ -296,7 +298,7 @@ def listener_session( persona_id: str ) -> str:
 | hooks and MCP servers inherit env | yes (docs) | **yes** on both binaries (C1, C3) |
 | model selection | `--model` | Jetski defaults to `auto`: pin `--model` per persona |
 | MCP server per engine process | not yet measured | **yes**, one per engine (C3, both binaries) |
-| version pinning | `claude install <version>` | **no**: AGY self-updates; record `--version` per spawn |
+| version pinning | `claude install <version>` | **no**: AGY self-updates; record `--version` per spawn and vet unseen versions before admitting a persona (D48) |
 
 ### 5.2 Session state machine
 
@@ -349,9 +351,25 @@ jetski --input-format stream-json --output-format stream-json --dangerously-skip
        --use_ls_chrome_devtools_mcp=false --model <pinned> [--agent <persona>] [--mode <mode>] [--conversation <id>]
 ```
 
-The Chrome flag was accepted (2026-10-18). `--model`, `--agent` and `--mode` exist but are untested in stream-json mode; verify them when the adapter is built.
+The Chrome flag was accepted (2026-10-18). `--model` was verified by C13; `--agent` by C11c; `--mode plan` by C12.
 
-`TODO(T11)` **Launch per persona:** which `--mode` each persona runs in, and the system prompt contents per engine.
+**Launch per persona (D47; T11 resolved 2026-11-03).** Every Jetski-family persona runs `--mode auto`, passed explicitly; the manifest validator admits nothing else until an item asks for it. Instructions are six kernel-rendered layers, identical on every engine:
+
+| # | Layer | Claude | Jetski family |
+|---|---|---|---|
+| 1–4 | kernel contract, role charter, manifest `instructions:`, format rules (T13) | `--append-system-prompt` | body of `<worktree>/.agents/agents/<role>.md`, launched with `--agent <role>`; its frontmatter `tools:` is the role's native allow-list |
+| 5 | project mandates | the worktree's `CLAUDE.md` | `<worktree>/AGENTS.md`, a copy of what Claude would load (D43) |
+| 6 | memento, charter brief (T18) | first user turn | first user turn |
+
+Final launch shapes:
+
+```
+agy    … --print-timeout 0                   --model <D44> --mode auto --agent <role> [--conversation <id>]
+jetski … --use_ls_chrome_devtools_mcp=false  --model <D44> --mode auto --agent <role> [--conversation <id>]
+claude … (D4 flags) --model <D44> --allowedTools <role list> --append-system-prompt "<layers 1–4>" [--permission-mode <T26>]
+```
+
+The kernel depends on no global instruction file. Layers 1–4 are also written to `~/.lupin/kernel/personas/{persona_id}/system-prompt.md` as the record. The layer text, the validator and `launch.py` are in `specs/2026.11.03-t11-launch-per-persona-spec.md`; C15 confirms the surfaces load together.
 
 Per-persona instruction files go into the worktree, excluded from git (D43).
 
@@ -501,9 +519,9 @@ Port rules:
 3. Listing, grep and glob all arrived through `run_command`, so the command-line guards cover nearly everything.
 4. MCP calls are one generic tool on both binaries: match `call_mcp_tool` plus `args.ServerName`/`args.ToolName`. The memento Write/Edit guard matches the common `write`/`edit` shapes, never binary-specific names.
 5. Subagent governance reads lineage directly on Jetski: a non-empty `parentConversationId` means subagent, and `rootConversationId` names the top-level session. On AGY, hooks don't fire inside subagents at all, so `invoke_subagent` is denied there for every role (D39).
-6. The first MCP call in a session is preceded by file reads (`read_file` ×2 on Jetski, `view_file` on AGY), probably of the tool definition. Guards must allow those reads, and the first cosa-voice call costs an extra step.
+6. **Before its first call to an MCP tool the model reads that tool's cached schema** (C14 hook logs on both engines, 2026-11-03): `~/.gemini/jetski/mcp/<server>/<tool>.json` on Jetski, `~/.gemini/antigravity-cli/mcp/<server>/<tool>.json` on AGY; one `read_file`, about 0.1 s, about 200 bytes, once per tool per process. The read is opportunistic: an agent granted only `run_command` called `whoami` without it (C11c). No gate rule matches reads, so nothing changes; the first cosa-voice call per tool costs one extra step.
 
-`TODO(T14)` **Gate details:** Jetski internal tools (`code_search` and others) if a prompt ever exercises them, and which file the engines read before their first MCP call.
+`TODO(T14)` **Gate details (narrowed 11-03):** which internal tools exist beyond the default list the model reports (C11c: `run_command`, `read_file`, `write_file`, `edit_file`, `search_web`, `notebook_edit` on Jetski, plus the never-listed set; no `code_search`, `grep_search`, `list_dir` or `view_code_item` at top level, listing and grep went through `run_command` in C2). Under D47 a persona's native tools are an allow-list, so an internal tool is a grant, not a discovery. C17 probes candidate names through the allow-list (an unknown name is a launch error, zero tokens) and captures argument keys for survivors; then the role table decides which read-only ones join the `read_file` row.
 
 `TODO(T26)` **Permission prompts:** every engine runs with permissions skipped, so the gate is the only check. Decide whether AH4L's voice-approved permission flow (`permission_request.py`) survives in any form.
 
@@ -634,6 +652,7 @@ Skills and commands reach every engine per D41.
 - **Part B (Jetski 2026.10.14 → 2026.10.16, model `auto`):** C1 PASS, C2 PASS with a different tool surface, **C3 PASS** (2026-10-18), C4 PARTIAL, C9 8/8, C10 median 0.64 s. Rerun C9 with a pinned `--model`.
 - **Claude (2026-10-20):** C5 hook isolation PASS, C6 control interrupt PASS (the process survives), C7 mid-turn message absorbed. C8 not run.
 - **Jetski C11–C14 (2026-10-18), AGY 1.4.7 C11–C14 (2026-10-24/25):** see Section 2.5a and the results documents. C14: MCP calls are cut at 180 s on both (D37).
+- **C15–C17 (scripted 2026-11-03, not yet run):** launch surfaces together (D47), engine update mechanics (D48), internal tools (T14). Run on the test VM for AGY, the cloud workstation for Jetski; `c15b` on a Claude host with AH4L installed.
 
 ### 14.1 Summary
 
@@ -653,6 +672,10 @@ Skills and commands reach every engine per D41.
 | C12 | Subagent tool name; do hooks fire inside subagents; can the tool be vetoed by name; what does `--mode plan` do? | Jetski/AGY | SWE-crew cardinal rule (Section 8), plan-mode steps | `c12_subagent_plan.py jetski\|agy` | tool found, child hook rows present, veto leaves no child calls |
 | C13 | C9/C10 with a pinned `--model` | Jetski/AGY | Section 7.1 tuning per persona model | `MODELS="…" c13_pinned_model.sh jetski\|agy` | `modelName` = pinned; compliance rate and readable spoken lines |
 | C14 | How long can one MCP tool call block before the engine times out or cancels? | Jetski/AGY | sync asks / `awaiting_human` (Sections 5.2, 6) | `c14_mcp_wait.py jetski\|agy` | 620 s call answered; otherwise the timeout bracket |
+| C15 | Do the `--agent` body, `AGENTS.md`, `.agents/skills` and an always-on rule all load in one launch; is `--mode accept-edits` a no-op under skipped permissions? | Jetski/AGY | D47 rendering (Section 5.4) | `c15_launch_surfaces.py jetski\|agy` | four codewords in one reply; identical tool calls and status in both modes |
+| C15b | Does `~/.claude/CLAUDE.md` load under the D4 flags? | Claude | where planning-is-prompting's global mandates live (T11 spec Section 8, T18) | `c15b_claude_memory.sh` | codeword present or absent |
+| C16 | How does the binary update itself: on launch or in the background, can it be disabled, where does it live, what does `--version` cost? | Jetski/AGY | D48 vetting (Sections 17, 19) | `c16_engine_update.sh jetski\|agy` | informational: facts recorded |
+| C17 | Which native tools exist beyond the default list, and with which argument keys? | Jetski/AGY | T14, role table Section 1 | `c17_internal_tools.py jetski\|agy` | per candidate: launch accepted or refused; keys for survivors |
 
 ### 14.2 Files
 
@@ -708,6 +731,23 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 - *Method:* from the lupin venv, series A sends three high-priority updates sharing one `progress_group_id` (format `pg-<8 hex>`); series B (control) gives each a new id. The sender id uses the `claude.code@lupin.deepily.ai#<8 hex>` shape `parseSenderId` expects.
 - *Record:* how many are spoken in each series, and whether series A updated one card in place.
 
+**C15 launch surfaces (Jetski/AGY).**
+- *Method:* one workspace with an agent definition (`tools: [run_command, read_file]`, body codeword), `AGENTS.md` (codeword), a skill (codeword in its description) and an always-on rule (codeword); one launch with `--agent`, tools denied, asking for every codeword. Then two launches, `--mode auto` and `--mode accept-edits`, same two-step prompt (write a file, run a command), hooks logging; compare tool names, order and status.
+- *Pass:* all four codewords in one reply; the two mode runs match.
+- *If a surface is missing under `--agent`:* its layer folds into the agent body (T11 spec Section 8).
+
+**C15b Claude global memory (Claude host with AH4L).**
+- *Method:* plant a codeword in `~/.claude/CLAUDE.md` (restored on exit), launch with the D4 flags and a deny-all PreToolUse hook in a generated `--settings`, ask for the codeword.
+
+**C16 engine update (Jetski/AGY).**
+- *Method:* no model turn. Records `which`, `readlink -f`, inode, mtime, size and owner of the binary; `--version` and its wall time; `--help` lines mentioning update, version or channel; settings files under `~/.gemini/` mentioning update; whether a second launch after a `--version` changed the binary.
+- *Output:* `facts.json`; the verdict is informational. D48 keys the cache on inode and mtime regardless.
+
+**C17 internal tools (Jetski/AGY).**
+- *Method:* for each candidate name, an agent definition with `tools: [<name>]` and a launch with tools denied; a launch error (as `["*"]` and `call_mcp_tool` produced in C11b/C11c) means the name does not exist. For each survivor, one turn with `tools: [<name>, read_file]` asking the model to use it on a seeded workspace; argument keys from the hook payload.
+- *Candidates:* `code_search`, `grep_search`, `find_by_name`, `list_dir`, `view_code_item`, `view_file_outline`, `skill_search`, `read_url_content`, `view_file`, `browser_subagent`, `generate_image`, plus any name in `--help` or the builtin docs.
+- *Output:* `tool-map.tsv` rows for survivors; the role table decides grants.
+
 **C9 / C10 pyramid probe (all engines).**
 - *Method:* eight prompts, spanning a greeting, a fact, a table, tool use, an explanation, an explicit document request, a list and a sign-off. Each runs in a fresh conversation, `--repeat N` times.
 - *Rules placement:* in `--append-system-prompt` for Claude and in the first message for Jetski, as the harness will place them.
@@ -721,6 +761,7 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 3. **C9/C10** on Jetski: no dependencies, and it starts the format data early.
 4. **C5** on the Claude host. **C6, C7 and C9/C10 on Claude only after C5 passes**; their launch flags assume isolation works.
 5. **C8** whenever a client is open.
+6. **C15, C16, C17** (2026-11-03) in any order; C15b on a Claude host. None blocks the Phase 1 build; C15's result is folded into `launch.py` before A5.
 
 Global state touched: only C3 (your MCP config, backed up and restored on exit) and C5 run A (real AH4L hooks). Everything else runs in `mktemp` workspaces.
 
@@ -778,8 +819,8 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 3. ~~Rule on the pending decisions~~ T01–T07 resolved 10-26 as D38–D44; D45 (where Phase 1 is built, by whom) 11-02.
 4. Then, in order:
    - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
-   - Section 5 (T11, T24);
-   - Section 8 (T14, T26, T32);
+   - ~~Section 5 (T11, T24)~~ done 2026-11-03 (D47, D48);
+   - Section 8 (~~T14 half~~, T14 internal tools after C17, T26, T32);
    - Sections 6 and 7 (T12, T13, T27);
    - Section 11 (T17, T23, T20);
    - Sections 13, 10, 9 (T18, T16, T25, T28, T15);
@@ -797,10 +838,10 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 | Core shaped around the simpler engine | capability flags; fake engine covers both families |
 | Pyramid prompt tuned on Gemini doesn't transfer to Opus | measure per model; don't share baselines |
 | Loss of the tmux TUI for humans | console + web view from the log |
-| Engine updates itself mid-experiment | record `--version` and `modelName` per spawn and per capture |
+| Engine updates itself mid-experiment | record `--version` and `modelName` per spawn and per capture; D48 vets unseen versions |
 | Stale conversation id silently resets a persona | verify `init.conversation_id` on every resume (Section 5.4) |
 | Tool names differ between engines of one family | per-binary tool tables behind one common shape; C2 rerun on every engine update |
-| An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | `TODO(T24)`: at spawn, compare `--version` with the last vetted version; on change, run the C2 smoke check before admitting the persona, and refuse with a narrated reason on failure |
+| An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | **D48:** at spawn, stat the binary and compare with `vetted-engines.json`; an unseen version gets one C2-style vetting run under a lock before any persona is admitted on it; failure refuses the spawn with a narrated reason and holds the persona in `respawn_blocked`. Running processes are unaffected until they respawn; C16 measures when the binary actually changes |
 | AGY subagents act outside the gate | D39: denied on AGY for every role |
 | Server-side role checks keyed on Claude bridge files | `TODO(T21)` |
 | A fleet of AGY processes hits auth or quota limits | `TODO(T22)` |
@@ -837,7 +878,7 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
   - rate limits per model;
   - a cost baseline comparable to the Max plan reference;
   - the deferred capture on cross-turn prompt caching (T34).
-- `TODO(T24)` **Engine self-update:** see Section 17.
+- **Engine self-update (D48, T24 resolved 2026-11-03):** vetting at spawn as in Section 17. Vetting state: `~/.lupin/kernel/engines/vetted-engines.json` and one run directory per vetted version under `~/.lupin/kernel/engines/vetting/<binary>-<version>/` (frames, hook log, tool map), so a later question about what a version emitted is answerable from disk. The cache key is the binary's inode and mtime, so an unchanged binary never pays for `--version`. One vetting run costs one model turn; concurrent spawns wait on the lock rather than each vetting. `lupin kernel engines` lists vetted versions; `lupin kernel vet <binary>` forces a run. Policy `engine_update_policy: vet | refuse | trust` (default `vet`) lives in the kernel config, not the manifest. Open after C16: whether self-update can be disabled on the fleet host, which would make vetting a deliberate step.
 - Default models per role are set by D44.
 - `TODO(T34)` **Deferred captures** (Section 14.5):
   - a separate `--app_data_dir` per persona;
@@ -871,10 +912,10 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 | T08 | Kernel lifecycle: unit name, restart, engine crash, kernel upgrade with personas live | Section 3.3 | design |
 | T09 | Kernel control API contract | Section 3.3 | design |
 | T10 | ~~Stable id derivation and id migration~~ | Section 4 | **resolved: D46** (11-03) |
-| T11 | `--mode` per persona; system prompt contents per engine | Section 5.4 | design |
+| T11 | ~~`--mode` per persona; system prompt contents per engine~~ | Section 5.4 | **resolved: D47** (11-03) |
 | T12 | Merged-turn envelope; ledger persistence; Claude mid-turn write policy | Section 6 | design |
 | T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | Section 7 | design |
-| T14 | Jetski internal tools; files read before the first MCP call | Section 8 | measure |
+| T14 | Jetski internal tools; ~~files read before the first MCP call~~ (resolved 11-03 from the C14 hook logs: the per-tool MCP schema cache; no gate change) | Section 8 | measure (C17 scripted 11-03) |
 | T15 | Turn-end policy (largest area) | Section 9 | design |
 | T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex | Section 10 | design |
 | T17 | Log schema and rotation; watchdog; tailer; `cc_transcript` and `claude_code_queue` routers | Sections 11, 18 | design |
@@ -889,7 +930,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 |---|---|---|---|
 | T22 | Engine authentication, quota and cost baseline for an AGY fleet | Section 19 | design + measure |
 | T23 | Context exhaustion on AGY and Jetski; respin trigger | Section 11 | measure |
-| T24 | Engine self-update in a live fleet; version vetting at spawn | Sections 17, 19 | design |
+| T24 | ~~Engine self-update in a live fleet; version vetting at spawn~~ | Sections 17, 19 | **resolved: D48** (11-03); C16 measures update mechanics |
 | T25 | Host capacity and memory watch | Section 10 | measure |
 | T26 | Permission prompts: what replaces voice-approved permissions | Section 8 | decide + design |
 | T27 | Web and mobile client changes (tickets, late answers, engine label) | Section 18 | design |
@@ -928,6 +969,7 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `specs/2026.10.23-uhw-interfaces.svg` | the interface partition diagram (D29) |
 | `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md` | Phase 1 |
 | `specs/2026.11.03-t10-stable-id-spec.md` | D46 in full: the lupin ground truth on identity, the derivation table, `identity.py`, the switch-over field map |
+| `specs/2026.11.03-t11-launch-per-persona-spec.md` | D47 in full: the six instruction layers, the kernel-contract text, rendering per engine, `launch.py`, the manifest validator, C15's questions |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |

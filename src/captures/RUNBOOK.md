@@ -1,13 +1,44 @@
 # Capture runbook
 
-## Run this now: nothing
+## Run this now: C15–C17 (2026-11-03)
 
-No captures are pending. Phase 0 and the capability rounds are complete for AGY, Jetski and Claude. Results:
+None of these blocks the Phase 1 build; they close T11's one open question (C15), inform D48 (C16) and T14 (C17). About 15 minutes for AGY on the test VM; the same three on Jetski whenever the cloud workstation is handy; C15b on any Claude host with AH4L installed (the dev server).
+
+**AGY, on the test VM, inside tmux:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+tmux new -s captures                                       # reattach later with: tmux attach -t captures
+MODEL=gemini-3.8-flash-high python3 src/captures/c15_launch_surfaces.py agy     # about 4 min: four surfaces under --agent, auto vs accept-edits, schema-read habit
+src/captures/c16_engine_update.sh agy                                            # under 2 min, no model turn: binary identity, --version cost, update hints
+MODEL=gemini-3.8-flash-high python3 src/captures/c17_internal_tools.py agy      # about 8 min: 17 launches with tools denied, then one turn per surviving tool
+```
+
+**Jetski, on the cloud workstation:** the same three lines with `jetski` in place of `agy` and `MODEL=gemini-flash-next`.
+
+**Claude, on the dev server:**
+```bash
+src/captures/c15b_claude_memory.sh                         # under 2 min: does ~/.claude/CLAUDE.md load under the D4 flags?
+```
+
+**What to paste back:** `verdict.txt` from each `out/c15-*`, `c15b-*`, `c16-*`, `c17-*` directory. C17 also writes `tool-map.tsv`. Then `git add src/captures && git commit -m "C15–C17 results" && git push` on your word.
+
+**Heads-up:**
+- C15 and C17 touch nothing global except the probe server entry C15 adds to `~/.gemini/config/mcp_config.json`, backed up and restored on exit (same mechanism as C11c/C14).
+- C15b appends one line to `~/.claude/CLAUDE.md` and restores the file on exit; it needs `jq`.
+- `CANDIDATES="code_search list_dir"` narrows C17 to specific names.
+
+**Knobs:** `MODEL` pins `--model` (recommended; Jetski defaults to `auto`). `MCP_CONFIG` overrides the config path for C15.
+
+---
+
+## Done 2026-10-25: Phase 0 and the capability rounds
+
+Results:
 - AGY: `src/rnd/v0.0.1/evidence/2026.10.25-agy-capabilities-results.md`
 - Jetski: `…/evidence/2026.10.18-jetski-capabilities-c11-c14-results.md`
 - Claude: `…/evidence/2026.10.20-claude-round-results.md`
 
-The next work is the Phase 1 build (`…/specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`).
+The Phase 1 build runs from `…/specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`.
 
 **Status 2026-10-18.** Phase 0 (C1–C4, C9, C10) is done for AGY and Jetski. C11–C14 ran on Jetski in two rounds (results: `src/rnd/v0.0.1/evidence/2026.10.18-jetski-capabilities-c11-c14-results.md`). Claude round done 2026-10-20. **Next: the AGY round above.** Claude adapter testing is the last phase. Results docs: `src/rnd/v0.0.1/2026.10.15-phase0-part-a-agy-results.md` and `…-part-b-jetski-results.md`. The full capture list is in the framework's Section 14.
 
