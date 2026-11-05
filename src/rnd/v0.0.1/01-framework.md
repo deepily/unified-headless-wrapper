@@ -1,6 +1,6 @@
 # UHW and the Lupin kernel: master design and implementation framework
 
-**As of:** 2026-11-03 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
+**As of:** 2026-11-05 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
 
 **How to read it:**
 - Decisions are locked in Section 1.
@@ -69,8 +69,9 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D44 | Default model per role | Jetski-family model ids (`agy models`): `chief_of_staff`, `manager`, `steward`, `author` → `fable-5.1-high` (Claude Fable 5.1, High); `implementer`, `reviewer`, `tester` → `opus-5.5-high` (Claude Opus 5.5, High). These are defaults in the persona manifest, overridable per persona. Claude Code personas use the same models under Claude Code's own model ids. D31 stays open for any change beyond these defaults. | 10-26 |
 | D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After A1–A8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
 | D46 | Persona id | **One identifier, eight lowercase hex characters** (`[0-9a-f]{8}`), minted at random by the kernel when a persona is created and checked for uniqueness against the registry and every known memento id. It is, unchanged, the `job_id`, the `sender_id` suffix, the inbound socket name `cc-listener-{persona_id}` and the persona directory name. No UUID form exists; today's `stable_session_id` and the two-width join in the roster disappear. The id survives respins and engine changes; dismiss followed by spawn mints a new one. Engine ids (`conversation_id`, Claude `--session-id`) are registry fields, never identity. At switch-over every live persona keeps `stable_session_id[:8]`, so `job_id`, socket name, suffix, client mute state and memento matches are byte-identical before and after. Detail: `specs/2026.11.03-t10-stable-id-spec.md`. Resolves T10. | 11-03 |
-| D47 | Launch per persona | **Every Jetski-family persona runs `--mode auto`**; manifest validation admits no other value until a later item asks for one (`plan` is a second approve-then-execute loop whose artifact sits outside the worktree; `bestn` is unmeasured). `--mode` is passed explicitly on every spawn. Claude's counterpart is `--permission-mode`, value owned by T26. Instructions reach the model in six kernel-rendered layers with identical text on every engine: kernel contract, role charter, persona instructions and format rules through `--append-system-prompt` (Claude) or the `--agent <role>` definition body in the worktree (Jetski family, with the role's native `tools:` allow-list in its frontmatter); project mandates through the worktree's `CLAUDE.md` (Claude) or a kernel-written `AGENTS.md` that copies it (Jetski family, D43); memento and charter brief in the first turn. The kernel depends on no global instruction file. Detail: `specs/2026.11.03-t11-launch-per-persona-spec.md`. Resolves T11. | 11-03 |
+| D47 | Launch per persona | **Every Jetski-family persona runs `--mode auto`**; manifest validation admits no other value until a later item asks for one (`plan` is a second approve-then-execute loop whose artifact sits outside the worktree; `bestn` is unmeasured). `--mode` is passed explicitly on every spawn. Claude's counterpart is `--dangerously-skip-permissions` with `--tools` (D49; `--allowedTools` was wrong, see D49). Instructions reach the model in six kernel-rendered layers with identical text on every engine: kernel contract, role charter, persona instructions and format rules through `--append-system-prompt` (Claude) or the `--agent <role>` definition body in the worktree (Jetski family, with the role's native `tools:` allow-list in its frontmatter); project mandates through the worktree's `CLAUDE.md` (Claude) or a kernel-written `AGENTS.md` that copies it (Jetski family, D43); memento and charter brief in the first turn. The kernel depends on no global instruction file. Detail: `specs/2026.11.03-t11-launch-per-persona-spec.md`. Resolves T11. | 11-03 |
 | D48 | Engine vetting at spawn | The kernel keeps `~/.lupin/kernel/engines/vetted-engines.json` (binary → version → tool table id, vetted time, run directory). At spawn it stats the binary; when inode and mtime match a vetted entry nothing more runs. Otherwise `--version`, and for an unseen version one vetting run under a per-binary lock: the C2 turn in a throwaway workspace plus one probe-MCP call, checked against the adapter's tool table, plus `modelName == pinned`. Pass: record and admit. Fail: refuse the spawn, the persona enters `respawn_blocked`, the reason is narrated. `engine_update_policy: vet | refuse | trust`, default `vet`. The shim identifies the binary from `LUPIN_ENGINE` in its environment, never from payload keys. Resolves T24's design; C16 measures the update mechanics. | 11-03 |
+| D49 | Tool approval | **Approval is a gate concern, never an engine prompt.** Rule modes become `enforce` \| `ask` \| `observe` \| `off`. On an `ask` match the gate opens a `tool_approval` ticket in the D37 store and denies with an instruction (`needs approval · ticket ask-… · call ask_wait( "ask-…" ); when it returns answered:yes, repeat this exact call`); the repeat is allowed once when the ticket is answered yes, matched on the rule's `approval_key( call )` (the act, normalized), not the command text. Each `ask` rule names an `approver` (`human` \| `manager` \| `learner`; Phase 1 default `human`); the D27 chain is the fallback when the approver misses the deadline; the preference learner shadow-predicts every approval ticket from the first one and is promoted to approver per rule on measured agreement (T29). First `ask` rules: the five guards AH4L let a human override by env var (stash, branch-lock bypass, unscoped kill, merge head, commit scope); the `LUPIN_ALLOW_*` env vars are deleted; the git reference-transaction hook behind branch protection stays and must honor an approved bypass too. Per act in Phase 1; `scope: session` later. **Claude runs `--dangerously-skip-permissions`** (`bypassPermissions`), the family's flag; because that mode ignores allow rules, the role allow-list is `--tools "<list>"`, not `--allowedTools` (D47 corrected). Not used: `--permission-prompt-tool`, `PermissionRequest` hook, PreToolUse `defer`, `auto` mode (a deferred capture, Section 14.5), `--permission-prompts none` (pending C18). Nothing of `permission_request.py` survives. Detail: `specs/2026.11.05-t26-tool-approvals-spec.md`. Resolves T26. | 11-05 |
 
 ---
 
@@ -89,6 +90,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 - `disableAllHooks` is all or nothing; no single hook can be disabled.
 - `--setting-sources` picks which settings files load. Managed settings and `--settings` are separate layers.
 - MCP servers in `~/.claude.json` are outside settings sources, so `--strict-mcp-config` is needed. Sign-in is not affected.
+- **Permissions in `-p` (checked 2026-11-05 for D49):** a `-p` run starts in Manual mode (v2.1.302+) and a call that needs approval is denied unless an allow rule, a `PermissionRequest` hook or `--permission-prompt-tool` resolves it. Under `bypassPermissions` (`--dangerously-skip-permissions`) everything runs, deny rules still block, **allow rules have no effect**, a PreToolUse `deny` still blocks (C5, C15b), and a call that would still prompt is denied, not asked. `--tools "<names>"` removes unlisted built-ins (MCP untouched); `--allowedTools` only pre-approves. PreToolUse `permissionDecision` is `allow | deny | ask | defer`; since 2026-03 `allow` no longer overrides an `ask` rule. `defer` exits a `-p` run for a `--resume`, one tool call per turn, and wedges under `bypassPermissions` (issue 82198). `--permission-prompts none` (v2.1.259+) denies would-prompts, removes `AskUserQuestion` and tells the model not to retry; denials show as `permission_denied` system frames and `permission_denials` on `result`. `auto` mode is a classifier that drops a bare `Bash` allow rule and pauses after three consecutive blocks.
 
 ### 2.3 Notifications API
 - `POST /api/notify`. Sync requests block over SSE until `responded` / `expired` / `offline`. Async requests are delivered over WebSocket.
@@ -291,7 +293,7 @@ def listener_session( persona_id: str ) -> str:
 | hooks inside subagents | n/a (parity phase) | Jetski: yes, with lineage (C12). **AGY 1.4.7: no**; only the `invoke_subagent` call itself is gated |
 | tool names | Claude names | AGY 1.4.7 = Jetski names (`read_file`, `write_file`, `edit_file`); AGY 1.3 names kept as aliases |
 | per-turn usage in result frame | yes | Jetski: yes, `usage{input,output,cache_read,thinking,total}_tokens` (C11) |
-| `permission_prompt_tool` | yes | no |
+| permission prompts | `--permission-prompt-tool`, `PermissionRequest` hook, PreToolUse `defer`: **none used** (D49); approvals are gate tickets | none exists (the "hook `allow_tool`" once noted here was never measured); same gate tickets |
 | session id pinning | `--session-id` | **no**: an unknown `--conversation` id is silently replaced (C4, AGY and Jetski) |
 | tool surface | one | **per binary**: AGY and Jetski differ in tool names and arguments (Section 8) |
 | session lineage in hook payload | not yet measured | Jetski: subagent iff `parentConversationId` non-empty; `rootConversationId` = top-level id. AGY: none |
@@ -366,10 +368,10 @@ Final launch shapes:
 ```
 agy    … --print-timeout 0                   --model <D44> --mode auto --agent <role> [--conversation <id>]
 jetski … --use_ls_chrome_devtools_mcp=false  --model <D44> --mode auto --agent <role> [--conversation <id>]
-claude … (D4 flags) --model <D44> --allowedTools <role list> --append-system-prompt "<layers 1–4>" [--permission-mode <T26>]
+claude … (D4 flags) --dangerously-skip-permissions --tools "<role list>" --model <D44> --append-system-prompt "<layers 1–4>"
 ```
 
-The kernel depends on no global instruction file. Layers 1–4 are also written to `~/.lupin/kernel/personas/{persona_id}/system-prompt.md` as the record. The layer text, the validator and `launch.py` are in `specs/2026.11.03-t11-launch-per-persona-spec.md`; C15 confirms the surfaces load together.
+Claude's permission flag and `--tools` are D49's: under `bypassPermissions` allow rules have no effect, so the role allow-list is `--tools` (unlisted built-ins do not exist for the model; `Grep` and `Glob` must be named, the default set omits them on macOS and Linux). The kernel depends on no global instruction file. Layers 1–4 are also written to `~/.lupin/kernel/personas/{persona_id}/system-prompt.md` as the record. The layer text, the validator and `launch.py` are in `specs/2026.11.03-t11-launch-per-persona-spec.md`; C15 confirms the surfaces load together.
 
 Per-persona instruction files go into the worktree, excluded from git (D43).
 
@@ -457,7 +459,7 @@ sequenceDiagram
 | Turn result | async | one notification at `result` | none |
 | Real progress | async | explicit `notify` with `progress_group_id` | none |
 | Model asks | ticketed (D37) | the ask holds ≤ 150 s, then returns `pending` plus a ticket; `ask_wait( ticket )` re-polls | `awaiting_human` while the ticket is open |
-| Permission prompt | sync, in the engine | `--permission-prompt-tool` (Claude) / hook `allow_tool` (Jetski) | `awaiting_human` |
+| Tool approval (D49) | ticketed, opened by the gate | `ask` rule → `tool_approval` ticket → deny with instruction → `ask_wait( ticket )` → repeat of the call | `awaiting_human` while the ticket is open |
 | Harness asks | sync, awaited | `asyncio.to_thread( notify_user_sync, … )`, reattach by `idempotency_key` | stays idle; new speech cancels it |
 | Late answers | async in | `notification_responded` → inbox | queued |
 
@@ -523,14 +525,14 @@ Port rules:
 
 `TODO(T14)` **Gate details (narrowed 11-03):** which internal tools exist beyond the default list the model reports (C11c: `run_command`, `read_file`, `write_file`, `edit_file`, `search_web`, `notebook_edit` on Jetski, plus the never-listed set; no `code_search`, `grep_search`, `list_dir` or `view_code_item` at top level, listing and grep went through `run_command` in C2). Under D47 a persona's native tools are an allow-list, so an internal tool is a grant, not a discovery. C17 probes candidate names through the allow-list (an unknown name is a launch error, zero tokens) and captures argument keys for survivors; then the role table decides which read-only ones join the `read_file` row.
 
-`TODO(T26)` **Permission prompts:** every engine runs with permissions skipped, so the gate is the only check. Decide whether AH4L's voice-approved permission flow (`permission_request.py`) survives in any form.
+Permission prompts: resolved by D49, Section 8.2. Nothing prompts on any engine; approval is a rule mode.
 
 ### 8.1 Roles and authorization
 
 Roles: `chief_of_staff`, `manager`, `steward`, `author`, `implementer`, `reviewer`, `tester`. The full matrix is in `specs/2026.10.18-uhw-role-table.md`. In short:
 - **native tools** are an allow-list at launch per role;
 - **cosa-voice tools** are filtered on `tools/list` per role (exposure);
-- **rules** run in the gate, in enforce or observe mode;
+- **rules** run in the gate, in `enforce`, `ask`, `observe` or `off` mode (D25, D49);
 - crew collaborate freely (commons, peer DMs), and only questions to you are routed through their manager.
 
 An agent's call to Lupin passes three layers:
@@ -544,6 +546,28 @@ An agent's call to Lupin passes three layers:
 - **Role logic belongs in the first two layers.** `TODO(T21)`: the one endpoint-side role check today, the tasks router's manager-only guard on minting blocked tasks, reads Claude Code bridge files (bind-mounted into the container). AGY and Jetski managers would fail it, so it must move to persona identity.
 - **Credentials:** the cosa-voice process loads the outbound `X-API-Key` from `src/conf/keys/` (`lupin_mcp/outbound_api_key.py`). The engine process gets no key in its env.
 - `TODO(T32)` **Credential exposure:** an agent with shell access can read that key and call REST directly. This is accepted under D25. Add an observe-mode rule for shell commands reaching `:7999` or reading `src/conf/keys/`.
+
+### 8.2 Tool approval (D49; T26 resolved 2026-11-05)
+
+No engine prompts. Approval is a rule mode in the gate, built on ticketed asks (D37) and the escalation chain (D27). The only engine primitive it uses is the deny-with-reason that G1 verified on AGY and Jetski and C5 on Claude.
+
+| Mode | On match |
+|---|---|
+| `enforce` | deny with the rule's reason |
+| `ask` | find a `tool_approval` ticket for (`persona_id`, `rule`, `approval_key( call )`). Answered yes and unconsumed: allow once. Otherwise open one if none is open, and deny with the instruction below |
+| `observe` | allow; log would-deny (D25) |
+| `off` | allow |
+
+Deny text, identical on every engine behind the engine's own prefix: `needs approval · ticket ask-3f2a9c1e · call ask_wait( "ask-3f2a9c1e" ); when it returns answered:yes, repeat this exact call`. Follow-ups: `approval pending · ticket …`, `refused by <approver>: <message>`, `approval … already used; ask again`. The gate never waits on a human; the only held call is `ask_wait` (≤ 150 s, D37).
+
+- **Rule fields:** `approver: human | manager | learner` (Phase 1 default `human`); `fallback`, the D27 chain (manager → chief of staff → learner as marked surrogate) walked when the approver misses the deadline; `approval_timeout_seconds` (default 600, expiry answers no); `approval_key( call )`, what was approved in normalized terms so `--force` and `-f` are one approval; `question( persona, call )`, the spoken line.
+- **The learner** shadow-predicts every approval ticket from the first one (it already shadows asks, D27); approvals are a closed-vocabulary decision with a binary label and an observable consequence, the cleanest dataset it will get. Promotion to `approver: learner` is per rule, on measured agreement with you (T29). `approver: manager` is a setting to measure, not a default: a manager approving is itself a model judgment, with context and without calibration.
+- **First `ask` rules**, replacing AH4L's env-var overrides, which are deleted: `stash` (`LUPIN_ALLOW_GIT_STASH`), `branch_lock` (`LUPIN_ALLOW_BRANCH_LOCK_BYPASS`), `kill` (`LUPIN_ALLOW_UNSCOPED_KILL`), `merge_head` (`LUPIN_ALLOW_MERGE_COMMIT`), `commit_scope` (`LUPIN_COMMIT_SCOPE_ACK`). An env var covered a session; a ticket covers one act (`scope: session` is a later extension). The git reference-transaction hook behind branch protection is outside the gate and stays; an approved `branch_lock` ticket also writes a one-shot allowance the hook consumes (spec Section 6; verify against lupin's `branch_guard` at the port).
+- **State:** `awaiting_human` from ticket open to resolution, as for any ask. A persona that ends its turn with the ticket open goes idle and receives the answer as its next inbound message (Section 6).
+- **Claude:** `--dangerously-skip-permissions` and `--tools` (Section 5.4). No `--permission-prompt-tool`, `PermissionRequest` hook or `defer` (Claude-only; `defer` is one call per turn and wedges under bypass). No `auto` mode: a second, opaque authorizer, kept as a deferred capture (Section 14.5). `--permission-prompts none` stays out until C18 shows its "do not retry" instruction does not suppress the repeat. **Jetski family:** unchanged; the "hook `allow_tool`" once named as a disposition was never measured and is withdrawn.
+- **Cost:** one deny, one `ask_wait`, one repeat per approved act; approvals cover destructive acts only. **Measured by C18** per engine and D44 model.
+
+Detail: `specs/2026.11.05-t26-tool-approvals-spec.md`.
 
 ---
 
@@ -614,7 +638,7 @@ Source: inventory Section 10.
 | Voice in, between turns | listener → buffer → tmux Enter → UserPromptSubmit | inbox (Section 6) |
 | Voice in, mid-turn | Pre/PostToolUse drain | queue; Claude native path if captured |
 | Pre-tool guards | `pre_tool_use.py` | tool gate (Section 8) |
-| Voice permission | `permission_request.py` | `--permission-prompt-tool` / Jetski `allow_tool` |
+| Voice permission | `permission_request.py` | gate `ask` rules + `tool_approval` tickets (Section 8.2, D49) |
 | Turn-end policy | `stop.py` | Section 9 |
 | Peer DMs | `deliver_pending_peer_dms` | inbox `source="peer"` |
 | Speech out | PostToolUse TTS, Stop auto-narrate | response pyramid (Section 7) |
@@ -653,6 +677,7 @@ Skills and commands reach every engine per D41.
 - **Claude (2026-10-20):** C5 hook isolation PASS, C6 control interrupt PASS (the process survives), C7 mid-turn message absorbed. C8 not run.
 - **Jetski C11–C14 (2026-10-18), AGY 1.4.7 C11–C14 (2026-10-24/25):** see Section 2.5a and the results documents. C14: MCP calls are cut at 180 s on both (D37).
 - **C15–C17 (scripted 2026-11-03, not yet run):** launch surfaces together (D47), engine update mechanics (D48), internal tools (T14). Run on the test VM for AGY, the cloud workstation for Jetski; `c15b` on a Claude host with AH4L installed.
+- **C18 (scripted 2026-11-05, not yet run):** the D49 approval loop per engine and model; Claude legs for `--tools` and `--permission-prompts none`.
 
 ### 14.1 Summary
 
@@ -676,6 +701,7 @@ Skills and commands reach every engine per D41.
 | C15b | Does `~/.claude/CLAUDE.md` load under the D4 flags? | Claude | where planning-is-prompting's global mandates live (T11 spec Section 8, T18) | `c15b_claude_memory.sh` | codeword present or absent |
 | C16 | How does the binary update itself: on launch or in the background, can it be disabled, where does it live, what does `--version` cost? | Jetski/AGY | D48 vetting (Sections 17, 19) | `c16_engine_update.sh jetski\|agy` | informational: facts recorded |
 | C17 | Which native tools exist beyond the default list, and with which argument keys? | Jetski/AGY | T14, role table Section 1 | `c17_internal_tools.py jetski\|agy` | per candidate: launch accepted or refused; keys for survivors |
+| C18 | Does the D49 approval loop close (gate deny with the instruction → `ask_wait` → a repeat the key recognizes → the act runs), bare and briefed, across rewordings; on Claude, is `--tools` honored under `-p`, and does `--permission-prompts none` suppress the repeat? | all, per D44 model | D49 (Section 8.2), Claude launch shape (Section 5.4) | `MODEL=… c18_tool_approval.py jetski\|agy\|claude` | one ticket per act and the marker exists; `init.tools` lacks `AskUserQuestion`; repeat rate unchanged by the flag |
 
 ### 14.2 Files
 
@@ -762,6 +788,7 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 4. **C5** on the Claude host. **C6, C7 and C9/C10 on Claude only after C5 passes**; their launch flags assume isolation works.
 5. **C8** whenever a client is open.
 6. **C15, C16, C17** (2026-11-03) in any order; C15b on a Claude host. None blocks the Phase 1 build; C15's result is folded into `launch.py` before A5.
+7. **C18** (2026-11-05) on each engine, once per D44 model, after C15–C17. Its Claude leg decides whether `--permission-prompts none` ever ships; its loop result must hold before the five `ask` rules go live in A5.
 
 Global state touched: only C3 (your MCP config, backed up and restored on exit) and C5 run A (real AH4L hooks). Everything else runs in `mktemp` workspaces.
 
@@ -777,6 +804,7 @@ Not needed for Phase 0. Each is scripted when its section is expanded.
 | `permissions.deny` and rule syntax for MCP tools | Section 8 fallback (MCP indirection) |
 | Protocol interrupt for Jetski (`control_request` "not supported yet") | Section 5.1 `interrupt_mode` |
 | Cross-turn prompt caching with a large prefix | cost model |
+| Claude `auto` mode as a second gate: the same task set under `bypassPermissions` and under `auto`, classifier blocks against gate would-denies (D49) | after A1–A8; needs a task set and a Claude host |
 
 ---
 
@@ -820,7 +848,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 4. Then, in order:
    - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
    - ~~Section 5 (T11, T24)~~ done 2026-11-03 (D47, D48);
-   - Section 8 (~~T14 half~~, T14 internal tools after C17, T26, T32);
+   - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), T32);
    - Sections 6 and 7 (T12, T13, T27);
    - Section 11 (T17, T23, T20);
    - Sections 13, 10, 9 (T18, T16, T25, T28, T15);
@@ -843,6 +871,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 | Tool names differ between engines of one family | per-binary tool tables behind one common shape; C2 rerun on every engine update |
 | An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | **D48:** at spawn, stat the binary and compare with `vetted-engines.json`; an unseen version gets one C2-style vetting run under a lock before any persona is admitted on it; failure refuses the spawn with a narrated reason and holds the persona in `respawn_blocked`. Running processes are unaffected until they respawn; C16 measures when the binary actually changes |
 | AGY subagents act outside the gate | D39: denied on AGY for every role |
+| The approval loop never closes: the model does not repeat the call after `ask_wait`, or rewrites it so the approval key misses, or an engine instruction tells it not to retry | C18 per engine and model, bare and briefed; `approval_key` normalizes the act; the deny text names the exact step; `--permission-prompts none` held out until C18 |
 | Server-side role checks keyed on Claude bridge files | `TODO(T21)` |
 | A fleet of AGY processes hits auth or quota limits | `TODO(T22)` |
 
@@ -857,7 +886,7 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 | notifications, websocket | none; the kernel holds one `cc-listener-{persona_id}` socket per persona (D36) | PostgreSQL (NotificationRepository; embeddings in pgvector) |
 | tasks | `TODO(T21)`: move the manager-only guard off bridge files | PostgreSQL (TaskRepository) |
 | dm, commons | none | PostgreSQL; `io/commons/<topic>.md` |
-| v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37) | PostgreSQL |
+| v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37); kind `tool_approval` opened by the kernel with `rule`, `approval_key`, `approver`, `fallback`, the shadow `learner_prediction`, consumed once (D49) | PostgreSQL |
 | decision_proxy | none now; surrogate hook later (`TODO(T29)`) | PostgreSQL (ProxyDecision, TrustState) |
 | docs_files, io_files | none | `io/` |
 | voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
@@ -885,7 +914,8 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
   - shutdown latency when interrupted mid-tool;
   - `permissions.deny` syntax for MCP tools;
   - a protocol interrupt on the Jetski family;
-  - cross-turn prompt caching.
+  - cross-turn prompt caching;
+  - Claude `auto` mode against the gate (D49).
 
 ---
 
@@ -932,10 +962,10 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 | T23 | Context exhaustion on AGY and Jetski; respin trigger | Section 11 | measure |
 | T24 | ~~Engine self-update in a live fleet; version vetting at spawn~~ | Sections 17, 19 | **resolved: D48** (11-03); C16 measures update mechanics |
 | T25 | Host capacity and memory watch | Section 10 | measure |
-| T26 | Permission prompts: what replaces voice-approved permissions | Section 8 | decide + design |
+| T26 | ~~Permission prompts: what replaces voice-approved permissions~~ | Section 8.2 | **resolved: D49** (11-05); C18 measures the loop |
 | T27 | Web and mobile client changes (tickets, late answers, engine label) | Section 18 | design |
 | T28 | System broadcasts and DM tutor through the inbox; per-engine reminder wrapper | Section 10 | design |
-| T29 | Preference-learner surrogate policy and learner improvement | Section 7.4 | separate |
+| T29 | Preference-learner surrogate policy and learner improvement; `tool_approval` tickets are its first closed-vocabulary dataset and the promotion floor for `approver: learner` is its to set (D49) | Sections 7.4, 8.2 | separate |
 | T30 | Claude-coupled components outside the harness | Section 18 | separate |
 | T31 | Switch-over data migration; the voice-persona pool store (found 11-03, Section 18) | Section 15 | design |
 | T32 | Credential exposure: observe rule for direct REST and key reads | Section 8.1 | design |
@@ -945,7 +975,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 
 | Id | Item | Section | Status |
 |---|---|---|---|
-| T34 | Deferred captures (`--app_data_dir`, interrupt latency mid-tool, MCP deny syntax, Jetski protocol interrupt, prompt caching) | Sections 14.5, 19 | measure |
+| T34 | Deferred captures (`--app_data_dir`, interrupt latency mid-tool, MCP deny syntax, Jetski protocol interrupt, prompt caching, Claude `auto` mode vs the gate) | Sections 14.5, 19 | measure |
 
 ### 20.5 Found during fill-in
 
@@ -970,6 +1000,7 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md` | Phase 1 |
 | `specs/2026.11.03-t10-stable-id-spec.md` | D46 in full: the lupin ground truth on identity, the derivation table, `identity.py`, the switch-over field map |
 | `specs/2026.11.03-t11-launch-per-persona-spec.md` | D47 in full: the six instruction layers, the kernel-contract text, rendering per engine, `launch.py`, the manifest validator, C15's questions |
+| `specs/2026.11.05-t26-tool-approvals-spec.md` | D49 in full: the engine facts, the `ask` rule mode and gate code, the ticket record, `approval_key` per rule, approver and learner routing, the Claude launch rationale, C18's questions |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |

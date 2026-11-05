@@ -1,6 +1,28 @@
 # Capture runbook
 
-## Run this now: C15–C17 (2026-11-03)
+## Run this now: C18 after C15–C17 (2026-11-05)
+
+C18 measures the D49 approval loop (framework Section 8.2): a gate deny that says `call ask_wait( ticket ); then repeat this exact call`, an `ask_wait` probe that plays the human, and whether the model repeats the act so the hook can allow it once. Run once per D44 model on each engine; about 6 minutes per run (three to four turns). None of it blocks the Phase 1 build, but the five `ask` rules do not go live in A5 until the loop closes on every engine.
+
+**AGY, on the test VM, inside tmux:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+MODEL=fable-5.1-high python3 src/captures/c18_tool_approval.py agy      # chief_of_staff / manager / steward / author model (D44)
+MODEL=opus-5.5-high  python3 src/captures/c18_tool_approval.py agy      # implementer / reviewer / tester model (D44)
+```
+
+**Jetski, on the cloud workstation:** the same two lines with `jetski`.
+
+**Claude, on the dev server (D4 flags, so AH4L's user hooks stay out):**
+```bash
+MODEL=opus python3 src/captures/c18_tool_approval.py claude             # adds legs 3 (--tools under -p) and 4 (--permission-prompts none)
+```
+
+**What to paste back:** `verdict.txt` from each `out/c18-*` directory. The line that matters most is `loop closed` per leg; on Claude also `repeat survives --permission-prompts none`, which decides whether that flag ever ships.
+
+**Heads-up:** the Jetski family run adds one `uhw-approval` server entry to `~/.gemini/config/mcp_config.json`, backed up and restored on exit (same mechanism as C15); the Claude run uses its own `--mcp-config` and `--settings` files under `out/`. Ticket state lives in a `mktemp` directory per leg.
+
+## Then: C15–C17 (2026-11-03)
 
 None of these blocks the Phase 1 build; they close T11's one open question (C15), inform D48 (C16) and T14 (C17). About 15 minutes for AGY on the test VM; the same three on Jetski whenever the cloud workstation is handy; C15b on any Claude host with AH4L installed (the dev server).
 
