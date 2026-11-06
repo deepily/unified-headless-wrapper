@@ -72,6 +72,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D47 | Launch per persona | **Every Jetski-family persona runs `--mode auto`**; manifest validation admits no other value until a later item asks for one (`plan` is a second approve-then-execute loop whose artifact sits outside the worktree; `bestn` is unmeasured). `--mode` is passed explicitly on every spawn. Claude's counterpart is `--dangerously-skip-permissions` with `--tools` (D49; `--allowedTools` was wrong, see D49). Instructions reach the model in six kernel-rendered layers with identical text on every engine: kernel contract, role charter, persona instructions and format rules through `--append-system-prompt` (Claude) or the `--agent <role>` definition body in the worktree (Jetski family, with the role's native `tools:` allow-list in its frontmatter); project mandates through the worktree's `CLAUDE.md` (Claude) or a kernel-written `AGENTS.md` that copies it (Jetski family, D43); memento and charter brief in the first turn. The kernel depends on no global instruction file. Detail: `specs/2026.11.03-t11-launch-per-persona-spec.md`. Resolves T11. | 11-03 |
 | D48 | Engine vetting at spawn | The kernel keeps `~/.lupin/kernel/engines/vetted-engines.json` (binary → version → tool table id, vetted time, run directory). At spawn it stats the binary; when inode and mtime match a vetted entry nothing more runs. Otherwise `--version`, and for an unseen version one vetting run under a per-binary lock: the C2 turn in a throwaway workspace plus one probe-MCP call, checked against the adapter's tool table, plus `modelName == pinned`. Pass: record and admit. Fail: refuse the spawn, the persona enters `respawn_blocked`, the reason is narrated. `engine_update_policy: vet | refuse | trust`, default `vet`. The shim identifies the binary from `LUPIN_ENGINE` in its environment, never from payload keys. Resolves T24's design; C16 measures the update mechanics. | 11-03 |
 | D49 | Tool approval | **Approval is a gate concern, never an engine prompt.** Rule modes become `enforce` \| `ask` \| `observe` \| `off`. On an `ask` match the gate opens a `tool_approval` ticket in the D37 store and denies with an instruction (`needs approval · ticket ask-… · call ask_wait( "ask-…" ); when it returns answered:yes, repeat this exact call`); the repeat is allowed once when the ticket is answered yes, matched on the rule's `approval_key( call )` (the act, normalized), not the command text. Each `ask` rule names an `approver` (`human` \| `manager` \| `learner`; Phase 1 default `human`); the D27 chain is the fallback when the approver misses the deadline; the preference learner shadow-predicts every approval ticket from the first one and is promoted to approver per rule on measured agreement (T29). The rule table of record is the destructive-act taxonomy in the spec's Section 6 (reversibility × blast radius; added 11-05 after Rick called the parity-derived list of five ad hoc): about nine `ask` rows (history rewrite, branch lock, merge head, filesystem destruction outside the worktree, process and service, first push and external writes, dismissing a peer with `approver: manager`, installs and engine updates), `enforce` rows with no AH4L ancestor (kernel and Lupin liveness, database, secrets), and stash and commit scope demoted to `observe`; modes are a starting point, revisited from C18 and the first tickets. The `LUPIN_ALLOW_*` env vars are deleted; the git reference-transaction hook behind branch protection stays and must honor an approved bypass too. Per act in Phase 1; `scope: session` later. **Claude runs `--dangerously-skip-permissions`** (`bypassPermissions`), the family's flag; because that mode ignores allow rules, the role allow-list is `--tools "<list>"`, not `--allowedTools` (D47 corrected). Not used: `--permission-prompt-tool`, `PermissionRequest` hook, PreToolUse `defer`, `auto` mode (a deferred capture, Section 14.5), `--permission-prompts none` (pending C18). Nothing of `permission_request.py` survives. Detail: `specs/2026.11.05-t26-tool-approvals-spec.md`. Resolves T26. | 11-05 |
+| D50 | Credential exposure | **On one operating-system user there is no credential boundary between personas; the user account is the boundary** (accepted under D25). Four credentials sit on a fleet host: the fleet key (account-level, shared by every seat), the per-project service login, the human owner's login (an optional `[owner]` section of `~/.lupin/config`, absent on the dev server 11-06) and the engines' vendor credentials. Six parts: (1) the `[owner]` section is never written on a fleet host; kernel config carries `owner_user_id`; the kernel refuses to start if it finds the section or a service login on Lupin's effective approver map (`GET /api/tasks/approval-settings`). (2) A human approval counts only through Lupin's second door (`authenticated_account_email` → `approver_persona_for_account`); a fleet-key answer is stored and ignored. A persona approver's answer counts only when the kernel witnessed the gated `ask_answer` call; Lupin's `answered_by` is not consulted for persona approvers. (3) The secrets row splits: `credential_read` enforce, `credential_print` observe, `direct_call` observe per instance and role (voice, destructive-test, kernel socket). (4) Direct calls: pattern rules now; a `User-Agent: cosa-voice/<v> persona=<id> gate=<call>` header on every outbound cosa-voice call now; reconciliation of Lupin's access log later, under this item. (5) One `redact()` at the two writers, the JSONL log and the narration path, with a per-kind fingerprint marker. (6) T36 opened: per-persona keys, first task the O(N) bcrypt sweep; the fleet key stays for Phase 1. Detail: `specs/2026.11.06-t32-credential-exposure-spec.md`; narrative `narratives/2026.11.06-t32-credential-exposure.md`. Resolves T32. | 11-06 |
 
 ---
 
@@ -482,6 +483,8 @@ sequenceDiagram
 
 `TODO(T29)` **Surrogate policy:** which ask types are eligible, the confidence floor, and review. Also the learner improvement. Both are separate designs, outside the critical path.
 
+**Redaction (D50):** everything that leaves on the narration path (`POST /api/notify`, the end-of-turn reply) passes `redact()` first: fleet key, vendor token, JWT and private-key shapes become `<redacted:<kind>:<fingerprint>>`. A persona that pastes its environment into a message does not speak a token to the phone. Same function as the log writer's (Section 11); spec 4.5.
+
 ---
 
 ## 8. Tool gate
@@ -544,8 +547,23 @@ An agent's call to Lupin passes three layers:
 | Authentication | Lupin endpoint (`require_api_key_or_jwt`) | Which account is calling. The persona is the `sender_id` the MCP server asserts. |
 
 - **Role logic belongs in the first two layers.** `TODO(T21)`: the one endpoint-side role check today, the tasks router's manager-only guard on minting blocked tasks, reads Claude Code bridge files (bind-mounted into the container). AGY and Jetski managers would fail it, so it must move to persona identity.
-- **Credentials:** the cosa-voice process loads the outbound `X-API-Key` from `src/conf/keys/` (`lupin_mcp/outbound_api_key.py`). The engine process gets no key in its env.
-- `TODO(T32)` **Credential exposure:** an agent with shell access can read that key and call REST directly. This is accepted under D25. Add an observe-mode rule for shell commands reaching `:7999` or reading `src/conf/keys/`.
+- **Credentials (D50; T32 resolved 2026-11-06).** On one operating-system user there is no credential boundary between personas: the user account is the boundary, and D25 accepts that. Four credentials sit on a fleet host, all readable by any persona with a shell:
+
+| Credential | Lives | Proves to Lupin | Buys a persona that bypasses the gate |
+|---|---|---|---|
+| Fleet key `ck_live_*` (`notification-api-claude-code-dev`) | `src/conf/keys/`, loaded by cosa-voice at call time (`lupin_mcp/outbound_api_key.py`); the engine env carries no key | the **account** (`user_id`); one key for notifications, embeddings and every seat | any endpoint as any `sender_id`; "policy control, not a security boundary" in lupin's own words |
+| Per-project service login | `~/.lupin/config [<project>]`, used by cosa-voice for two toggles | a Bearer token naming the service email | the JWT door as a non-approver, while that email is off the approver map (startup invariant) |
+| Owner login | `~/.lupin/config [owner]`, optional, consumed only by the retired listener's `_stamp_owner_user_id_on_bridge`; absent on the dev server 11-06 | a Bearer token naming **the human** | the approver door: approve its own D49 ticket. Never on a fleet host (startup invariant) |
+| Engine vendor credentials | engine home and env | the vendor account | spend and exfiltration; nothing inside Lupin |
+
+  So T32 is four controls, not one: **see** the bypass, **contain** secrets at the kernel's writers, keep approvals **unforgeable**, and keep the one credential that would forge them **off the host**.
+  - *Startup invariants:* kernel config carries `owner_user_id`; the kernel refuses to start if `~/.lupin/config` has an `[owner]` section or any service login is on Lupin's effective approver map (`GET /api/tasks/approval-settings`, which `PATCH` closes to agent seats).
+  - *Approval witness:* `approver: human` counts only through the second door (`authenticated_account_email` → `approver_persona_for_account`); a fleet-key answer is stored as `api_key` and ignored. `approver: manager | chief_of_staff` counts only when the gate witnessed that persona's `ask_answer` call; Lupin's `answered_by` is not consulted. A yes in the store with no witness leaves the ticket open and logs `direct_call`.
+  - *Three rules, on the common shape:* `credential_read` (key directory, `~/.lupin/config`, `~/.ssh/`, engine token files, gcloud ADC, `*.pem`) **enforce**; `credential_print` (`env`, `printenv`, `$…KEY|TOKEN|SECRET`) observe; `direct_call` (a shell or fetch aimed at `voice`, `destructive_test` or the kernel socket, or carrying a key shape) observe **per instance and role**, because the D45 builder and the tester hit the destructive-test server all day; tightened from the first weeks of would-deny lines like the rest of the taxonomy. The kernel socket row covers the socket's lack of authentication as far as this item can: a log line, not a lock.
+  - *Detection:* pattern rules now; `User-Agent: cosa-voice/<version> persona=<id> gate=<call id>` on cosa-voice's four outbound sites now; reconciliation of Lupin's access log against gated calls deferred under T32 (spec Section 6).
+  - *Redaction:* `redact()` at the JSONL writer (Section 11) and the narration path (Section 7); spec 4.5.
+  - *T36 opened:* per-persona keys; the fleet key stays for Phase 1.
+  Detail: `specs/2026.11.06-t32-credential-exposure-spec.md`; narrative for cold readers `narratives/2026.11.06-t32-credential-exposure.md`.
 
 ### 8.2 Tool approval (D49; T26 resolved 2026-11-05)
 
@@ -610,6 +628,7 @@ Source: inventory Section 10.
 ## 11. Observability
 
 - Per-persona JSONL log (D14): every `EngineEvent` with its raw frame, inbound messages and routing decisions, outbound speech and asks, interrupts, respawns, `needs_repair`.
+- **Redaction (D50):** the writer passes every line through `redact()` (fleet key, vendor tokens, JWTs, private keys, `password =` values → `<redacted:<kind>:<fingerprint>>`); the console and web view inherit it. Spec 4.5.
 - Terminal console (D15) and web view (D16) are both readers of the log.
 - Arbiter inputs, written by an event sink: liveness (replaces bridge timestamp touches), heartbeat events, context pressure from `usage` (works for Jetski too; replaces transcript tailing), turn age.
 
@@ -848,7 +867,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 4. Then, in order:
    - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
    - ~~Section 5 (T11, T24)~~ done 2026-11-03 (D47, D48);
-   - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), T32);
+   - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), ~~T32~~ done 2026-11-06 (D50));
    - Sections 6 and 7 (T12, T13, T27);
    - Section 11 (T17, T23, T20);
    - Sections 13, 10, 9 (T18, T16, T25, T28, T15);
@@ -872,7 +891,8 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
 | An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | **D48:** at spawn, stat the binary and compare with `vetted-engines.json`; an unseen version gets one C2-style vetting run under a lock before any persona is admitted on it; failure refuses the spawn with a narrated reason and holds the persona in `respawn_blocked`. Running processes are unaffected until they respawn; C16 measures when the binary actually changes |
 | AGY subagents act outside the gate | D39: denied on AGY for every role |
 | The approval loop never closes: the model does not repeat the call after `ask_wait`, or rewrites it so the approval key misses, or an engine instruction tells it not to retry | C18 per engine and model, bare and briefed; `approval_key` normalizes the act; the deny text names the exact step; `--permission-prompts none` held out until C18 |
-| Server-side role checks keyed on Claude bridge files | `TODO(T21)` |
+| A persona forges an approval: the owner's password lands in `~/.lupin/config` on a fleet host, or a persona answers a ticket as its own manager with the fleet key | **D50:** no `[owner]` section on fleet hosts, enforced at kernel start; human approvals only through the JWT door; persona approvals only when the kernel witnessed the `ask_answer`; `direct_call` would-deny lines |
+| Server-side role checks keyed on Claude bridge files | `TODO(T21)`; T36 (per-persona keys) is the proper fix |
 | A fleet of AGY processes hits auth or quota limits | `TODO(T22)` |
 
 ---
@@ -886,13 +906,14 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 | notifications, websocket | none; the kernel holds one `cc-listener-{persona_id}` socket per persona (D36) | PostgreSQL (NotificationRepository; embeddings in pgvector) |
 | tasks | `TODO(T21)`: move the manager-only guard off bridge files | PostgreSQL (TaskRepository) |
 | dm, commons | none | PostgreSQL; `io/commons/<topic>.md` |
-| v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37); kind `tool_approval` opened by the kernel with `rule`, `approval_key`, `approver`, `fallback`, the shadow `learner_prediction`, consumed once (D49) | PostgreSQL |
+| v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37); kind `tool_approval` opened by the kernel with `rule`, `approval_key`, `approver`, `fallback`, the shadow `learner_prediction`, consumed once (D49); **D50:** `answer_auth` stamped from `_answered_by` (`api_key \| jwt`); for `approver: human` only a `jwt` answer resolving through `approver_persona_for_account` answers the ticket, an `api_key` answer is kept on the record and leaves it open | PostgreSQL |
 | decision_proxy | none now; surrogate hook later (`TODO(T29)`) | PostgreSQL (ProxyDecision, TrustState) |
 | docs_files, io_files | none | `io/` |
 | voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
+| `cc_notification_listener` (hooks lib) | retired with the per-session listeners (D36); `_stamp_owner_user_id_on_bridge` and the `[owner]` login go with it; the kernel carries `owner_user_id` in its config and refuses to start beside an `[owner]` section (D50) | `~/.lupin/config` today |
 | arbiter (:8001) | folds into the kernel (D24) | kernel host disk |
 | cc_transcript, claude_code_queue | `TODO(T17)`: delete or repoint | — |
-| `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh` | — |
+| `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh`; **D50:** `User-Agent: cosa-voice/<version> persona=<id> gate=<call id>` on the four outbound `X-API-Key` sites | — |
 | Web and mobile clients | `TODO(T27)`: ticket state and the "answered too late" notice; an engine/model label on cards; `sender_id` per D42; generalize any display code matching `claude.code` (one such: `isCCSession = parsed.agentType === 'claude.code'`, `notifications.js:23117`). `parseSenderId` already accepts any local part. **11-03:** the TypeScript multiplexer client replaces `notifications.js`; Rick wants that cut-over sooner rather than later, so T27 lands in the multiplexer, not in `notifications.js` | — |
 
 `TODO(T30)` **Claude-coupled components outside the harness** (inventory Section 17: the `swe_team` orchestrator, bug-fix and test-fix expediters, `cosa/orchestration/claude_code/dispatcher.py`). Each needs its own migration path, or an explicit ruling that it stays on the Claude Agent SDK.
@@ -909,6 +930,7 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
   - the deferred capture on cross-turn prompt caching (T34).
 - **Engine self-update (D48, T24 resolved 2026-11-03):** vetting at spawn as in Section 17. Vetting state: `~/.lupin/kernel/engines/vetted-engines.json` and one run directory per vetted version under `~/.lupin/kernel/engines/vetting/<binary>-<version>/` (frames, hook log, tool map), so a later question about what a version emitted is answerable from disk. The cache key is the binary's inode and mtime, so an unchanged binary never pays for `--version`. One vetting run costs one model turn; concurrent spawns wait on the lock rather than each vetting. `lupin kernel engines` lists vetted versions; `lupin kernel vet <binary>` forces a run. Policy `engine_update_policy: vet | refuse | trust` (default `vet`) lives in the kernel config, not the manifest. Open after C16: whether self-update can be disabled on the fleet host, which would make vetting a deliberate step.
 - Default models per role are set by D44.
+- **Kernel config, credentials (D50):** `owner_user_id` (resolved once by the human); `credential_paths`; `lupin_instances` by name (`voice`, `destructive_test`) and the kernel socket path, which the `direct_call` rule keys its per-instance mode on. Startup refuses an `[owner]` section in `~/.lupin/config` or a service login on the approver map (spec 4.4).
 - `TODO(T34)` **Deferred captures** (Section 14.5):
   - a separate `--app_data_dir` per persona;
   - shutdown latency when interrupted mid-tool;
@@ -968,7 +990,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 | T29 | Preference-learner surrogate policy and learner improvement; `tool_approval` tickets are its first closed-vocabulary dataset and the promotion floor for `approver: learner` is its to set (D49) | Sections 7.4, 8.2 | separate |
 | T30 | Claude-coupled components outside the harness | Section 18 | separate |
 | T31 | Switch-over data migration; the voice-persona pool store (found 11-03, Section 18) | Section 15 | design |
-| T32 | Credential exposure: observe rule for direct REST and key reads | Section 8.1 | design |
+| T32 | ~~Credential exposure: observe rule for direct REST and key reads~~ (grew to four controls: invariants, approval witness, three rules, redaction) | Section 8.1 | **resolved: D50** (11-06); reconciliation deferred under it |
 | T33 | Claude MCP call timeout (moot under D37) | Section 5.1 | measure |
 
 ### 20.4 Carried over
@@ -981,13 +1003,14 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 
 | Id | Item | Section | Status |
 |---|---|---|---|
+| T36 | Per-persona API keys and authenticated persona identity: one `ck_live_*` per persona minted at spawn and revoked at reap, so `sender_id` is proven, not asserted, and T21's role checks and the fleet-state rows can be checked server-side; first task the key-identifier prefix, because `_validate_api_key_sync` bcrypt-checks every active key per request; not isolation (opened 11-06 by D50) | Sections 8.1, 18; T32 spec Section 7 | design |
 | T35 | Canonical persona name: one internal representation for `María` / `Mr. Radio` style names across the configuration manager, the voice-persona pool, DM topics, mementos and the task store; delete the local folding copies; no name ever crosses a kernel interface (found 11-03 during T10) | Section 4.1; T10 spec Section 7 | design |
 
 ---
 
 ## 21. Companion documents
 
-All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D20 as amended 11-03): two living documents at the top, dated records below them. The claude.ai project copies under `uhw/` are superseded and go away after 11-10.
+All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D20 as amended 11-03): two living documents at the top, dated records below them; `narratives/` holds the plain-language write-up each item gets before its rulings (ruled 11-06): problems, options with pros and cons, recommendations, a glossary. The claude.ai project copies under `uhw/` are superseded and go away after 11-10.
 
 | Path | Holds |
 |---|---|
@@ -1001,6 +1024,8 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `specs/2026.11.03-t10-stable-id-spec.md` | D46 in full: the lupin ground truth on identity, the derivation table, `identity.py`, the switch-over field map |
 | `specs/2026.11.03-t11-launch-per-persona-spec.md` | D47 in full: the six instruction layers, the kernel-contract text, rendering per engine, `launch.py`, the manifest validator, C15's questions |
 | `specs/2026.11.05-t26-tool-approvals-spec.md` | D49 in full: the engine facts, the `ask` rule mode and gate code, the ticket record, `approval_key` per rule, approver and learner routing, the Claude launch rationale, C18's questions |
+| `specs/2026.11.06-t32-credential-exposure-spec.md` | D50 in full: the lupin facts, the credential inventory, the three rules, the approval witness, the startup invariants, `redact()`, the header, the deferred reconciliation, T36 |
+| `narratives/2026.11.06-t32-credential-exposure.md` | the T32 narrative: seven problems, six solutions with pros, cons and recommendations, the six rulings |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
