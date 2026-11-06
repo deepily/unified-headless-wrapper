@@ -74,6 +74,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D49 | Tool approval | **Approval is a gate concern, never an engine prompt.** Rule modes become `enforce` \| `ask` \| `observe` \| `off`. On an `ask` match the gate opens a `tool_approval` ticket in the D37 store and denies with an instruction (`needs approval · ticket ask-… · call ask_wait( "ask-…" ); when it returns answered:yes, repeat this exact call`); the repeat is allowed once when the ticket is answered yes, matched on the rule's `approval_key( call )` (the act, normalized), not the command text. Each `ask` rule names an `approver` (`human` \| `manager` \| `learner`; Phase 1 default `human`); the D27 chain is the fallback when the approver misses the deadline; the preference learner shadow-predicts every approval ticket from the first one and is promoted to approver per rule on measured agreement (T29). The rule table of record is the destructive-act taxonomy in the spec's Section 6 (reversibility × blast radius; added 11-05 after Rick called the parity-derived list of five ad hoc): about nine `ask` rows (history rewrite, branch lock, merge head, filesystem destruction outside the worktree, process and service, first push and external writes, dismissing a peer with `approver: manager`, installs and engine updates), `enforce` rows with no AH4L ancestor (kernel and Lupin liveness, database, secrets), and stash and commit scope demoted to `observe`; modes are a starting point, revisited from C18 and the first tickets. The `LUPIN_ALLOW_*` env vars are deleted; the git reference-transaction hook behind branch protection stays and must honor an approved bypass too. Per act in Phase 1; `scope: session` later. **Claude runs `--dangerously-skip-permissions`** (`bypassPermissions`), the family's flag; because that mode ignores allow rules, the role allow-list is `--tools "<list>"`, not `--allowedTools` (D47 corrected). Not used: `--permission-prompt-tool`, `PermissionRequest` hook, PreToolUse `defer`, `auto` mode (a deferred capture, Section 14.5), `--permission-prompts none` (pending C18). Nothing of `permission_request.py` survives. Detail: `specs/2026.11.05-t26-tool-approvals-spec.md`. Resolves T26. | 11-05 |
 | D50 | Credential exposure | **On one operating-system user there is no credential boundary between personas; the user account is the boundary** (accepted under D25). Four credentials sit on a fleet host: the fleet key (account-level, shared by every seat), the per-project service login, the human owner's login (an optional `[owner]` section of `~/.lupin/config`, absent on the dev server 11-06) and the engines' vendor credentials. Six parts: (1) the `[owner]` section is never written on a fleet host; kernel config carries `owner_user_id`; the kernel refuses to start if it finds the section or a service login on Lupin's effective approver map (`GET /api/tasks/approval-settings`). (2) A human approval counts only through Lupin's second door (`authenticated_account_email` → `approver_persona_for_account`); a fleet-key answer is stored and ignored. A persona approver's answer counts only when the kernel witnessed the gated `ask_answer` call; Lupin's `answered_by` is not consulted for persona approvers. (3) The secrets row splits: `credential_read` enforce, `credential_print` observe, `direct_call` observe per instance and role (voice, destructive-test, kernel socket). (4) Direct calls: pattern rules now; a `User-Agent: cosa-voice/<v> persona=<id> gate=<call>` header on every outbound cosa-voice call now; reconciliation of Lupin's access log later, under this item. (5) One `redact()` at the two writers, the JSONL log and the narration path, with a per-kind fingerprint marker. (6) T36 opened: per-persona keys, first task the O(N) bcrypt sweep; the fleet key stays for Phase 1. Detail: `specs/2026.11.06-t32-credential-exposure-spec.md`; narrative `narratives/2026.11.06-t32-credential-exposure.md`. Resolves T32. | 11-06 |
 | D51 | Convention parity before the AGY handoff | Kernel-1 to Kernel-8 prove plumbing, not behavior; the planning-is-prompting layer the implementer must follow was Phase 2's deliverable. Five parts: (1) a **minimum convention kit** is ported first, then a **conventions gate Convention-1 to Convention-9** sits between Kernel-1 to Kernel-8 and the handoff (G1.5); the crew layer stays in Phase 2, built by the AGY implementer once it lives under the kit. (2) The kit is the solo-implementer subset, about 25 workflows (session ritual; planning the work; doing the work; talking to the human, including `decision-walkthrough`); a convention missed in the first week is added to the kit, never improvised around. (3) Convention-1 to Convention-9 is the acceptance set, one convention observed end to end per item. (4) The Phase 1 Claude Code session builds the port after Kernel-8, as its last job before the handoff; T18 supplies the rules. (5) **One workflow set** with the engine plumbing behind kernel verbs (start cold, rehydrate, add a task, ask the human, plan first, mandates file, skills directory); AH4L honors the same verbs until switch-over. Detail: `specs/2026.11.06-t37-convention-parity-spec.md`; narrative `narratives/2026.11.06-t37-convention-parity.md`. Resolves T37; amends D40. | 11-06 |
+| D52 | Inbox envelope and ledger | **Headed blocks, one plain-text grammar on every engine:** `[kind time attrs]` on its own line, body verbatim, blank line between blocks; kinds `voice` (the human, any channel), `dm`, `answer`, `kernel`; a count line opens any envelope of two or more; an interrupt leaves a `kernel` block naming the cut tool call; `/skill` expands per block; a body line that would parse as a header is indented, never cut. The header carries identifiers only (sender, message, thread, ticket); how each kind is answered is in the kernel contract once; no per-turn rider, with a **provision**: an optional per-persona `inbox.rider` (prepend/append, off by default, logged per envelope) if the contract alone proves insufficient over long sessions. `InboundMessage` gets `kind` and `channel`; `source` is gone. **Ledger:** `~/.lupin/kernel/personas/{persona_id}/inbox.json` (last 500 acknowledged ids, answers and DM cursors), rebuildable from the session log; the queue is memory only. **Order:** stdin write → ledger append → receipt (at-least-once; a replayed id in the ledger is dropped and logged). **Catch-up is a pull on every connect** (`answers-owed`, `dm/list`), because Lupin's reconnect replay serves device-slot holders only, never a `cc-listener-*` session; the Phase 1 spec's replay assumption is struck. **Voice gap** (a human message sent while the kernel is down and a browser is open is unrecoverable, as today) closed by a Lupin change after Phase 1 (T27). **Mid-turn:** `if adapter.accepts_input_mid_turn: write now else queue`, every non-urgent kind. Acceptance Inbox-1 to Inbox-6. Detail: `specs/2026.11.06-t12-inbox-envelope-spec.md`. Resolves T12. | 11-06 |
 
 ---
 
@@ -222,7 +223,7 @@ The shareable explainer with diagrams is `kernel-explainer/`.
 | Type | Purpose |
 |---|---|
 | `EngineEvent` | Normalized engine frame. Kinds: `init`, `text`, `tool_start`, `tool_end`, `usage`, `result`. |
-| `InboundMessage` | `notification_id`, `persona_id`, `text`, `source` (human / peer / answer), `priority` (normal / urgent) |
+| `InboundMessage` | `notification_id`, `persona_id`, `kind` (voice / dm / answer / kernel), `channel` (voice / web / console / cli, human messages only), `text`, `urgent`, the reply identifiers per kind (sender, message, thread, ticket), `raw` (the notification dict verbatim). D52 |
 | `ResponsePyramid` | `spoken`, `abstract`, `document`, `document_mode` |
 | `SessionState` | idle / busy / awaiting_human / interrupting / respawning / closed |
 | Persona identity | `persona_id`, eight hex characters (D46). It is the `job_id`, the `sender_id` suffix, the socket name and the persona directory name; see 4.1 |
@@ -391,19 +392,48 @@ flowchart TD
     S -- idle --> START["start turn now"]
     S -- "busy / awaiting_human" --> U{"human and urgent?"}
     U -- yes --> INT["interrupt, then start turn"]
-    U -- no --> Q["queue"]
-    Q --> R["at result: merge queue into one turn<br/>[voice] / [dm from X] / [answer]"]
-    START --> ACK["acknowledge on write to stdin"]
+    U -- no --> M{"adapter.accepts_input_mid_turn?<br/>(Claude yes, Jetski family no)"}
+    M -- yes --> NOW["write a one-block envelope now (D52)"]
+    M -- no --> Q["queue"]
+    Q --> R["at result: merge queue into one envelope (6.1)<br/>[voice] / [dm …] / [answer …] / [kernel …]"]
+    START --> ACK["acknowledge on write to stdin,<br/>then ledger, then receipt"]
     INT --> ACK
+    NOW --> ACK
     R --> ACK
 ```
 
-- At-least-once delivery: acknowledge on write to stdin, never on receipt. Unacknowledged messages come back through reconnect catch-up (`surface_owed_answers`).
+- At-least-once delivery: acknowledge on write to stdin, never on receipt. Order per message: stdin write → ledger append → receipt; a crash between the first two yields one duplicate, never a loss; a replayed id already in the ledger is dropped and logged (D52).
 - Late answers (`notification_responded`) and peer DMs (`ai_to_ai`) are queued, never interrupt.
+- **Catch-up is a pull on every connect of `cc-listener-{persona_id}`**, first connect included: `answers-owed` since the answers cursor (surface everything owed), `dm/list` since the DM cursor (seed on first use), each checked against the ledger. Lupin's reconnect replay (`last_seq`, `replay_and_resume`) serves device-slot holders only, which `resolve_device_slot` grants to mobile sessions with a `device_id`; a listener session gets nothing (read 11-06). Human voice has no pull until the T27 server change lands (`listener_delivered` recorded; `undelivered` takes a `job_id`); until then a human message sent while the kernel is down and a browser is open is lost, as under AH4L.
+- Claude absorbs a message written to stdin mid-turn (C7). The Jetski family takes it on the next turn. **Policy (D52):** `if adapter.accepts_input_mid_turn: write now else queue`, for every non-urgent kind; urgent still interrupts per D8.
 
-- Claude absorbs a message written to stdin mid-turn (C7). The Jetski family takes it on the next turn.
+### 6.1 The envelope (D52; T12 resolved 2026-11-06)
 
-`TODO(T12)` **Inbox details:** the merged-turn envelope format (`[voice] / [dm from X] / [answer]`), ledger persistence, and the Claude mid-turn write policy.
+One plain-text grammar on every engine. Each message is a block: `[kind time attrs]` on its own line, the body verbatim, a blank line between blocks. Kinds: `voice` (the human, whichever client carried it; `channel` is a log field), `dm` (`from NAME PERSONA_ID message M thread T`), `answer` (`ticket K by human | PERSONA_ID | learner`, body `Question: … / Answer: …`), `kernel` (the kernel: the interrupt marker now; T15 pokes and T28 broadcasts later, so there is no per-engine reminder wrapper). A count line, `[inbox: N messages, oldest first. They are separate messages, not one conversation.]`, opens any envelope of two or more. Arrival order. After an interrupt the envelope opens with a `kernel` block naming the cut tool call. A leading `/skill` expands per block (D41). A body line that would parse as a header is indented by one space; nothing is cut (replaces `sanitize_for_wrap`'s truncation). One stdin line, one result, one notification per envelope (D13).
+
+The header carries identifiers only; how each kind is answered is one paragraph of the kernel contract (D47 layer 1; text in the spec, Section 3.5); the DM style tag is one line of the format rules layer. No per-turn rider. **Provision:** a per-persona `inbox.rider` (manifest; prepend/append; off by default; `inbox.rider` logged per envelope) exists so that, if the contract alone proves insufficient over long sessions, per-turn reinforcement can be turned on and measured as a treatment rather than assumed.
+
+```
+[inbox: 3 messages, oldest first. They are separate messages, not one conversation.]
+
+[kernel 13:02:10] Your previous turn was interrupted during the tool call `bash` by the urgent message below.
+
+[voice 13:02:11 urgent]
+Stop the migration and check the disk first.
+
+[dm 13:02:40 from María a1b2c3d4 message 7f3e2c90 thread 9c1d4b77]
+The schema diff is in io/commons/schema-diff.md. Reply when you have read it.
+
+[answer 13:03:05 ticket ask-3f2a9c1e by human]
+Question: Delete the stale worktrees under seats/?
+Answer: yes
+```
+
+### 6.2 The ledger (D52)
+
+`~/.lupin/kernel/personas/{persona_id}/inbox.json`: the last 500 acknowledged notification ids, the answers cursor, the DM cursor, `updated_at`; atomic write after every acknowledgement. The session log is the record (`inbox.received` with the raw notification dict, `inbox.written` with the turn id, `inbox.duplicate`, `inbox.rider`, `inbox.rebuilt`); a missing or corrupt index is rebuilt from the log tail. The queue is memory only. Replaces AH4L's `.ask-answer-hwm-*`, `.ask-surfaced-*` and `.dm-inbox-hwm-*` files. Direction and treatment analysis read the log, not the envelope: the sender's gate record of `dm_send` holds the text as written, the recipient's `inbox.received` holds it as delivered, joined on message id; the rewriter's treatment stamp on the notification record is a T27 row.
+
+Acceptance Inbox-1 to Inbox-6 (spec Section 8): Inbox-1 to Inbox-3 inside Kernel-1; Inbox-4 extends Kernel-7; Inbox-5 extends Kernel-5; Inbox-6 is the Claude phase (C7 as the test). Detail: `specs/2026.11.06-t12-inbox-envelope-spec.md`; narrative: `narratives/2026.11.06-t12-inbox-envelope.md`.
 
 ---
 
@@ -629,6 +659,7 @@ Source: inventory Section 10.
 ## 11. Observability
 
 - Per-persona JSONL log (D14): every `EngineEvent` with its raw frame, inbound messages and routing decisions, outbound speech and asks, interrupts, respawns, `needs_repair`.
+- **Inbox events (D52):** `inbox.received` (kind, channel, urgent, the notification dict verbatim), `inbox.written` (turn id), `inbox.duplicate`, `inbox.rider`, `inbox.rebuilt`; rotation (T17) must keep the last 500 `inbox.written` so the ledger can be rebuilt.
 - **Redaction (D50):** the writer passes every line through `redact()` (fleet key, vendor tokens, JWTs, private keys, `password =` values → `<redacted:<kind>:<fingerprint>>`); the console and web view inherit it. Spec 4.5.
 - Terminal console (D15) and web view (D16) are both readers of the log.
 - Arbiter inputs, written by an event sink: liveness (replaces bridge timestamp touches), heartbeat events, context pressure from `usage` (works for Jetski too; replaces transcript tailing), turn age.
@@ -872,7 +903,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
    - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
    - ~~Section 5 (T11, T24)~~ done 2026-11-03 (D47, D48);
    - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), ~~T32~~ done 2026-11-06 (D50));
-   - Sections 6 and 7 (T12, T13, T27);
+   - Sections 6 and 7 (~~T12~~ done 2026-11-06 (D52), T13, T27);
    - Section 11 (T17, T23, T20);
    - Section 13 (T18: the convention kit and verb table first, since G1.5 depends on them; the crew layer after), then Sections 10, 9 (T16, T25, T28, T15);
    - Section 15 (T19, T31).
@@ -891,6 +922,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
 | Loss of the tmux TUI for humans | console + web view from the log |
 | Engine updates itself mid-experiment | record `--version` and `modelName` per spawn and per capture; D48 vets unseen versions |
 | Stale conversation id silently resets a persona | verify `init.conversation_id` on every resume (Section 5.4) |
+| The model stops following the inbox contract over a long session (no per-turn rider under D52) | the `inbox.rider` provision: turn it on per persona and measure it as a treatment; the log records every envelope it touches |
 | Tool names differ between engines of one family | per-binary tool tables behind one common shape; C2 rerun on every engine update |
 | An engine self-updates in a live fleet and renames tools (AGY 1.3 → 1.4 did) | **D48:** at spawn, stat the binary and compare with `vetted-engines.json`; an unseen version gets one C2-style vetting run under a lock before any persona is admitted on it; failure refuses the spawn with a narrated reason and holds the persona in `respawn_blocked`. Running processes are unaffected until they respawn; C16 measures when the binary actually changes |
 | AGY subagents act outside the gate | D39: denied on AGY for every role |
@@ -907,14 +939,14 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 
 | Router or component | Change | Store |
 |---|---|---|
-| notifications, websocket | none; the kernel holds one `cc-listener-{persona_id}` socket per persona (D36) | PostgreSQL (NotificationRepository; embeddings in pgvector) |
+| notifications, websocket | the kernel holds one `cc-listener-{persona_id}` socket per persona (D36); no change for delivery. **`TODO(T27)`, after Phase 1 (D52):** record `listener_delivered` per notification (the dual emit already computes it) and let `GET /api/notifications/undelivered` take a `job_id`, so a human message missed by a down kernel can be pulled (the reconnect replay serves device-slot holders only); a treatment stamp on the notification record, `rewrite: {applied, rule_version, chars_before, chars_after}`, so rewriter treatments are attributable in the persona logs | PostgreSQL (NotificationRepository; embeddings in pgvector) |
 | tasks | `TODO(T21)`: move the manager-only guard off bridge files | PostgreSQL (TaskRepository) |
 | dm, commons | none | PostgreSQL; `io/commons/<topic>.md` |
 | v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37); kind `tool_approval` opened by the kernel with `rule`, `approval_key`, `approver`, `fallback`, the shadow `learner_prediction`, consumed once (D49); **D50:** `answer_auth` stamped from `_answered_by` (`api_key \| jwt`); for `approver: human` only a `jwt` answer resolving through `approver_persona_for_account` answers the ticket, an `api_key` answer is kept on the record and leaves it open | PostgreSQL |
 | decision_proxy | none now; surrogate hook later (`TODO(T29)`) | PostgreSQL (ProxyDecision, TrustState) |
 | docs_files, io_files | none | `io/` |
 | voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
-| `cc_notification_listener` (hooks lib) | retired with the per-session listeners (D36); `_stamp_owner_user_id_on_bridge` and the `[owner]` login go with it; the kernel carries `owner_user_id` in its config and refuses to start beside an `[owner]` section (D50) | `~/.lupin/config` today |
+| `cc_notification_listener` (hooks lib) | retired with the per-session listeners (D36); its three ledger files (`.ask-answer-hwm-*`, `.ask-surfaced-*`, `.dm-inbox-hwm-*`) and `answer_catchup.py` / `dm_inbox_reconcile.py` go with it, replaced by the kernel's `inbox.json` (D52); `_stamp_owner_user_id_on_bridge` and the `[owner]` login go with it; the kernel carries `owner_user_id` in its config and refuses to start beside an `[owner]` section (D50) | `~/.lupin/config` today |
 | arbiter (:8001) | folds into the kernel (D24) | kernel host disk |
 | cc_transcript, claude_code_queue | `TODO(T17)`: delete or repoint | — |
 | `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh`; **D50:** `User-Agent: cosa-voice/<version> persona=<id> gate=<call id>` on the four outbound `X-API-Key` sites | — |
@@ -969,7 +1001,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Labels: 
 | T09 | Kernel control API contract | Section 3.3 | design |
 | T10 | ~~Stable id derivation and id migration~~ | Section 4 | **resolved: D46** (11-03) |
 | T11 | ~~`--mode` per persona; system prompt contents per engine~~ | Section 5.4 | **resolved: D47** (11-03) |
-| T12 | Merged-turn envelope; ledger persistence; Claude mid-turn write policy | Section 6 | design |
+| T12 | ~~Merged-turn envelope; ledger persistence; Claude mid-turn write policy~~ | Section 6 | **resolved: D52** (11-06) |
 | T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | Section 7 | design |
 | T14 | Jetski internal tools; ~~files read before the first MCP call~~ (resolved 11-03 from the C14 hook logs: the per-tool MCP schema cache; no gate change) | Section 8 | measure (C17 scripted 11-03) |
 | T15 | Turn-end policy (largest area) | Section 9 | design |
@@ -1034,6 +1066,8 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `narratives/2026.11.06-t32-credential-exposure.md` | the T32 narrative: seven problems, six solutions with pros, cons and recommendations, the six rulings |
 | `specs/2026.11.06-t37-convention-parity-spec.md` | D51 in full: the convention kit, acceptance Convention-1 to Convention-9, the port, the kernel-verb table |
 | `narratives/2026.11.06-t37-convention-parity.md` | the T37 narrative: the sequencing inversion, seven problems, five solutions, the five rulings |
+| `specs/2026.11.06-t12-inbox-envelope-spec.md` | D52 in full: the envelope grammar and builder, the contract paragraph, the `InboundMessage` type, the ledger file and log events, the pull catch-up table, the mid-turn state rows, the T27 rows, acceptance Inbox-1 to Inbox-6 |
+| `narratives/2026.11.06-t12-inbox-envelope.md` | the T12 narrative: what AH4L frames and ledgers today, the false replay assumption, ten problems, six solutions, the seven rulings and the rider provision |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
