@@ -10,8 +10,10 @@ t32_credential_inventory.py -- T32: check one host for the two credential assump
                           against when a human answers a task or ticket. Expected: no.
 
 Requires:
-    - run on the host under inspection (dev server, test VM), from the lupin virtual environment with lupin's `src`
-      as the working directory, because `cosa.rest.task_approval_settings` resolves the stored override from the
+    - run on the host under inspection (dev server, test VM), from the lupin virtual environment, with `LUPIN_ROOT`
+      set to the lupin checkout (lupin's own convention) or the checkout's `src` as the working directory; lupin's
+      `src` is put on the import path from either, because a script run by path gets its own directory first, not
+      the working directory. `cosa.rest.task_approval_settings` resolves the stored override from the
       `approval_settings` table before falling back to `lupin-app.ini`
 Ensures:
     - reads only; prints no password or key material, only whether a password is present
@@ -20,6 +22,18 @@ Ensures:
 import configparser, json, os, sys
 
 CONFIG = os.path.expanduser( "~/.lupin/config" )
+
+
+def lupin_source_directory():
+    """Lupin's `src`, from LUPIN_ROOT or the working directory; None when neither holds a `cosa` package."""
+    candidates = [ ]
+    if os.environ.get( "LUPIN_ROOT" ):
+        candidates.append( os.path.join( os.environ[ "LUPIN_ROOT" ], "src" ) )
+    candidates += [ os.getcwd(), os.path.join( os.getcwd(), "src" ) ]
+    for candidate in candidates:
+        if os.path.isdir( os.path.join( candidate, "cosa" ) ):
+            return os.path.abspath( candidate )
+    return None
 
 
 def config_report():
@@ -56,11 +70,18 @@ if __name__ == "__main__":
     if not config[ "config_found" ]:
         print( "no ~/.lupin/config on this host; nothing to inspect", file=sys.stderr )
         sys.exit( 2 )
+    source_directory = lupin_source_directory()
+    if source_directory is None:
+        print( "cannot find lupin's src: set LUPIN_ROOT to the lupin checkout, or run from that checkout's src", file=sys.stderr )
+        sys.exit( 2 )
+    sys.path.insert( 0, source_directory )
+    os.environ.setdefault( "LUPIN_ROOT", os.path.dirname( source_directory ) )   # lupin's config loader reads it
+    print( f"lupin src: {source_directory}" )
     try:
         approvers = approver_report( config[ "service_emails" ] )
     except Exception as error:
         print( f"could not resolve the approver map: {type( error ).__name__}: {error}", file=sys.stderr )
-        print( "run from the lupin virtual environment with lupin's src as the working directory", file=sys.stderr )
+        print( "run from the lupin virtual environment (cosa's dependencies must import)", file=sys.stderr )
         sys.exit( 2 )
     print( json.dumps( approvers, indent=2 ) )
 

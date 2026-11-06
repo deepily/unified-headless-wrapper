@@ -4,12 +4,12 @@
 
 Two read-only checks behind the T32 design (framework Section 8.1): whether `~/.lupin/config` carries an `[owner]` section (the human's login, which would let a persona mint an approval), and whether any per-project hook login (`claude.code@...`) is on Lupin's approver-account map. Expected on every host: neither. Under a minute, no model turn, prints no secrets.
 
-**Dev server (then the test VM), from the lupin virtual environment, with lupin's `src` as the working directory:**
+**Dev server (then the test VM), from the lupin virtual environment; the script finds lupin's `src` from `LUPIN_ROOT` or from the working directory:**
 ```bash
-cd ~/Projects/unified-headless-wrapper && git pull --rebase
-cd ~/Projects/lupin/src && python3 ~/Projects/unified-headless-wrapper/src/captures/t32_credential_inventory.py
+cd /mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper && git pull --rebase
+cd ../lupin/src && python3 ../../unified-headless-wrapper/src/captures/t32_credential_inventory.py
 ```
-Adjust the two paths to where the checkouts live on that host.
+On the test VM, adjust the first `cd` to where the checkouts live there.
 
 **What to paste back:** the whole output. The verdict line reads `both expectations hold` or names what failed; exit 2 means the approver map could not be resolved (wrong working directory or environment).
 
