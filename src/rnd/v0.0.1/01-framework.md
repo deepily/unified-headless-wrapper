@@ -62,17 +62,18 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D37 | Ticketed asks | Every ask the model makes (`converse`, `ask_*`, `commons_ask_sync`) opens a ticket and holds at most 150 s, because AGY and Jetski cut MCP calls at 180 s. Deadline = the ask's `timeout_seconds`. An answer before the deadline is kept on the ticket, or delivered as the persona's next inbound message. An answer after the deadline is rejected and the respondent told. New tool `ask_wait( ticket )`; ticket store at `/api/asks/{ticket}`. Same contract on every engine. Detail: `specs/2026.10.20-ticketed-asks-spec.md`. | 10-20 |
 | D38 | Code location | The kernel lives in the lupin repo at `src/lupin_kernel/` ~~from day one~~, on the dedicated branch (D3), importing lupin modules rather than copying them. The UHW repo keeps captures and R&D. **Amended by D45:** it moves there after Phase 1 acceptance; until then the code is in the UHW repo. | 10-26, amended 11-02 |
 | D39 | Subagents on AGY | `invoke_subagent` is denied on AGY for every role, chief of staff included, because AGY hooks don't fire inside subagents. The chief of staff staffs through `spawn_sessions` there. Revisit if AGY adds subagent hooks. Jetski and Claude keep the role table's rule. | 10-26 |
-| D40 | Dogfooding | Once Phase 1 acceptance (A1–A8) passes on the test VM, an AGY persona running under the kernel implements the kernel from Phase 2 on. Planning stays in Claude. | 10-26 |
+| D40 | Dogfooding | Once Phase 1 acceptance (Kernel-1 to Kernel-8) passes on the test VM **and the conventions gate Convention-1 to Convention-9 passes (amended 11-06, D51)**, an AGY persona running under the kernel implements the kernel from Phase 2 on. Planning stays in Claude. | 10-26, amended 11-06 |
 | D41 | Skills and commands on every engine | Per D30, every command is a skill. The kernel installs each persona's skills into its workspace's `.agents/skills/` (Jetski family) or `.claude/skills/` (Claude). A turn that starts with `/name` is expanded by the kernel from that skill's `SKILL.md` before the engine sees it, the same behavior as Claude Code's command loader. No `load_skill` MCP tool. Installer paths and Claude-only workflow content (`/clear`, `TodoWrite`, hook events, tmux) remain part of T18. | 10-26 |
 | D42 | `sender_id` names the engine | Non-Claude personas use `agy@<project>.deepily.ai#<8 hex>` and `jetski@…`; Claude personas keep `claude.code@…`. `parseSenderId` already accepts any local part as `agentType`. Display code that matches `claude.code` literally must be found and generalized (T27). | 10-26 |
 | D43 | Instruction files in worktrees | The kernel writes each persona's `AGENTS.md` and `.agents/` into its lupin worktree and adds both to that worktree's `.git/info/exclude` at provisioning. No global `--agent` definitions on AGY. | 10-26 |
 | D44 | Default model per role | Jetski-family model ids (`agy models`): `chief_of_staff`, `manager`, `steward`, `author` → `fable-5.1-high` (Claude Fable 5.1, High); `implementer`, `reviewer`, `tester` → `opus-5.5-high` (Claude Opus 5.5, High). These are defaults in the persona manifest, overridable per persona. Claude Code personas use the same models under Claude Code's own model ids. D31 stays open for any change beyond these defaults. | 10-26 |
-| D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After A1–A8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
+| D45 | Phase 1 code location and write locations | Phase 1 is built in `unified-headless-wrapper/src/uhw_kernel/` on the test VM, written by a Claude Code session under AH4L and driven by voice through the test instance on :7999; the kernel under test targets the destructive-test server. The package imports nothing from lupin and reaches it only over REST and WebSocket; any lupin behavior needed before the move goes behind one boundary module, `lupin_compat.py`, never copied into the package tree. After Kernel-1 to Kernel-8 pass, the package moves to `lupin/src/lupin_kernel/` (D38) and an AGY persona under the kernel takes over implementation (D40). Write locations until then: lupin is written on the dev server only (laptop clone read-only, VM checkout pull-only); in the UHW repo, `src/rnd/` is written from the laptop and `src/uhw_kernel/` and `tests/` on the VM; disjoint paths, one branch, `git pull --rebase` before starting. | 11-02 |
 | D46 | Persona id | **One identifier, eight lowercase hex characters** (`[0-9a-f]{8}`), minted at random by the kernel when a persona is created and checked for uniqueness against the registry and every known memento id. It is, unchanged, the `job_id`, the `sender_id` suffix, the inbound socket name `cc-listener-{persona_id}` and the persona directory name. No UUID form exists; today's `stable_session_id` and the two-width join in the roster disappear. The id survives respins and engine changes; dismiss followed by spawn mints a new one. Engine ids (`conversation_id`, Claude `--session-id`) are registry fields, never identity. At switch-over every live persona keeps `stable_session_id[:8]`, so `job_id`, socket name, suffix, client mute state and memento matches are byte-identical before and after. Detail: `specs/2026.11.03-t10-stable-id-spec.md`. Resolves T10. | 11-03 |
 | D47 | Launch per persona | **Every Jetski-family persona runs `--mode auto`**; manifest validation admits no other value until a later item asks for one (`plan` is a second approve-then-execute loop whose artifact sits outside the worktree; `bestn` is unmeasured). `--mode` is passed explicitly on every spawn. Claude's counterpart is `--dangerously-skip-permissions` with `--tools` (D49; `--allowedTools` was wrong, see D49). Instructions reach the model in six kernel-rendered layers with identical text on every engine: kernel contract, role charter, persona instructions and format rules through `--append-system-prompt` (Claude) or the `--agent <role>` definition body in the worktree (Jetski family, with the role's native `tools:` allow-list in its frontmatter); project mandates through the worktree's `CLAUDE.md` (Claude) or a kernel-written `AGENTS.md` that copies it (Jetski family, D43); memento and charter brief in the first turn. The kernel depends on no global instruction file. Detail: `specs/2026.11.03-t11-launch-per-persona-spec.md`. Resolves T11. | 11-03 |
 | D48 | Engine vetting at spawn | The kernel keeps `~/.lupin/kernel/engines/vetted-engines.json` (binary → version → tool table id, vetted time, run directory). At spawn it stats the binary; when inode and mtime match a vetted entry nothing more runs. Otherwise `--version`, and for an unseen version one vetting run under a per-binary lock: the C2 turn in a throwaway workspace plus one probe-MCP call, checked against the adapter's tool table, plus `modelName == pinned`. Pass: record and admit. Fail: refuse the spawn, the persona enters `respawn_blocked`, the reason is narrated. `engine_update_policy: vet | refuse | trust`, default `vet`. The shim identifies the binary from `LUPIN_ENGINE` in its environment, never from payload keys. Resolves T24's design; C16 measures the update mechanics. | 11-03 |
 | D49 | Tool approval | **Approval is a gate concern, never an engine prompt.** Rule modes become `enforce` \| `ask` \| `observe` \| `off`. On an `ask` match the gate opens a `tool_approval` ticket in the D37 store and denies with an instruction (`needs approval · ticket ask-… · call ask_wait( "ask-…" ); when it returns answered:yes, repeat this exact call`); the repeat is allowed once when the ticket is answered yes, matched on the rule's `approval_key( call )` (the act, normalized), not the command text. Each `ask` rule names an `approver` (`human` \| `manager` \| `learner`; Phase 1 default `human`); the D27 chain is the fallback when the approver misses the deadline; the preference learner shadow-predicts every approval ticket from the first one and is promoted to approver per rule on measured agreement (T29). The rule table of record is the destructive-act taxonomy in the spec's Section 6 (reversibility × blast radius; added 11-05 after Rick called the parity-derived list of five ad hoc): about nine `ask` rows (history rewrite, branch lock, merge head, filesystem destruction outside the worktree, process and service, first push and external writes, dismissing a peer with `approver: manager`, installs and engine updates), `enforce` rows with no AH4L ancestor (kernel and Lupin liveness, database, secrets), and stash and commit scope demoted to `observe`; modes are a starting point, revisited from C18 and the first tickets. The `LUPIN_ALLOW_*` env vars are deleted; the git reference-transaction hook behind branch protection stays and must honor an approved bypass too. Per act in Phase 1; `scope: session` later. **Claude runs `--dangerously-skip-permissions`** (`bypassPermissions`), the family's flag; because that mode ignores allow rules, the role allow-list is `--tools "<list>"`, not `--allowedTools` (D47 corrected). Not used: `--permission-prompt-tool`, `PermissionRequest` hook, PreToolUse `defer`, `auto` mode (a deferred capture, Section 14.5), `--permission-prompts none` (pending C18). Nothing of `permission_request.py` survives. Detail: `specs/2026.11.05-t26-tool-approvals-spec.md`. Resolves T26. | 11-05 |
 | D50 | Credential exposure | **On one operating-system user there is no credential boundary between personas; the user account is the boundary** (accepted under D25). Four credentials sit on a fleet host: the fleet key (account-level, shared by every seat), the per-project service login, the human owner's login (an optional `[owner]` section of `~/.lupin/config`, absent on the dev server 11-06) and the engines' vendor credentials. Six parts: (1) the `[owner]` section is never written on a fleet host; kernel config carries `owner_user_id`; the kernel refuses to start if it finds the section or a service login on Lupin's effective approver map (`GET /api/tasks/approval-settings`). (2) A human approval counts only through Lupin's second door (`authenticated_account_email` → `approver_persona_for_account`); a fleet-key answer is stored and ignored. A persona approver's answer counts only when the kernel witnessed the gated `ask_answer` call; Lupin's `answered_by` is not consulted for persona approvers. (3) The secrets row splits: `credential_read` enforce, `credential_print` observe, `direct_call` observe per instance and role (voice, destructive-test, kernel socket). (4) Direct calls: pattern rules now; a `User-Agent: cosa-voice/<v> persona=<id> gate=<call>` header on every outbound cosa-voice call now; reconciliation of Lupin's access log later, under this item. (5) One `redact()` at the two writers, the JSONL log and the narration path, with a per-kind fingerprint marker. (6) T36 opened: per-persona keys, first task the O(N) bcrypt sweep; the fleet key stays for Phase 1. Detail: `specs/2026.11.06-t32-credential-exposure-spec.md`; narrative `narratives/2026.11.06-t32-credential-exposure.md`. Resolves T32. | 11-06 |
+| D51 | Convention parity before the AGY handoff | Kernel-1 to Kernel-8 prove plumbing, not behavior; the planning-is-prompting layer the implementer must follow was Phase 2's deliverable. Five parts: (1) a **minimum convention kit** is ported first, then a **conventions gate Convention-1 to Convention-9** sits between Kernel-1 to Kernel-8 and the handoff (G1.5); the crew layer stays in Phase 2, built by the AGY implementer once it lives under the kit. (2) The kit is the solo-implementer subset, about 25 workflows (session ritual; planning the work; doing the work; talking to the human, including `decision-walkthrough`); a convention missed in the first week is added to the kit, never improvised around. (3) Convention-1 to Convention-9 is the acceptance set, one convention observed end to end per item. (4) The Phase 1 Claude Code session builds the port after Kernel-8, as its last job before the handoff; T18 supplies the rules. (5) **One workflow set** with the engine plumbing behind kernel verbs (start cold, rehydrate, add a task, ask the human, plan first, mandates file, skills directory); AH4L honors the same verbs until switch-over. Detail: `specs/2026.11.06-t37-convention-parity-spec.md`; narrative `narratives/2026.11.06-t37-convention-parity.md`. Resolves T37; amends D40. | 11-06 |
 
 ---
 
@@ -678,6 +679,8 @@ Measured since (C11, C11b, C11c, and the AGY rerun): skills, `AGENTS.md` and alw
 
 Skills and commands reach every engine per D41.
 
+**D51 (11-06):** T18's first deliverable is the **convention kit** (T37 spec Section 3, about 25 workflows), the kernel-verb table (spec Section 6) and the installer's per-engine target; the kit is ported by the Phase 1 Claude Code session after Kernel-8 and proven by Convention-1 to Convention-9 before the AGY handoff. The crew layer (cascade review, SWE crew, fleet operations) is T18's Phase 2 deliverable.
+
 `TODO(T18)` **Persona bootstrap:**
 - assembly rules per engine;
 - memento format and first-turn rehydration;
@@ -806,8 +809,8 @@ Both probes log only `UHW_*`, `LUPIN_*`, `CLAUDE_SESSION_ID`, `CLAUDE_PROJECT_DI
 3. **C9/C10** on Jetski: no dependencies, and it starts the format data early.
 4. **C5** on the Claude host. **C6, C7 and C9/C10 on Claude only after C5 passes**; their launch flags assume isolation works.
 5. **C8** whenever a client is open.
-6. **C15, C16, C17** (2026-11-03) in any order; C15b on a Claude host. None blocks the Phase 1 build; C15's result is folded into `launch.py` before A5.
-7. **C18** (2026-11-05) on each engine, once per D44 model, after C15–C17. Its Claude leg decides whether `--permission-prompts none` ever ships; its loop result must hold before the five `ask` rules go live in A5.
+6. **C15, C16, C17** (2026-11-03) in any order; C15b on a Claude host. None blocks the Phase 1 build; C15's result is folded into `launch.py` before Kernel-5.
+7. **C18** (2026-11-05) on each engine, once per D44 model, after C15–C17. Its Claude leg decides whether `--permission-prompts none` ever ships; its loop result must hold before the five `ask` rules go live in Kernel-5.
 
 Global state touched: only C3 (your MCP config, backed up and restored on exit) and C5 run A (real AH4L hooks). Everything else runs in `mktemp` workspaces.
 
@@ -823,7 +826,7 @@ Not needed for Phase 0. Each is scripted when its section is expanded.
 | `permissions.deny` and rule syntax for MCP tools | Section 8 fallback (MCP indirection) |
 | Protocol interrupt for Jetski (`control_request` "not supported yet") | Section 5.1 `interrupt_mode` |
 | Cross-turn prompt caching with a large prefix | cost model |
-| Claude `auto` mode as a second gate: the same task set under `bypassPermissions` and under `auto`, classifier blocks against gate would-denies (D49) | after A1–A8; needs a task set and a Claude host |
+| Claude `auto` mode as a second gate: the same task set under `bypassPermissions` and under `auto`, classifier blocks against gate would-denies (D49) | after Kernel-1 to Kernel-8; needs a task set and a Claude host |
 
 ---
 
@@ -839,14 +842,15 @@ flowchart TD
     P4["Phase 4 · Parity on Claude<br/>every row of Section 12 tested on Claude"]
     G2{"Gate: Claude parity"}
     SO["Switch-over week<br/>dedicated branch, then AH4L deleted"]
-    P0 --> G1 --> P1 --> P2 --> P3 --> P4 --> G2 --> SO
+    G15{"Gate G1.5: conventions Convention-1 to Convention-9<br/>AGY persona follows the kit"}
+    P0 --> G1 --> P1 --> G15 --> P2 --> P3 --> P4 --> G2 --> SO
 ```
 
-Phase 0 status: **complete** for AGY 1.4.7, Jetski and Claude (C5–C7). G1 passed for AGY and Jetski. Pinned-model format runs done (C13). Phase 1 code lives in `unified-headless-wrapper/src/uhw_kernel/` on the test VM (D45) and moves to `lupin/src/lupin_kernel/` after A1–A8 (D38). No code written yet as of 2026-11-02.
+Phase 0 status: **complete** for AGY 1.4.7, Jetski and Claude (C5–C7). G1 passed for AGY and Jetski. Pinned-model format runs done (C13). Phase 1 code lives in `unified-headless-wrapper/src/uhw_kernel/` on the test VM (D45) and moves to `lupin/src/lupin_kernel/` after Kernel-1 to Kernel-8 (D38). No code written yet as of 2026-11-02.
 
 Testing throughout: `fake_engine` simulates both families from the first day; parity tests per Section 12 row.
 
-Phase 1 is specified in `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`: one AGY persona by voice on the test VM, acceptance A1–A8. Platform per D32. Claude adapter testing is the last phase.
+Phase 1 is specified in `specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`: one AGY persona by voice on the test VM, acceptance Kernel-1 to Kernel-8. Platform per D32. Claude adapter testing is the last phase.
 
 `TODO(T19)` **Exit criteria and switch-over:**
 - exit criteria per phase;
@@ -855,7 +859,7 @@ Phase 1 is specified in `specs/2026.10.24-phase1-kernel-and-jetski-family-adapte
 
 `TODO(T31)` **Switch-over data migration:** bridge files → registry; live tasks and their `accountable_manager`; DMs and asks in flight; mementos under `~/.claude`.
 
-From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
+From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, amended by D51): after Kernel-1 to Kernel-8 the Phase 1 Claude Code session ports the convention kit (T37 spec Section 5), and the handoff waits for **gate G1.5, Convention-1 to Convention-9** (spec Section 4), an AGY implementer persona observed following each kit convention end to end.
 
 ---
 
@@ -870,7 +874,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40).
    - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), ~~T32~~ done 2026-11-06 (D50));
    - Sections 6 and 7 (T12, T13, T27);
    - Section 11 (T17, T23, T20);
-   - Sections 13, 10, 9 (T18, T16, T25, T28, T15);
+   - Section 13 (T18: the convention kit and verb table first, since G1.5 depends on them; the crew layer after), then Sections 10, 9 (T16, T25, T28, T15);
    - Section 15 (T19, T31).
 
 ---
@@ -943,7 +947,7 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 
 ## 20. TODO register
 
-One row per open item. Each `TODO(Tnn)` marker in the text points here. Status values: **decide** (needs Rick), **design** (needs a written design), **measure** (needs a capture), **separate** (its own design, off the critical path).
+One row per open item. Each `TODO(Tnn)` marker in the text points here. Labels: acceptance tests and gates carry a word prefix naming what they prove (`Kernel-N`, `Convention-N`); a key here (`Dnn`, `Tnn`, `Cnn`) is always paired with its name on first use in a section (ruled 11-06). Status values: **decide** (needs Rick), **design** (needs a written design), **measure** (needs a capture), **separate** (its own design, off the critical path).
 
 ### 20.1 Decisions pending (Rick)
 
@@ -971,7 +975,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 | T15 | Turn-end policy (largest area) | Section 9 | design |
 | T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex | Section 10 | design |
 | T17 | Log schema and rotation; watchdog; tailer; `cc_transcript` and `claude_code_queue` routers | Sections 11, 18 | design |
-| T18 | Persona bootstrap: assembly, memento, charters, planning-is-prompting installer | Section 13 | design |
+| T18 | Persona bootstrap: assembly, memento, charters, planning-is-prompting installer; **first deliverable the convention kit, verb table and installer target (D51)** | Section 13; T37 spec | design |
 | T19 | Exit criteria per phase; switch-over checklist; deletion list | Section 15 | design |
 | T20 | Console (D15) | Section 11 | design |
 | T21 | Tasks router manager guard off bridge files | Sections 8.1, 18 | design |
@@ -1003,6 +1007,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Status v
 
 | Id | Item | Section | Status |
 |---|---|---|---|
+| T37 | ~~Convention parity before the AGY handoff~~: Kernel-1 to Kernel-8 proved plumbing, not behavior; the kit, the Convention-1 to Convention-9 gate, who ports, one workflow set (opened and ruled 11-06) | Sections 13, 15 | **resolved: D51** (11-06); amends D40 |
 | T36 | Per-persona API keys and authenticated persona identity: one `ck_live_*` per persona minted at spawn and revoked at reap, so `sender_id` is proven, not asserted, and T21's role checks and the fleet-state rows can be checked server-side; first task the key-identifier prefix, because `_validate_api_key_sync` bcrypt-checks every active key per request; not isolation (opened 11-06 by D50) | Sections 8.1, 18; T32 spec Section 7 | design |
 | T35 | Canonical persona name: one internal representation for `María` / `Mr. Radio` style names across the configuration manager, the voice-persona pool, DM topics, mementos and the task store; delete the local folding copies; no name ever crosses a kernel interface (found 11-03 during T10) | Section 4.1; T10 spec Section 7 | design |
 
@@ -1016,6 +1021,7 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 |---|---|
 | `00-status.md` | **living** · where the work stands: phase, open items, next three, session log newest first. Read first, update last |
 | `01-framework.md` | **living** · this document |
+| `chronicle.md` | **living** · the design process in narrative form, one entry per session, appended at session close; the status log is its index |
 | `specs/2026.10.18-ah4l-capability-inventory.md` | everything AH4L does today, with UHW dispositions |
 | `specs/2026.10.18-uhw-role-table.md` | roles, tool exposure, rules |
 | `specs/2026.10.20-ticketed-asks-spec.md` | D37 in full |
@@ -1026,6 +1032,8 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `specs/2026.11.05-t26-tool-approvals-spec.md` | D49 in full: the engine facts, the `ask` rule mode and gate code, the ticket record, `approval_key` per rule, approver and learner routing, the Claude launch rationale, C18's questions |
 | `specs/2026.11.06-t32-credential-exposure-spec.md` | D50 in full: the lupin facts, the credential inventory, the three rules, the approval witness, the startup invariants, `redact()`, the header, the deferred reconciliation, T36 |
 | `narratives/2026.11.06-t32-credential-exposure.md` | the T32 narrative: seven problems, six solutions with pros, cons and recommendations, the six rulings |
+| `specs/2026.11.06-t37-convention-parity-spec.md` | D51 in full: the convention kit, acceptance Convention-1 to Convention-9, the port, the kernel-verb table |
+| `narratives/2026.11.06-t37-convention-parity.md` | the T37 narrative: the sequencing inversion, seven problems, five solutions, the five rulings |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
@@ -1035,4 +1043,5 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `archive/2026.10.12-uhw-build-order-jetski-and-agy-first.md` | build order and gates (absorbed into D17–D19, Sections 15, 17) |
 | `archive/2026.10.26-design-gap-review.md` | the review that produced D35–D37 and the register (superseded by Section 20) |
 | `captures/` | raw capture output pasted back from the engines |
+| `transcripts/` | session transcripts: Rick's turns and the assistant's replies verbatim, tool calls as one-line brackets; the lossless companion to `chronicle.md` (from 2026-11-06) |
 | `kernel-explainer/` | the shareable explainer and diagrams |

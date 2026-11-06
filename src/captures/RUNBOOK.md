@@ -15,7 +15,7 @@ On the test VM, adjust the first `cd` to where the checkouts live there.
 
 ## Then: C18 after C15–C17 (2026-11-05)
 
-C18 measures the D49 approval loop (framework Section 8.2): a gate deny that says `call ask_wait( ticket ); then repeat this exact call`, an `ask_wait` probe that plays the human, and whether the model repeats the act so the hook can allow it once. Run once per D44 model on each engine; about 6 minutes per run (three to four turns). None of it blocks the Phase 1 build, but the five `ask` rules do not go live in A5 until the loop closes on every engine.
+C18 measures the D49 approval loop (framework Section 8.2): a gate deny that says `call ask_wait( ticket ); then repeat this exact call`, an `ask_wait` probe that plays the human, and whether the model repeats the act so the hook can allow it once. Run once per D44 model on each engine; about 6 minutes per run (three to four turns). None of it blocks the Phase 1 build, but the five `ask` rules do not go live in Kernel-5 until the loop closes on every engine.
 
 **AGY, on the test VM, inside tmux:**
 ```bash
