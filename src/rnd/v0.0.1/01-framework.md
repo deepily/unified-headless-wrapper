@@ -75,6 +75,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D50 | Credential exposure | **On one operating-system user there is no credential boundary between personas; the user account is the boundary** (accepted under D25). Four credentials sit on a fleet host: the fleet key (account-level, shared by every seat), the per-project service login, the human owner's login (an optional `[owner]` section of `~/.lupin/config`, absent on the dev server 11-06) and the engines' vendor credentials. Six parts: (1) the `[owner]` section is never written on a fleet host; kernel config carries `owner_user_id`; the kernel refuses to start if it finds the section or a service login on Lupin's effective approver map (`GET /api/tasks/approval-settings`). (2) A human approval counts only through Lupin's second door (`authenticated_account_email` → `approver_persona_for_account`); a fleet-key answer is stored and ignored. A persona approver's answer counts only when the kernel witnessed the gated `ask_answer` call; Lupin's `answered_by` is not consulted for persona approvers. (3) The secrets row splits: `credential_read` enforce, `credential_print` observe, `direct_call` observe per instance and role (voice, destructive-test, kernel socket). (4) Direct calls: pattern rules now; a `User-Agent: cosa-voice/<v> persona=<id> gate=<call>` header on every outbound cosa-voice call now; reconciliation of Lupin's access log later, under this item. (5) One `redact()` at the two writers, the JSONL log and the narration path, with a per-kind fingerprint marker. (6) T36 opened: per-persona keys, first task the O(N) bcrypt sweep; the fleet key stays for Phase 1. Detail: `specs/2026.11.06-t32-credential-exposure-spec.md`; narrative `narratives/2026.11.06-t32-credential-exposure.md`. Resolves T32. | 11-06 |
 | D51 | Convention parity before the AGY handoff | Kernel-1 to Kernel-8 prove plumbing, not behavior; the planning-is-prompting layer the implementer must follow was Phase 2's deliverable. Five parts: (1) a **minimum convention kit** is ported first, then a **conventions gate Convention-1 to Convention-9** sits between Kernel-1 to Kernel-8 and the handoff (G1.5); the crew layer stays in Phase 2, built by the AGY implementer once it lives under the kit. (2) The kit is the solo-implementer subset, about 25 workflows (session ritual; planning the work; doing the work; talking to the human, including `decision-walkthrough`); a convention missed in the first week is added to the kit, never improvised around. (3) Convention-1 to Convention-9 is the acceptance set, one convention observed end to end per item. (4) The Phase 1 Claude Code session builds the port after Kernel-8, as its last job before the handoff; T18 supplies the rules. (5) **One workflow set** with the engine plumbing behind kernel verbs (start cold, rehydrate, add a task, ask the human, plan first, mandates file, skills directory); AH4L honors the same verbs until switch-over. Detail: `specs/2026.11.06-t37-convention-parity-spec.md`; narrative `narratives/2026.11.06-t37-convention-parity.md`. Resolves T37; amends D40. | 11-06 |
 | D52 | Inbox envelope and ledger | **Headed blocks, one plain-text grammar on every engine:** `[kind time attrs]` on its own line, body verbatim, blank line between blocks; kinds `voice` (the human, any channel), `dm`, `answer`, `kernel`; a count line opens any envelope of two or more; an interrupt leaves a `kernel` block naming the cut tool call; `/skill` expands per block; a body line that would parse as a header is indented, never cut. The header carries identifiers only (sender, message, thread, ticket); how each kind is answered is in the kernel contract once; no per-turn rider, with a **provision**: an optional per-persona `inbox.rider` (prepend/append, off by default, logged per envelope) if the contract alone proves insufficient over long sessions. `InboundMessage` gets `kind` and `channel`; `source` is gone. **Ledger:** `~/.lupin/kernel/personas/{persona_id}/inbox.json` (last 500 acknowledged ids, answers and DM cursors), rebuildable from the session log; the queue is memory only. **Order:** stdin write → ledger append → receipt (at-least-once; a replayed id in the ledger is dropped and logged). **Catch-up is a pull on every connect** (`answers-owed`, `dm/list`), because Lupin's reconnect replay serves device-slot holders only, never a `cc-listener-*` session; the Phase 1 spec's replay assumption is struck. **Voice gap** (a human message sent while the kernel is down and a browser is open is unrecoverable, as today) closed by a Lupin change after Phase 1 (T27). **Mid-turn:** `if adapter.accepts_input_mid_turn: write now else queue`, every non-urgent kind. Acceptance Inbox-1 to Inbox-6. Detail: `specs/2026.11.06-t12-inbox-envelope-spec.md`. Resolves T12. | 11-06 |
+| D53 | Voice out | **One format text on every engine** (D47 layer 4): the probe's version 2 rule in the brevity mandate's vocabulary (one spoken line is enough when one answers, at most two more; a line is one sentence that makes a claim; plain words, no identifiers in speech; detail to the abstract; a document only when asked or too long for a card; longer only when asked), markers unchanged (`<<<abstract`, `<<<document transient | persistent`), the DM style line spelled out at its end. **Documents live in Lupin's `io/`** under `lupin.root`: `transient` → `io/tmp/yyyy.mm.dd-<persona_id>-<slug>.md`, swept by Lupin's existing daily cron at more than 7×24 h; `persistent` → `io/write-ups/…`, kept; the kernel never deletes; one appended line `[Open: <file>](/app/docs?path=lupin/io/tmp/<file>)` in the abstract; files pass `redact()`; `voice_out.documents: off` for a host that does not share the instance filesystem, the fleet-key upload door a T27 row. **Spill:** an abstract over `voice_out.abstract_spill_chars` (default 2,000) goes whole into a transient document; the card keeps the head to the last blank line plus the link; routing, not rewriting. **Shape** is four rules (spoken block of one to three lines before any marker; no markup in spoken lines; each marker once, own line, abstract before document; a document marker carries a mode) with seven reason codes; **repair is mechanical, never a model** (syntax stripped, extra lines moved to the abstract, a missing spoken line taken as the first sentence of the abstract, stray markers made body text, a missing mode read as transient); the "local 14B rewrite" step is deleted; `--json-schema` stays as the fallback. **Length:** the kernel logs `spoken_chars` and `spoken_sentences` and cuts nothing; Lupin's 500-character cap reaches only its MCP layer, and where `/api/notify` enforces for kernel senders is a T27 row. **Per-turn record** `voice.result`, fifteen fields, one per result. Acceptance Voice-1 to Voice-5. Detail: `specs/2026.11.06-t13-voice-out-spec.md`; narrative `narratives/2026.11.06-t13-voice-out.md`. Resolves T13. | 11-06 |
 
 ---
 
@@ -224,7 +225,7 @@ The shareable explainer with diagrams is `kernel-explainer/`.
 |---|---|
 | `EngineEvent` | Normalized engine frame. Kinds: `init`, `text`, `tool_start`, `tool_end`, `usage`, `result`. |
 | `InboundMessage` | `notification_id`, `persona_id`, `kind` (voice / dm / answer / kernel), `channel` (voice / web / console / cli, human messages only), `text`, `urgent`, the reply identifiers per kind (sender, message, thread, ticket), `raw` (the notification dict verbatim). D52 |
-| `ResponsePyramid` | `spoken`, `abstract`, `document`, `document_mode` |
+| `ResponsePyramid` | `spoken`, `abstract`, `document`, `document_mode`; after parsing (D53): `needs_repair`, `repair_reasons`, `abstract_spilled`, `document_path` |
 | `SessionState` | idle / busy / awaiting_human / interrupting / respawning / closed |
 | Persona identity | `persona_id`, eight hex characters (D46). It is the `job_id`, the `sender_id` suffix, the socket name and the persona directory name; see 4.1 |
 | Identity transport | `LUPIN_PERSONA_ID` and `LUPIN_SENDER_ID` in the spawn environment, inherited by hooks and MCP servers (C3, both families). Nothing downstream derives identity; no bridge-file lookup. |
@@ -362,7 +363,7 @@ The Chrome flag was accepted (2026-10-18). `--model` was verified by C13; `--age
 
 | # | Layer | Claude | Jetski family |
 |---|---|---|---|
-| 1–4 | kernel contract, role charter, manifest `instructions:`, format rules (T13) | `--append-system-prompt` | body of `<worktree>/.agents/agents/<role>.md`, launched with `--agent <role>`; its frontmatter `tools:` is the role's native allow-list |
+| 1–4 | kernel contract, role charter, manifest `instructions:`, format rules (D53; T13 spec Section 3) | `--append-system-prompt` | body of `<worktree>/.agents/agents/<role>.md`, launched with `--agent <role>`; its frontmatter `tools:` is the role's native allow-list |
 | 5 | project mandates | the worktree's `CLAUDE.md` | `<worktree>/AGENTS.md`, a copy of what Claude would load (D43) |
 | 6 | memento, charter brief (T18) | first user turn | first user turn |
 
@@ -439,30 +440,44 @@ Acceptance Inbox-1 to Inbox-6 (spec Section 8): Inbox-1 to Inbox-3 inside Kernel
 
 ## 7. Voice out
 
-### 7.1 Response pyramid format
+### 7.1 Response pyramid format (D12; D53, T13 resolved 2026-11-06)
 
 ```
-<headline>
-<supporting statement>
-<supporting statement>
+<spoken line>                      one to three lines, one sentence each
+<spoken line>
 <<<abstract
-- bullets, tables, details
-<<<document persistent
-# Full markdown…
+- bullets, tables, details          markdown; the card
+<<<document transient | persistent
+# Full markdown…                    a file under Lupin's io/, linked from the card
 ```
 
 | Layer | Destination |
 |---|---|
-| Spoken (≤3 lines, markdown stripped) | notification `message`, `priority=high` |
-| Abstract | the same notification's `abstract` field: the clickable card |
-| Document | a file (transient or persistent), linked from the abstract, rendered live in the clients |
+| Spoken (1–3 lines, markdown stripped) | notification `message`, `priority=high` |
+| Abstract | the same notification's `abstract` field: the clickable card, rendered as markdown |
+| Document | a file under `lupin.root/io/`, linked from the abstract by one appended line, opened in the client's reading pane |
 
-- Layers are sparse. Most turns are spoken-only. The harness moves an oversized abstract into a transient document.
+**The format rules text** is D47 layer 4, one text on every engine, in the brevity mandate's vocabulary; the text of record is in the T13 spec, Section 3, and its hash is logged per turn as `format_rules_version`. The probe's version 1 ("exactly three lines") is retired; version 2 (one line is enough when one answers) is what the kernel renders, and the Phase 1 per-turn record is its measurement.
+
+**Documents (D53).**
+
+| `document_mode` | Path under `lupin.root` | Lifetime | Deleted by |
+|---|---|---|---|
+| `transient` | `io/tmp/yyyy.mm.dd-<persona_id>-<slug>.md` | more than 7×24 h | Lupin's `sweep-io-tmp.sh`, unchanged |
+| `persistent` | `io/write-ups/yyyy.mm.dd-<persona_id>-<slug>.md` | kept | the operator |
+
+The kernel never deletes. Link line: `[Open: <file>](/app/docs?path=lupin/io/tmp/<file>)` (viewer grammar; the bare `io/` scope is retired). Files pass `redact()` (D50). `voice_out.documents: off` keeps a document block on the card for a kernel host that does not share the instance's filesystem; the fleet-key upload door is a T27 row (Section 18).
+
+**Spill (D53).** An abstract over `voice_out.abstract_spill_chars` (default 2,000 characters) goes whole into a transient document; the card keeps the head, cut at the last blank line before the limit, plus the link line. No word changes. The default is revisited on payload-size data (Lupin row 03355649; the kernel's `payload_bytes`).
+
+**Shape and repair (D53).** Shape: a spoken block of one to three non-empty lines before any marker; no markup in a spoken line; each marker at most once, alone on its line, abstract before document; a document marker carries a mode. A line beginning with one space then `<<<` is body text (the forgery rule, as D52's). Reason codes: `spoken_missing`, `spoken_over_three`, `spoken_markup`, `marker_repeated`, `marker_out_of_order`, `marker_unknown`, `document_mode_missing`. Repair is mechanical and never a model: syntax stripped from spoken lines; lines past the third moved to the top of the abstract; a missing spoken line taken as the first sentence of the abstract (else of the document, else `The reply is on the card.`); stray markers read as body text; a missing mode read as `transient`. The spoken text after repair differs from the model's only by removed syntax or moved lines, so compliance per model measures the model. `--json-schema` output stays as the fallback if compliance proves poor.
+
+**Length (D12 as amended, D53).** The kernel logs `spoken_chars` and `spoken_sentences` (the DM tutor's claim rule) and cuts nothing. Lupin's spoken cap (500 characters) is enforced only in its MCP layer; `/api/notify` over REST, which the kernel uses, is unrestricted, and no rewriter exists on that path. Where Lupin enforces for kernel senders is a T27 row.
+
+- Layers are sparse. Most turns are spoken-only.
 - Text between tool calls ("Let me check…") is never spoken.
-- The standing order lives in `--append-system-prompt`, not CLAUDE.md.
-- Part A baseline (`gemini-3.8-flash-high`, n = 1 per prompt): 8/8 well formed, and every layer appeared only where intended. But every reply used exactly three spoken lines, even "Say hello". Rules v2 should allow a single line. Keep v1 for the Jetski run so the two engines stay comparable.
-- Every turn logs engine, model, persona, `needs_repair` and line count. Format compliance by model is a project metric. Length and rewriting are Lupin's (D12 as amended): the rewriter and KISS, not the kernel.
-- Measured: C13 on Jetski and AGY, four pinned models, 24/24 well formed each, D13 holds (spoken block closes well before `result`).
+- Every turn logs a `voice.result` record (fifteen fields: engine, model, persona, `format_rules_version`, `inbox_rider`, the three spoken counts, `abstract_chars`, `document_mode`, `document_path`, `abstract_spilled`, `needs_repair`, `repair_reasons`, `payload_bytes`; spec Section 8). Format compliance by model is a project metric.
+- Measured: C13 on Jetski and AGY, four pinned models, 24/24 well formed each with version 1 of the rules; D13 holds (spoken block closes well before `result`).
 
 ### 7.2 Turn lifecycle
 
@@ -475,12 +490,12 @@ sequenceDiagram
     E->>H: text deltas, tool events
     H->>L: append every frame (live)
     E->>H: result frame
-    H->>H: parse_pyramid, needs_repair?
-    alt needs repair
-        H->>H: local 14B rewrites spoken lines
+    H->>H: parse_pyramid: shape check, mechanical repair (D53)
+    alt abstract over spill threshold, or a document block
+        H->>H: redact, write io/tmp or io/write-ups, append link line
     end
     H->>N: notify(message=spoken, priority=high, abstract=card + doc link)
-    H->>L: append pyramid + needs_repair
+    H->>L: append voice.result (needs_repair, reasons, counts, document_path)
     H->>H: turn-end policy (merge queue, pokes, timers)
 ```
 
@@ -505,12 +520,6 @@ sequenceDiagram
   - The chief of staff asks you directly. On escalation it consults the preference learner, and may answer as a marked surrogate.
 - **Tickets:** the timing rules are in D37; the full contract is in `specs/2026.10.20-ticketed-asks-spec.md`.
 - **Lupin changes:** see Section 18.
-
-`TODO(T13)` **Voice-out details:**
-- the system prompt text for the format, per engine;
-- document storage paths in `io/` and transient lifetime;
-- the abstract size threshold;
-- whether any shape repair stays in the kernel or goes entirely to Lupin's rewriter.
 
 `TODO(T29)` **Surrogate policy:** which ask types are eligible, the confidence floor, and review. Also the learner improvement. Both are separate designs, outside the critical path.
 
@@ -658,7 +667,7 @@ Source: inventory Section 10.
 
 ## 11. Observability
 
-- Per-persona JSONL log (D14): every `EngineEvent` with its raw frame, inbound messages and routing decisions, outbound speech and asks, interrupts, respawns, `needs_repair`.
+- Per-persona JSONL log (D14): every `EngineEvent` with its raw frame, inbound messages and routing decisions, outbound speech and asks, interrupts, respawns, and one `voice.result` record per result (D53: `format_rules_version`, `inbox_rider`, spoken counts, `abstract_chars`, `document_mode`, `document_path`, `abstract_spilled`, `needs_repair`, `repair_reasons`, `payload_bytes`).
 - **Inbox events (D52):** `inbox.received` (kind, channel, urgent, the notification dict verbatim), `inbox.written` (turn id), `inbox.duplicate`, `inbox.rider`, `inbox.rebuilt`; rotation (T17) must keep the last 500 `inbox.written` so the ledger can be rebuilt.
 - **Redaction (D50):** the writer passes every line through `redact()` (fleet key, vendor tokens, JWTs, private keys, `password =` values → `<redacted:<kind>:<fingerprint>>`); the console and web view inherit it. Spec 4.5.
 - Terminal console (D15) and web view (D16) are both readers of the log.
@@ -903,7 +912,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
    - ~~Section 4 (T10)~~ done 2026-11-03 (D46);
    - ~~Section 5 (T11, T24)~~ done 2026-11-03 (D47, D48);
    - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), ~~T32~~ done 2026-11-06 (D50));
-   - Sections 6 and 7 (~~T12~~ done 2026-11-06 (D52), T13, T27);
+   - Sections 6 and 7 (~~T12~~ done 2026-11-06 (D52), ~~T13~~ done 2026-11-06 (D53), T27);
    - Section 11 (T17, T23, T20);
    - Section 13 (T18: the convention kit and verb table first, since G1.5 depends on them; the crew layer after), then Sections 10, 9 (T16, T25, T28, T15);
    - Section 15 (T19, T31).
@@ -916,9 +925,10 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
 |---|---|
 | Jetski runs without guards | Gate G1; static deny rules; worktrees only |
 | Persona identity drifts across respins (routing breaks, un-mutes) | D7, D46: one eight-hex id, minted once; test that respin and engine change keep `job_id` / `sender_id` suffix |
-| Plain-text pyramid format proves unreliable | `needs_repair` + 14B rewrite; fall back to `--json-schema` |
+| Plain-text pyramid format proves unreliable | `needs_repair` with reason codes and mechanical repair (D53), measured per model in the `voice.result` record; fall back to `--json-schema` |
 | Core shaped around the simpler engine | capability flags; fake engine covers both families |
-| Pyramid prompt tuned on Gemini doesn't transfer to Opus | measure per model; don't share baselines |
+| Pyramid prompt tuned on Gemini doesn't transfer to Opus | one text on every engine (D53), so the text is the constant and the model the variable; measure per model; don't share baselines |
+| A kernel persona speaks past Lupin's 500-character cap (the cap reaches only the MCP layer; the kernel posts over REST) | D53: `spoken_chars` logged per turn gives the over-cap rate per model; the enforcement point for REST senders is a T27 row |
 | Loss of the tmux TUI for humans | console + web view from the log |
 | Engine updates itself mid-experiment | record `--version` and `modelName` per spawn and per capture; D48 vets unseen versions |
 | Stale conversation id silently resets a persona | verify `init.conversation_id` on every resume (Section 5.4) |
@@ -939,12 +949,12 @@ Agents keep calling Lupin's existing endpoints (D35). What changes:
 
 | Router or component | Change | Store |
 |---|---|---|
-| notifications, websocket | the kernel holds one `cc-listener-{persona_id}` socket per persona (D36); no change for delivery. **`TODO(T27)`, after Phase 1 (D52):** record `listener_delivered` per notification (the dual emit already computes it) and let `GET /api/notifications/undelivered` take a `job_id`, so a human message missed by a down kernel can be pulled (the reconnect replay serves device-slot holders only); a treatment stamp on the notification record, `rewrite: {applied, rule_version, chars_before, chars_after}`, so rewriter treatments are attributable in the persona logs | PostgreSQL (NotificationRepository; embeddings in pgvector) |
+| notifications, websocket | the kernel holds one `cc-listener-{persona_id}` socket per persona (D36); no change for delivery. **`TODO(T27)`, after Phase 1 (D52):** record `listener_delivered` per notification (the dual emit already computes it) and let `GET /api/notifications/undelivered` take a `job_id`, so a human message missed by a down kernel can be pulled (the reconnect replay serves device-slot holders only); a treatment stamp on the notification record, `rewrite: {applied, rule_version, chars_before, chars_after}`, so rewriter treatments are attributable in the persona logs; **(D53)** decide whether `/api/notify` applies the spoken cap, a tutor-style distillation (with its guards and the stamp above) or nothing to REST senders whose `job_id` is a kernel persona, since the cap today reaches only the MCP layer | PostgreSQL (NotificationRepository; embeddings in pgvector) |
 | tasks | `TODO(T21)`: move the manager-only guard off bridge files | PostgreSQL (TaskRepository) |
 | dm, commons | none | PostgreSQL; `io/commons/<topic>.md` |
 | v2_ask | **ticket store** `/api/asks/{ticket}`: open, answer, wait (long poll), escalate, expire (D37); kind `tool_approval` opened by the kernel with `rule`, `approval_key`, `approver`, `fallback`, the shadow `learner_prediction`, consumed once (D49); **D50:** `answer_auth` stamped from `_answered_by` (`api_key \| jwt`); for `approver: human` only a `jwt` answer resolving through `approver_persona_for_account` answers the ticket, an `api_key` answer is kept on the record and leaves it open | PostgreSQL |
 | decision_proxy | none now; surrogate hook later (`TODO(T29)`) | PostgreSQL (ProxyDecision, TrustState) |
-| docs_files, io_files | none | `io/` |
+| docs_files, io_files | **`TODO(T27)` (D53):** accept the fleet key on `POST /api/docs/upload` for `dir` in `{io/tmp, io/write-ups}` only, same guards, same `view_url`, so a kernel host that does not share the instance filesystem can place pyramid documents; until then such a host runs `voice_out.documents: off` | `io/` |
 | voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
 | `cc_notification_listener` (hooks lib) | retired with the per-session listeners (D36); its three ledger files (`.ask-answer-hwm-*`, `.ask-surfaced-*`, `.dm-inbox-hwm-*`) and `answer_catchup.py` / `dm_inbox_reconcile.py` go with it, replaced by the kernel's `inbox.json` (D52); `_stamp_owner_user_id_on_bridge` and the `[owner]` login go with it; the kernel carries `owner_user_id` in its config and refuses to start beside an `[owner]` section (D50) | `~/.lupin/config` today |
 | arbiter (:8001) | folds into the kernel (D24) | kernel host disk |
@@ -1002,7 +1012,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Labels: 
 | T10 | ~~Stable id derivation and id migration~~ | Section 4 | **resolved: D46** (11-03) |
 | T11 | ~~`--mode` per persona; system prompt contents per engine~~ | Section 5.4 | **resolved: D47** (11-03) |
 | T12 | ~~Merged-turn envelope; ledger persistence; Claude mid-turn write policy~~ | Section 6 | **resolved: D52** (11-06) |
-| T13 | Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner | Section 7 | design |
+| T13 | ~~Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner~~ | Section 7 | **resolved: D53** (11-06) |
 | T14 | Jetski internal tools; ~~files read before the first MCP call~~ (resolved 11-03 from the C14 hook logs: the per-tool MCP schema cache; no gate change) | Section 8 | measure (C17 scripted 11-03) |
 | T15 | Turn-end policy (largest area) | Section 9 | design |
 | T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex | Section 10 | design |
@@ -1068,6 +1078,8 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `narratives/2026.11.06-t37-convention-parity.md` | the T37 narrative: the sequencing inversion, seven problems, five solutions, the five rulings |
 | `specs/2026.11.06-t12-inbox-envelope-spec.md` | D52 in full: the envelope grammar and builder, the contract paragraph, the `InboundMessage` type, the ledger file and log events, the pull catch-up table, the mid-turn state rows, the T27 rows, acceptance Inbox-1 to Inbox-6 |
 | `narratives/2026.11.06-t12-inbox-envelope.md` | the T12 narrative: what AH4L frames and ledgers today, the false replay assumption, ten problems, six solutions, the seven rulings and the rider provision |
+| `specs/2026.11.06-t13-voice-out-spec.md` | D53 in full: the format rules text of record, document paths and the link line, the spill rule, shape rules and reason codes with their mechanical repairs, the length stance, the `voice.result` record, acceptance Voice-1 to Voice-5, the T27 rows |
+| `narratives/2026.11.06-t13-voice-out.md` | the T13 narrative: what lupin does today on the spoken channel, the card and `io/`, ten problems, six solutions, the six rulings |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
