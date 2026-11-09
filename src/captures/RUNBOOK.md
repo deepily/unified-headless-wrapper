@@ -1,6 +1,26 @@
 # Capture runbook
 
-## Run this now: T32 credential inventory (2026-11-06)
+## Run this now: C19 context edge (2026-11-09)
+
+C19 confirms the public record behind D57 (context exhaustion, framework Section 11.2): the Antigravity CLI compacts on its own at a fixed ~256,000 tokens for every model and shows it as a `checkpoint` step. Leg **a** is two short turns plus a read-only look at the engine's session database for `max_context_tokens` (about one minute, two model calls); leg **b** fills the window to the ceiling (nine files of ~40k tokens, about 360k tokens in, 10–15 minutes) and ends with a recall probe. Run leg a on every D44 model first; run leg b on the flash model first, and on a D44 model only if leg a did not read its ceiling from the database.
+
+**AGY, on the test VM, inside tmux:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+MODEL=fable-5.1-high        python3 src/captures/c19_context_edge.py agy --leg a    # chief_of_staff / manager / steward / author model (D44)
+MODEL=opus-5.5-high         python3 src/captures/c19_context_edge.py agy --leg a    # implementer / reviewer / tester model (D44)
+MODEL=gemini-3.8-flash-high python3 src/captures/c19_context_edge.py agy --leg b    # proves the harness and the 256k stop rule cheaply
+# then, only for a D44 model whose "db max_context_tokens" line above reads "not read":
+MODEL=fable-5.1-high        python3 src/captures/c19_context_edge.py agy --leg b
+```
+
+**Jetski, on the cloud workstation:** the same lines with `jetski` (tokens are free there, so leg b on both D44 models is fine).
+
+**What to paste back:** `verdict.txt` from each `out/c19-*` directory. The lines that matter: `db max_context_tokens` (→ `[context windows]` `ceiling_tokens`), `cache_read beside input` (→ the adapter's occupancy formula), `behaviour at the edge` and `recall after edge` (→ whether `pressure.compaction_action` ever needs `interrupt`, and whether silent truncation is real).
+
+**Heads-up:** leg a copies the newest `*.db` under `~/.gemini` into the output directory and opens the copy read-only; nothing of the engine's is written. Leg b overshoots the ceiling by up to two files (~80k tokens) because the turn list is fixed; the stop rules are applied in the analysis.
+
+## Then: T32 credential inventory (2026-11-06)
 
 Two read-only checks behind the T32 design (framework Section 8.1): whether `~/.lupin/config` carries an `[owner]` section (the human's login, which would let a persona mint an approval), and whether any per-project hook login (`claude.code@...`) is on Lupin's approver-account map. Expected on every host: neither. Under a minute, no model turn, prints no secrets.
 
