@@ -1,6 +1,23 @@
 # Capture runbook
 
-## Run this now: C19 context edge (2026-11-09)
+## Run this now: T25 host inventory and C20 (2026-11-10)
+
+Two zero-token checks behind D60 (host capacity, framework Section 10.8). The inventory prints the memory budget the kernel will compute for the host, whether the persona account can make a per-persona memory scope (a live 64 MiB probe under `lupin-personas.slice`), which cgroup files the kernel offers, oomd and PSI state, the engine binaries and Node's default heap. C20 launches the engine twice with a one-word prompt and prints the process tree: leg a should show the relaunch child, leg b (`GEMINI_CLI_NO_RELAUNCH=true`) one process. Read-only; nothing of the engine's is written.
+
+**On the test VM, as the persona account (the inventory first, then C20 on AGY):**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t25_host_inventory.sh | tee src/captures/out/t25-inventory-$( hostname )-$( date +%Y%m%d ).txt
+MODEL=gemini-3.8-flash-high src/captures/c20_relaunch_tree.sh agy
+```
+
+**On the development server:** the inventory line only. **On the cloud workstation:** `src/captures/c20_relaunch_tree.sh jetski`.
+
+**What to paste back:** the whole inventory output (it prints no secrets), and `verdict.txt` from `src/captures/out/c20-*`. The lines that matter: `budget_GiB`, `fit_at_2GiB_reserve`, `scope_probe`, `memory_peak_file`, `systemd_oomd`, `claude.file`, `node_default_heap_GiB`; and in C20 the "engine-like processes under the launched pid" count per leg.
+
+**Heads-up:** `scope_probe: skipped` or `FAILED` on the test VM means the persona account has no user manager; `loginctl enable-linger $USER` (once, as root) is the usual fix, and until then the VM takes D60's uncapped path (`[host] class = test`).
+
+## Then: C19 context edge (2026-11-09)
 
 C19 confirms the public record behind D57 (context exhaustion, framework Section 11.2): the Antigravity CLI compacts on its own at a fixed ~256,000 tokens for every model and shows it as a `checkpoint` step. Leg **a** is two short turns plus a read-only look at the engine's session database for `max_context_tokens` (about one minute, two model calls); leg **b** fills the window to the ceiling (nine files of ~40k tokens, about 360k tokens in, 10–15 minutes) and ends with a recall probe. Run leg a on every D44 model first; run leg b on the flash model first, and on a D44 model only if leg a did not read its ceiling from the database.
 
