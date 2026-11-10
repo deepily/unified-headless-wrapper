@@ -81,6 +81,7 @@ The work happens on one dedicated branch. The Jetski/AGY family is built first, 
 | D56 | Log schema and rotation | **One envelope on every line:** `{ timestamp, monotonic, sequence, persona_id, turn_id, kind, data }`; `kind` is `owner.event`, the owner the kernel module that wrote it; payload only under `data`; the catalogue is the T17 spec Section 4 and a kind outside it fails the unit test. **Stderr through the writer** as `engine.stderr` records, capped per minute; the raw file is gone, so the credential ruling's two choke points hold. **Writer-owned segments** `log/{yyyy.mm.dd-HHMMSS}.jsonl`, rolled at 64 MB, at kernel start and at the UTC day, each opening with `log.segment`; an hourly in-kernel sweep (dry run by default) deletes by age (14 days in exact minutes, never the two newest), by a 1 GiB per-persona cap, and a `closed` persona's directory whole after retention; the ledger rebuild is complete with fewer than 500 ids because the cursors are recovered too. **Durability:** flush every record; sync `inbox.written`, `session.*`, `gate.deny`, `gate.ask`; the receipt waits on the sync. **Held turn:** the session task detects it (busy, open tool call past `watch held turn seconds`, no frame since, never in `awaiting_human`), writes one `watch.held_turn` per call id and one advisory up the escalation chain; manifest `watch.held_turn_action: advise | interrupt`, default `advise`; the fleet-health module reads records and detects nothing; the arbiter's watchdog and context-pressure writer retire. **Web console:** Lupin's tailer, wire and client kept; the resolver and roster read the kernel socket; a kernel-record mapper emits the same blocks (kernel annotations as role and kind `kernel`, which the renderer already shows); `~/.lupin/kernel/` mounted into Lupin's container; a segment roll is the existing `rotated` state; `cc_transcript` paths kept until the switch-over rename; `claude_code_queue`'s tombstones to the deletion list. **The kernel's own log** under `~/.lupin/kernel/log/`, same writer, `persona_id: null`. Spec `specs/2026.11.08-t17-log-schema-and-rotation-spec.md`; acceptance Log-1 to Log-6, folded into Kernel-1, Kernel-3, Kernel-5, Kernel-7. **Amended 11-09:** `engine.stdin` and `engine.frame` carry `text_at`, a path into `raw` to the display text; the mapper follows it and nothing is stored twice. | 11-08, amended 11-09 |
 | D57 | Context exhaustion | **Lines are ratios of the engine's ceiling, not the model's window.** `[context windows]` holds `window_tokens` and `ceiling_tokens` per engine and model id; the ceiling is where the engine compacts on its own (AGY: a fixed **256,000** for every model, confirmed by Google staff 2026-11-04/06 and users' session databases; Jetski the same until measured; Claude its effective window). Two lines per ceiling class, the 2026-08-13 fractions unchanged: at or above 500,000 → notice 0.40, respin 0.50; below → notice 0.60, respin 0.75 (AGY: ≈154,000 and ≈192,000). **Occupancy** is the newest model call's prompt size (Claude `input + cache_creation + cache_read`; Jetski family `input_tokens + cache_read_tokens` of the `agent_response` DONE step), never the cumulative `result.usage`. **The session task detects on every `usage` event and the kernel acts:** crossing the respin line runs the D54 handshake with `trigger: pressure` and one `type: info` line up the chain; manifest `pressure.action: respin \| advise`, default `respin`; per-persona `respin_ratio` override. **No emergency interrupt:** reaching the ceiling on AGY is a ~70 s stall and a summary, not a failure; `pressure.compaction_action: none \| interrupt` defaults to `none`. **The engine's own compaction is recorded** (`watch.compacted`, explicit from the `checkpoint` step, implicit from a drop of more than half) and answered with a non-urgent `[kernel memento]` request. **Records:** seven-field `watch.pressure` once per upward crossing per line; `pressure: { ratio, status, measured_at }` on the roster, which readers read and never derive; an unlisted model is `unknown`, narrated once, never acted on. **Retired at switch-over:** lupin's `context_pressure.py`, `context_pressure_writer.py`, `self_respin_observer.py`, the tick script and cron, the arbiter's state section; `GET /api/arbiter/context-pressure` repointed at the roster; the manager-context-monitoring workflow reduced to one kit rule. **Process:** a research step precedes any capture that burns context (Rick, 11-09); C19 confirms the record per D44 model. Spec `specs/2026.11.09-t23-context-exhaustion-spec.md`. | 11-09 |
 | D58 | The console | **One mapper, in the kernel package** (`log/mapper.py`, pure, standard library only, written in Phase 1), imported by Lupin's tailer after the move; it emits meaning and readers style to their own capacity. **Every kernel block carries `name`** (the record's kind) **and `level`** (`info`, `notice`, `alert`) from one closed table; ten kinds join the D56 mapper table (the four `ask.*`, the three `respin.*`, `gate.unreachable`, `gate.would_deny`, `log.truncated`). **Style:** a dim monospace row with a rule coloured by level; consecutive stderr lines fold into one counted row. **Filter:** three views, `conversation`, `work` (default), `everything`, applied by the reader after the mapper; an alert passes every view. **Pressure:** the roster's published `status` picks the colour (amber `notice`, red `over_budget`, grey `unknown`) on the terminal status line, the web console header and the fleet table; no reader derives one from the ratio. **Phase 1 gains a read-only `lupin persona watch <id>`** with Kernel-3. **The interactive console runs on Rick's laptop,** after Kernel-8: the kernel socket by SSH Unix-socket forward, the log over the same session, Rick's Lupin login on the laptop only, and the token never through the kernel. Checked on the test VM (11-10 UTC): the persona account has passwordless `sudo` and `docker`, so no on-host boundary exists. **Input:** plain is a message, `!` is urgent with the cut call named first, `/name` is a skill (D52), `:` is a console command. **Tickets:** `:answer <ticket> <reply>` goes straight to Lupin with Rick's token once the ticket store exists; a plain line never answers one. D15 amended. Spec `specs/2026.11.09-t20-console-spec.md`; acceptance Console-1 to Console-7, the first three folded into Kernel-1, Kernel-3, Kernel-7. | 11-09 |
+| D59 | The fleet | **One process knows the fleet; the registry is the census, the lineage and the liveness record.** Ten parts. (1) **Staffing routes and the caller:** a spawn is a role's manifest template plus named overrides (`engine`, `model`, `project`, `brief`, `voice_preference`, `seed_memento`, `billing`); the three tool names stay; a persona caller is accepted only against an unused allow that the kernel's own gate recorded for that persona, tool and argument hash, at most 30 s old (the in-kernel half of T36's signed grants); the CLI is the operator; batches are admitted all or nothing, then created child by child. (2) **Admission in the kernel:** one ordered check list (skeleton crew, per-call cap, fleet cap, slots for engine quota and host capacity) under the registry lock; `[fleet]` re-read at each admission; Rick's 2026-09-03 rulings unchanged (one number, refuse and never reap, managers count); every decision logged with its census; re-spin is never admitted. (3) **Every persona its own worktree, outside every repository:** `<worktree_root>/<repository>/<persona_id>` (default root `~/.lupin/kernel/worktrees`), created detached at the main checkout's `HEAD` and locked `lupin-persona:<id>` by `worktree.py` before the provisioner runs; `worktree_setup:` in `.lupin/project.yaml`; the tree outlives the process. (4) **Dismissal is the D54 handshake with a different ending:** no record after two asks withholds the stop (`withheld_no_memento`), `force` overrides, `memento: skip` exists; the branch probe names and never withholds; teardown keeps and reports a tree with uncommitted, ignored-data or unmerged work, never pushes; open task rows go to the manager. (5) **Harvest is a fact on the row:** `harvest_ack( persona_id )` sets `harvested_at`; gate rule `dismiss_unharvested` in `observe`; built with the crew layer. (6) **A manager with live reports is not dismissed** unless the caller says `cascade` or names a new manager. (7) **Idle personas hibernate:** the process is stopped after 30 idle minutes, the row, tree, voice and task rows stay, the next message resumes the conversation; counts against the cap, not against host capacity; one advisory after 24 h; the kernel never retires a persona on its own. (8) **One kernel per host, one fleet per Lupin instance;** `host` recorded; no kernel-to-kernel protocol; the kernel does not serve its own tail. (9) **A dedicated unprivileged account on any host that holds a human's credentials;** `[host] class: production \| test`; on `production` the kernel refuses to start when its account is privileged; applied at switch-over, details after an inventory on the development server. (10) **`billing: default \| vertex` in the manifest;** `vertex` only for the Claude engine, through lupin's `vertex_env` unchanged, Phase 3. Retired at switch-over: `session_spawner.py`, the three cap modules, `respin_credit.py`, `reap_memento.py`, the seat-worktree scripts, the idle reap; kept and imported after the move: `reap_branch`, `seat_teardown`, `worktree_reaper`, `worktree_straggler_tickets`, `vertex_env`. Spec `specs/2026.11.09-t16-fleet-spec.md`; narrative `narratives/2026.11.09-t16-the-fleet.md`; acceptance Fleet-1 to Fleet-10 (Fleet-1, Fleet-10 with Kernel-1; Fleet-2 with Kernel-2). Resolves T16. | 11-09 |
 
 ---
 
@@ -235,7 +236,7 @@ The shareable explainer with diagrams is `kernel-explainer/`.
   - restart behavior (respawn lazily from the registry, verifying `init.conversation_id`, Section 5.4);
   - one engine crashing;
   - upgrading the kernel while personas are live.
-- `TODO(T09)` **Control API contract:** spawn, dismiss, list, interrupt, respin, send, status. Phase 1 has a first cut (`/personas`, `/personas/{id}/messages`, `/gate`, `/health`).
+- `TODO(T09)` **Control API contract:** spawn, dismiss, list, interrupt, respin, send, status. Phase 1 has a first cut (`/personas`, `/personas/{id}/messages`, `/gate`, `/health`). **Narrowed 11-09 (D59):** the persona-lifecycle routes (spawn with overrides, list, dismiss, respin, reassign, harvest, `/fleet/config`) and the gate-claim rule for persona callers are fixed in Section 10.1 and the T16 spec Sections 3 and 4; T09 keeps the error model, versioning, interrupt and status.
 
 ---
 
@@ -348,6 +349,8 @@ stateDiagram-v2
     idle --> closed: dismiss or shutdown
     closed --> [*]
 ```
+
+**D59 (11-09):** two more states. `provisioning`: admitted, the tree and files being made, no process yet. `dismissing`: Section 10.4 steps 2 to 6; a withheld dismissal returns to `idle`. Hibernation is not a state: a hibernated persona is `idle` with no `process_id` and `hibernated_at` set (Section 10.5).
 
 ### 5.3 Launch isolation (Claude)
 
@@ -667,22 +670,89 @@ Source: inventory Section 10.
 
 ---
 
-## 10. Fleet
+## 10. Fleet (D59; T16 resolved 2026-11-09)
 
-- The kernel's control API backs `spawn_sessions` / `dismiss_sessions` / `list_spawned_sessions`. The cosa-voice tools call it instead of `start-cc-with-tmux.sh`.
-- Worktrees: `cwd` per seat. Spawn cap and lineage manifest carry over from `session_spawner.py`.
-- Self-respin: close, forget the session id, start a new session seeded with the memento. Replaces the `/clear` tmux injection in `self_respin_core.py`. Triggered by the operator, by the persona (`respin_request()`, D54) or by context pressure (D57, `trigger: pressure`).
-- DMs are inbox messages with `source="peer"`.
+One kernel per host starts every engine and holds one registry, so the registry is the census, the lineage (`manager_id`) and the liveness record. Detail, code and acceptance: `specs/2026.11.09-t16-fleet-spec.md`; narrative `narratives/2026.11.09-t16-the-fleet.md`.
 
-`TODO(T16)` **Fleet:**
-- the control API contract (with T09) and cap/admission logic (`fleet_size_cap`);
-- seat worktree provisioning and reaping;
-- harvest-before-reap (steward ack);
-- self-respin as close + respawn with the memento;
-- what the folded arbiter consumes (Section 11);
-- the `--vertex` equivalent, or a ruling that it is Claude-only.
+### 10.1 Staffing routes and the caller
 
-`TODO(T25)` **Host capacity:** engine processes per VM, memory per AGY process, and the `cc_memory_watch` equivalent keyed on registry pids.
+| Route (kernel socket) | Does |
+|---|---|
+| `POST /personas` `{ role, count, overrides }` | admits the batch, then per child: mints the id, creates the tree, provisions, allocates a voice, starts the engine |
+| `GET /personas?manager_id=&subtree=` | the roster; one axis, because the kernel mints the id and starts the process |
+| `POST /personas/{id}/dismiss` `{ memento, force, reason, reports }` | Section 10.4 |
+| `POST /personas/{id}/respin` `{ trigger, engine?, model? }` | the D54 handshake; an engine or model here is how a persona changes engine (D46) |
+| `PATCH /personas/{id}` `{ manager_id }` | reassigns a report |
+| `POST /personas/{id}/harvest` | the steward's acknowledgment (Section 10.4) |
+| `GET`, `PUT /fleet/config` | the cap and the skeleton-crew switch, for Lupin's dial |
+| `DELETE /personas/{id}` | the operator's immediate stop: dismiss with `force` and `memento: skip` |
+
+- The cosa-voice tools keep their names (`spawn_sessions`, `dismiss_sessions`, `list_spawned_sessions`) and call these routes instead of `start-cc-with-tmux.sh`. `task_prompt` becomes `overrides.brief`; `engine` is a new override.
+- A spawn is `~/.lupin/manifests/<role>.yaml` plus the overrides `engine`, `model`, `project`, `brief`, `voice_preference`, `seed_memento`, `billing`; any other key is refused by name.
+- **Gate claims.** A persona's tool server sends its persona id and the SHA-256 of the call's arguments; the kernel accepts the route only against an unused allow its own `/gate` recorded for that persona, tool and hash within `gate_claim_seconds` (30). So `manager_id` is witnessed, not asserted. A request with neither field is the operator. This is the in-kernel half of T36 mechanism (b).
+- Admission is all or nothing; after it, a child that fails is a row with `status: failed` and the rest proceed.
+
+### 10.2 Admission
+
+`admission.py`: an ordered list of pure checks, run under the registry lock together with the creation of the admitted rows. The first refusal wins and is returned verbatim.
+
+| Order | Check | Refusal names |
+|---|---|---|
+| 1 | `skeleton_crew` on | that a re-spin is still allowed |
+| 2 | `requested > batch_cap` (8) | both numbers |
+| 3 | `requested > size_cap − live` (14; ceiling 18) | the cap, the live count split into managers and workers, how many fit |
+| slot | engine quota | T22 |
+| slot | host capacity | T25 |
+
+- Rick's rulings of 2026-09-03 stand: one number for the whole fleet; over the cap new spawns are refused and nobody is reaped; every persona counts, managers included. Every row not `closed` counts, hibernated ones too.
+- `[fleet]` is re-read from disk at each admission. `fleet.admitted` and `fleet.refused` carry the census the decision saw.
+- There is no fail-open rule: the census is the kernel's memory.
+- **Re-spin is not staffing.** The persona keeps its id, tree, voice and task rows; no admission, no credit, no reconciliation.
+
+### 10.3 The persona worktree
+
+`worktree.py` runs before `provision.py` (D54): `<worktree_root>/<repository>/<persona_id>`, `worktree_root` default `~/.lupin/kernel/worktrees` and set per host, created with `git worktree add --detach <path> HEAD` from the project's main checkout and locked with reason `lupin-persona:<persona_id>`. Then each command of `worktree_setup:` in `<repository>/.lupin/project.yaml` (lupin: its virtual-environment link script).
+
+- Every persona gets one, the chief of staff and managers included. The main checkout belongs to the human.
+- The tree outlives the process: re-spin, hibernation and an engine change keep it; only dismissal touches it.
+- A refused tree fails that child. A failing setup step is an `alert`-level `provision.worktree` record and one spoken line; the spawn proceeds.
+- Platform (the tool server's interpreter and import path) comes from kernel config `lupin.root`; work is the tree.
+- It is outside every repository because AH4L's janitor sweeps `<main>/.claude/worktrees/` and both harnesses share the test VM through Phase 1.
+
+### 10.4 Dismissal
+
+The D54 handshake with a different ending, in this order:
+
+1. **Reports:** live reports and `reports: refuse` (the default) → refused, naming them. `cascade` dismisses each report first through every step below; a manager id reassigns them.
+2. **Memento:** `required` (default) → a `[kernel dismiss …]` request block; wait for the turn to end (`respin.timeout`); a record stamped with this persona id and newer than the request continues; one repeat; a second miss is `withheld_no_memento` and the persona stays. `skip` and `force` continue.
+3. **Branch probe:** commits the working line lacks are named in the result and to the manager. It never withholds.
+4. **Stop** the engine process.
+5. **Tree:** uncommitted edits, ignored data files or unmerged commits → kept and reported; clean and merged → `git worktree remove`, `git branch -d`. Never a push.
+6. **Close:** open task rows reassigned to the manager; voice released; row `closed`.
+
+- Results: `retired`, `withheld_no_memento`, `already_closed`, `refused_has_reports`. Nobody is immortal: `force` always exists.
+- Kept trees are swept later by lupin's rules, unchanged: a `closed` persona's tree idle past six hours has its work committed to its branch and its directory removed; one refused for 24 hours becomes a task row owned by the manager. A tree whose persona is not `closed` is never swept.
+- **Harvest:** the steward's `harvest_ack( persona_id )` sets `harvested_at` and `harvested_by` on the row; gate rule `dismiss_unharvested` runs in `observe`; the direct message stays as the notice. Built with the crew layer (Phase 2, D51).
+- Build: steps 1, 2, 4, 6 are kernel code (Phase 2); steps 3, 5 and the sweep import lupin's `reap_branch`, `seat_teardown`, `worktree_reaper` and `worktree_straggler_tickets` after the move, with liveness answered by the registry. In Phase 1 `DELETE` stops the one persona and keeps its tree.
+
+### 10.5 Idleness and re-spin
+
+- **Hibernation:** a persona `idle` with an empty queue for `idle_hibernate_minutes` (30) has its engine process stopped (`session.hibernated`); the row stays with `hibernated_at` set. The next inbound message starts the process on the stored conversation behind the Section 5.4 resume check (`session.resumed`). It still counts against the fleet cap and does not count against host capacity. After `idle_advise_hours` (24) one advisory goes to its manager. **The kernel never retires a persona on its own.** Replaces AH4L's idle-TTL reap.
+- **Self-respin:** close, forget the engine's conversation id, start a new conversation seeded with the memento (D54). Triggered by the operator, by the persona (`respin_request()`, D54) or by context pressure (D57, `trigger: pressure`). It is a route in Section 10.1 and passes no admission.
+- An engine crash orphans nobody: the row and its reports stay and the process starts again on the next message (T08).
+- DMs are inbox messages with `kind: dm` (D52).
+
+### 10.6 Hosts, the persona account, billing
+
+- **One kernel per host, one fleet per Lupin instance.** A manager staffs only on its own host; no kernel calls another kernel; `host` is written in `kernel.started` and on every row. The kernel does not serve its own tail, which closes the fallbacks left by D56 and D58. Revisit if T25 shows one machine cannot hold the fleet.
+- **The persona account:** `[host] class: production | test`. On `production` the kernel refuses to start when its own account has passwordless `sudo` or `docker` membership; on `test` it records `persona_account_privileged` (D50 as amended). A production host that holds a human's credentials runs the kernel and the engines under a dedicated unprivileged account. Applied at switch-over (T19), after an inventory on the development server (`src/captures/t16_account_inventory.sh`, not yet written) sizes the two known costs: group-writable repositories and a `sudoers` list for Docker-driven test scripts.
+- **Billing:** manifest field `billing: default | vertex`. `vertex` is admitted only for the Claude engine and composed by lupin's `vertex_env`, imported unchanged (Phase 3). On the Jetski family it is refused by name until T22 rules otherwise.
+
+### 10.7 What the fleet-health module reads (D24)
+
+It detects nothing (D56). From the roster: `state`, `process_id`, `hibernated_at`, `pressure`, `manager_id` (the escalation chain, replacing the arbiter's bridge walk), `harvested_at`. From the logs: `fleet.*`, `dismiss.*`, `provision.worktree`, `watch.*`. Lupin's `/api/arbiter/fleet-state` and `/api/arbiter/fleet-size-cap` project the kernel's `GET /personas` and `/fleet/config`.
+
+`TODO(T25)` **Host capacity:** engine processes per VM, memory per AGY process, and the `cc_memory_watch` equivalent keyed on registry pids. **From D59:** it fills the admission slot of Section 10.2 and says whether memory pressure, not only idle time, hibernates a persona.
 
 `TODO(T28)` **System broadcasts and the DM tutor:** today both arrive by tmux injection. They become inbox writes. The broadcast slicing (`@persona:` directives, acks to `broadcast-acks`) carries over, but the `<system-reminder>` wrapper is a Claude convention and needs a per-engine form.
 
@@ -932,7 +1002,7 @@ Phase 1 is specified in `specs/2026.10.24-phase1-kernel-and-jetski-family-adapte
 `TODO(T19)` **Exit criteria and switch-over:**
 - exit criteria per phase;
 - the switch-over-week checklist;
-- the deletion list (hooks tree, listener, `idle_waiter`, tmux injection, `self_respin_core`, `start-cc-with-tmux.sh`, transcript-path resolution in the tailer; **added 11-08 (D54, D55):** stop deploying `~/.claude/CLAUDE.md` to fleet hosts, a planning-is-prompting sync change; flip Lupin's INI flag `legacy notifications redirect enabled` so `notifications.js` retires; **11-08 (T36):** flip `kernel grant required` once no AH4L session remains; **added 11-09 (D57):** `cosa/agents/heartbeat_arbiter/context_pressure.py`, `lupin_arbiter_app/context_pressure_writer.py`, `self_respin_observer.py` with its marker, wake-proof and dispute files and janitor, `workflow/scripts/context-pressure-tick.sh`, `install_context_pressure_tick.py`, every manager's host cron entry for the tick, the arbiter's `context_pressure` state section; `manager-context-monitoring.md` reduced to one kit rule in the D51 port).
+- the deletion list (hooks tree, listener, `idle_waiter`, tmux injection, `self_respin_core`, `start-cc-with-tmux.sh`, transcript-path resolution in the tailer; **added 11-08 (D54, D55):** stop deploying `~/.claude/CLAUDE.md` to fleet hosts, a planning-is-prompting sync change; flip Lupin's INI flag `legacy notifications redirect enabled` so `notifications.js` retires; **11-08 (T36):** flip `kernel grant required` once no AH4L session remains; **added 11-09 (D57):** `cosa/agents/heartbeat_arbiter/context_pressure.py`, `lupin_arbiter_app/context_pressure_writer.py`, `self_respin_observer.py` with its marker, wake-proof and dispute files and janitor, `workflow/scripts/context-pressure-tick.sh`, `install_context_pressure_tick.py`, every manager's host cron entry for the tick, the arbiter's `context_pressure` state section; `manager-context-monitoring.md` reduced to one kit rule in the D51 port; **added 11-09 (D59):** `lupin_mcp/session_spawner.py` and the `spawned-<manager>.json` manifests, `fleet_size_cap.py`, `fleet_cap_admission.py`, `fleet_cap_ini_io`, `skeleton_crew.py`, `respin_credit.py`, `reap_memento.py`, `scripts/provision-seat-worktree.sh`, `cosa/utils/seat_worktree.py`, `worktree_venv.py`, `reap_stale_spawned` and the idle TTL, `stale-seat-scan.py`, `orphan_bridge_reaper`, `prune_dead_persona_bridges`; the INI keys `cc session fleet size cap*`, `cc session spawn *`, `cc session skeleton crew enabled`, `cc session reap memento *` and `arbiter worktree janitor *` move to the kernel's `[fleet]`; a checklist row: create the unprivileged fleet account on each production host and set `[host] class: production`).
 
 `TODO(T31)` **Switch-over data migration:** bridge files → registry; live tasks and their `accountable_manager`; DMs and asks in flight; mementos under `~/.claude`.
 
@@ -951,7 +1021,7 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
    - Section 8 (~~T14 half~~, T14 internal tools after C17, ~~T26~~ done 2026-11-05 (D49), ~~T32~~ done 2026-11-06 (D50));
    - ~~Sections 6 and 7 (T12, T13, T27)~~ done 2026-11-06 (D52, D53) and 2026-11-08 (D55);
    - ~~Section 11 (T17, T23, T20)~~ done 2026-11-08 (D56) and 2026-11-09 (D57, D58);
-   - ~~Section 13 (T18)~~ done 2026-11-06 (D54; the crew layer stays Phase 2), then Sections 10, 9 (T16, T25, T28, T15);
+   - ~~Section 13 (T18)~~ done 2026-11-06 (D54; the crew layer stays Phase 2), then Section 10 (~~T16~~ done 2026-11-09 (D59), T25, T28) and Section 9 (T15);
    - Section 15 (T19, T31).
 
 ---
@@ -977,6 +1047,9 @@ From Phase 2 on, an AGY persona under the kernel implements the kernel (D40, ame
 | A persona forges an approval: the owner's password lands in `~/.lupin/config` on a fleet host, or a persona answers a ticket as its own manager with the fleet key | **D50:** no `[owner]` section on fleet hosts, enforced at kernel start; human approvals only through the JWT door; persona approvals only when the kernel witnessed the `ask_answer`; `direct_call` would-deny lines |
 | Server-side role checks keyed on Claude bridge files | `TODO(T21)`; T36 (per-persona keys) is the proper fix |
 | A fleet of AGY processes hits auth or quota limits | `TODO(T22)` |
+| AH4L's worktree janitor sweeps a kernel persona's tree while both harnesses share a host | D59: persona trees live outside every repository, outside the lane the janitor sweeps |
+| A hibernated persona resumes on a stale conversation | the Section 5.4 resume check runs on every resume; a failed check is D54's cold start, narrated |
+| A confused persona staffs or dismisses as another | D59 gate claims: a fleet route is accepted only against the gate's own allow for that persona, tool and argument hash |
 
 ---
 
@@ -996,10 +1069,10 @@ Agents keep calling Lupin's existing endpoints (D35). Everything below lands **a
 | docs_files, io_files | **D55 upload door:** `POST /api/docs/upload` takes `require_api_key_or_jwt`; a JWT caller is unchanged; a fleet-key caller is confined to `dir` ∈ {`io/tmp`, `io/write-ups`}, filename `yyyy.mm.dd-<8 hex>-<slug>.md`, `on_conflict` ∈ {refuse, rename}, same size cap, credential check, atomic write and `view_url`. Interim: a host that does not share the instance filesystem runs `voice_out.documents: off` | `io/` |
 | voice_persona, speakerphone | **changed (found 11-03):** the pool's state *is* the bridge files (`voice_persona.py` writes the allocation into the bridge and filters dead pids on read). With no bridges the endpoint needs a store of its own, keyed on `persona_id`; the kernel allocates at spawn and releases at reap. Goes to T31 | bridge files today |
 | `cc_notification_listener` (hooks lib) | retired with the per-session listeners (D36); its three ledger files (`.ask-answer-hwm-*`, `.ask-surfaced-*`, `.dm-inbox-hwm-*`) and `answer_catchup.py` / `dm_inbox_reconcile.py` go with it, replaced by the kernel's `inbox.json` (D52); `_stamp_owner_user_id_on_bridge` and the `[owner]` login go with it; the kernel carries `owner_user_id` in its config and refuses to start beside an `[owner]` section (D50) | `~/.lupin/config` today |
-| arbiter (:8001) | folds into the kernel (D24). **D57:** `GET /api/arbiter/context-pressure` is repointed at the kernel roster's `pressure` field (same projection pattern as fleet-state) until the T19 rename; the `context_pressure` state section, `context_pressure_writer.py` and `self_respin_observer.py` are deletion-list rows | kernel host disk |
+| arbiter (:8001) | folds into the kernel (D24). **D57:** `GET /api/arbiter/context-pressure` is repointed at the kernel roster's `pressure` field (same projection pattern as fleet-state) until the T19 rename; the `context_pressure` state section, `context_pressure_writer.py` and `self_respin_observer.py` are deletion-list rows **D59:** `GET/PUT /api/arbiter/fleet-size-cap` is repointed at the kernel's `GET/PUT /fleet/config`; the worktree janitor becomes the kernel's kept-tree sweep (lupin's `worktree_reaper`, imported, liveness from the registry) | kernel host disk |
 | cc_transcript | **D56 (repointed, lands with the kernel's move into lupin):** the resolver reads `log_dir` from the kernel socket and takes the newest segment; the roster projects the kernel's `GET /personas`; a kernel-record mapper beside the Claude one; wire, client and paths unchanged (the seat id is the persona id); `~/.lupin/kernel/` mounted into the container. Rename to `persona-log` at switch-over (T19) | kernel host disk |
 | claude_code_queue | already two 410 tombstones naming `/api/v2/submit`; nothing to repoint; deletion-list rows (T19), with the arbiter's `turn_age_watchdog.py` and `context_pressure_writer.py` (D56) | — |
-| `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh`; **D50:** `User-Agent: cosa-voice/<version> persona=<id> gate=<call id>` on the four outbound `X-API-Key` sites; the spoken-cap guard keeps **rejecting** here (D55: a model is in the loop) | — |
+| `cosa_voice_mcp.py` | identity from `LUPIN_PERSONA_ID` instead of bridge files; role-filtered `tools/list`; ticketed asks and `ask_wait`; spawn verbs call the kernel instead of `start-cc-with-tmux.sh`; **D50:** `User-Agent: cosa-voice/<version> persona=<id> gate=<call id>` on the four outbound `X-API-Key` sites; the spoken-cap guard keeps **rejecting** here (D55: a model is in the loop); **D59:** the spawn, dismiss and list wrappers call the kernel's fleet routes with a gate claim (persona id and argument hash); new tool `harvest_ack` for the steward | — |
 | Web client (TypeScript multiplexer) | **D55:** `projectFromSenderId` generalized to any local part (`render/senderProject.ts`; the multiplexer's session check is already `includes("#")`); the sender card shows an engine label from the newest message's `payload.engine` (`{ name, version, model }`, stamped by the kernel on every post), else the local part of the sender id; the action-required card keys on `payload.ticket.id`, gains the `escalated` state, the late-answer notice naming the question, and the `tool_approval` card (rule, persona, act, yes/no, message, learner prediction greyed), built after the ticket store. `notifications.js` gets no new work (its `isCCSession` literal at line 23180 stays); the INI flag `legacy notifications redirect enabled` retires it at switch-over (T19) | — |
 | Mobile client (`../lupin-mobile/`, sibling repo) | **D55:** mirrors the web rows from the same keys (`payload.engine`, `payload.ticket`, `payload.rewrite`) after the web rows merge; a follow-up in that repo, read in its own session; no server shape may be web-only | — |
 
@@ -1010,6 +1083,7 @@ Agents keep calling Lupin's existing endpoints (D35). Everything below lands **a
 ## 19. Platform and operations
 
 - **Build and test platform (D32):** AGY 1.4.7 on the GCP test VM `lupin-host-test`, with a test Lupin instance and a dedicated destructive-test server, reached over an SSH tunnel. The dev server is assumed to run AGY 1.4.7 too. Jetski is checked occasionally on the internal cloud workstation. Engines run non-snap (D34).
+- **Hosts and the persona account (D59):** one kernel per host and one fleet per Lupin instance; `[host] class: production | test`; a production host runs the kernel and the engines under a dedicated unprivileged account, enforced by a startup refusal, applied at switch-over after the development-server inventory (Section 10.6).
 - `TODO(T22)` **Engine authentication and quota:**
   - how a headless fleet of N AGY processes authenticates (one shared Google login?);
   - rate limits per model;
@@ -1056,7 +1130,7 @@ One row per open item. Each `TODO(Tnn)` marker in the text points here. Labels: 
 | T13 | ~~Format prompt per engine; document paths and lifetime; abstract threshold; shape repair owner~~ | Section 7 | **resolved: D53** (11-06) |
 | T14 | Jetski internal tools; ~~files read before the first MCP call~~ (resolved 11-03 from the C14 hook logs: the per-tool MCP schema cache; no gate change) | Section 8 | measure (C17 scripted 11-03) |
 | T15 | Turn-end policy (largest area) | Section 9 | design |
-| T16 | Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex; unprivileged persona accounts on production hosts (from D50 as amended 11-09) | Section 10 | design |
+| T16 | ~~Fleet: API, admission, worktrees, harvest-before-reap, self-respin, Vertex; unprivileged persona accounts on production hosts~~ | Section 10 | **resolved: D59** (11-09); the account's details wait on an inventory of the development server; the admission slots wait on T22 and T25 |
 | T17 | ~~Log schema and rotation; watchdog; tailer; `cc_transcript` and `claude_code_queue` routers~~ | Sections 11, 18 | **resolved: D56** (11-08); `claude_code_queue` was already a tombstone |
 | T18 | ~~Persona bootstrap: assembly, memento, charters, planning-is-prompting installer~~ | Section 13 | **resolved: D54** (11-06); crew and cascade charter briefs and the provisional-mandates verb stay Phase 2 (D51) |
 | T19 | Exit criteria per phase; switch-over checklist; deletion list | Section 15 | design |
@@ -1132,6 +1206,8 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `narratives/2026.11.09-t23-context-exhaustion.md` | the T23 narrative: what lupin and the managers do today, what the public record adds, seven problems, seven solutions with pros, cons and recommendations, the seven rulings (three re-put after the research) |
 | `specs/2026.11.09-t20-console-spec.md` | D58 in full: the lupin ground truth and the test VM checks, the mapper with its level table and reference implementation, the three views, the style table, `lupin persona watch`, the laptop console (connections, layout, input grammar, commands), the credential on the laptop, tickets, the Lupin-side rows, acceptance Console-1 to Console-7 |
 | `narratives/2026.11.09-t20-the-console.md` | the T20 narrative: what the pane does today and who owns each job, nine problems, ten solutions with pros, cons and recommendations (the tenth added after Rick's challenge to the credential premise and the test VM check), the ten rulings |
+| `specs/2026.11.09-t16-fleet-spec.md` | D59 in full: the route table and tool mapping, gate claims, `admission.py`, `worktree.py`, the dismissal order and verdicts, harvest, reports, hibernation, hosts, the account invariant, `billing`, the row fields, twelve record kinds, `[fleet]` and `[host]`, the dispositions of lupin's fleet modules, acceptance Fleet-1 to Fleet-10 |
+| `narratives/2026.11.09-t16-the-fleet.md` | the T16 narrative: what lupin's fleet layer does today and why, nine problems, ten solutions with pros, cons and recommendations, the ten rulings |
 | `evidence/2026.10.15-phase0-part-a-agy-results.md`, `-part-b-jetski-results.md` | Phase 0 evidence |
 | `evidence/2026.10.18-jetski-capabilities-c11-c14-results.md` | Jetski C11–C14 |
 | `evidence/2026.10.20-claude-round-results.md` | Claude C5–C7 |
