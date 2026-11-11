@@ -1,6 +1,20 @@
 # Capture runbook
 
-## Run this now: what is still owed, zero tokens (2026-11-11, after the probe and inventory runs)
+## Run this now: the T22 engine-account inventory, zero tokens (2026-11-11, third session)
+
+D68 (engine sign-in and quota) rests on four facts only the hosts hold: where AGY keeps its sign-in today and how old it is, whether a process started from a systemd user unit with no terminal can read the usage meter (with and without `GEMINI_FORCE_FILE_STORAGE=true`), the meter's real field names on Linux, and the two overage settings as found. The script prints no secret, token or email. It makes no model call; AGY itself may write one log per call to a scratch directory that is removed. Its `systemd-run` lines have never run (the laptop sandbox has no systemd), so a failure there is a script defect to report, not a host finding.
+
+**On the test VM and on the development server, as the persona account:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t22_engine_account_inventory.sh | tee src/captures/out/t22-account-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `token_file`, `keyring_entry`, the four `*_exit` lines under the meter sections, the bucket lines (group name, window, `extra_keys`), the `useG1Credits` / `useAiCredits` lines, and the `count:` lines at the end. Results land in the T22 spec's Section 18.
+
+Still owed from the earlier block below: C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Still owed, zero tokens (2026-11-11, after the probe and inventory runs)
 
 The probe and the inventory are in from both hosts (`descriptor_store ok` twice; T25 spec Section 15). Three zero-token checks remain; C20 is the only one Kernel-2 waits on. Each has its detail block below.
 
