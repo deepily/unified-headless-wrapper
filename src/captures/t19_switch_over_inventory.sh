@@ -141,6 +141,8 @@ file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/merge_head_guard.p
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/stash_guard.py
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/task_store_client.py
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/task_store_map.py
+file|delete|Delete|src/cosa/rest/routers/speakerphone.py
+file|move|Keep|src/cosa/rest/routers/voice_persona.py
 file|move|Keep and import|src/lupin_mcp/reap_branch.py
 file|move|Keep and import|src/cosa/agents/shared/seat_teardown.py
 file|move|Keep and import|src/cosa/agents/shared/worktree_reaper.py

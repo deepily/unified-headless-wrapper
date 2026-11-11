@@ -1,5 +1,20 @@
 # Capture runbook
 
+## Run this now: T31 switch-over snapshot, dry run (2026-11-10)
+
+Zero tokens, read-only. The Switch clock's first steps for one fleet host (D64): `snapshot` lists the seats that pass lupin's liveness rule with their names, roles, lineage and ledger cursors; `check` says whether each is drained (exit 1 while any is not); `archive` without `--apply` prints the plan. Nothing it does today changes the host; the real run is switch-over week, rehearsed first on the test VM (Switch-4). Run the self-test, then a snapshot and a dry-run archive on each host where lupin is installed (the development server and the test VM), and keep the output.
+
+**On either host, as the persona account:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+python3 src/captures/t31_switch_over.py --self-test
+python3 src/captures/t31_switch_over.py snapshot ~/.claude/sessions --out src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json
+python3 src/captures/t31_switch_over.py check src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json --api-key-file <the fleet key file>   # exit 1 while a seat is not quiet; the `undelivered?job_id=` route exists only after D55 lands, so expect that count to read 0 or the route to 404 today
+python3 src/captures/t31_switch_over.py archive  src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json              # dry run; prints members and what is missing
+```
+
+**What to paste back:** the snapshot's summary line and its per-seat lines (`persona_id  name  role  manager  buffer`), the check's verdict, and the archive plan's `missing` list.
+
 ## Run this now: T19 switch-over inventory (2026-11-10)
 
 Zero tokens, read-only. The list of what goes at the switch-over (T19 spec Section 5, D63) in machine form: 142 rows, each a file, tree, symbol, INI key, route or systemd unit in lupin, with its clock (move, switch, delete) and disposition. The script prints `present <lines>`, `gone` or `unknown` per row; `unknown` is a defect in the list. Run it against the lupin checkout on each host before each clock, and keep the output.
@@ -10,7 +25,7 @@ git pull --rebase && chmod +x src/captures/*.sh
 src/captures/t19_switch_over_inventory.sh ../lupin | tee src/captures/out/t19-inventory-$( hostname )-$( date +%Y%m%d ).txt
 ```
 
-**At a clock** (exits non-zero when a Delete row is still present or a Keep row is gone): `src/captures/t19_switch_over_inventory.sh ../lupin --clock move`. **During a proof workload** (Switch-2; both counts must be zero): `src/captures/t19_switch_over_inventory.sh ../lupin --trace <kernel pid> ~/.lupin/sessions`.
+**At a clock** (exits non-zero when a Delete row is still present or a Keep row is gone): `src/captures/t19_switch_over_inventory.sh ../lupin --clock move`. **During a proof workload** (Switch-2; both counts must be zero): `src/captures/t19_switch_over_inventory.sh ../lupin --trace <kernel pid> ~/.claude/sessions`.
 
 **What to paste back:** the last line (`# rows=142 unknown=0`) and every non-`present` row. Today, on the laptop clone at `82fdc0182`, the only `gone` row is `kernel grant required`, a key T36 has not added yet.
 
