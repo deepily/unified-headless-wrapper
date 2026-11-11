@@ -1,0 +1,6 @@
+systemd_version                    systemd 249 (249.11-0ubuntu3.9)
+stored_before_restart              2
+stored_after_restart               2
+first_run   pushed probe-out probe-in
+second_run  inherited=2 names=probe-in:probe-out read=b'parked\n'
+descriptor_store ok
