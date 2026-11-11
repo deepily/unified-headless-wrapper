@@ -238,3 +238,19 @@ Ten rulings, ten as recommended, one click each. Six tests on a scratch module b
 
 **Process.** One slip worth keeping: a probe was shipped without having been run, on a mechanism whose hang-up rule was not checked first. The research-before-capture rule (11-09) covers this; the probe's premise should have been read against systemd's documentation before Rick spent a run on it.
 
+## 2026-11-11 (second session) · the capture runs from both hosts, then T21, the task store's manager checks → D67
+
+**Asked.** Rick opened T21 and first asked whether the runbook reflected the morning's changes and whether running the scripts at its head was all that was needed. It was: the checkout was read rather than recalled, the top block was current, the probe's fix had changed the script and not its invocation. Two caveats were given: the inventory's file name would overwrite the morning's run, and three older blocks were still owed. While the T21 rulings were being recorded Rick ran the probe and the inventory on both hosts, committed the outputs and asked for an analysis, proposed changes, housekeeping, the next topic, and progress as percentages.
+
+**Found, in the runs.** The descriptor store works on both hosts, so the restart mechanism of the kernel lifecycle is no longer an assumption. The memory limit is seen in force inside the probe scope on both. The test VM is small (a fit of eleven personas at the reservation), has linger on, no oomd, a newer kernel with `memory.peak`, and no `node`. Both engines are compiled on both hosts and neither refuses a bogus `NODE_OPTIONS` flag, with the caveat that the test covers `--version` only. The monitor process on the development server is growing by about 0.4 GiB an hour.
+
+**Corrected.** The inventory script had two defects that the runs exposed: option order after `--` made one line print 790 lines of unit properties, and an `||` fallback printed a second line. Both were fixed; neither spoiled a data line. This is the second script in two days shipped syntax-checked but unrun, because the laptop's sandbox has no systemd; the fix was again only syntax-checked there.
+
+**Found, in T21.** The register called it one check. It is seven doors on one predicate and two reads of the same file for a name. The predicate has two sources, and the second exists only because the server lacks an environment variable. The framework's rule that role logic belongs in the kernel does not fit rules that need the row.
+
+**Ruled, eight decisions, one click each, eight as recommended.** All nine reads move. The rules stay in the store and one fact comes from the kernel. Lupin reads the persona's row with a thirty-second cache. A manager is a role, manager or chief of staff. The identifier is the signature's until proven identity lands. Both sources answer through the soak, kernel first. Four causes are worded apart and an unreachable kernel is a retry, not a refusal of standing. Sweeps carry no role check and a persona touches only its own.
+
+**Written.** Framework D67 and six sections; the T21 spec with `persona_role.py` and eight passing tests; the narrative; the host-capacity spec's Section 15; a confirmation line in the lifecycle spec; the runbook's new top block; the status page.
+
+**Process.** The narrative's repository copy was written after the rulings rather than before them, so it was typed once with the rulings in it. Progress was stated with its weighting: design is nearly complete for the first phase and the build has not begun, and the two numbers were kept apart.
+

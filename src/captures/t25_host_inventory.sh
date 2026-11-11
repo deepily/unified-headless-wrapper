@@ -52,10 +52,11 @@ if command -v systemd-run >/dev/null && [ -n "${XDG_RUNTIME_DIR:-}" ]; then
 else
   val scope_probe "skipped (no systemd-run or no XDG_RUNTIME_DIR)"
 fi
-val systemd_oomd "$( systemctl is-active systemd-oomd 2>/dev/null || echo absent )"
+oomd_state=$( systemctl is-active systemd-oomd 2>/dev/null ); val systemd_oomd "${oomd_state:-absent}"   # is-active prints the state and exits non-zero when not active
 val oomd_user_slice "$( systemctl show user@$( id -u ).service -p ManagedOOMMemoryPressure --value 2>/dev/null || echo unknown )"
-val oomd_pressure_limit "$( systemctl show user@$( id -u ).service -p ManagedOOMMemoryPressureLimit --value 2>/dev/null || echo unknown )"
-val oomd_root_swap "$( systemctl show -- -.slice -p ManagedOOMSwap --value 2>/dev/null || echo unknown )"
+oomd_limit=$( systemctl show user@$( id -u ).service -p ManagedOOMMemoryPressureLimit --value 2>/dev/null )
+val oomd_pressure_limit "${oomd_limit:-unknown}$( [ "${oomd_limit:-0}" -gt 0 ] 2>/dev/null && awk "BEGIN { printf \" (%.0f%% of 2^32; 0 means oomd's default)\", $oomd_limit * 100 / 4294967296 }" )"
+val oomd_root_swap "$( systemctl show -p ManagedOOMSwap --value -- -.slice 2>/dev/null || echo unknown )"
 val memory_max_user_slice "$( systemctl show user-$( id -u ).slice -p MemoryMax --value 2>/dev/null || echo unknown )"
 val ptrace_scope "$( cat /proc/sys/kernel/yama/ptrace_scope 2>/dev/null || echo absent )"
 

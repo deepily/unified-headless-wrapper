@@ -1,6 +1,33 @@
 # Capture runbook
 
-## Run this now: descriptor-store probe and the revised T25 inventory (2026-11-11)
+## Run this now: what is still owed, zero tokens (2026-11-11, after the probe and inventory runs)
+
+The probe and the inventory are in from both hosts (`descriptor_store ok` twice; T25 spec Section 15). Three zero-token checks remain; C20 is the only one Kernel-2 waits on. Each has its detail block below.
+
+**On the test VM, as the persona account:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+MODEL=gemini-3.8-flash-high src/captures/c20_relaunch_tree.sh agy
+python3 src/captures/t31_switch_over.py --self-test
+python3 src/captures/t31_switch_over.py snapshot ~/.claude/sessions --out src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json
+python3 src/captures/t31_switch_over.py archive  src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json
+src/captures/t19_switch_over_inventory.sh <path to the lupin checkout on the VM> | tee src/captures/out/t19-inventory-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+python3 src/captures/t31_switch_over.py --self-test
+python3 src/captures/t31_switch_over.py snapshot ~/.claude/sessions --out src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json
+python3 src/captures/t31_switch_over.py archive  src/captures/out/t31-roster-$( hostname )-$( date +%Y%m%d ).json
+src/captures/t19_switch_over_inventory.sh ../lupin | tee src/captures/out/t19-inventory-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push, as on 11-11):** `verdict.txt` from `src/captures/out/c20-*`; the T31 snapshot's summary and per-seat lines and the archive plan's `missing` list; the T19 output's last line and every non-`present` row.
+
+**Not needed again:** the T25 inventory. Its script lost two defects on 11-11 (a 790-line property dump after `oomd_root_swap`, a doubled `systemd_oomd` line); the data lines of the 11-11 runs are good.
+
+## Done 2026-11-11 on both hosts: descriptor-store probe and the revised T25 inventory
 
 Zero tokens. The probe starts a throwaway user service, parks a pipe in systemd's descriptor store, restarts the service and reads the pipe back: the mechanism the kernel's restart rests on (D65), not yet seen working on either host. The inventory gained four lines after the development server's first run: the probe scope's `memory.max`, the `NOTIFY_SOCKET` value, oomd's limits, and whether each engine binary honors `NODE_OPTIONS`.
 
@@ -13,7 +40,7 @@ src/captures/t25_host_inventory.sh | tee src/captures/out/t25-inventory-$( hostn
 
 **What to paste back:** both outputs whole. The lines that matter: `descriptor_store ok`, `scope_probe` (expect `memory.max=67108864 memory.swap.max=0`), `notify_socket_probe` (a path), `agy.node_options`, `oomd_pressure_limit`. C20 on the test VM is unchanged, below.
 
-## Run this now: T31 switch-over snapshot, dry run (2026-11-10)
+## Detail, still owed: T31 switch-over snapshot, dry run (2026-11-10)
 
 Zero tokens, read-only. The Switch clock's first steps for one fleet host (D64): `snapshot` lists the seats that pass lupin's liveness rule with their names, roles, lineage and ledger cursors; `check` says whether each is drained (exit 1 while any is not); `archive` without `--apply` prints the plan. Nothing it does today changes the host; the real run is switch-over week, rehearsed first on the test VM (Switch-4). Run the self-test, then a snapshot and a dry-run archive on each host where lupin is installed (the development server and the test VM), and keep the output.
 
@@ -28,7 +55,7 @@ python3 src/captures/t31_switch_over.py archive  src/captures/out/t31-roster-$( 
 
 **What to paste back:** the snapshot's summary line and its per-seat lines (`persona_id  name  role  manager  buffer`), the check's verdict, and the archive plan's `missing` list.
 
-## Run this now: T19 switch-over inventory (2026-11-10)
+## Detail, still owed: T19 switch-over inventory (2026-11-10)
 
 Zero tokens, read-only. The list of what goes at the switch-over (T19 spec Section 5, D63) in machine form: 142 rows, each a file, tree, symbol, INI key, route or systemd unit in lupin, with its clock (move, switch, delete) and disposition. The script prints `present <lines>`, `gone` or `unknown` per row; `unknown` is a defect in the list. Run it against the lupin checkout on each host before each clock, and keep the output.
 
@@ -42,7 +69,7 @@ src/captures/t19_switch_over_inventory.sh ../lupin | tee src/captures/out/t19-in
 
 **What to paste back:** the last line (`# rows=142 unknown=0`) and every non-`present` row. Today, on the laptop clone at `82fdc0182`, the only `gone` row is `kernel grant required`, a key T36 has not added yet.
 
-## Run this now: T25 host inventory and C20 (2026-11-10)
+## Detail: T25 host inventory (done 11-11) and C20 (still owed on the test VM) (2026-11-10)
 
 Two zero-token checks behind D60 (host capacity, framework Section 10.8). The inventory prints the memory budget the kernel will compute for the host, whether the persona account can make a per-persona memory scope (a live 64 MiB probe under `lupin-personas.slice`), which cgroup files the kernel offers, oomd and PSI state, the engine binaries and Node's default heap. C20 launches the engine twice with a one-word prompt and prints the process tree: leg a should show the relaunch child, leg b (`GEMINI_CLI_NO_RELAUNCH=true`) one process. Read-only; nothing of the engine's is written.
 
