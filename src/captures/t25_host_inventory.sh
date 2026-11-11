@@ -57,6 +57,16 @@ val oomd_user_slice "$( systemctl show user@$( id -u ).service -p ManagedOOMMemo
 val memory_max_user_slice "$( systemctl show user-$( id -u ).slice -p MemoryMax --value 2>/dev/null || echo unknown )"
 val ptrace_scope "$( cat /proc/sys/kernel/yama/ptrace_scope 2>/dev/null || echo absent )"
 
+hr "kernel unit prerequisites (D65, T08): user unit, linger, the descriptor store"
+val systemd_version "$( systemctl --version 2>/dev/null | head -1 || echo absent )"
+val linger "$( loginctl show-user "$( id -un )" -p Linger --value 2>/dev/null || echo unknown )"
+if command -v systemd-run >/dev/null && [ -n "${XDG_RUNTIME_DIR:-}" ]; then
+  # A transient service sees NOTIFY_SOCKET only when it is Type=notify; the store rides the same socket.
+  out=$( systemd-run --user --wait --quiet --collect -p Type=notify -p NotifyAccess=all -p FileDescriptorStoreMax=4          /bin/sh -c 'printf "%s" "${NOTIFY_SOCKET:-unset}"; systemd-notify --ready' 2>&1 )     && val notify_socket_probe "ok: $out" || val notify_socket_probe "FAILED: $( echo "$out" | head -1 )"
+else
+  val notify_socket_probe "skipped (no systemd-run or no XDG_RUNTIME_DIR)"
+fi
+
 hr "engines"
 for e in agy jetski claude; do
   p=$( command -v "$e" 2>/dev/null ) || { val "$e" absent; continue; }
