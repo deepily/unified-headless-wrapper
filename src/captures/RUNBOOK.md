@@ -1,5 +1,19 @@
 # Capture runbook
 
+## Run this now: T19 switch-over inventory (2026-11-10)
+
+Zero tokens, read-only. The list of what goes at the switch-over (T19 spec Section 5, D63) in machine form: 142 rows, each a file, tree, symbol, INI key, route or systemd unit in lupin, with its clock (move, switch, delete) and disposition. The script prints `present <lines>`, `gone` or `unknown` per row; `unknown` is a defect in the list. Run it against the lupin checkout on each host before each clock, and keep the output.
+
+**On the development server (lupin checkout beside this one):**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t19_switch_over_inventory.sh ../lupin | tee src/captures/out/t19-inventory-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**At a clock** (exits non-zero when a Delete row is still present or a Keep row is gone): `src/captures/t19_switch_over_inventory.sh ../lupin --clock move`. **During a proof workload** (Switch-2; both counts must be zero): `src/captures/t19_switch_over_inventory.sh ../lupin --trace <kernel pid> ~/.lupin/sessions`.
+
+**What to paste back:** the last line (`# rows=142 unknown=0`) and every non-`present` row. Today, on the laptop clone at `82fdc0182`, the only `gone` row is `kernel grant required`, a key T36 has not added yet.
+
 ## Run this now: T25 host inventory and C20 (2026-11-10)
 
 Two zero-token checks behind D60 (host capacity, framework Section 10.8). The inventory prints the memory budget the kernel will compute for the host, whether the persona account can make a per-persona memory scope (a live 64 MiB probe under `lupin-personas.slice`), which cgroup files the kernel offers, oomd and PSI state, the engine binaries and Node's default heap. C20 launches the engine twice with a one-word prompt and prints the process tree: leg a should show the relaunch child, leg b (`GEMINI_CLI_NO_RELAUNCH=true`) one process. Read-only; nothing of the engine's is written.
