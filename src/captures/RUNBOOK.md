@@ -1,5 +1,18 @@
 # Capture runbook
 
+## Run this now: descriptor-store probe and the revised T25 inventory (2026-11-11)
+
+Zero tokens. The probe starts a throwaway user service, parks a pipe in systemd's descriptor store, restarts the service and reads the pipe back: the mechanism the kernel's restart rests on (D65), not yet seen working on either host. The inventory gained four lines after the development server's first run: the probe scope's `memory.max`, the `NOTIFY_SOCKET` value, oomd's limits, and whether each engine binary honors `NODE_OPTIONS`.
+
+**On the development server and on the test VM, as the persona account:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t08_descriptor_store_probe.sh | tee src/captures/out/t08-store-probe-$( hostname )-$( date +%Y%m%d ).txt
+src/captures/t25_host_inventory.sh | tee src/captures/out/t25-inventory-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**What to paste back:** both outputs whole. The lines that matter: `descriptor_store ok`, `scope_probe` (expect `memory.max=67108864 memory.swap.max=0`), `notify_socket_probe` (a path), `agy.node_options`, `oomd_pressure_limit`. C20 on the test VM is unchanged, below.
+
 ## Run this now: T31 switch-over snapshot, dry run (2026-11-10)
 
 Zero tokens, read-only. The Switch clock's first steps for one fleet host (D64): `snapshot` lists the seats that pass lupin's liveness rule with their names, roles, lineage and ledger cursors; `check` says whether each is drained (exit 1 while any is not); `archive` without `--apply` prints the plan. Nothing it does today changes the host; the real run is switch-over week, rehearsed first on the test VM (Switch-4). Run the self-test, then a snapshot and a dry-run archive on each host where lupin is installed (the development server and the test VM), and keep the output.

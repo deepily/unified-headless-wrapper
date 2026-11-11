@@ -44,7 +44,7 @@ val linger "$( loginctl show-user "$( id -un )" -p Linger --value 2>/dev/null ||
 val user_manager "$( systemctl --user is-system-running 2>&1 | head -1 )"
 if command -v systemd-run >/dev/null && [ -n "${XDG_RUNTIME_DIR:-}" ]; then
   if out=$( systemd-run --user --scope --quiet --collect -p MemoryAccounting=yes -p MemoryMax=64M -p MemorySwapMax=0 \
-            --slice=lupin-personas.slice --unit="t25-probe-$$" -- /bin/sh -c 'cut -d: -f3 /proc/self/cgroup' 2>&1 ); then
+            --slice=lupin-personas.slice --unit="t25-probe-$$" -- /bin/sh -c 'c=$( grep "^0::" /proc/self/cgroup | cut -d: -f3 ); echo "$c memory.max=$( cat /sys/fs/cgroup$c/memory.max 2>&1 ) memory.swap.max=$( cat /sys/fs/cgroup$c/memory.swap.max 2>&1 )"' 2>&1 ); then
     val scope_probe "ok: $out"
   else
     val scope_probe "FAILED: $( echo "$out" | head -1 )"
@@ -54,6 +54,8 @@ else
 fi
 val systemd_oomd "$( systemctl is-active systemd-oomd 2>/dev/null || echo absent )"
 val oomd_user_slice "$( systemctl show user@$( id -u ).service -p ManagedOOMMemoryPressure --value 2>/dev/null || echo unknown )"
+val oomd_pressure_limit "$( systemctl show user@$( id -u ).service -p ManagedOOMMemoryPressureLimit --value 2>/dev/null || echo unknown )"
+val oomd_root_swap "$( systemctl show -- -.slice -p ManagedOOMSwap --value 2>/dev/null || echo unknown )"
 val memory_max_user_slice "$( systemctl show user-$( id -u ).slice -p MemoryMax --value 2>/dev/null || echo unknown )"
 val ptrace_scope "$( cat /proc/sys/kernel/yama/ptrace_scope 2>/dev/null || echo absent )"
 
@@ -62,7 +64,7 @@ val systemd_version "$( systemctl --version 2>/dev/null | head -1 || echo absent
 val linger "$( loginctl show-user "$( id -un )" -p Linger --value 2>/dev/null || echo unknown )"
 if command -v systemd-run >/dev/null && [ -n "${XDG_RUNTIME_DIR:-}" ]; then
   # A transient service sees NOTIFY_SOCKET only when it is Type=notify; the store rides the same socket.
-  out=$( systemd-run --user --wait --quiet --collect -p Type=notify -p NotifyAccess=all -p FileDescriptorStoreMax=4          /bin/sh -c 'printf "%s" "${NOTIFY_SOCKET:-unset}"; systemd-notify --ready' 2>&1 )     && val notify_socket_probe "ok: $out" || val notify_socket_probe "FAILED: $( echo "$out" | head -1 )"
+  out=$( systemd-run --user --wait --pipe --quiet --collect -p Type=notify -p NotifyAccess=all -p FileDescriptorStoreMax=4          /bin/sh -c 'printf "%s" "${NOTIFY_SOCKET:-unset}"; systemd-notify --ready' 2>&1 )     && val notify_socket_probe "ok: $out" || val notify_socket_probe "FAILED: $( echo "$out" | head -1 )"
 else
   val notify_socket_probe "skipped (no systemd-run or no XDG_RUNTIME_DIR)"
 fi
@@ -73,6 +75,11 @@ for e in agy jetski claude; do
   val "$e" "$p"
   val "$e.file" "$( file -bL "$p" 2>/dev/null | cut -c1-80 )"
   head -c 200 "$p" 2>/dev/null | grep -q node && val "$e.shebang" "$( head -1 "$p" | cut -c1-80 )"
+  if NODE_OPTIONS=--t25-bogus-flag timeout 20 "$p" --version 2>&1 | grep -q 'not allowed in NODE_OPTIONS'; then
+    val "$e.node_options" "honored (the bogus flag was refused)"
+  else
+    val "$e.node_options" "ignored (--version ran with a bogus flag set)"
+  fi
 done
 if command -v node >/dev/null; then
   val node "$( node --version )"
@@ -85,4 +92,4 @@ val GEMINI_CLI_NO_RELAUNCH "${GEMINI_CLI_NO_RELAUNCH:-unset}"
 val NODE_OPTIONS "${NODE_OPTIONS:-unset}"
 
 hr "live engine processes now (RSS GiB, comm, pid; shared pages counted per process)"
-ps -eo rss,comm,pid --sort=-rss | awk 'NR==1 || /node|claude|agy|gemini/ { printf "%8.2f %-12s %s\n", $1/1048576, $2, $3 }' | head -15
+ps -eo rss,comm,pid --sort=-rss | awk 'NR>1 && /node|claude|agy|gemini/ { printf "%8.2f %-12s %s\n", $1/1048576, $2, $3 }' | head -15

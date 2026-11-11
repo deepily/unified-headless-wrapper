@@ -1,0 +1,62 @@
+== host ==
+host                               dual-rtx-4090s
+kernel                             5.15.0-33-generic
+os                                 Ubuntu 22.04.2 LTS
+account                            rruiz uid=1001
+
+== memory (the budget is MemTotal minus max(4 GiB, 25%)) ==
+MemTotal_GiB                       251.5
+MemAvailable_GiB                   219.1
+SwapTotal_GiB                      4.0
+budget_GiB                         188.6
+fit_at_2GiB_reserve                94
+fit_at_8GiB_cap                    23
+
+== cgroup v2 ==
+cgroup_root_type                   cgroup2fs
+controllers                        cpuset cpu io memory hugetlb pids rdma misc
+own_cgroup                         /user.slice/user-1001.slice/session-28.scope
+own_subtree_control
+memory_peak_file                   absent
+memory_pressure_file               present
+psi_global                         some avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+== systemd user manager (needed for systemd-run --user --scope) ==
+systemd_run                        /usr/bin/systemd-run
+XDG_RUNTIME_DIR                    /run/user/1001
+linger                             yes
+user_manager                       running
+scope_probe                        ok: /user.slice/user-1001.slice/user@1001.service/lupin.slice/lupin-personas.slice/t25-probe-33116.scope
+systemd_oomd                       active
+oomd_user_slice                    kill
+memory_max_user_slice              infinity
+ptrace_scope                       1
+
+== kernel unit prerequisites (D65, T08): user unit, linger, the descriptor store ==
+systemd_version                    systemd 249 (249.11-0ubuntu3.9)
+linger                             yes
+notify_socket_probe                ok:
+
+== engines ==
+agy                                /home/rruiz/.local/bin/agy
+agy.file                           ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, int
+jetski                             absent
+claude                             /home/rruiz/.local/bin/claude
+claude.file                        ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpr
+node                               v22.15.0
+node_default_heap_GiB              4.05
+autoConfigureMemory(/home/rruiz/.gemini/settings.json) not set (default true)
+GEMINI_CLI_NO_RELAUNCH             unset
+NODE_OPTIONS                       unset
+
+== live engine processes now (RSS GiB, comm, pid; shared pages counted per process) ==
+    0.00 COMMAND      PID
+    8.41 claude-monitor 21872
+    0.37 claude       25666
+    0.37 claude       25088
+    0.36 claude       25301
+    0.33 claude       26436
+    0.26 claude       32944
+    0.22 claude       32915
+    0.20 claude       32665
+    0.20 claude       32774
