@@ -1,0 +1,9 @@
+systemd_version                    systemd 249 (249.11-0ubuntu3.9)
+stored_before_restart              1
+stored_after_restart               1
+first_run   pushed probe-out
+first_run   pushed probe-out
+descriptor_store FAILED: the descriptor did not come back
+# Read 2026-11-11: a probe defect, not a store failure. The probe parked the read end of a pipe whose
+# write end died with the first process; systemd removes a stored descriptor when its peer hangs up,
+# so the store was empty at the restart and the second run pushed a fresh one (count 1, not 2).
