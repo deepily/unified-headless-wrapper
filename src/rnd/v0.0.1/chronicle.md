@@ -268,3 +268,18 @@ Ten rulings, ten as recommended, one click each. Six tests on a scratch module b
 **Written.** The spec with `engine_account.py` and its ten tests inlined (the reference folder's files were read into it by a script rather than retyped); framework D68 and eight sections, among them the fifth admission check in the table that had carried an empty slot since the fleet ruling, the `TODO(T22)` block in Section 19 replaced by a paragraph, two new row states, and the prompt-caching row struck; amendment sections on the credential spec (the corrected pattern and a fourth gate rule), the fleet spec (`billing: cloud`, `fallback_model`, the slot filled) and the control API spec (`engine_quota` and `engine_login` in the catalogue, both retryable); the narrative's rulings column and doc link; the runbook's new top block for the inventory; the status page; this entry; the transcript.
 
 **Process.** The handoff format worked: a new session could record a design it had not researched because the narrative carried the record and the handoff carried the rulings. Two things it did not carry were worth noting for the next one: the exact spec section numbers the earlier pass had promised for the inventory's results (set here as Section 18), and whether the reference folder is deleted after inlining (every earlier item inlined and kept no folder; this one asks Rick before deleting, since the shell's delete permission is per session). The inventory's `systemd-run` lines have still never run anywhere; the runbook says so, so a failure there reads as a script defect.
+
+## 2026-11-13 evening to 2026-11-14 · the ruling protocol, written down
+
+**Asked.** Gather the method used across the week's rulings into one rule set that a fresh Claude Code session on the test VM, running Fable without this project's memory, can load and continue from; propose where it lives and what it is called; then make the README map the whole repo, with a pointer to it.
+
+**Read.** The project's memory files (preferences, working constraints), the summaries of the 6 to 11 November chats, this page's working rhythm, the framework's Sections 1, 16 and 20 at the D68 and T22 rows, the T22 narrative, spec and chronicle entry as the model shapes, and the capture helpers' headers for the README.
+
+**Found.** The method lived in three places that the test VM will not have: project memory, chat history and the Claude Docs tool. The README, rewritten and committed on 11-13 as `35e32ba`, linked `CLAUDE.md` and `02-ruling-protocol.md` while neither existed: the assistant had held both files for Rick's approval of the name and documented them as if written. Rick found the broken link after copying the repo to another server.
+
+**Ruled.** The location, `src/rnd/v0.0.1/`, beside the status page and the framework, so the numbering gives the reading order. The name, `02-ruling-protocol.md`, taken as approved once the README carrying it was committed.
+
+**Written.** `02-ruling-protocol.md` (where it runs, opening, grounding, the narrative, the walk-through, recording, closing, handoff, token economy, house style, names); the root `CLAUDE.md` importing it; the README's layout; a pointer in this page's working rhythm.
+
+**Process.** A file is not documented until it exists. The protocol marks two facts it could not know, the lupin and planning-is-prompting paths on the test VM, for the first session there to fill in.
+
