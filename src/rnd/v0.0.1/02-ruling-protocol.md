@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-14 · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-15 · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -28,7 +28,8 @@ Lupin is read, never written, from any UHW session.
 - Before restating an earlier ruling, read its Section 1 row and restate only what it says. (T20: D50, credential exposure, was overstated and had to be corrected.)
 - **Public record before tokens.** Before any capture that spends context or model calls, search vendor documentation, issue trackers and forums; spend tokens only on what the record cannot answer. (Ruled during T23.)
 - Facts only a host holds go into a zero-token script, `src/captures/tNN_<what>.sh`, with a new top block in `src/captures/RUNBOOK.md`. From the laptop, a question about the test VM goes to the persona on the development server that manages it, as a message drafted for Rick to paste verbatim.
-- Before opening a register item, check whether an existing one already covers the scope; fold the new scope in and say so.
+- Before opening a register item, check whether an existing one already covers the scope; merge the new scope into it and say so.
+- **Check the narrative's counts by script before the walk-through.** Any number the narrative states about a host or a checkout (entries, files, lines) is produced or confirmed by the item's zero-token script before the first question is put, so a correction cannot arrive after the rulings. (T35: the inventory corrected nine to seven, and found a second store, only after seven rulings.)
 
 ## 4. The narrative
 
@@ -99,6 +100,7 @@ When a session must stop before recording, write a handoff for Rick to paste as 
 
 - Never the section sign; write "Section 4", "Sections 4–8".
 - No abbreviations in new names (`Event`, not `Ev`); engine-neutral names in new code (T38).
+- "Normalize", never "fold", for converting a value into its canonical form (Rick, T35); "merged into" or "runs with" where the record once said a test or a scope was "folded into" another.
 - A register key (D, T, C) carries its name on first use in a section; no bare mile-marker sets; tests and gates carry a word prefix saying what they prove (`Kernel-1`, `Convention-9`). C-numbers stay, because the script files carry them.
 - Clocks and schedules in `app timezone` (US East Coast), never UTC.
 - Kernel configuration lives in lupin's `src/conf/lupin-app.ini` and `lupin-app-splainer.ini` through the ConfigurationManager, inheriting blocks such as `[Lupin: Baseline]`, as lowercase space-separated keys (`kernel engine overage = never`). Never invent `[section] key` INI sections.
