@@ -1,0 +1,91 @@
+
+== checkout ==
+host                                         lupin-host-test
+clock                                        2026-11-15 14:09:06 EST
+lupin_head                                   aabadd221
+configuration_file                           MODIFIED in the working tree; line numbers are the working tree's
+shared_module                                present
+shared_functions                             canonical_persona_key normalize_for_match persona_slug memento_slugs dm_topic_for quick_smoke_test 
+
+== pool line ==
+pool_line_number                             2125
+pool_entry                                   maria  key_form
+pool_entry                                   mr radio  key_form
+pool_entry                                   Rachel  NOT_KEY_FORM
+pool_entry                                   Tiberius  NOT_KEY_FORM
+pool_entry                                   Rio  NOT_KEY_FORM
+pool_entry                                   Tiffany  NOT_KEY_FORM
+pool_entry                                   Krishna  NOT_KEY_FORM
+pool_entry                                   sam  key_form
+pool_entry                                   Clayton  NOT_KEY_FORM
+pool_entry                                   Cheech  NOT_KEY_FORM
+pool_entry                                   maya  key_form
+pool_entry                                   pocholo  key_form
+pool_entry                                   chloe  key_form
+pool_entry                                   john  key_form
+
+== per-persona configuration keys not in key form ==
+2150:cc session voice persona Rachel voice id
+2151:cc session voice persona Rachel icon
+2152:cc session voice persona Rachel color
+2153:cc session voice persona Rachel profile
+2155:cc session voice persona Tiberius voice id
+2156:cc session voice persona Tiberius icon
+2157:cc session voice persona Tiberius color
+2158:cc session voice persona Tiberius profile
+2160:cc session voice persona Rio voice id
+2161:cc session voice persona Rio icon
+2162:cc session voice persona Rio color
+2163:cc session voice persona Rio profile
+2165:cc session voice persona Arnold voice id
+2166:cc session voice persona Arnold icon
+2167:cc session voice persona Arnold color
+2168:cc session voice persona Arnold profile
+2170:cc session voice persona Tiffany voice id
+2171:cc session voice persona Tiffany icon
+2172:cc session voice persona Tiffany color
+2173:cc session voice persona Tiffany profile
+2175:cc session voice persona Krishna voice id
+2176:cc session voice persona Krishna icon
+2177:cc session voice persona Krishna color
+2178:cc session voice persona Krishna profile
+2180:cc session voice persona Clayton voice id
+2181:cc session voice persona Clayton icon
+2182:cc session voice persona Clayton color
+2183:cc session voice persona Clayton profile
+2185:cc session voice persona Cheech voice id
+2186:cc session voice persona Cheech icon
+2187:cc session voice persona Cheech color
+2188:cc session voice persona Cheech profile
+
+== normalization outside the shared module (accent or punctuation handling near a persona name) ==
+src/cosa/repo/doc_lint/train_builder.py
+
+== raw persona-name comparisons (== or != beside a persona name, no shared function on the line) ==
+src/cosa/repo/doc_lint/sweep_lock.py:159:    if held[ "persona" ] != persona or held.get( "session" ) != session:
+src/cosa/rest/db/repositories/notification_repository.py:558:            Notification.sender_persona == sender_persona,
+src/cosa/rest/db/repositories/task_repository.py:1001:        if owner_persona is not None:       query = query.filter( TaskItem.owner_persona == owner_persona )
+src/cosa/rest/db/repositories/task_repository.py:1005:        if accountable_manager is not None: query = query.filter( TaskItem.accountable_manager == accountable_manage
+src/lupin_mcp/session_spawner.py:1550:          re-orphan (harness TaskCreate hardcodes owner==accountable_manager==self)
+
+== the local copies D69 names ==
+local_copy                                   present  cosa/repo/doc_lint/train_builder.py (actor-name form)
+display_table                                present  cosa/rest/voice_persona_helpers.py (_DISPLAY_OVERRIDES)
+local_copy                                   present  lupin_cli/claude_code/hooks/lib/board_sweep.py (persona_slug)
+local_copy                                   present  lupin_mcp/self_respin_core.py (case-only match)
+
+== callers of the shared module ==
+canonical_persona_key                        26 files
+normalize_for_match                          2 files
+persona_slug                                 6 files
+dm_topic_for                                 6 files
+memento_slugs                                2 files
+
+== summary ==
+pool_entries                                 14
+pool_entries_not_key_form                    7
+pool_duplicates                              0
+configuration_keys_not_key_form              32
+display_name_keys                            1
+files_normalizing_outside_module             1
+raw_comparison_lines                         5

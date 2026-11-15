@@ -11,7 +11,7 @@ One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven 
 
 For a person or a Claude Code session picking up the design work, in this order:
 
-1. [`CLAUDE.md`](CLAUDE.md): imports the ruling protocol, so every Claude Code session opened in this repo loads it at start.
+1. [`CLAUDE.md`](CLAUDE.md) and [`AGENTS.md`](AGENTS.md): the loaders for the ruling protocol, so every Claude Code or Antigravity (AGY) session opened in this repo loads it at start.
 2. [`src/rnd/v0.0.1/02-ruling-protocol.md`](src/rnd/v0.0.1/02-ruling-protocol.md): **the ruling protocol.** How a register item goes from open to ruled: grounding in the record and the code, the narrative, the one-decision-at-a-time walk-through, recording the ruling, the session close, and the house style rules.
 3. [`src/rnd/v0.0.1/00-status.md`](src/rnd/v0.0.1/00-status.md): where the work stands and the next three items. Read first in every session, update last.
 4. [`src/rnd/v0.0.1/01-framework.md`](src/rnd/v0.0.1/01-framework.md): the master design. Read the sections the item names, not the whole file.
@@ -20,7 +20,8 @@ For a person or a Claude Code session picking up the design work, in this order:
 
 ```
 unified-headless-wrapper/
-├── CLAUDE.md                     loader for the ruling protocol
+├── AGENTS.md                     loader for the ruling protocol, Antigravity (AGY)
+├── CLAUDE.md                     loader for the ruling protocol, Claude Code
 ├── README.md                     this file
 ├── LICENSE                       Apache License 2.0
 ├── .gitignore

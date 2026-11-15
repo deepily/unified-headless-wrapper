@@ -1,6 +1,20 @@
 # Capture runbook
 
-## Run this now: the T22 engine-account inventory, zero tokens (2026-11-11, third session)
+## Run this now: the T35 persona-name inventory on the development server, zero tokens (2026-11-15)
+
+D69 (canonical persona name) rewrites `lupin-app.ini` into key form and puts a check on every stored persona-name column. The test VM's reading is in (`src/captures/out/t35-name-seams-lupin-host-test-20261115.txt`: 7 of 14 pool entries and 32 key names not in key form, one file normalizing outside the shared module, five raw-comparison lines), but its `lupin-app.ini` is modified in the working tree, so the development server's file is read on its own. The script reads the lupin checkout and writes nothing to it.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t35_name_seam_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t35-name-seams-$( hostname )-$( date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `configuration_file` (as committed, or modified), every `NOT_KEY_FORM` pool entry, the section of configuration keys not in key form (is `Arnold` there too?), the raw-comparison lines, and the `summary` block. Rerun it after each lupin change on the D69 list (T35 spec, Section 13); Name-4 passes when both `…not_key_form` lines read 0, Name-8 when the local copies are gone.
+
+Still owed from the blocks below: the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Still owed: the T22 engine-account inventory, zero tokens (2026-11-11, third session)
 
 D68 (engine sign-in and quota) rests on four facts only the hosts hold: where AGY keeps its sign-in today and how old it is, whether a process started from a systemd user unit with no terminal can read the usage meter (with and without `GEMINI_FORCE_FILE_STORAGE=true`), the meter's real field names on Linux, and the two overage settings as found. The script prints no secret, token or email. It makes no model call; AGY itself may write one log per call to a scratch directory that is removed. Its `systemd-run` lines have never run (the laptop sandbox has no systemd), so a failure there is a script defect to report, not a host finding.
 
