@@ -1,0 +1,99 @@
+
+== checkout ==
+host                                         lupin-host-test
+clock                                        2026-11-15 19:16:45 EST
+lupin_head                                   aabadd221
+
+== the account door (cosa/rest/middleware/api_key_auth.py) ==
+sweep_function                               line 35
+bcrypt_check_inside_a_loop                   80 82 
+key_format_check                             185:ck_live_[A-Za-z0-9_-]{64,}$
+key_table_columns                            id user_id key_hash description is_active created_at last_used_at user 
+key_prefix_column                            ABSENT (every active key is checked)
+
+== routers behind the account door: routes, door references, lines naming a sender ==
+router                        routes    door    sender
+arbiter                            7       9         0
+cc_transcript                      2       2         0
+commons                            3       4        20
+cron_jobs                          2       2         0
+decision_proxy                     9      12         2
+dm                                 7       8        42
+embeddings                         3       4         0
+fcm                                4       3         0
+heartbeat                          2       2         0
+job_summary                        2       3         0
+notifications                     25      31       126
+pair_labelling                     3       4         0
+podcast_proxy                      5       6         7
+reuse_candidates                   2       3         0
+speakerphone                       2       3         5
+system                            16       3         0
+tasks                             24      24        32
+voice_persona                      5       6         6
+routers_with_no_door_reference               _dir_listing _owner_scope _pinned_open _retired_doors _scope_registry admin auth bug_fix_expediter claude_code_queue deep_research deep_research_to_podcast deep_research_to_presentation docs_files duplicate_check_status io_files jobs mock_job mode multiplexer_config pages peer podcast_drive podcast_generator presentation_generator queues speech stats swe_team test_suite v2_ask websocket websocket_admin 
+
+== code that sends the fleet key (an X-API-Key header), tests left out ==
+cosa/agents/heartbeat_poker_commons_gateway.py:171:                headers = { "X-API-Key": self._api_key },
+cosa/agents/prediction_engine/prediction_engine.py:1602:                headers = { "X-API-Key": api_key },
+cosa/agents/swe_team/orchestrator.py:115:        - returns { "X-API-Key": <key> } when the configured key file
+cosa/agents/swe_team/orchestrator.py:132:        return { "X-API-Key": load_api_key( config[ "api_key_file" ] 
+cosa/memory/embedding_provider.py:434:                    headers = { "X-API-Key": api_key },
+cosa/memory/embedding_provider.py:622:        response = get( f"{base_url}{prefix}/info", headers={ "X-API-Key
+cosa/memory/embedding_provider.py:647:        response = requests.get( url, headers={ "X-API-Key": api_key }, 
+cosa/memory/speech_to_text_provider.py:314:                headers = { "X-API-Key": api_key },
+cosa/utils/hook_link_tick.py:158:    request = urllib.request.Request( f"{base}{path}?{urllib.parse.urlencode(
+cosa/utils/hook_link_tick.py:165:        status, text, _ = send_json( f"{base}{path}", payload, headers={ "X-A
+lupin_arbiter_app/arbiter_live_notify.py:103:    headers = { "X-API-Key": api_key }
+lupin_arbiter_app/arbiter_live_notify.py:385:    headers           = { "X-API-Key": api_key, "Content-Type": "
+lupin_cli/claude_code/hooks/lib/task_store_client.py:104:    headers = { "X-API-Key": api_key, "Content-Type":
+lupin_cli/claude_code/hooks/lib/task_store_client.py:408:        connection.request( "GET", path_with_query, h
+lupin_cli/claude_code/hooks/lib/task_store_client.py:452:        connection.request( "GET", path_with_query, h
+lupin_mcp/cosa_voice_mcp.py:3781:        resp = post_fn( url, json=payload, headers={ "X-API-Key": api_key },
+lupin_mcp/cosa_voice_mcp.py:3941:        resp = post_fn( url, json=payload, headers={ "X-API-Key": api_key },
+lupin_mcp/cosa_voice_mcp.py:3984:        resp = get_fn( url, params={ "message_id": message_id }, headers={ "X
+lupin_mcp/cosa_voice_mcp.py:4035:        resp = get_fn( url, params=params, headers={ "X-API-Key": api_key },
+lupin_mcp/reuse_candidates.py:151:            status, text, _ = send_json( self.base_url + path, canonical( bo
+lupin_mcp/session_spawner.py:1360:            headers = { "X-API-Key": api_key },
+lupin_mcp/task_store_tools.py:94:    headers = { "X-API-Key": api_key }
+
+== code that names the fleet key file ==
+      2 cosa/agents/heartbeat_poker_commons_gateway.py
+      2 cosa/agents/prediction_engine/prediction_engine.py
+      3 cosa/memory/embedding_provider.py
+      3 cosa/memory/speech_to_text_provider.py
+      2 lupin_cli/claude_code/hooks/lib/task_store_client.py
+      2 lupin_mcp/cosa_voice_mcp.py
+      1 lupin_mcp/outbound_api_key.py
+      4 lupin_model_server/main.py
+      1 scripts/lupin_config.py
+
+== Lupin's server workers (a single-use cache in memory needs exactly one) ==
+1204:        workers=1,  # Single worker required for in-memory notification state (pending_responses dict)
+
+== the Ed25519 library ==
+lupin_lock_file                              name = "cryptography" version = "47.0.0" 
+lupin_direct_dependency                      no (present only through another package)
+host_python                                  python 3.10.12 cryptography 3.4.8 ed25519 sign and verify ok
+
+== the host: can a persona reach the kernel's memory or its files ==
+account                                      admin_rickruiz_altostrat_com
+ptrace_scope                                 1 (0 any same-account process may attach; 1 only a parent; 2 administrators; 3 nobody)
+passwordless_sudo                            yes
+docker_group                                 yes
+systemd                                      systemd 249 (249.11-0ubuntu3.23)
+
+== Lupin containers on this host (best effort; skipped without docker) ==
+lupin-rest-cloud-gpu: ed25519                cryptography 47.0.0 ok
+lupin-rest-cloud-gpu: one bcrypt check       $2b$12$ 341 ms
+lupin-rest-test: ed25519                     cryptography 47.0.0 ok
+lupin-rest-test: one bcrypt check            $2b$12$ 345 ms
+lupin-pgvector-test/lupin_db_test: active | all | cost 2|2|$2b$12$
+
+== summary ==
+routers_behind_the_account_door              18
+routes_in_those_routers                      123
+of_those_routers_naming_a_sender             8
+fleet_key_send_sites_tool_server             7
+fleet_key_send_sites_old_harness_hooks       5
+fleet_key_send_sites_other_services          10

@@ -1,6 +1,22 @@
 # Capture runbook
 
-## Run this now: the T35 persona-name inventory on the development server, zero tokens (2026-11-15)
+## Run this now: the T36 identity inventory on the development server, zero tokens (2026-11-15)
+
+D70 (proven persona identity) has the kernel sign one grant per request with a key held only in its memory, and raises Lupin's slow key check as a lupin ticket. The test VM's reading is in (`src/captures/out/t36-identity-seams-lupin-host-test-20261115.txt`: 18 routers behind the account door, 8 naming a sender; shared-key send sites 7, 5 and 10; one bcrypt check about 345 ms; 2 active keys on the test database; `ptrace_scope` 1; the account privileged). The development server holds the production numbers.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t36_identity_seam_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t36-identity-seams-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `ptrace_scope`, `passwordless_sudo` and `docker_group` (can the kernel's memory be kept from a persona there), the `ed25519` line of each Lupin container, `one bcrypt check`, and the `active | all | cost` line (if the production database is not a local container the line is absent; then say how many active rows `api_keys` holds).
+
+**Also for Rick, no script:** file the lupin ticket whose text is in the T36 spec, Section 12 (the key check: a SHA-256 column on `api_keys`, filled on first use).
+
+Still owed from the blocks below: the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Still owed: the T35 persona-name inventory on the development server, zero tokens (2026-11-15)
 
 D69 (canonical persona name) rewrites `lupin-app.ini` into key form and puts a check on every stored persona-name column. The test VM's reading is in (`src/captures/out/t35-name-seams-lupin-host-test-20261115.txt`: 7 of 14 pool entries and 32 key names not in key form, one file normalizing outside the shared module, five raw-comparison lines), but its `lupin-app.ini` is modified in the working tree, so the development server's file is read on its own. The script reads the lupin checkout and writes nothing to it.
 
