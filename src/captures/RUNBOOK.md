@@ -1,6 +1,33 @@
 # Capture runbook
 
-## Run this now: C17, the engines' internal tools, on the test VM (AGY); it spends model turns (2026-11-16)
+## Run this now: the T38 naming inventory on the development server, zero tokens (2026-11-15)
+
+D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t38_naming_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t38-naming-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `lupin_head`, `configuration_file`, the `survivors` line, the count under `surface 1`, and the block `rename families`. Add `--names` for every distinct name. Later, in lupin, the ratchet is the same script with `--ceiling <occurrences>`, which exits 1 when the count has risen.
+
+**Also on each host, no script:** `grep -nE '(^|_)CC_|CLAUDE_CODE' <the host's environment files and compose overrides>` and say whether anything appears that `src/conf/env-contract.tsv` does not list (T38 spec, Section 14).
+
+Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Done 2026-11-16 on the test VM (AGY); still owed on the cloud workstation (Jetski): C17, the engines' internal tools; it spends model turns
+
+**Result on AGY 1.5.9 (test VM, 2026-11-16, `src/captures/out/c17-agy-20261116T192214/`; about 2.5 minutes, `gemini-3.8-flash-high`):**
+- **The verdict line overstates.** It reports ten names as existing because their launches were accepted. Read against the recorded frames, only two were called by name: `generate_image` (arguments `AspectRatio`, `ImageName`, `Prompt`; 76 seconds) and `search_web` (`query`).
+- **Three old names resolve to current tools.** Allowed `write_to_file`, the model said no such tool exists and called `write_file`; allowed `replace_file_content`, it called `edit_file`; `tools: [view_file, read_file]` failed at launch with `tool name conflict: multiple tools resolved with name "read_file"`.
+- **Five accepted names were not usable:** with `grep_search`, `find_by_name`, `list_dir`, `read_url_content` or `notebook_edit` allowed, the model said the tool was not available and that it had only `read_file` and `manage_task`.
+- **`manage_task` was named by the model in every one of those replies** though no allow-list granted it.
+- **Five names were refused at launch:** `code_search`, `view_code_item`, `view_file_outline`, `skill_search`, `browser_subagent`. Both controls behaved.
+- **The `init` frame of every launch lists the same 60 tool names** whatever the allow-list (16 `browser_…` names and 44 others, among them `view_file`, `write_to_file`, `replace_file_content`, `grep_search`, `list_dir`, `call_mcp_tool`). What that list is has not been established.
+- **Not established:** why an accepted name is unusable; whether the alias reading is right (it is inferred from three launches); anything about Jetski.
+
+**For the Jetski run:** read `verdict.txt` beside the frames, not alone; row 53 of "Outstanding actions" is the script's repair.
 
 C17 is what T14 (the last measure item) waits on, and it is part of row 13 of "Outstanding actions". It asks which built-in tools the engine has beyond the ones it lists, and what arguments each takes. **It is not a zero-token capture:** up to 32 short turns on the flash model (17 launches with every tool denied, then one turn per tool that exists).
 
@@ -32,22 +59,6 @@ cat src/captures/out/c17-jetski-*/verdict.txt src/captures/out/c17-jetski-*/tool
 - A line reading `oracle calibrated … NO` in the verdict means the method no longer works on this version (a made-up tool name was accepted, or `run_command` refused); paste it as it is.
 
 C15 and C16, the rest of row 13, are in the block "Then: C15–C17" below and do not hold up T14.
-
-## Still owed: the T38 naming inventory on the development server, zero tokens (2026-11-15)
-
-D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
-
-**On the development server:**
-```bash
-git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
-src/captures/t38_naming_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t38-naming-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
-```
-
-**What to paste back (or commit and push):** the whole output. The lines that decide things: `lupin_head`, `configuration_file`, the `survivors` line, the count under `surface 1`, and the block `rename families`. Add `--names` for every distinct name. Later, in lupin, the ratchet is the same script with `--ceiling <occurrences>`, which exits 1 when the count has risen.
-
-**Also on each host, no script:** `grep -nE '(^|_)CC_|CLAUDE_CODE' <the host's environment files and compose overrides>` and say whether anything appears that `src/conf/env-contract.tsv` does not list (T38 spec, Section 14).
-
-Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
 
 ## Done 2026-11-16: the T34 deferred-capture readings on the cloud workstation (Jetski), zero tokens
 

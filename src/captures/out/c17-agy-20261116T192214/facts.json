@@ -1,0 +1,233 @@
+{
+ "oracle": {
+  "run_command": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "uhw_no_such_tool_7731": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "code_search": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "grep_search": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "find_by_name": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "list_dir": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "view_code_item": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "view_file_outline": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "skill_search": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "read_url_content": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "view_file": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "browser_subagent": {
+   "status": [
+    "ERROR"
+   ],
+   "exists": false,
+   "reply": ""
+  },
+  "generate_image": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "write_to_file": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "replace_file_content": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "search_web": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  },
+  "notebook_edit": {
+   "status": [
+    "SUCCESS"
+   ],
+   "exists": true,
+   "reply": "ready\n"
+  }
+ },
+ "keys": {
+  "grep_search": {
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "find_by_name": {
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "list_dir": {
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "read_url_content": {
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "view_file": {
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "ERROR"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "generate_image": {
+   "called": true,
+   "all_calls": [
+    "generate_image"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [
+    "AspectRatio",
+    "ImageName",
+    "Prompt"
+   ],
+   "sample": "{\"AspectRatio\": \"1:1\", \"ImageName\": \"red_square\", \"Prompt\": \"A 64 by 64 pixel solid red square\"}"
+  },
+  "write_to_file": {
+   "called": false,
+   "all_calls": [
+    "write_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "replace_file_content": {
+   "called": false,
+   "all_calls": [
+    "read_file",
+    "edit_file",
+    "read_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  },
+  "search_web": {
+   "called": true,
+   "all_calls": [
+    "search_web"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [
+    "query"
+   ],
+   "sample": "{\"query\": \"unified headless wrapper\"}"
+  },
+  "notebook_edit": {
+   "called": false,
+   "all_calls": [
+    "read_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "argument_keys": [],
+   "sample": ""
+  }
+ }
+}

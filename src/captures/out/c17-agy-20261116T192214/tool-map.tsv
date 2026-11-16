@@ -1,0 +1,11 @@
+candidate	hook name	argument keys	sample
+grep_search	-		
+find_by_name	-		
+list_dir	-		
+read_url_content	-		
+view_file	-		
+generate_image	generate_image	AspectRatio,ImageName,Prompt	{"AspectRatio": "1:1", "ImageName": "red_square", "Prompt": "A 64 by 64 pixel solid red square"}
+write_to_file	-		
+replace_file_content	-		
+search_web	search_web	query	{"query": "unified headless wrapper"}
+notebook_edit	-		
