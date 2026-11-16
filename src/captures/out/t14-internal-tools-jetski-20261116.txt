@@ -1,0 +1,118 @@
+
+== host and engine ==
+host                                           rickruiz.c.googlers.com
+clock                                          2026-11-16 14:58:28 EST
+engine                                         jetski
+binary                                         /google/bin/images/image-6af7381e-0000-2682-986c-ac3eb14cf4c4/cli
+version                                        2026.11.13
+c17_run                                        /usr/local/google/home/rickruiz/projects/unified-headless-wrapper/src/captures/out/c17-jetski-20261116T193513
+c17_run_version                                2026.11.13
+[?12l[?25h
+
+== 1. and 2. the C17 run, counted from its frames ==
+candidates_probed                              15
+controls_behaved                               True
+refused_at_launch                              3  view_code_item view_file_outline browser_subagent
+accepted_at_launch                             12  code_search grep_search find_by_name list_dir skill_search read_url_content view_file generate_image write_to_file replace_file_content search_web notebook_edit
+called_by_its_own_name                         3  skill_search(query) generate_image(AspectRatio,ImageName,Prompt) search_web(query)
+second_launch_failed                           1  view_file
+  error_view_file                              [?12l[?25herror: failed to construct executor: tool name conflict: multiple tools resolved with name "read_file"
+reply_texts_in_this_checkout                   True
+model_called_another_tool_instead              0  
+accepted_and_never_called                      8  code_search grep_search find_by_name list_dir read_url_content write_to_file replace_file_content notebook_edit
+  reply_code_search                            I cannot complete this request because a tool named `code_search` is not available in this session. The only tools available to me here are `read_file` and `manage_task`. Because of the constraint to use only `code_search`, I did 
+  reply_grep_search                            I cannot complete this request because the `grep_search` tool is not available in this session. The only tools available to me here are `read_file` and `manage_task`, so I do not have `grep_search` (or any grep/search tool) to sea
+  reply_find_by_name                           I cannot complete this task because the `find_by_name` tool is not available in this session. - **Gap found:** The request requires using only `find_by_name`, but only `read_file` and `manage_task` are available in my toolset. - *
+  reply_list_dir                               I cannot complete this task because the `list_dir` tool (and any directory-listing tool) is not available in this session. The only tools provided in this environment are `read_file` and `manage_task`. Because of this gap and the 
+  reply_read_url_content                       I cannot complete this request because the `read_url_content` tool is not available in my environment. The only tools available to me are `read_file` and `manage_task`, neither of which can fetch URLs. Because `read_url_content` i
+  reply_write_to_file                          I cannot complete this task as requested because no tool named `write_to_file` is available in this environment. - **Gap found:** The only file-writing tool available to me is `write_file` (the full set of tools declared in this s
+  reply_replace_file_content                   I cannot complete this task as requested because no tool named `replace_file_content` is available in this environment. - **Gap found:** The only tools declared here are `read_file`, `edit_file`, and `manage_task`. The content-rep
+  reply_notebook_edit                          I cannot complete this task because the `notebook_edit` tool is not available in this environment. The only tools available to me are `read_file` and `manage_task`, with no notebook or file-editing tools provided. Because of this 
+replies_naming_manage_task                     8  code_search grep_search find_by_name list_dir read_url_content write_to_file replace_file_content notebook_edit
+replies_listing_only_read_file_manage_task     6
+launches_with_a_first_frame                    29
+distinct_first_frame_tool_lists                1
+names_in_first_frame_list                      63
+  of_them_starting_browser_                    16
+  of_them_containing_browser                   23
+in_list_yet_refused_at_launch                  browser_subagent
+not_in_list_and_refused                        view_code_item view_file_outline
+in_list_and_accepted                           code_search grep_search find_by_name list_dir skill_search read_url_content view_file generate_image write_to_file replace_file_content search_web notebook_edit
+accepted_yet_not_in_list                       -
+current_names_absent_from_list                 read_file write_file edit_file
+first_frame_list: ask_custom_permission ask_permission ask_question browser_click_element browser_drag_pixel_to_pixel browser_get_dom browser_get_network_request browser_input browser_list_network_requests browser_mouse_down browser_mouse_up browser_move_mouse browser_press_key browser_refresh_page browser_resize_window browser_scroll browser_scroll_dom browser_select_option browser_subagent call_mcp_tool capture_browser_console_logs capture_browser_screenshot click_browser_pixel code_search command_status define_subagent delete_knowledge execute_browser_javascript find_by_name finish generate_image grep_search invoke_subagent list_browser_pages list_dir list_permissions list_plugin_accounts list_resources manage_inbox manage_subagents manage_task moma_search multi_replace_file_content notebook_edit notebook_execution open_browser_url read_browser_page read_resource read_url_content replace_file_content run_command run_workflow schedule search_marketplace search_web sed_file send_command_input send_message skill_search view_file wait wait_5_seconds write_to_file
+
+== 3. the vendor's record: the binary ==
+manage_task_description                        
+manage_task_source_files                       
+opt_out_names_in_binary                        
+occurrences_manage_task                        0
+occurrences_read_file                          0
+occurrences_write_file                         0
+occurrences_edit_file                          0
+occurrences_view_file                          0
+occurrences_write_to_file                      0
+occurrences_replace_file_content               0
+occurrences_grep_search                        0
+occurrences_find_by_name                       0
+occurrences_list_dir                           0
+occurrences_read_url_content                   0
+occurrences_notebook_edit                      0
+occurrences_code_search                        0
+occurrences_view_code_item                     0
+occurrences_view_file_outline                  0
+occurrences_skill_search                       0
+occurrences_browser_subagent                   0
+
+== 3. the vendor's record: the skills shipped beside the engine ==
+skills_directory                               /usr/local/google/home/rickruiz/.gemini/jetski/builtin/skills
+jetski-customizations/docs/agents.md:81:    (`shared.DefaultTools`). Setting `tools: []` disables all tools.
+
+== 3. the vendor's record: the release notes (jetski changelog) ==
+changelog_lines                                1493
+[ line 16] · Changed Jupyter and Colab `.ipynb` editing to use the default-enabled `nbedit` skill instead of the built-in `notebook_edit` tool, which has been removed while remaining accepted as a no-op in custom agent tool lists so existing custom agents continue to load.
+[ line 38] · Fixed custom agents and subagents that configure their own MCP servers advertising inherited parent MCP tools to the model and then failing calls to them with `tool <name> is not enabled for server <server>`.
+[ line 60] · Fixed custom agents that list the retired `view_file`, `write_to_file`, or `replace_file_content` tool names losing file access instead of mounting `read_file`, `write_file`, and `edit_file`, fixed a crash when loading a custom agent with an empty config, and stopped `define_subagent` and `invoke_subagent` from shadowing built
+[ line 140] · Changed the agent to refuse to open the compliance training site `mainsail.exceedlms.com` with `read_url_content` or the Chrome DevTools browser, including when a redirect or URL rewrite leads there, in every permission mode and regardless of `execute_url` grants, and to ask you to complete that step yourself.
+[ line 272] · Fixed conversations that collect many images failing on Claude models by scaling images the agent views or the user attaches to at most 2576 pixels per side, now including GIFs, and compressing images read with `read_file` as `view_file` already did, so an image over Claude's 5 MB limit no longer fails that turn and every late
+[ line 273] · Fixed conversations failing every later model request with an invalid argument error after the agent read a header-only or truncated WebM file, by rejecting WebM files without media frames in `read_file` and `view_file`.
+[ line 310] · Improved Auto mode command vetting by giving the safety adjudicator destructive-action guidance for common CLIs such as `git`, `rm`, `kubectl`, `gcloud`, and `terraform` and for Google tools such as `hg`, `g4`, `jj`, `critique`, `blaze`, `borg`, and `stubby`, recognizing binaries run through `find -exec`, and vetting `notebook
+[ line 348] · Fixed running native background `run_command` executions not appearing in the `/tasks` panel, task count, or active items bar, and fixed missing task titles in `manage_task` step headers and `run_script` permission prompts.
+[ line 354] · Fixed `view_file`, `read_file`, `write_file`, and `edit_file` hanging or succeeding on pipes, sockets, and device files, rejected truncated or unfinalized MP4/MOV video attachments before they wedge subsequent model calls, registered the WebP image decoder for token counting and resizing, and included the tool name in media MI
+[ line 370] · Added an `Append` boolean parameter to the `write_file` (`write_to_file`) tool to append content to existing files without reading and rewriting the entire file.
+[ line 398] · Added support for the `hooks` frontmatter field in custom agent Markdown definitions so agents with `inheritCustomizations: false` can opt into specific `hooks.json` paths, and automatically injected the `<subagents>` system prompt roster whenever a Markdown agent lists `invoke_subagent` in its `tools`.
+[ line 409] · Improved the default agent and subagent baseline by retiring the legacy `find_by_name`, `grep_search`, and `list_dir` tools (while keeping them available to custom agents that explicitly declare them) and restricting the built-in `research` subagent to a read-only terminal sandbox with sandbox bypass disabled.
+[ line 420] · Fixed `/rewind` conversation reverts and forks sweeping backward to an older workspace snapshot when intermediate commits were skipped, prevented file edits with diffs larger than 1 MiB from overflowing trajectory storage and force-clearing the session, fixed a fatal Language Server stack overflow when truncating conversations
+[ line 431] · Added support for the `excludeDefaultComponents` frontmatter field in custom agent markdown definitions so custom agents can opt out of all default system prompt sections and built-in tools while selectively adding back desired tools.
+[ line 433] · Added a configurable file size limit (`max_file_size_bytes`, defaulting to 100 MB) to the `view_file` tool to reject oversized media and document payloads before they overflow the model context window.
+[ line 456] · Fixed `view_file` and `read_file` attempting to ingest unsupported non-UTF-8 binary files as plain text instead of returning a clear validation error.
+[ line 457] · Fixed canceled or terminated background tasks continuing to appear as running in `manage_task` after a Language Server restart.
+[ line 501] · Improved `manage_task` status step rendering by displaying the task status, elapsed time, and recent log output inside expandable step details.
+[ line 660] · Fixed `notebook_edit` adding two identical cells for every `add` and destroying two cells for every `delete`.
+[ line 677] · Improved custom agent support by extending the `manage_task` tool to declarative agents that had not opted out of fundamental components, so a custom agent can list and kill its own background tasks.
+[ line 680] · Improved `manage_task` step lines, which now read `Killed task X` and `Checked task X` instead of `Killed Task: X`.
+[ line 685] · Fixed `invoke_subagent`, `send_message`, `manage_subagents`, `define_subagent`, `notebook_edit` and `generate_image` rendering with no tool call line at all in collapsed and expanded tool groups, leaving a bare `(ctrl+o to expand)` hint with no tool name.
+[ line 703] · Improved the agent's behavior after backgrounding work by removing the anti-polling reminder text from the `manage_task` and `manage_inbox` tool results, which could itself nudge the model into a polling loop.
+[ line 718] · Fixed notebook corruption from the `add` action of the `notebook_edit` tool by routing it through the same file-creation code action already used by `update`, `delete` and `create` instead of applying `sed` expressions to JSON.
+[ line 889] · Fixed custom agent configuration such as MCP servers, hooks, and custom tools being ignored when attached to the default coding agent by applying customizations for all non-declarative agent configs.
+[ line 903] · Fixed `McpManager` failing to resolve tool schema paths in standalone mode and leaking MCP server subprocesses after shutdown, which previously caused panics and cleanup failures for custom agents loading MCP tools.
+
+== 4. the role table's built-in tools against the record ==
+name               in first-frame list    in vendor's mapping    role table
+run_command        yes                    no                     granted
+read_file          no                     no                     granted
+write_file         no                     no                     granted
+edit_file          no                     no                     granted
+notebook_edit      yes                    no                     granted
+search_web         yes                    no                     granted
+invoke_subagent    yes                    no                     granted (chief of staff; never on AGY)
+manage_task        yes                    no                     never listed
+ask_question       yes                    no                     never listed
+send_message       yes                    no                     never listed
+schedule           yes                    no                     never listed
+define_subagent    yes                    no                     never listed
+manage_subagents   yes                    no                     never listed
+swarm              no                     no                     never listed
+run_workflow       yes                    no                     never listed
+
+zero tokens: no turn was started; the engine was run only for --version and changelog
