@@ -1,6 +1,6 @@
 # Capture runbook
 
-## Run this now: `manage_task`'s argument names on Jetski, one turn (2026-11-16, row 53, `Tools-6`); AGY is done
+## Done 2026-11-16 on both engines: `manage_task`'s argument names, one turn each (row 53, `Tools-6`). Nothing here is owed; the next owed block is the T38 inventory below
 
 D74 (the engines' built-in tools) gives the gate a shape for `manage_task`, the background-task tool, with argument names that are provisional (`Action`, `TaskId`, `Input`): the names the tool is declared with, not names read from a hook. This run reads them from a hook. **It is not a zero-token capture:** one launch and one turn on the flash model per engine, in which the model backgrounds a command with `run_command`, then lists it, reads its status, sends it a line and kills it. C17's script was repaired the same day; `PARTS=C` runs this part alone. If the model skips a step, the verdict says `INCOMPLETE` and names the missing action, and the run is repeated.
 
@@ -12,7 +12,9 @@ cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
 PARTS=C MODEL=gemini-3.8-flash-high python3 src/captures/c17_internal_tools.py agy
 ```
 
-**On the cloud workstation (Jetski), owed:**
+**Result on Jetski 2026.11.16 (cloud workstation, 2026-11-16, Rick, `src/captures/out/c17-jetski-20261116T221903/`):** the same: all four actions, seen by the hook, the three names agree. The engine had updated itself from 2026.11.13 at the capture's version call. In the T14 spec, Section 13 and its amendment.
+
+**On the cloud workstation (Jetski), done; kept for a later engine version:**
 ```bash
 git pull --rebase
 PARTS=C MODEL=gemini-flash-next python3 src/captures/c17_internal_tools.py jetski
