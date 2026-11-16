@@ -1,6 +1,34 @@
 # Capture runbook
 
-## Run this now: the T38 naming inventory on the development server, zero tokens (2026-11-15)
+## Run this now: `manage_task`'s argument names on Jetski, one turn (2026-11-16, row 53, `Tools-6`); AGY is done
+
+D74 (the engines' built-in tools) gives the gate a shape for `manage_task`, the background-task tool, with argument names that are provisional (`Action`, `TaskId`, `Input`): the names the tool is declared with, not names read from a hook. This run reads them from a hook. **It is not a zero-token capture:** one launch and one turn on the flash model per engine, in which the model backgrounds a command with `run_command`, then lists it, reads its status, sends it a line and kills it. C17's script was repaired the same day; `PARTS=C` runs this part alone. If the model skips a step, the verdict says `INCOMPLETE` and names the missing action, and the run is repeated.
+
+**Result on AGY 1.5.9 (test VM, 2026-11-16, Rick, `src/captures/out/c17-agy-20261116T221136/`):** all four actions called in the one turn and seen by the hook; `Action`, `TaskId`, `Input` agree with the provisional constants; the task identifier is `<conversation identifier>/task-<n>`; nothing left running. In the T14 spec, Section 13.
+
+**On the test VM (AGY), done; kept for a later engine version:**
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+PARTS=C MODEL=gemini-3.8-flash-high python3 src/captures/c17_internal_tools.py agy
+```
+
+**On the cloud workstation (Jetski), owed:**
+```bash
+git pull --rebase
+PARTS=C MODEL=gemini-flash-next python3 src/captures/c17_internal_tools.py jetski
+```
+
+**What to paste back (or commit and push):** `verdict.txt` and `results-manage-task.tsv` from the new `src/captures/out/c17-<engine>-<time>/` directory (both are tracked, with `facts.json`). The lines that decide things: the three `C. … provisional …` lines (`agrees`, `DIFFERS` or `not observed`), `C. all four actions seen`, and `C. calls the hook saw` (if `manage_task` is absent there but present in `C. calls the driver saw in the frames`, the hook does not see the tool, which is itself a finding for the gate). A `DIFFERS` line means the constants in `builtin_tools.py` (T14 spec, Section 10) are corrected by the next session.
+
+**Optional, zero tokens, on the cloud workstation only** (its frames never left that host): the repaired verdict of the 11-16 Jetski run, recomputed from its recorded files without starting an engine.
+```bash
+python3 src/captures/c17_internal_tools.py jetski --replay src/captures/out/c17-jetski-20261116T193513
+```
+The AGY run's is in: `src/captures/out/c17-agy-20261116T192214/replay/verdict.txt` (two delivered, two aliases, one launch error, five not delivered; 27 launches printing one 60-name list), which is the count the T14 spec's Section 2 states.
+
+**The whole capture again** (not owed; up to 33 short turns): omit `PARTS`. Part B now repeats a turn with the name alone when the launch beside `read_file` fails, which is the only way to see what `view_file` delivers.
+
+## Then: the T38 naming inventory on the development server, zero tokens (2026-11-15)
 
 D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
 

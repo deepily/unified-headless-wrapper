@@ -1,0 +1,15 @@
+version                                        1.5.9
+C. status; calls the hook saw                  ['SUCCESS']; ['run_command', 'manage_task', 'manage_task', 'manage_task', 'manage_task', 'manage_task']
+C. calls the driver saw in the frames          ['run_command', 'manage_task', 'manage_task', 'manage_task', 'manage_task', 'manage_task']
+C. run_command argument keys                   ['CommandLine', 'WaitMsBeforeAsync', 'toolSummary']
+C. manage_task list                            keys=['Action'] action value='list'
+C. manage_task status                          keys=['Action', 'TaskId'] action value='status'
+C. manage_task send_input                      keys=['Action', 'Input', 'TaskId'] action value='send_input'
+C. manage_task kill                            keys=['Action', 'TaskId'] action value='kill'
+C. action: provisional Action                  observed Action: agrees
+C. task_id: provisional TaskId                 observed TaskId: agrees
+C. input: provisional Input                    observed Input: agrees
+C. all four actions seen                       yes
+C. background commands left running, killed    0
+first frame's tool list                        1 launches printed it; 1 distinct list(s); sizes [60]
+VERDICT c17: manage_task names={'action': 'Action', 'task_id': 'TaskId', 'input': 'Input'}, none differs from the provisional constants

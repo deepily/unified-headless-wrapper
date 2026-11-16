@@ -1,0 +1,381 @@
+{
+ "launch": {
+  "run_command": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "uhw_no_such_tool_7731": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"uhw_no_such_tool_7731\" not found in registry",
+   "reply": ""
+  },
+  "code_search": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"code_search\" not found in registry",
+   "reply": ""
+  },
+  "grep_search": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "find_by_name": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "list_dir": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "view_code_item": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"view_code_item\" not found in registry",
+   "reply": ""
+  },
+  "view_file_outline": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"view_file_outline\" not found in registry",
+   "reply": ""
+  },
+  "skill_search": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"skill_search\" not found in registry",
+   "reply": ""
+  },
+  "read_url_content": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "view_file": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "browser_subagent": {
+   "status": [
+    "ERROR"
+   ],
+   "accepted": false,
+   "error": "failed to construct executor: failed to resolve components: unknown component: tool \"browser_subagent\" not found in registry",
+   "reply": ""
+  },
+  "generate_image": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "write_to_file": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "replace_file_content": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "search_web": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  },
+  "notebook_edit": {
+   "status": [
+    "SUCCESS"
+   ],
+   "accepted": true,
+   "error": null,
+   "reply": "ready\n"
+  }
+ },
+ "delivery": {
+  "grep_search": {
+   "outcome": "not_delivered",
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "manage_task",
+    "read_file"
+   ]
+  },
+  "find_by_name": {
+   "outcome": "not_delivered",
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "manage_task",
+    "read_file"
+   ]
+  },
+  "list_dir": {
+   "outcome": "not_delivered",
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "manage_task",
+    "read_file"
+   ]
+  },
+  "read_url_content": {
+   "outcome": "not_delivered",
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "manage_task",
+    "read_file"
+   ]
+  },
+  "view_file": {
+   "outcome": "launch_error",
+   "called": false,
+   "all_calls": [],
+   "status": [
+    "ERROR"
+   ],
+   "error": "failed to construct executor: tool name conflict: multiple tools resolved with name \"read_file\"",
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": []
+  },
+  "generate_image": {
+   "outcome": "delivered",
+   "called": true,
+   "all_calls": [
+    "generate_image"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [
+    "AspectRatio",
+    "ImageName",
+    "Prompt"
+   ],
+   "sample": "{\"AspectRatio\": \"1:1\", \"ImageName\": \"red_square\", \"Prompt\": \"A 64 by 64 pixel solid red square\"}",
+   "reply_names": []
+  },
+  "write_to_file": {
+   "outcome": "alias",
+   "called": false,
+   "all_calls": [
+    "write_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [
+    "write_file"
+   ],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "write_file"
+   ]
+  },
+  "replace_file_content": {
+   "outcome": "alias",
+   "called": false,
+   "all_calls": [
+    "read_file",
+    "edit_file",
+    "read_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [
+    "edit_file"
+   ],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "edit_file"
+   ]
+  },
+  "search_web": {
+   "outcome": "delivered",
+   "called": true,
+   "all_calls": [
+    "search_web"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [
+    "query"
+   ],
+   "sample": "{\"query\": \"unified headless wrapper\"}",
+   "reply_names": []
+  },
+  "notebook_edit": {
+   "outcome": "not_delivered",
+   "called": false,
+   "all_calls": [
+    "read_file"
+   ],
+   "status": [
+    "SUCCESS"
+   ],
+   "error": null,
+   "called_instead": [],
+   "argument_keys": [],
+   "sample": "",
+   "reply_names": [
+    "manage_task",
+    "read_file"
+   ]
+  }
+ },
+ "init_tools": {
+  "launches_printing_it": 27,
+  "distinct_lists": 1,
+  "lists": [
+   [
+    "ask_custom_permission",
+    "ask_permission",
+    "ask_question",
+    "browser_click_element",
+    "browser_drag_pixel_to_pixel",
+    "browser_get_dom",
+    "browser_get_network_request",
+    "browser_input",
+    "browser_list_network_requests",
+    "browser_mouse_down",
+    "browser_mouse_up",
+    "browser_move_mouse",
+    "browser_press_key",
+    "browser_refresh_page",
+    "browser_resize_window",
+    "browser_scroll",
+    "browser_scroll_dom",
+    "browser_select_option",
+    "browser_subagent",
+    "call_mcp_tool",
+    "capture_browser_console_logs",
+    "capture_browser_screenshot",
+    "click_browser_pixel",
+    "command_status",
+    "define_subagent",
+    "delete_knowledge",
+    "execute_browser_javascript",
+    "find_by_name",
+    "finish",
+    "generate_image",
+    "grep_search",
+    "invoke_subagent",
+    "list_browser_pages",
+    "list_dir",
+    "list_permissions",
+    "list_plugin_accounts",
+    "list_resources",
+    "manage_inbox",
+    "manage_subagents",
+    "manage_task",
+    "multi_replace_file_content",
+    "notebook_edit",
+    "notebook_execution",
+    "open_browser_url",
+    "read_browser_page",
+    "read_resource",
+    "read_url_content",
+    "replace_file_content",
+    "run_command",
+    "run_workflow",
+    "schedule",
+    "search_marketplace",
+    "search_web",
+    "sed_file",
+    "send_command_input",
+    "send_message",
+    "view_file",
+    "wait",
+    "wait_5_seconds",
+    "write_to_file"
+   ]
+  ]
+ }
+}

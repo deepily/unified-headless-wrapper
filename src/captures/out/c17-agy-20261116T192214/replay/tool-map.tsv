@@ -1,0 +1,11 @@
+candidate	outcome	hook name	argument keys	sample	called instead	launch error
+grep_search	not_delivered	-				
+find_by_name	not_delivered	-				
+list_dir	not_delivered	-				
+read_url_content	not_delivered	-				
+view_file	launch_error	-				failed to construct executor: tool name conflict: multiple tools resolved with name "read_file"
+generate_image	delivered	generate_image	AspectRatio,ImageName,Prompt	{"AspectRatio": "1:1", "ImageName": "red_square", "Prompt": "A 64 by 64 pixel solid red square"}		
+write_to_file	alias	-			write_file	
+replace_file_content	alias	-			edit_file	
+search_web	delivered	search_web	query	{"query": "unified headless wrapper"}		
+notebook_edit	not_delivered	-				

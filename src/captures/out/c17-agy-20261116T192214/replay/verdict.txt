@@ -1,0 +1,32 @@
+version                                        1.5.9
+replayed from                                  c17-agy-20261116T192214
+A. tools: [run_command]                        launch accepted status=['SUCCESS']
+A. tools: [uhw_no_such_tool_7731]              launch refused status=['ERROR']
+A. tools: [code_search]                        launch refused status=['ERROR']
+A. tools: [grep_search]                        launch accepted status=['SUCCESS']
+A. tools: [find_by_name]                       launch accepted status=['SUCCESS']
+A. tools: [list_dir]                           launch accepted status=['SUCCESS']
+A. tools: [view_code_item]                     launch refused status=['ERROR']
+A. tools: [view_file_outline]                  launch refused status=['ERROR']
+A. tools: [skill_search]                       launch refused status=['ERROR']
+A. tools: [read_url_content]                   launch accepted status=['SUCCESS']
+A. tools: [view_file]                          launch accepted status=['SUCCESS']
+A. tools: [browser_subagent]                   launch refused status=['ERROR']
+A. tools: [generate_image]                     launch accepted status=['SUCCESS']
+A. tools: [write_to_file]                      launch accepted status=['SUCCESS']
+A. tools: [replace_file_content]               launch accepted status=['SUCCESS']
+A. tools: [search_web]                         launch accepted status=['SUCCESS']
+A. tools: [notebook_edit]                      launch accepted status=['SUCCESS']
+A. controls behaved (run_command accepted, a made-up name refused) yes
+B. grep_search                                 not_delivered: no call by that name; the reply named ['manage_task', 'read_file']
+B. find_by_name                                not_delivered: no call by that name; the reply named ['manage_task', 'read_file']
+B. list_dir                                    not_delivered: no call by that name; the reply named ['manage_task', 'read_file']
+B. read_url_content                            not_delivered: no call by that name; the reply named ['manage_task', 'read_file']
+B. view_file                                   launch_error: failed to construct executor: tool name conflict: multiple tools resolved with name "read_file"
+B. generate_image                              delivered: keys=['AspectRatio', 'ImageName', 'Prompt']
+B. write_to_file                               alias: the hook saw ['write_file'] called instead
+B. replace_file_content                        alias: the hook saw ['edit_file'] called instead
+B. search_web                                  delivered: keys=['query']
+B. notebook_edit                               not_delivered: no call by that name; the reply named ['manage_task', 'read_file']
+first frame's tool list                        27 launches printed it; 1 distinct list(s); sizes [60]
+VERDICT c17: launch accepted 10 of 15 (acceptance proves nothing about delivery); delivered, the hook saw the name called=['generate_image', 'search_web']; alias={'write_to_file': ['write_file'], 'replace_file_content': ['edit_file']}; launch error in B={'view_file': 'not retried alone'}; not delivered=['grep_search', 'find_by_name', 'list_dir', 'read_url_content', 'notebook_edit']
