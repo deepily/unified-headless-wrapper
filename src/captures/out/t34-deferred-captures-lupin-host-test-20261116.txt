@@ -1,0 +1,42 @@
+
+== host and engine ==
+host                                         lupin-host-test
+clock                                        2026-11-16 10:18:32 EST
+engine                                       agy
+binary                                       /home/admin_rickruiz_altostrat_com/.local/bin/agy
+version                                      1.5.9
+
+== 1. per-persona data directory ==
+listed_in_help                               0
+help_flag_count                              26
+name_in_binary_app_data_dir                  12
+flag_form_in_binary                          --app_data_dir=--cli_dir_name=
+default_directory                            /home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/ /home/admin_rickruiz_altostrat_com/.gemini/config/ /home/admin_rickruiz_altostrat_com/.gemini/mnt/ 
+sign_in_file                                 /home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/antigravity-oauth-token 
+
+== 2. and 3. the vendor's release notes (agy changelog) ==
+changelog_lines                              1248
+newest_version                               1.5.9
+[1.5.8: line 30] · Fixed permission rules for MCP tools, such as an `mcp(server/tool)` deny or ask rule, being ignored for MCP tools that are loaded up front (marked eager in `mcp_config.json`) and for the `/browser` subagent's Chrome DevTools tools; these tools now ask for approval or are blocked according to your rules, like other MCP tools.
+[1.5.5: line 89] · Fixed `agy -p` headless runs sometimes never exiting after printing their result when a background task, such as conversation title generation, got stuck; the CLI now finishes shutting down within 30 seconds.
+[1.5.2: line 139] · Fixed subagents stalling for about 60 seconds on file permissions under `--dangerously-skip-permissions`, so reads and writes outside the workspace now go through without a prompt, and headless `-p` runs with the flag no longer wait on any remaining interaction, while your explicit deny rules still apply.
+[1.4.11: line 183] · Added a `finished_reason` field to the result of `--output-format json` and `stream-json` runs that says why a turn ended early, `print_timeout` when `--print-timeout` expired and the response is partial, `interrupted` when the run was canceled such as with `Ctrl+C`, or `error` for any other failure, so scripts can tell a cut-off answer from a complete one; the field is omitted when the turn finishes normally.
+[1.4.8: line 219] · Fixed failed tool calls, including calls to a tool that doesn't exist and canceled or interrupted calls, being passed back to the agent as ordinary results; the agent now sees them as errors and can recover on its next step.
+lines_naming_control_request                 0
+
+== 3. the rule table the engine prints (-p /permissions, no turn) ==
+num_turns | total_tokens                     0 | 0
+scope project                                no rules []
+scope shared                                 no rules []
+scope global                                 {'allow': 9} ['command']
+
+== 4. protocol interrupt: a control_request on standard input, no turn in flight ==
+type_control_request                         exit 1 | ERROR | stream input message is missing the "event" field | turns 0 | tokens 0
+event_control_request                        exit 2 | ERROR | stream input message event "control_request" is not supported yet | turns 0 | tokens 0
+event_interrupt                              exit 0 | no result frame | stderr: warning: ignoring unsupported stream input message event "interrupt"
+refusal_text_in_binary                       stream input message event %q is not supported yet
+
+== summary ==
+Read: section 1 (listed_in_help 0 with name_in_binary above 0 = a hidden flag); the [version] lines
+under sections 2 and 3; and the event_control_request line. 'is not supported yet' there means the
+engine still has no protocol interrupt, so the adapter keeps interrupt_mode = signal.

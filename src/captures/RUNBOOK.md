@@ -1,6 +1,20 @@
 # Capture runbook
 
-## Run this now: the T38 naming inventory on the development server, zero tokens (2026-11-15)
+## Run this now: the T34 deferred-capture readings on the cloud workstation (Jetski), zero tokens (2026-11-16)
+
+D73 (the deferred captures) closed every line of the October checklist without a capture run. The test VM's reading on AGY 1.5.9 is in (`src/captures/out/t34-deferred-captures-lupin-host-test-20261116.txt`: the data-directory flag hidden, `mcp(server/tool)` rules in the release notes, a `control_request` on standard input refused as "not supported yet"). Jetski's reading is the one thing owed. The script makes no model call: each engine reply it prints reports zero turns and zero tokens.
+
+**On the cloud workstation:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t34_deferred_captures.sh jetski | tee src/captures/out/t34-deferred-captures-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `version`, `listed_in_help`, the `[version line]` lines, and `event_control_request` (if it no longer says "not supported yet", say so: that opens the item on the interrupt route). If Jetski has no `changelog` subcommand or no `/permissions` answer, the script prints what it got; paste that too.
+
+Still owed from the blocks below: the T38 naming inventory, the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Still owed: the T38 naming inventory on the development server, zero tokens (2026-11-15)
 
 D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
 
