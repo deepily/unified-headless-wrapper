@@ -1,0 +1,50 @@
+# C17 on Jetski 2026.11.13 (cloud workstation), verdict.txt then tool-map.tsv, as pasted by Rick into the
+# T14 session on 2026-11-16 (14:43 EST). Pasted text only: the frames, summaries and error files of the run are
+# not in this checkout, and the paste turned the table's tabs into spaces. The run used the unrepaired script,
+# whose "exists" means "the launch was accepted" (row 53 of "Outstanding actions").
+
+version                                        2026.11.13
+A. tools: [run_command]                        exists status=['SUCCESS']
+A. tools: [uhw_no_such_tool_7731]              launch refused status=['ERROR']
+A. tools: [code_search]                        exists status=['SUCCESS']
+A. tools: [grep_search]                        exists status=['SUCCESS']
+A. tools: [find_by_name]                       exists status=['SUCCESS']
+A. tools: [list_dir]                           exists status=['SUCCESS']
+A. tools: [view_code_item]                     launch refused status=['ERROR']
+A. tools: [view_file_outline]                  launch refused status=['ERROR']
+A. tools: [skill_search]                       exists status=['SUCCESS']
+A. tools: [read_url_content]                   exists status=['SUCCESS']
+A. tools: [view_file]                          exists status=['SUCCESS']
+A. tools: [browser_subagent]                   launch refused status=['ERROR']
+A. tools: [generate_image]                     exists status=['SUCCESS']
+A. tools: [write_to_file]                      exists status=['SUCCESS']
+A. tools: [replace_file_content]               exists status=['SUCCESS']
+A. tools: [search_web]                         exists status=['SUCCESS']
+A. tools: [notebook_edit]                      exists status=['SUCCESS']
+A. oracle calibrated (control tools behaved)   yes
+B. code_search                                 called=False keys=[] other calls=[]
+B. grep_search                                 called=False keys=[] other calls=[]
+B. find_by_name                                called=False keys=[] other calls=[]
+B. list_dir                                    called=False keys=[] other calls=[]
+B. skill_search                                called=True keys=['query'] other calls=[]
+B. read_url_content                            called=False keys=[] other calls=[]
+B. view_file                                   called=False keys=[] other calls=[]
+B. generate_image                              called=True keys=['AspectRatio', 'ImageName', 'Prompt'] other calls=[]
+B. write_to_file                               called=False keys=[] other calls=[]
+B. replace_file_content                        called=False keys=[] other calls=[]
+B. search_web                                  called=True keys=['query'] other calls=[]
+B. notebook_edit                               called=False keys=[] other calls=[]
+VERDICT c17: exists=['code_search', 'grep_search', 'find_by_name', 'list_dir', 'skill_search', 'read_url_content', 'view_file', 'generate_image', 'write_to_file', 'replace_file_content', 'search_web', 'notebook_edit']; keys captured for ['skill_search', 'generate_image', 'search_web']
+candidate hook name argument keys sample
+code_search -
+grep_search -
+find_by_name -
+list_dir -
+skill_search skill_search query {"query": "probe"}
+read_url_content -
+view_file -
+generate_image generate_image AspectRatio,ImageName,Prompt {"AspectRatio": "1:1", "ImageName": "red_square_64x64", "Prompt": "A 64 by 64 pixel image of a solid red square."}
+write_to_file -
+replace_file_content -
+search_web search_web query {"query": "unified headless wrapper"}
+notebook_edit -

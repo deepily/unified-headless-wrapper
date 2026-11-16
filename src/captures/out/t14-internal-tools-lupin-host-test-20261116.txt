@@ -1,0 +1,104 @@
+
+== host and engine ==
+host                                           lupin-host-test
+clock                                          2026-11-16 14:48:27 EST
+engine                                         agy
+binary                                         /home/admin_rickruiz_altostrat_com/.local/bin/agy
+version                                        1.5.9
+c17_run                                        /mnt/lupin-data/unified-headless-wrapper/src/captures/out/c17-agy-20261116T192214
+c17_run_version                                1.5.9
+
+== 1. and 2. the C17 run, counted from its frames ==
+candidates_probed                              15
+controls_behaved                               True
+refused_at_launch                              5  code_search view_code_item view_file_outline skill_search browser_subagent
+accepted_at_launch                             10  grep_search find_by_name list_dir read_url_content view_file generate_image write_to_file replace_file_content search_web notebook_edit
+called_by_its_own_name                         2  generate_image(AspectRatio,ImageName,Prompt) search_web(query)
+second_launch_failed                           1  view_file
+  error_view_file                              error: failed to construct executor: tool name conflict: multiple tools resolved with name "read_file"
+reply_texts_in_this_checkout                   True
+model_called_another_tool_instead              2  write_to_file->write_file replace_file_content->edit_file
+accepted_and_never_called                      5  grep_search find_by_name list_dir read_url_content notebook_edit
+  reply_grep_search                            The tool `grep_search` is not available in my toolset (only `read_file` and `manage_task` are provided). Because of the restriction to use only `grep_search`, I am unable to perform the search for the word **"zebra"** in this proj
+  reply_find_by_name                           I am unable to perform this search because the tool `find_by_name` is not available in my environment (the only tools available are `read_file` and `manage_task`). Because of the restriction to use only `find_by_name`, no tool was
+  reply_list_dir                               The tool named `list_dir` is not available in this environment (the only tools available are `read_file` and `manage_task`). Consequently, I am unable to list the directory [uhw-ws-53geh3ml](file:///tmp/uhw-ws-53geh3ml) under the 
+  reply_read_url_content                       I cannot complete your request because the tool `read_url_content` is not available in my environment (only `read_file` and `manage_task` are provided). Because the required tool is unavailable, I did not access `https://example.c
+  reply_notebook_edit                          I am unable to perform this request because the tool `notebook_edit` is not available in my environment (the only available tools are `read_file` and `manage_task`). - **What blocked me:** The tool `notebook_edit` does not exist i
+replies_naming_manage_task                     5  grep_search find_by_name list_dir read_url_content notebook_edit
+replies_listing_only_read_file_manage_task     5
+launches_with_a_first_frame                    27
+distinct_first_frame_tool_lists                1
+names_in_first_frame_list                      60
+  of_them_starting_browser_                    16
+  of_them_containing_browser                   23
+in_list_yet_refused_at_launch                  browser_subagent
+not_in_list_and_refused                        code_search view_code_item view_file_outline skill_search
+in_list_and_accepted                           grep_search find_by_name list_dir read_url_content view_file generate_image write_to_file replace_file_content search_web notebook_edit
+accepted_yet_not_in_list                       -
+current_names_absent_from_list                 read_file write_file edit_file
+first_frame_list: ask_custom_permission ask_permission ask_question browser_click_element browser_drag_pixel_to_pixel browser_get_dom browser_get_network_request browser_input browser_list_network_requests browser_mouse_down browser_mouse_up browser_move_mouse browser_press_key browser_refresh_page browser_resize_window browser_scroll browser_scroll_dom browser_select_option browser_subagent call_mcp_tool capture_browser_console_logs capture_browser_screenshot click_browser_pixel command_status define_subagent delete_knowledge execute_browser_javascript find_by_name finish generate_image grep_search invoke_subagent list_browser_pages list_dir list_permissions list_plugin_accounts list_resources manage_inbox manage_subagents manage_task multi_replace_file_content notebook_edit notebook_execution open_browser_url read_browser_page read_resource read_url_content replace_file_content run_command run_workflow schedule search_marketplace search_web sed_file send_command_input send_message view_file wait wait_5_seconds write_to_file
+
+== 3. the vendor's record: the binary ==
+manage_task_description                        Manage the background tasks of this conversation: 'list' the running tasks, check a task's 'status' and recent log output, 'send_input' to a running task, or 'kill' one. Refer to tasks by the TaskId that 'list' reports; keep task references human-readable when
+manage_task_source_files                       third_party/jetski/cortex/handlers/manage_task_subhandler.go third_party/jetski/cortex/tools/manage_task_tool_converter.go third_party/oneharness/internal/tools/manage_task.go 
+opt_out_names_in_binary                        force_disable_fundamental_components x3  manage_task_force_disable x1  
+occurrences_manage_task                        57
+occurrences_read_file                          56
+occurrences_write_file                         22
+occurrences_edit_file                          11
+occurrences_view_file                          145
+occurrences_write_to_file                      44
+occurrences_replace_file_content               14
+occurrences_grep_search                        17
+occurrences_find_by_name                       5
+occurrences_list_dir                           15
+occurrences_read_url_content                   17
+occurrences_notebook_edit                      4
+occurrences_code_search                        13
+occurrences_view_code_item                     5
+occurrences_view_file_outline                  2
+occurrences_skill_search                       4
+occurrences_browser_subagent                   8
+
+== 3. the vendor's record: the skills shipped beside the engine ==
+skills_directory                               /home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/builtin/skills
+migrate-agent-settings/SKILL.md:154:-   `tools`: always write it, since an omitted `tools` gets only a small
+migrate-agent-settings/SKILL.md:155:    read-only default set. If the Claude Code agent had no `tools` (meaning all
+migrate-agent-settings/SKILL.md:157:    `tools: [read_file, edit_file, write_file, run_command, manage_task, search_web]`.
+migrate-agent-settings/SKILL.md:158:    Otherwise map each grant to the native tool names: `Read`/`Glob`/`Grep` to
+migrate-agent-settings/SKILL.md:159:    `read_file`, `Edit`/`MultiEdit` to `edit_file`, `Write` to `write_file`,
+migrate-agent-settings/SKILL.md:160:    `Bash` to `run_command` and `manage_task`, `WebSearch`/`WebFetch` to
+
+== 3. the vendor's record: the release notes (agy changelog) ==
+changelog_lines                                1248
+[1.5.7: line 60] · Fixed background task details from `manage_task` losing their formatting when the task's recent output, or input sent to the task, contained Markdown code blocks or runs of backticks.
+[1.2.7: line 546] · Improved the default agent and subagent toolset by retiring the legacy `find_by_name`, `grep_search`, and `list_dir` tools from the default baseline while keeping them available to custom agents that explicitly list them in `tools`
+[1.2.5: line 567] · Added automatic subagent guidance for custom agents defined in Markdown: agents that list `invoke_subagent` in their tools now receive the roster of available subagents and usage instructions in their system prompt, so they can actually delegate to the subagents they declared.
+[1.2.2: line 602] · Fixed `view_file` attempting to parse non-UTF-8 binary files as text or loading files larger than 100 MB into the model context; unsupported binary formats and oversized files are now rejected with a clear error before overflowing the context window.
+[1.2.1: line 609] · Added support for `excludeDefaultComponents: true` in custom agent Markdown frontmatter, allowing custom agents to opt out of default prompt sections and built-in tools while preserving post-invocation hooks.
+[1.1.13: line 829] · Improved custom agent support by making `manage_task` available to declarative agents that have not opted out of fundamental components, so a custom agent can list and kill its own background tasks, and reworded its step lines to read `Killed task X` and `Checked task X`.
+[1.1.13: line 831] · Improved the agent's behavior after backgrounding work by removing the anti-polling reminder text from the `manage_task` and `manage_inbox` tool results, which could itself nudge the model into a polling loop.
+[1.1.12: line 873] · Fixed the `read_url_content` tool leaking a connection on every call, which could eventually exhaust the machine's available ports.
+[1.1.8: line 933] · Enriched the structured stream with a `tool_info` object for each tool call (canonical tool name, parameters, and output) and a `subagent_info` payload for delegated subagents (including `conversation_id` and `log_uri`) so consumers can correlate child trajectories.
+[1.1.2: line 1014] · Fixed mcp manager failing to resolve tool schema paths in standalone mode and leaking MCP server subprocesses after shutdown, which previously caused panics and cleanup failures for custom agents loading MCP tools.
+[1.1.0: line 1035] · Added a dedicated `"Create file"` confirmation preview for new file creations (`write_to_file` without overwrite): renders new content as an addition-only diff preview.
+
+== 4. the role table's built-in tools against the record ==
+name               in first-frame list    in vendor's mapping    role table
+run_command        yes                    yes                    granted
+read_file          no                     yes                    granted
+write_file         no                     yes                    granted
+edit_file          no                     yes                    granted
+notebook_edit      yes                    no                     granted
+search_web         yes                    yes                    granted
+invoke_subagent    yes                    no                     granted (chief of staff; never on AGY)
+manage_task        yes                    yes                    never listed
+ask_question       yes                    no                     never listed
+send_message       yes                    no                     never listed
+schedule           yes                    no                     never listed
+define_subagent    yes                    no                     never listed
+manage_subagents   yes                    no                     never listed
+swarm              no                     no                     never listed
+run_workflow       yes                    no                     never listed
+
+zero tokens: no turn was started; the engine was run only for --version and changelog

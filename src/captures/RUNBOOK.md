@@ -16,7 +16,7 @@ src/captures/t38_naming_inventory.sh <path to the lupin checkout on the developm
 
 Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
 
-## Done 2026-11-16 on the test VM (AGY); still owed on the cloud workstation (Jetski): C17, the engines' internal tools; it spends model turns
+## Done 2026-11-16 on both engines (AGY on the test VM, Jetski on the cloud workstation): C17, the engines' internal tools; ruled as D74
 
 **Result on AGY 1.5.9 (test VM, 2026-11-16, `src/captures/out/c17-agy-20261116T192214/`; about 2.5 minutes, `gemini-3.8-flash-high`):**
 - **The verdict line overstates.** It reports ten names as existing because their launches were accepted. Read against the recorded frames, only two were called by name: `generate_image` (arguments `AspectRatio`, `ImageName`, `Prompt`; 76 seconds) and `search_web` (`query`).
@@ -27,7 +27,19 @@ Still owed from the blocks below: the T36 identity inventory and the T35 persona
 - **The `init` frame of every launch lists the same 60 tool names** whatever the allow-list (16 `browser_…` names and 44 others, among them `view_file`, `write_to_file`, `replace_file_content`, `grep_search`, `list_dir`, `call_mcp_tool`). What that list is has not been established.
 - **Not established:** why an accepted name is unusable; whether the alias reading is right (it is inferred from three launches); anything about Jetski.
 
-**For the Jetski run:** read `verdict.txt` beside the frames, not alone; row 53 of "Outstanding actions" is the script's repair.
+**Result on Jetski 2026.11.13 (cloud workstation, 2026-11-16, `src/captures/out/c17-jetski-20261116T193513/`, summary files only in the checkout; counted on the workstation by `src/captures/t14_internal_tools_inventory.sh jetski`, output `src/captures/out/t14-internal-tools-jetski-20261116.txt`):**
+- Twelve names accepted, three refused (`view_code_item`, `view_file_outline`, `browser_subagent`); three called by name (`generate_image`, `search_web`, and `skill_search` with `query`, which AGY refuses).
+- The same name conflict for `view_file` beside `read_file`; `write_to_file` and `replace_file_content` delivered `write_file` and `edit_file`.
+- Six accepted names not delivered (AGY's five and `code_search`); `manage_task` named in all eight replies that listed the model's tools.
+- The first frame lists 63 names in all 29 launches. Jetski's release notes say a retired tool's name stays "accepted as a no-op", which is the cause.
+- The inventory script read no text from Jetski's binary (a launcher image).
+
+**Ruled the same day as D74 (T14):** `specs/2026.11.16-t14-engine-internal-tools-spec.md`. **Still owed, not by Rick today:** the script's repair (row 53 of "Outstanding actions"), which must also record `manage_task`'s argument names from a hook on both engines (`Tools-6`, before Kernel-5); a rerun on each engine follows the repair.
+
+**The zero-token inventory, either host** (reads the newest C17 run on that host, the binary, the shipped skills and the release notes):
+```bash
+src/captures/t14_internal_tools_inventory.sh agy      # or: jetski
+```
 
 C17 is what T14 (the last measure item) waits on, and it is part of row 13 of "Outstanding actions". It asks which built-in tools the engine has beyond the ones it lists, and what arguments each takes. **It is not a zero-token capture:** up to 32 short turns on the flash model (17 launches with every tool denied, then one turn per tool that exists).
 
