@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-15 · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-15 (amended after T36) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -15,11 +15,15 @@ Lupin is read, never written, from any UHW session.
 
 ## 2. Opening
 
+**The title alone opens a session.** A first message that is only an item's title ("T38, engine-neutral naming") means: run this protocol for that item, every step, in order. Rick need not restate any of it. (Ruled 2026-11-15, after the T36 session ran ahead of instructions that arrived late.)
+
 1. One chat per item, titled after it: "T35, canonical persona name".
 2. Rick names the item, normally one of the next three on `00-status.md`.
 3. If he asks for progress first, compute it from the live repo (status page, framework Sections 16 and 20), never from memory, on the scale in use since 2026-11-08: share of what is needed to begin the kernel, share of what Phase 1 needs, share of the register. Flag any inconsistency found while counting.
 4. Read `00-status.md`. Run `git status -sb` and `git log --oneline -3`; note the HEAD of this repo and of lupin, because the chronicle cites both.
 5. When resuming from a handoff (Section 8), read it and the files it names, and do not redo research it marks done.
+6. **Read the usage meter once, before any other work,** at zero tokens (under Antigravity: `agy -p "/usage" --output-format json`), and state the starting figure for the model group the session draws on. Read it once more at the close; both figures go in the session log line.
+7. Read the "Outstanding actions" table in `00-status.md` for rows the item touches or closes.
 
 ## 3. Grounding
 
@@ -51,6 +55,7 @@ Plain language, few acronyms, decisions named in words. A register key appears o
 
 ## 5. The walk-through
 
+- **Stop after the narrative.** Give Rick its path and end the turn. No question is put until he says he has read it; what he says on reading it may change the options.
 - `AskUserQuestion`, **one decision per question, asked one after another.** Never several decisions in one question, never a list of questions in a message.
 - Each question stands alone: the problem in a sentence, the options, the recommended option first and labelled "(Recommended)", pros and cons in the option descriptions.
 - Write each ruling into the narrative's table as it comes.
@@ -77,11 +82,11 @@ Edits are Python read-modify-write scripts that assert each anchor occurs exactl
 
 ## 7. Closing
 
-1. `00-status.md`, last of all: the "Where things stand" table (decisions, open, last session, captures pending), the next three, and one line at the top of the session log: `- **YYYY-MM-DD (nth session)** · **Tnn → Dnn.** Read … Found … Ruled … Written …`.
+1. `00-status.md`, last of all: the "Where things stand" table (decisions, open, last session), the next three, **the "Outstanding actions" table** (strike each row the session finished, with its date; add a numbered row for everything the session leaves owed by anyone: a script to run, a ticket to file, an answer, a repair, a value the spec set that no ruling covered; nothing owed is recorded anywhere else), and one line at the top of the session log: `- **YYYY-MM-DD (nth session)** · **Tnn → Dnn.** Read … Found … Ruled … Written …`.
 2. `chronicle.md`: one entry, `## YYYY-MM-DD · Tnn, <name> → Dnn`, with paragraphs **Asked**, **Read**, **Found**, **Ruled**, **Written**, **Process**, written while the context is still in hand.
 3. `transcripts/YYYY.MM.DD-tNN.md`: a header (As of, how it was rendered), then Rick's turns verbatim with timestamps, the assistant's turns abridged, tool activity in brackets.
-4. Report to Rick: what was written (uncommitted), anything he must decide or run, the next three.
-5. **Commit only on Rick's word.** Message: `Tnn → Dnn: <the rulings in one line>`. Author `deepily` with the GitHub noreply address (repo-local configuration; never a real email address), plus the attribution trailer. **Push only on his word**; where the shell has no GitHub credential, Rick pushes.
+4. Report to Rick: what was written (uncommitted), anything he must decide or run (by its row number in "Outstanding actions"), the next three, and **the commit message as it will be used**.
+5. **Commit only on Rick's word, given after he has seen the message.** Message: `Tnn → Dnn: <the rulings in one line>`. Author `deepily` with the GitHub noreply address (repo-local configuration; never a real email address), plus the attribution trailer. **Push only on his word**; where the shell has no GitHub credential, Rick pushes.
 6. Anything destructive (deleting a file or folder, rewriting history) is asked first.
 
 ## 8. Handoff
