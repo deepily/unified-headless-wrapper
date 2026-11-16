@@ -1,5 +1,26 @@
 # Capture runbook
 
+## Owed: the T16 account inventory on the development server, zero tokens (2026-11-16, row 20)
+
+D59 (the fleet) part 9 puts the kernel and the engines under a dedicated account with no `sudo` and no `docker` membership on a production host, at the switch-over. This inventory sizes that account's two known costs before any detail is ruled: the repositories that must become group-writable, and the short `sudoers` list for the scripts that drive Docker. It reads the account's groups and `sudo` rules, the last 30 days of the old harness's hook logs and of the Claude transcripts under `~/.claude/projects`, and the owner and mode of every `.git` the fleet works in. It writes nothing, makes no model call, and prints program names, subcommands, script paths and counts, never a command line. Run it **as the account the fleet runs under**. The test VM's run (a shakedown; no fleet runs there) took 15 seconds: `src/captures/out/t16-account-inventory-lupin-host-test-20261116.txt`.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t16_account_inventory.sh --self-test
+src/captures/t16_account_inventory.sh ../lupin | tee src/captures/out/t16-account-inventory-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+Run from this repository's root; `../lupin` is the lupin checkout beside it (give its path if it is elsewhere). A second argument changes the window (`… ../lupin 60`); any further arguments name repositories to list that neither the records nor `lupin-app.ini` reach.
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: under (a), `groups`, the `sudo` rules and `members_of_docker`; under (b), the two "called directly" lists, the two lists of scripts whose own text calls `sudo` or `docker`, and the table of lupin scripts with its two run counts (a script with runs is a candidate for the `sudoers` list; a script with none is not); under (c), each repository's `.git owner:group mode`, `core.sharedRepository` and its "not group-writable" count; then the `summary` block. If the hook-log section reads `ABSENT` or zero calls, say where the hook logs are on that host (`LUPIN_HOOK_LOG_DIR=<directory>` before the command reads them there).
+
+**Read the output with these limits in mind:** a call hidden behind a variable or an alias is not seen; the lupin table lists shell scripts only, so a Python test driver that starts a container shows under "scripts run" but not in the table; the transcripts are every Claude session of that account, the operator's own included.
+
+Still owed from the blocks below: the T38 naming inventory, the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+---
+
 ## Done 2026-11-16 on both engines: `manage_task`'s argument names, one turn each (row 53, `Tools-6`). Nothing here is owed; the next owed block is the T38 inventory below
 
 D74 (the engines' built-in tools) gives the gate a shape for `manage_task`, the background-task tool, with argument names that are provisional (`Action`, `TaskId`, `Input`): the names the tool is declared with, not names read from a hook. This run reads them from a hook. **It is not a zero-token capture:** one launch and one turn on the flash model per engine, in which the model backgrounds a command with `run_command`, then lists it, reads its status, sends it a line and kills it. C17's script was repaired the same day; `PARTS=C` runs this part alone. If the model skips a step, the verdict says `INCOMPLETE` and names the missing action, and the run is repeated.

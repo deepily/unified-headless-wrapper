@@ -1,0 +1,216 @@
+
+== host ==
+host                                         lupin-host-test
+clock                                        2026-11-16 18:28:07 EST
+lupin_checkout                               /mnt/lupin-data/lupin
+lupin_head                                   67456220d
+window_days                                  30
+
+== (a) the account that runs the fleet today ==
+account                                      admin_rickruiz_altostrat_com
+primary_group                                admin_rickruiz_altostrat_com
+groups                                       admin_rickruiz_altostrat_com docker google-sudoers
+umask                                        0002
+passwordless_sudo                            yes
+docker_group                                 yes
+linger                                       Linger=yes
+sudo rules for this account (sudo -n -l; no password is ever offered):
+    User admin_rickruiz_altostrat_com may run the following commands on lupin-host-test:
+        (ALL) NOPASSWD: ALL
+        (ALL : ALL) NOPASSWD: ALL
+
+== (a) Docker on this host ==
+docker_socket                                root:docker 660
+members_of_docker                            admin_rickruiz_altostrat_com
+members_of_sudo                              ubuntu
+docker_rootless                              no
+docker_contexts                              default 
+containers_running                           4
+accounts with an engine process now (count, account, program):
+          1 admin_rickruiz_altostrat_com     agy
+          1 admin_rickruiz_altostrat_com     claude
+
+== (b) sudo and docker in the last 30 days, read from the hook logs ==
+directory                                    /mnt/lupin-data/lupin/io/claude_code_hooks/logs (ABSENT)
+hook_events_jsonl_bytes                      absent
+bash_calls_in_window                         0
+first_and_last_call                          none to none
+bash_calls_touching_sudo_or_docker           0
+called directly (count, what; the program and its subcommand only):
+    none
+scripts run whose own text calls sudo or docker (count, which, script):
+    none
+scripts_run_calling_neither                  0
+distinct_scripts_run                         0
+script_runs_not_found_on_disk                0 (0 names; a removed worktree, or a path set by a variable)
+
+== (b) sudo and docker in the last 30 days, read from the transcripts (~/.claude/projects) ==
+transcript_files                             19
+transcript_files_in_window                   19
+bash_calls_in_window                         811
+first_and_last_call                          2026-10-19 20:05 EDT to 2026-11-16 18:27 EST
+bash_calls_touching_sudo_or_docker           117
+called directly (count, what; the program and its subcommand only):
+        36  docker exec
+        33  docker logs
+        23  docker run
+        19  docker inspect
+        16  docker ps
+         6  docker compose config
+         5  docker stop
+         4  sudo true
+         3  docker build
+         3  docker restart
+         2  sudo docker compose up
+         1  docker images
+         1  docker pull
+         1  sudo docker compose config
+         1  sudo install
+         1  sudo python3
+scripts run whose own text calls sudo or docker (count, which, script):
+        10  docker       buganizer-time-keeper:deploy/deploy_timesheet_mcp.sh
+         5  docker       mcp-and-a2ui-apps:deploy/deploy.sh
+         1  docker       weil-ge-mcp-server:deploy/terraform/build.sh
+scripts_run_calling_neither                  44
+distinct_scripts_run                         16
+script_runs_not_found_on_disk                25 (11 names; a removed worktree, or a path set by a variable)
+
+== (b) scripts in the lupin checkout whose text calls sudo or docker (the candidate sudoers list) ==
+script                                                     calls         transcripts  hook logs
+src/scripts/backup-postgres.sh                             docker                  0          0
+src/scripts/bounce-dev-server.sh                           docker                  0          0
+src/scripts/bounce-watcher.sh                              docker                  0          0
+src/scripts/check-claude-cli-parity.sh                     docker                  0          0
+src/scripts/check-claude-login.sh                          docker                  0          0
+src/scripts/cloud-run-build.sh                             docker                  0          0
+src/scripts/cloud-run-model-server-deploy.sh               docker                  0          0
+src/scripts/cloud-run-validate.sh                          docker                  0          0
+src/scripts/install-bounce-watcher.sh                      sudo                    0          0
+src/scripts/install-cc-memory-watch.sh                     sudo                    0          0
+src/scripts/install-cosa-voice.sh                          sudo                    0          0
+src/scripts/lib/claude-cli-parity-probe.sh                 docker                  0          0
+src/scripts/lib/claude-login-probe.sh                      docker                  0          0
+src/scripts/lib/preflight-smoke-admin-probe.sh             docker                  0          0
+src/scripts/lib/preflight-test-secret-probe.sh             sudo+docker             0          0
+src/scripts/lib/wait-for-container-restart.sh              docker                  0          0
+src/scripts/lupin-vm.sh                                    sudo+docker             0          0
+src/scripts/preflight-test-container.sh                    docker                  0          0
+src/scripts/preflight-vm.sh                                sudo+docker             0          0
+src/scripts/provision-arbiter-on-vm.sh                     sudo+docker             0          0
+src/scripts/refresh-test-server.sh                         docker                  0          0
+src/scripts/run-e2e-ui-tests.sh                            docker                  0          0
+src/scripts/run-postgresql-dev.sh                          docker                  0          0
+src/scripts/tfe_to_cc_matrix.sh                            docker                  0          0
+src/scripts/verify-running-code.sh                         docker                  0          0
+src/tests/e2e/run-bfe-live-e2e.sh                          docker                  0          0
+src/tests/e2e/run-tfe-live-e2e.sh                          docker                  0          0
+src/tests/run-docker-smoke-gate.sh                         docker                  0          0
+src/tests/run-integration-tests.sh                         docker                  0          0
+
+== (c) repositories the fleet works in, and who owns each .git ==
+
+/mnt/lupin-data/lupin
+    why listed                     configured (external repo lupin), the lupin checkout
+    .git owner:group mode          1001:google-sudoers 775
+    owners | groups inside .git    1001,admin_rickruiz_altostrat_com,root | admin_rickruiz_altostrat_com,google-sudoers,root
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   21 | 4 | 21
+    files | not group-readable     66 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/lupin-data/google/weil-ge-mcp-server
+    why listed                     configured (external repo weil-ge-mcp-server), transcripts
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   76 | 0 | 76
+    files | not group-readable     107 | 0
+    in the transcripts' window     144 bash calls, 19 file edits, 1 sudo, 17 docker
+
+/mnt/lupin-data/google/mcp-and-a2ui-apps
+    why listed                     configured (external repo mcp-and-a2ui-apps), transcripts
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   120 | 0 | 120
+    files | not group-readable     166 | 0
+    in the transcripts' window     272 bash calls, 54 file edits, 1 sudo, 60 docker
+
+/mnt/lupin-data/unified-headless-wrapper
+    why listed                     transcripts
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   240 | 0 | 240
+    files | not group-readable     567 | 0
+    in the transcripts' window     57 bash calls, 8 file edits, 5 sudo, 24 docker
+
+/mnt/lupin-data/google/buganizer-time-keeper
+    why listed                     transcripts
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   154 | 0 | 154
+    files | not group-readable     242 | 0
+    in the transcripts' window     290 bash calls, 59 file edits, 2 sudo, 41 docker
+
+/mnt/lupin-data/google/parallel-search
+    why listed                     configured (external repo parallel-search)
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   16 | 0 | 16
+    files | not group-readable     30 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/lupin-data/google/weil-nda-drafting-suite
+    why listed                     configured (external repo weil-nda-drafting-suite)
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      6
+    directories | not group-writable | without setgid   283 | 0 | 283
+    files | not group-readable     7000 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/lupin-data/google/weil-parallel-search
+    why listed                     configured (external repo weil-parallel-search)
+    .git owner:group mode          admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775
+    owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   123 | 0 | 123
+    files | not group-readable     189 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+work recorded outside any repository (bash calls, file edits, where):
+        48     59  (no repository: no directory recorded)
+
+configured_repositories_not_on_this_host    10 of 16: cosa-voice planning-is-prompting lupin-mobile lookml par-pacific claude-plans retail-ai-location-strategy google-project-wonderwall skills-distillation scratchpad
+
+== summary ==
+account_privileged                           see (a): passwordless_sudo and docker_group
+hook_logs_bash_calls                         0
+hook_logs_direct_sudo_calls                  0
+hook_logs_direct_docker_calls                0
+hook_logs_distinct_direct_forms              0
+hook_logs_privileged_scripts_run             0 scripts, 0 runs
+transcripts_bash_calls                       811
+transcripts_direct_sudo_calls                9
+transcripts_direct_docker_calls              146
+transcripts_distinct_direct_forms            16
+transcripts_privileged_scripts_run           3 scripts, 16 runs
+lupin_scripts_calling_sudo_or_docker         29
+of_those_run_in_the_window                   0
+repositories_listed                          8
+repositories_worked_in_in_the_window         4
+repositories_already_group_shared            0
+repositories_needing_a_mode_repair           1
+repositories_with_more_than_one_owner        1
+worktrees_in_all                             13
