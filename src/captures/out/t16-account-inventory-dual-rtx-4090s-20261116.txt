@@ -1,0 +1,360 @@
+
+== host ==
+host                                         dual-rtx-4090s
+clock                                        2026-11-16 18:35:19 EST
+lupin_checkout                               ../lupin
+lupin_head                                   cabaa58d9
+window_days                                  30
+
+== (a) the account that runs the fleet today ==
+account                                      rruiz
+primary_group                                rruiz
+groups                                       rruiz adm cdrom sudo dip plugdev lpadmin lxd sambashare docker
+umask                                        0002
+passwordless_sudo                            no
+docker_group                                 yes
+linger                                       Linger=yes
+sudo rules for this account (sudo -n -l; no password is ever offered):
+    User rruiz may run the following commands on dual-rtx-4090s:
+        (ALL : ALL) ALL
+        (root) NOPASSWD: /usr/local/sbin/lupin-install-db-secrets \"\"
+
+== (a) Docker on this host ==
+docker_socket                                root:docker 660
+members_of_docker                            bizon,rruiz
+members_of_sudo                              bizon,rruiz
+docker_rootless                              no
+docker_contexts                              default 
+containers_running                           4
+accounts with an engine process now (count, account, program):
+          3 rruiz                            claude
+
+== (b) sudo and docker in the last 30 days, read from the hook logs ==
+directory                                    ../lupin/io/claude_code_hooks/logs
+hook_events_jsonl_bytes                      36641723
+payload_files                                164792
+tool_payload_files_in_window                 141763
+unreadable                                   6
+bash_calls_in_window                         40072
+first_and_last_call                          2026-10-31 20:31 EDT to 2026-11-16 18:31 EST
+bash_calls_touching_sudo_or_docker           542
+called directly (count, what; the program and its subcommand only):
+       152  docker exec
+       114  docker logs
+        62  docker ps
+        43  docker inspect
+        13  docker run
+        10  docker compose up
+         9  docker cp
+         9  docker images
+         5  docker build
+         4  docker restart
+         4  docker rm
+         3  docker image inspect
+         3  sudo docker exec
+         2  docker compose config
+         2  docker compose ps
+         2  docker history
+         2  docker push
+         2  docker tag
+         1  docker 2
+         1  docker compose exec
+         1  docker compose version
+         1  docker port
+         1  docker stop
+         1  sudo docker inspect
+         1  sudo docker logs
+         1  sudo docker ps
+         1  sudo docker volume ls
+scripts run whose own text calls sudo or docker (count, which, script):
+       172  sudo+docker  lupin:src/scripts/lupin-vm.sh
+        37  docker       lupin:src/scripts/bounce-dev-server.sh
+        21  docker       lupin:src/scripts/refresh-test-server.sh
+        18  docker       lupin:src/scripts/preflight-test-container.sh
+        14  sudo+docker  lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/lupin-vm.sh
+        12  docker       lupin:src/scripts/verify-running-code.sh
+        11  docker       lupin:src/scripts/check-claude-login.sh
+         4  sudo+docker  lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/preflight-vm.sh
+         3  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/bounce-dev-server.sh
+         3  docker       lupin:src/scripts/backup-postgres.sh
+         2  sudo         lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/install-cosa-voice.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/lib/claude-login-probe.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/check-claude-login.sh
+         2  docker       lupin:src/scripts/compose_drift_probe.py
+         2  sudo+docker  lupin:src/scripts/preflight-vm.sh
+         1  docker       lupin:.claude/worktrees/seat-cc-author-cheech-1/src/scripts/run-e2e-ui-tests.sh
+         1  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/check-claude-login.sh
+         1  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/preflight-test-container.sh
+         1  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/check-claude-cli-parity.sh
+         1  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/preflight-test-container.sh
+         1  docker       lupin:src/scripts/bounce-watcher.sh
+         1  docker       lupin:src/scripts/check-claude-cli-parity.sh
+         1  docker       lupin:src/scripts/create_test_mock_user.py
+         1  sudo         lupin:src/scripts/install-cc-memory-watch.sh
+         1  sudo         lupin:src/scripts/install-cosa-voice.sh
+         1  docker       lupin:src/tests/run-docker-smoke-gate.sh
+scripts_run_calling_neither                  5021
+distinct_scripts_run                         268
+script_runs_not_found_on_disk                4744 (505 names; a removed worktree, or a path set by a variable)
+
+== (b) sudo and docker in the last 30 days, read from the transcripts (~/.claude/projects) ==
+transcript_files                             75563
+transcript_files_in_window                   36060
+bash_calls_in_window                         91112
+first_and_last_call                          2026-10-18 19:55 EDT to 2026-11-16 18:31 EST
+bash_calls_touching_sudo_or_docker           1285
+called directly (count, what; the program and its subcommand only):
+       229  docker exec
+       157  docker logs
+       102  docker ps
+        75  docker inspect
+        27  docker compose up
+        16  docker cp
+        15  docker compose ps
+        14  docker run
+        13  docker images
+         9  docker build
+         7  docker compose config
+         7  docker stop
+         6  docker restart
+         6  sudo docker exec
+         4  docker image inspect
+         4  docker rm
+         3  docker compose version
+         3  docker history
+         3  docker push
+         3  docker tag
+         2  docker compose exec
+         2  docker info
+         2  sudo docker inspect
+         2  sudo docker logs
+         2  sudo docker ps
+         2  sudo docker volume ls
+         1  docker 2
+         1  docker port
+scripts run whose own text calls sudo or docker (count, which, script):
+       573  sudo+docker  lupin:src/scripts/lupin-vm.sh
+       139  sudo+docker  lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/lupin-vm.sh
+        76  docker       lupin:src/scripts/bounce-dev-server.sh
+        41  docker       lupin:src/scripts/refresh-test-server.sh
+        36  docker       lupin:src/scripts/preflight-test-container.sh
+        21  docker       lupin:src/scripts/check-claude-login.sh
+        15  sudo+docker  lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/preflight-vm.sh
+        13  docker       lupin:src/scripts/verify-running-code.sh
+         8  sudo+docker  lupin:src/scripts/preflight-vm.sh
+         6  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/bounce-dev-server.sh
+         6  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/cloud-run-model-server-deploy.sh
+         4  sudo         lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/install-cosa-voice.sh
+         4  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/lib/claude-login-probe.sh
+         4  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/check-claude-login.sh
+         4  docker       lupin:src/scripts/backup-postgres.sh
+         4  docker       lupin:src/scripts/compose_drift_probe.py
+         2  docker       lupin:.claude/worktrees/seat-cc-author-cheech-1/src/scripts/run-e2e-ui-tests.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/check-claude-login.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-cheech-3/src/scripts/preflight-test-container.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/check-claude-cli-parity.sh
+         2  docker       lupin:.claude/worktrees/seat-cc-author-mr-radio-2/src/scripts/preflight-test-container.sh
+         2  docker       lupin:src/scripts/bounce-watcher.sh
+         2  sudo         lupin:src/scripts/install-cc-memory-watch.sh
+         2  sudo         lupin:src/scripts/install-cosa-voice.sh
+         2  docker       lupin:src/scripts/lib/preflight-smoke-admin-probe.sh
+         2  docker       lupin:src/tests/run-docker-smoke-gate.sh
+         1  docker       lupin:src/scripts/check-claude-cli-parity.sh
+         1  docker       lupin:src/scripts/create_test_mock_user.py
+scripts_run_calling_neither                  11860
+distinct_scripts_run                         315
+script_runs_not_found_on_disk                11199 (758 names; a removed worktree, or a path set by a variable)
+
+== (b) scripts in the lupin checkout whose text calls sudo or docker (the candidate sudoers list) ==
+script                                                     calls         transcripts  hook logs
+src/scripts/backup-postgres.sh                             docker                  4          3
+src/scripts/bounce-dev-server.sh                           docker                 76         37
+src/scripts/bounce-watcher.sh                              docker                  2          1
+src/scripts/check-claude-cli-parity.sh                     docker                  1          1
+src/scripts/check-claude-login.sh                          docker                 21         11
+src/scripts/cloud-run-build.sh                             docker                  0          0
+src/scripts/cloud-run-model-server-deploy.sh               docker                  0          0
+src/scripts/cloud-run-validate.sh                          docker                  0          0
+src/scripts/install-bounce-watcher.sh                      sudo                    0          0
+src/scripts/install-cc-memory-watch.sh                     sudo                    2          1
+src/scripts/install-cosa-voice.sh                          sudo                    2          1
+src/scripts/lib/claude-cli-parity-probe.sh                 docker                  0          0
+src/scripts/lib/claude-login-probe.sh                      docker                  0          0
+src/scripts/lib/preflight-smoke-admin-probe.sh             docker                  2          0
+src/scripts/lib/preflight-test-secret-probe.sh             sudo+docker             0          0
+src/scripts/lib/wait-for-container-restart.sh              docker                  0          0
+src/scripts/lupin-vm.sh                                    sudo+docker           573        172
+src/scripts/preflight-test-container.sh                    docker                 36         18
+src/scripts/preflight-vm.sh                                sudo+docker             8          2
+src/scripts/provision-arbiter-on-vm.sh                     sudo+docker             0          0
+src/scripts/refresh-test-server.sh                         docker                 41         21
+src/scripts/run-e2e-ui-tests.sh                            docker                  0          0
+src/scripts/run-postgresql-dev.sh                          docker                  0          0
+src/scripts/tfe_to_cc_matrix.sh                            docker                  0          0
+src/scripts/verify-running-code.sh                         docker                 13         12
+src/tests/e2e/run-bfe-live-e2e.sh                          docker                  0          0
+src/tests/e2e/run-tfe-live-e2e.sh                          docker                  0          0
+src/tests/run-docker-smoke-gate.sh                         docker                  2          1
+src/tests/run-integration-tests.sh                         docker                  0          0
+src/tmp/apply-vertex-clamps-part2-2026.07.15.sh            docker                  0          0
+
+== (c) repositories the fleet works in, and who owns each .git ==
+
+/mnt/DATA01/include/www.deepily.ai/projects/lupin
+    why listed                     configured (external repo lupin), hook logs, the lupin checkout, transcripts
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      41
+    directories | not group-writable | without setgid   394 | 0 | 394
+    files | not group-readable     10722 | 0
+    in the transcripts' window     54331 bash calls, 2957 file edits, 7 sudo, 460 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/lupin-mobile
+    why listed                     configured (external repo lupin-mobile), hook logs, transcripts
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      4
+    directories | not group-writable | without setgid   290 | 0 | 290
+    files | not group-readable     7319 | 0
+    in the transcripts' window     3489 bash calls, 293 file edits, 0 sudo, 25 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/planning-is-prompting
+    why listed                     configured (external repo planning-is-prompting), hook logs, transcripts
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   275 | 0 | 275
+    files | not group-readable     2313 | 0
+    in the transcripts' window     2140 bash calls, 302 file edits, 0 sudo, 32 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper
+    why listed                     transcripts
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   142 | 0 | 142
+    files | not group-readable     211 | 0
+    in the transcripts' window     5 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/lookml
+    why listed                     configured (external repo lookml)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   306 | 0 | 306
+    files | not group-readable     1622 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/par-pacific-financials-er-442109
+    why listed                     configured (external repo par-pacific)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   147 | 0 | 147
+    files | not group-readable     216 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/retail-ai-location-strategy
+    why listed                     configured (external repo retail-ai-location-strategy)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   45 | 0 | 45
+    files | not group-readable     70 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/google-project-wonderwall
+    why listed                     configured (external repo google-project-wonderwall)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   16 | 0 | 16
+    files | not group-readable     26 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/skills-distillation
+    why listed                     configured (external repo skills-distillation)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      9
+    directories | not group-writable | without setgid   289 | 0 | 289
+    files | not group-readable     3871 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/parallel-search
+    why listed                     configured (external repo parallel-search)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   205 | 0 | 205
+    files | not group-readable     364 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/weil-nda-drafting-suite
+    why listed                     configured (external repo weil-nda-drafting-suite)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   16 | 0 | 16
+    files | not group-readable     29 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/google/weil-parallel-search
+    why listed                     configured (external repo weil-parallel-search)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   232 | 0 | 232
+    files | not group-readable     529 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+/mnt/DATA01/include/www.deepily.ai/projects/scratchpad
+    why listed                     configured (external repo scratchpad)
+    .git owner:group mode          rruiz:rruiz 775
+    owners | groups inside .git    rruiz | rruiz
+    core.sharedRepository          unset
+    worktrees (main included)      1
+    directories | not group-writable | without setgid   25 | 0 | 25
+    files | not group-readable     36 | 0
+    in the transcripts' window     0 bash calls, 0 file edits, 0 sudo, 0 docker
+
+work recorded outside any repository (bash calls, file edits, where):
+     31110   2812  (no repository: no directory recorded)
+        30      7  (no repository: /mnt/DATA01/include/www.deepily.ai/projects/lupin/io/duplicate-check-daily)
+         6      0  (no repository: /tmp/tmpucnj7zmy)
+         1      0  (no repository: /tmp/tmp.BdXeG0HtBH)
+
+configured_repositories_not_on_this_host    4 of 16: cosa-voice claude-plans mcp-and-a2ui-apps weil-ge-mcp-server
+
+== summary ==
+account_privileged                           see (a): passwordless_sudo and docker_group
+hook_logs_bash_calls                         40072
+hook_logs_direct_sudo_calls                  7
+hook_logs_direct_docker_calls                443
+hook_logs_distinct_direct_forms              27
+hook_logs_privileged_scripts_run             26 scripts, 316 runs
+transcripts_bash_calls                       91112
+transcripts_direct_sudo_calls                14
+transcripts_direct_docker_calls              703
+transcripts_distinct_direct_forms            28
+transcripts_privileged_scripts_run           28 scripts, 976 runs
+lupin_scripts_calling_sudo_or_docker         30
+of_those_run_in_the_window                   14
+repositories_listed                          13
+repositories_worked_in_in_the_window         4
+repositories_already_group_shared            0
+repositories_needing_a_mode_repair           0
+repositories_with_more_than_one_owner        0
+worktrees_in_all                             64
