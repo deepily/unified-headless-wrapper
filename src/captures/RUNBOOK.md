@@ -4,13 +4,20 @@
 
 D73 (the deferred captures) closed every line of the October checklist without a capture run. The test VM's reading on AGY 1.5.9 is in (`src/captures/out/t34-deferred-captures-lupin-host-test-20261116.txt`: the data-directory flag hidden, `mcp(server/tool)` rules in the release notes, a `control_request` on standard input refused as "not supported yet"). Jetski's reading is the one thing owed. The script makes no model call: each engine reply it prints reports zero turns and zero tokens.
 
-**On the cloud workstation:**
+**Revised 2026-11-16, after the first Jetski run hung.** At step 3 (`jetski -p "/permissions"`) Jetski showed a permissions table and waited; the script's time limit did not end it, and Rick stopped it after ten minutes. The script now runs every engine launch with no terminal, kills it outright 5 seconds past its limit, writes output to files and not pipes, and **skips step 3 on any engine but AGY** (only AGY's release notes say print mode answers that line without a turn). The whole run is now bounded at about four minutes even if every launch stalls.
+
+**First, on the cloud workstation, clear what the hung run left** (look before killing; the pattern is the script's own scratch directory):
+```bash
+pgrep -af 't34-probe|jetski .*-p /permissions'
+```
+
+**Then:**
 ```bash
 git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
 src/captures/t34_deferred_captures.sh jetski | tee src/captures/out/t34-deferred-captures-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
 ```
 
-**What to paste back (or commit and push):** the whole output. The lines that decide things: `version`, `listed_in_help`, the `[version line]` lines, and `event_control_request` (if it no longer says "not supported yet", say so: that opens the item on the interrupt route). If Jetski has no `changelog` subcommand or no `/permissions` answer, the script prints what it got; paste that too.
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `version`, `listed_in_help`, the `[version line]` lines, and `event_control_request` (if it no longer says "not supported yet", say so: that opens the item on the interrupt route). A line reading `(cut at N s: …)` means that launch stalled and was ended; paste it as it is. Also say, from memory of the hung run, whether the permissions table looked like an interactive screen or like a model's reply: the second would mean Jetski took the line as a prompt and spent a turn.
 
 Still owed from the blocks below: the T38 naming inventory, the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
 
