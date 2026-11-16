@@ -1,0 +1,239 @@
+
+== checkout ==
+host                                           lupin-host-test
+clock                                          2026-11-15 23:35:57 EST
+lupin_head                                     aabadd221
+configuration_file                             MODIFIED in the working tree
+t19_delete_rows                                92 (file and dir rows read from t19_switch_over_inventory.sh)
+tracked_files                                  7508
+code_files                                     1649
+survivor_files                                 1540
+
+== any engine name, by scope (files | occurrences) ==
+tracked                                        1443 | 13047
+code                                           264 | 2134
+survivors                                      184 | 1498
+code deleted by the T19 list                   80 | 636
+tests (inside tracked)                         691 | 6512
+  claude_code in tests                         326 | 2733
+markdown (inside tracked)                      462 | 4187
+
+== the register's tokens (files | occurrences): code, then survivors ==
+claude_code                                    151 | 434   survivors 90 | 203
+claude\.code@                                  41 | 114   survivors 35 | 104
+claude-code                                    39 | 82   survivors 35 | 69
+ClaudeCode                                     16 | 93   survivors 14 | 88
+cc_session_id                                  6 | 106   survivors 6 | 106
+cc_pid                                         8 | 64   survivors 1 | 2
+cc-listener-                                   13 | 35   survivors 8 | 23
+cc-buffer-                                     6 | 19   survivors 1 | 3
+cc_meta                                        4 | 58   survivors 1 | 35
+
+== survivors by directory and extension (files holding any engine name) ==
+     92 cosa .py
+     22 lupin_app .ts
+     17 scripts .py
+     13 lupin_mcp .py
+     10 scripts .sh
+      8 lupin_app .css
+      6 conf .json
+      4 lupin_cli .py
+      2 lupin_app .py
+      2 lupin_app .js
+      2 lupin_app .html
+      2 conf .ini
+      1 scripts .sql
+      1 scripts .service
+      1 lupin_model_server .py
+      1 conf .template
+
+== surface 1: configuration keys (lupin-app.ini) ==
+distinct_keys                                  87
+  cc session voice persona …                 65
+  cc session … (other)                       15
+  cc transcript …                            5
+  claude code job …                          2
+  none of the four                             0
+    cc session fleet size cap
+    cc session fleet size cap maximum
+    cc session reap memento ask timeout seconds
+    cc session reap memento freshness window seconds
+    cc session reap memento min bytes
+    cc session reap memento poll interval seconds
+    cc session skeleton crew enabled
+    cc session spawn max reviewers
+    cc session spawn model author
+    cc session spawn model default
+    cc session spawn model observer
+    cc session spawn model reviewer
+    cc session spawn reviewer ack timeout seconds
+    cc session spawn write memento default
+    cc session worker default voice mode
+    cc transcript backlog tail bytes
+    cc transcript block budget bytes
+    cc transcript coalesce window ms
+    cc transcript poll interval seconds
+    cc transcript watcher grace seconds
+    claude code job max turns default
+    claude code job timeout seconds default
+     15     cc session voice persona <name> voice id
+      1     cc session voice persona sam profile
+      1     cc session voice persona sam icon
+      1     cc session voice persona sam color
+      1     cc session voice persona pool
+      1     cc session voice persona pocholo profile
+      1     cc session voice persona pocholo icon
+      1     cc session voice persona pocholo color
+      1     cc session voice persona overflow name
+      1     cc session voice persona maya profile
+      1     cc session voice persona maya icon
+      1     cc session voice persona maya color
+
+== surface 2: routes and socket names (survivors; string literals) ==
+      3 "/api/commons/broadcast-to-cc-sessions"
+      2 "/api/cc-transcript-roster"
+      1 "/src/conf/keys/notification-api-claude-code-dev"
+      1 "/cc-transcript/{cc_session_id}"
+      1 "/cc-transcript-roster"
+      1 "/broadcast-to-cc-sessions"
+      1 "/api/claude-code/submit"
+      1 "/api/claude-code/queue/submit"
+      1 "/api/cc-transcript"
+cc-listener- (files | occurrences)             8 | 23
+
+== surface 3: names inside string literals, survivors (wire fields, message kinds, stored values, storage keys) ==
+distinct_quoted_names                          129
+     15 claude_code
+     15 cc_session_id
+     13 cc-strip-toggle
+     10 .cc-voice-input
+      9 notification-api-claude-code-dev
+      9 claude.code
+      9 cc_transcript_unwatch
+      9 cc_transcript_state
+      8 cc-strip-icons
+      8 cc-listener-
+      7 cc_transcript_watch
+      7 cc_transcript_append
+      7 cc-session-strip
+      7 cc-prompt
+      7 .cc-strip-icon
+      6 cc-tts-fraction-slider
+      6 cc-hide-inactive-toggle
+      6 blocker-cc
+      5 claude_code.session_id
+      5 .cc-voice-input-row
+      5 .cc-strip-manager-badge
+      5 .cc-session-msg-input
+      4 cc-tts-fraction-value
+      4 cc-tts-fraction-ticks
+      4 cc-task-type
+      4 cc-submit
+      4 cc-stt-button
+      4 cc-strip-toggles
+      4 cc-session-msg-input
+      4 cc-project
+      4 cc-keep-place-toggle
+      4 .cc-session-stt
+      3 claude_code_tasks
+      3 claude.code.job
+      3 claude-code-section
+      3 cc-submit-status
+      3 cc-strip-icon
+      3 cc-loading
+      3 cc-listener-72116632
+      3 cc-dry-run
+
+== surface 4: environment variables and upper-case constants (survivors) ==
+distinct_upper_names                           21
+  the engine's own (CLAUDE_CODE_…)           0
+     39 LUPIN_CC_VENV
+     13 CC_VENV
+      5 CC_SETTINGS
+      5 CC_FOCUS_STATE_KEY
+      4 CC_VENV_REQS
+      4 CC_PROJECTS_DIR
+      4 CC_HIDE_INACTIVE_KEY
+      3 CC_VENV_EXPORT
+      3 CC_CONSOLE_RING_MAX_BYTES
+      3 CC_CONSOLE_CARD_ID_LENGTH
+      3 CC_CONSOLE_BUTTON_CLASS
+      2 CC_MIC_CONTEXT
+      2 CC_LISTENER_LUPIN
+      2 CC_CONSOLE_ROSTER_PATH
+      2 CC_CONSOLE_PAGE_PATH
+      2 CC_CONSOLE_MARKDOWN_KINDS
+      2 CC_CONSOLE_FOLDED_KINDS
+      1 PREFLIGHT_VM_CC_SETTINGS
+      1 PREFLIGHT_VM_CC_PROJECTS
+      1 LUPIN_CC_WINDOW_TOKENS
+      1 CC_CONSOLE_NEWEST_AT
+
+== surface 5: names on disk (survivors; patterns that end in a file extension) ==
+      7 cc-*.json
+      2 cc-memory-samples.log
+      2 cc-buffer-*.jsonl
+      1 cc-{PPID}.json
+      1 cc-memory-alerts.log
+      1 cc-listener-{session_hash}.log
+
+== surface 6: browser names (survivors) ==
+distinct_css_classes                           19
+          7 cc-strip
+          5 cc-tts
+          3 cc-voice
+          3 cc-session
+          1 cc-prompt
+browser_files_with_any                         26 | 409
+
+== surface 7: file and directory names (tracked code paths that carry an engine name) ==
+named_paths                                    87
+  deleted by the T19 list                      73
+  surviving                                    14
+          5 src/cosa/agents/claude_code
+          3 src/cosa/orchestration/claude_code
+          1 src/scripts/lib
+          1 src/scripts
+          1 src/cosa/rest/routers
+          1 src/cosa/rest
+          1 src/cosa/agents/shared
+          1 src/conf
+
+== surface 8: internal identifiers (survivors; not inside a string literal) ==
+distinct_names_all_surfaces                    380
+occurrences_all_surfaces                       1584
+
+== the sender address (claude.code@), survivors ==
+claude.code literal (files | occurrences)      38 | 131
+          1 conf
+         17 cosa
+          8 lupin_app
+          3 lupin_cli
+          2 lupin_mcp
+          7 scripts
+
+== rename families: where each is read (survivors; files | occurrences) ==
+voice persona keys                             6 | 167
+worker voice mode key                          3 | 4
+transcript keys                                4 | 18
+transcript route                               5 | 16
+transcript message kinds                       11 | 73
+transcript field cc_session_id                 6 | 106
+broadcast route                                7 | 12
+listener socket name                           8 | 23
+  of which prefix tests                        3 | 6
+shared key file name                           16 | 28
+hooks virtual environment variable             4 | 59
+browser storage keys                           2 | 4
+element ids (notifications-cc-…)             1 | 14
+element ids (multiplexer-cc-…)               2 | 15
+the Claude job (ClaudeCodeJob, …)            20 | 118
+legacy notifications.js alone                  149 lines
+
+== summary ==
+survivors_files_occurrences                    184 | 1498
+configuration_keys                             87
+quoted_names                                   129
+upper_case_names                               21
+css_classes                                    19
+named_paths_surviving                          14

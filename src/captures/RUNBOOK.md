@@ -1,6 +1,22 @@
 # Capture runbook
 
-## Run this now: the T36 identity inventory on the development server, zero tokens (2026-11-15)
+## Run this now: the T38 naming inventory on the development server, zero tokens (2026-11-15)
+
+D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t38_naming_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t38-naming-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `lupin_head`, `configuration_file`, the `survivors` line, the count under `surface 1`, and the block `rename families`. Add `--names` for every distinct name. Later, in lupin, the ratchet is the same script with `--ceiling <occurrences>`, which exits 1 when the count has risen.
+
+**Also on each host, no script:** `grep -nE '(^|_)CC_|CLAUDE_CODE' <the host's environment files and compose overrides>` and say whether anything appears that `src/conf/env-contract.tsv` does not list (T38 spec, Section 14).
+
+Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Still owed: the T36 identity inventory on the development server, zero tokens (2026-11-15)
 
 D70 (proven persona identity) has the kernel sign one grant per request with a key held only in its memory, and raises Lupin's slow key check as a lupin ticket. The test VM's reading is in (`src/captures/out/t36-identity-seams-lupin-host-test-20261115.txt`: 18 routers behind the account door, 8 naming a sender; shared-key send sites 7, 5 and 10; one bcrypt check about 345 ms; 2 active keys on the test database; `ptrace_scope` 1; the account privileged). The development server holds the production numbers.
 

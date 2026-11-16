@@ -153,7 +153,7 @@ file|move|Keep and import|src/cosa/utils/vertex_env.py
 symbol|move|Keep|HeartbeatPokerJob
 file|move|Keep|src/cosa/rest/routers/cc_transcript.py
 file|move|Keep|src/lupin_mcp/cosa_voice_mcp.py
-route|switch|Rename|cc-listener-
+route|delete|Rename|cc-listener-
 route|switch|Rename|broadcast-to-cc-sessions
 route|delete|Rename|/api/cc-transcript
 route|move|Rename (repoint)|/api/arbiter/context-pressure
