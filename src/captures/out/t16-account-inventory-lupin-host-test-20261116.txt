@@ -1,7 +1,7 @@
 
 == host ==
 host                                         lupin-host-test
-clock                                        2026-11-16 18:28:07 EST
+clock                                        2026-11-16 18:47:34 EST
 lupin_checkout                               /mnt/lupin-data/lupin
 lupin_head                                   67456220d
 window_days                                  30
@@ -38,10 +38,12 @@ first_and_last_call                          none to none
 bash_calls_touching_sudo_or_docker           0
 called directly (count, what; the program and its subcommand only):
     none
-scripts run whose own text calls sudo or docker (count, which, script):
+scripts run whose own text calls sudo or docker (count, which, script; a worktree's copy counts with the script;
+  * = the script also opens a remote shell, so its sudo and docker lines may run on another host):
     none
 scripts_run_calling_neither                  0
 distinct_scripts_run                         0
+script_runs_from_a_worktree_copy             0
 script_runs_not_found_on_disk                0 (0 names; a removed worktree, or a path set by a variable)
 
 == (b) sudo and docker in the last 30 days, read from the transcripts (~/.claude/projects) ==
@@ -67,15 +69,18 @@ called directly (count, what; the program and its subcommand only):
          1  sudo docker compose config
          1  sudo install
          1  sudo python3
-scripts run whose own text calls sudo or docker (count, which, script):
+scripts run whose own text calls sudo or docker (count, which, script; a worktree's copy counts with the script;
+  * = the script also opens a remote shell, so its sudo and docker lines may run on another host):
         10  docker       buganizer-time-keeper:deploy/deploy_timesheet_mcp.sh
          5  docker       mcp-and-a2ui-apps:deploy/deploy.sh
          1  docker       weil-ge-mcp-server:deploy/terraform/build.sh
 scripts_run_calling_neither                  44
 distinct_scripts_run                         16
+script_runs_from_a_worktree_copy             0
 script_runs_not_found_on_disk                25 (11 names; a removed worktree, or a path set by a variable)
 
 == (b) scripts in the lupin checkout whose text calls sudo or docker (the candidate sudoers list) ==
+(* = the script also opens a remote shell: ssh, scp or gcloud compute ssh)
 script                                                     calls         transcripts  hook logs
 src/scripts/backup-postgres.sh                             docker                  0          0
 src/scripts/bounce-dev-server.sh                           docker                  0          0
@@ -87,13 +92,13 @@ src/scripts/cloud-run-model-server-deploy.sh               docker               
 src/scripts/cloud-run-validate.sh                          docker                  0          0
 src/scripts/install-bounce-watcher.sh                      sudo                    0          0
 src/scripts/install-cc-memory-watch.sh                     sudo                    0          0
-src/scripts/install-cosa-voice.sh                          sudo                    0          0
+src/scripts/install-cosa-voice.sh                          sudo*                   0          0
 src/scripts/lib/claude-cli-parity-probe.sh                 docker                  0          0
 src/scripts/lib/claude-login-probe.sh                      docker                  0          0
 src/scripts/lib/preflight-smoke-admin-probe.sh             docker                  0          0
 src/scripts/lib/preflight-test-secret-probe.sh             sudo+docker             0          0
 src/scripts/lib/wait-for-container-restart.sh              docker                  0          0
-src/scripts/lupin-vm.sh                                    sudo+docker             0          0
+src/scripts/lupin-vm.sh                                    sudo+docker*            0          0
 src/scripts/preflight-test-container.sh                    docker                  0          0
 src/scripts/preflight-vm.sh                                sudo+docker             0          0
 src/scripts/provision-arbiter-on-vm.sh                     sudo+docker             0          0
@@ -145,8 +150,8 @@ src/tests/run-integration-tests.sh                         docker               
     owners | groups inside .git    admin_rickruiz_altostrat_com | admin_rickruiz_altostrat_com
     core.sharedRepository          unset
     worktrees (main included)      1
-    directories | not group-writable | without setgid   240 | 0 | 240
-    files | not group-readable     567 | 0
+    directories | not group-writable | without setgid   243 | 0 | 243
+    files | not group-readable     590 | 0
     in the transcripts' window     57 bash calls, 8 file edits, 5 sudo, 24 docker
 
 /mnt/lupin-data/google/buganizer-time-keeper
@@ -201,11 +206,13 @@ hook_logs_direct_sudo_calls                  0
 hook_logs_direct_docker_calls                0
 hook_logs_distinct_direct_forms              0
 hook_logs_privileged_scripts_run             0 scripts, 0 runs
+hook_logs_of_those_with_no_remote_shell      0 scripts, 0 runs
 transcripts_bash_calls                       811
 transcripts_direct_sudo_calls                9
 transcripts_direct_docker_calls              146
 transcripts_distinct_direct_forms            16
 transcripts_privileged_scripts_run           3 scripts, 16 runs
+transcripts_of_those_with_no_remote_shell    3 scripts, 16 runs
 lupin_scripts_calling_sudo_or_docker         29
 of_those_run_in_the_window                   0
 repositories_listed                          8

@@ -14,6 +14,8 @@
 #   the transcripts  ~/.claude/projects/**/*.jsonl (every Bash call the engine made).
 # Prints program names, subcommands, script paths and counts. Never a command line, an argument,
 # an environment value or a file's content.
+# A script's "calls" are read from its own text: it cannot say on which host a line runs. A script that also
+# opens a remote shell is marked *, and its sudo and docker lines are to be read before they are counted.
 # Usage: t16_account_inventory.sh <path to the lupin checkout> [days, default 30] [another repository ...]
 #        t16_account_inventory.sh --self-test
 set -u
@@ -76,6 +78,7 @@ SEPARATOR  = re.compile(r"^[;&|()]+$")
 REDIRECT   = re.compile(r"^[<>&|]*[<>][<>&|]*$")
 HEREDOC    = re.compile(r"<<-?\s*(['\"]?)(\w+)\1.*?\n\s*\2\b", re.S)
 STATIC     = re.compile(r"(^|[\s;&|(\"'\[`])(sudo|docker)([\s\"',\]]|$)")
+REMOTE     = re.compile(r"(^|[\s;&|(\"'`])(ssh|scp|gcloud\s+compute\s+(ssh|scp))\s")
 WORKTREE   = re.compile(r"^(.*?)/\.claude/worktrees/[^/]+(/.*)?$")
 
 def hr(title): print("\n== %s ==" % title)
@@ -97,7 +100,9 @@ def segments(command):
         if SEPARATOR.match(token):
             if words: out.append(words)
             words = []
-        elif REDIRECT.match(token): skip = True
+        elif REDIRECT.match(token):
+            skip = True
+            if words and words[-1].isdigit(): words.pop()
         elif token in ("$", "`", "{", "}", "then", "do", "else", "if", "while", "!"):
             if words: out.append(words)
             words = []
@@ -114,6 +119,7 @@ def strip_prefix(words):
         elif head == "timeout":
             words.pop(0)
             while words and (words[0].startswith("-") or re.match(r"^[0-9.]+[smhd]?$", words[0])): words.pop(0)
+        elif head == "command" and len(words) > 1 and words[1] in ("-v", "-V"): return []
         elif head in WRAPPERS:
             words.pop(0)
             while words and words[0].startswith("-"): words.pop(0)
@@ -180,6 +186,9 @@ def self_test():
         ("uv run python src/tests/x.py && ./run.sh", [("script", "src/tests/x.py"), ("script", "./run.sh")]),
         ("git commit -m \"stop using docker\"", []),
         ("sudo ./install.sh", [("sudo", "sudo <script> install.sh")]),
+        ("command -v docker 2>/dev/null && echo yes", []),
+        ("docker ps 2>/dev/null; docker 2>&1 info", [("docker", "docker ps"), ("docker", "docker info")]),
+        ("which docker; type sudo", []),
     ]
     failed = 0
     for command, expected in cases:
@@ -270,17 +279,28 @@ def show(path):
     return "~" + path[len(HOME):] if path.startswith(HOME + "/") else path
 
 def static_calls(path):
-    """Which of sudo and docker a script's own text calls or names, comments left out: '', 'sudo', 'docker', 'sudo+docker'."""
+    """Which of sudo and docker a script's own text calls or names, comments left out: '', 'sudo', 'docker', 'sudo+docker'.
+    A trailing * says the script also opens a remote shell (ssh, scp, gcloud compute ssh), so those lines may run on another host."""
     if path not in static_cache:
-        found = set()
+        found, remote = set(), False
         try:
             with open(path, errors="replace") as handle:
                 for line in handle:
                     if line.lstrip().startswith("#"): continue
                     for match in STATIC.finditer(line): found.add(match.group(2))
+                    if REMOTE.search(line): remote = True
         except OSError: found = {"unreadable"}
-        static_cache[path] = "+".join(sorted(found, reverse=True))
+        static_cache[path] = "+".join(sorted(found, reverse=True)) + ("*" if remote and found and found != {"unreadable"} else "")
     return static_cache[path]
+
+def working_tree(directory):
+    """The top of the working tree a directory is in (a worktree's own top, not its repository's), or None."""
+    key = ("top", directory)
+    if key not in toplevel_cache:
+        try: top = subprocess.run(["git", "-C", directory, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=10).stdout.strip()
+        except Exception: top = ""
+        toplevel_cache[key] = top or None
+    return toplevel_cache[key]
 
 def resolve_script(word, cwd):
     word = word.replace("$HOME", HOME).replace("${HOME}", HOME)
@@ -289,13 +309,15 @@ def resolve_script(word, cwd):
     path = os.path.normpath(path)
     if not os.path.isfile(path):
         gone = WORKTREE.match(path)
-        if gone and gone.group(2) and os.path.isfile(gone.group(1) + gone.group(2)): path = gone.group(1) + gone.group(2)
-        else: return None
+        if gone and gone.group(2) and os.path.isfile(gone.group(1) + gone.group(2)): return gone.group(1) + gone.group(2)
+        home = main_checkout(cwd) if cwd and not os.path.isabs(os.path.expanduser(word)) else None
+        if home and os.path.isfile(os.path.normpath(os.path.join(home, word))): return os.path.normpath(os.path.join(home, word))
+        return None
     return path
 
 def tally(rows):
     result = {"bash": 0, "direct": collections.Counter(), "scripts": collections.Counter(), "missing": collections.Counter(),
-              "repositories": collections.defaultdict(collections.Counter), "first": None, "last": None, "with_privilege": 0}
+              "repositories": collections.defaultdict(collections.Counter), "first": None, "last": None, "with_privilege": 0, "worktree_copies": 0}
     for when, cwd, tool, command, _ in rows:
         repository = main_checkout(cwd) if cwd else None
         key = repository or "(no repository: %s)" % (show(cwd) if cwd else "no directory recorded")
@@ -319,8 +341,9 @@ def tally(rows):
                 path = resolve_script(kind[1], here)
                 if path is None: result["missing"][os.path.basename(kind[1])] += 1; continue
                 calls = static_calls(path)
-                home = main_checkout(os.path.dirname(path))
-                label = "%s:%s" % (os.path.basename(home), os.path.relpath(path, home)) if home else show(path)
+                home, top = main_checkout(os.path.dirname(path)), working_tree(os.path.dirname(path))
+                label = "%s:%s" % (os.path.basename(home), os.path.relpath(path, top)) if home and top else show(path)
+                if home and top and os.path.realpath(top) != os.path.realpath(home): result["worktree_copies"] += 1
                 result["scripts"][(label, calls)] += 1
                 if calls and calls != "unreadable": privileged = True
         if privileged: result["with_privilege"] += 1
@@ -340,12 +363,14 @@ def report(name, stats, result):
     print("called directly (count, what; the program and its subcommand only):")
     for label, count in sorted(result["direct"].items(), key=lambda item: (-item[1], item[0])): print("    %6d  %s" % (count, label))
     if not result["direct"]: print("    none")
-    print("scripts run whose own text calls sudo or docker (count, which, script):")
+    print("scripts run whose own text calls sudo or docker (count, which, script; a worktree's copy counts with the script;")
+    print("  * = the script also opens a remote shell, so its sudo and docker lines may run on another host):")
     listed = [(count, calls, label) for (label, calls), count in result["scripts"].items() if calls and calls != "unreadable"]
     for count, calls, label in sorted(listed, key=lambda item: (-item[0], item[2])): print("    %6d  %-12s %s" % (count, calls, label))
     if not listed: print("    none")
     val("scripts_run_calling_neither", sum(count for (label, calls), count in result["scripts"].items() if not calls))
     val("distinct_scripts_run", len(result["scripts"]))
+    val("script_runs_from_a_worktree_copy", result["worktree_copies"])
     val("script_runs_not_found_on_disk", "%d (%d names; a removed worktree, or a path set by a variable)" % (sum(result["missing"].values()), len(result["missing"])))
     return listed
 
@@ -384,6 +409,7 @@ for folder, directories, names in os.walk(os.path.join(LUPIN, "src")):
             relative = os.path.relpath(path, LUPIN)
             label = "%s:%s" % (lupin_name, relative)
             static_rows.append((relative, calls, runs.get(label, 0), hook_runs.get(label, 0)))
+print("(* = the script also opens a remote shell: ssh, scp or gcloud compute ssh)")
 print("%-58s %-12s %12s %10s" % ("script", "calls", "transcripts", "hook logs"))
 for relative, calls, in_transcripts, in_hooks in sorted(static_rows): print("%-58s %-12s %12d %10d" % (relative[:58], calls, in_transcripts, in_hooks))
 if not os.path.isdir(os.path.join(LUPIN, "src")): print("    (no src directory under %s)" % LUPIN)
@@ -481,6 +507,7 @@ for name, result, listed in (("hook_logs", hook_result, hook_listed), ("transcri
     val(name + "_direct_docker_calls", sum(count for label, count in result["direct"].items() if label.startswith("docker")))
     val(name + "_distinct_direct_forms", len(result["direct"]))
     val(name + "_privileged_scripts_run", "%d scripts, %d runs" % (len(listed), sum(count for count, _, _ in listed)))
+    val(name + "_of_those_with_no_remote_shell", "%d scripts, %d runs" % (sum(1 for _, calls, _ in listed if not calls.endswith("*")), sum(count for count, calls, _ in listed if not calls.endswith("*"))))
 val("lupin_scripts_calling_sudo_or_docker", len(static_rows))
 val("of_those_run_in_the_window", sum(1 for row in static_rows if row[2] or row[3]))
 val("repositories_listed", totals["repositories"])

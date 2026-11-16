@@ -1,6 +1,8 @@
 # Capture runbook
 
-## Owed: the T16 account inventory on the development server, zero tokens (2026-11-16, row 20)
+## Done 2026-11-16: the T16 account inventory on the development server, zero tokens (row 20). Nothing here is owed; a rerun with the repaired script is optional
+
+**Result** (Rick, commit `40b2916`; `src/captures/out/t16-account-inventory-dual-rtx-4090s-20261116.txt`; read in the T16 spec's last amendment): the fleet runs as `rruiz`, in `docker` and `lxd`, with no passwordless `sudo` but for one named program; 703 direct `docker` calls and about 233 script runs driving Docker on the host in 30 days, `sudo` unused; thirteen repositories, none group-shared, none needing a mode repair. The script was repaired afterwards (remote shells marked, worktree copies merged, a misread redirection); the block below is as it was run.
 
 D59 (the fleet) part 9 puts the kernel and the engines under a dedicated account with no `sudo` and no `docker` membership on a production host, at the switch-over. This inventory sizes that account's two known costs before any detail is ruled: the repositories that must become group-writable, and the short `sudoers` list for the scripts that drive Docker. It reads the account's groups and `sudo` rules, the last 30 days of the old harness's hook logs and of the Claude transcripts under `~/.claude/projects`, and the owner and mode of every `.git` the fleet works in. It writes nothing, makes no model call, and prints program names, subcommands, script paths and counts, never a command line. Run it **as the account the fleet runs under**. The test VM's run (a shakedown; no fleet runs there) took 15 seconds: `src/captures/out/t16-account-inventory-lupin-host-test-20261116.txt`.
 
