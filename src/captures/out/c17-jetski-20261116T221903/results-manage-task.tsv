@@ -1,0 +1,6 @@
+tool	action	argument keys	sample
+run_command	-	CommandLine,IsDaemon,WaitMsBeforeAsync,toolSummary	
+manage_task	list	Action	{"Action": "list"}
+manage_task	status	Action,TaskId	{"Action": "status", "TaskId": "47751e15-ed35-4feb-acc2-3d41f15609e6/task-2"}
+manage_task	send_input	Action,Input,TaskId	{"Action": "send_input", "Input": "uhw-input-7731\n", "TaskId": "47751e15-ed35-4feb-acc2-3d41f15609e6/task-2"}
+manage_task	kill	Action,TaskId	{"Action": "kill", "TaskId": "47751e15-ed35-4feb-acc2-3d41f15609e6/task-2"}
