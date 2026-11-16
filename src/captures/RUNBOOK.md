@@ -1,6 +1,57 @@
 # Capture runbook
 
-## Run this now: the T34 deferred-capture readings on the cloud workstation (Jetski), zero tokens (2026-11-16)
+## Run this now: C17, the engines' internal tools, on the test VM (AGY); it spends model turns (2026-11-16)
+
+C17 is what T14 (the last measure item) waits on, and it is part of row 13 of "Outstanding actions". It asks which built-in tools the engine has beyond the ones it lists, and what arguments each takes. **It is not a zero-token capture:** up to 32 short turns on the flash model (17 launches with every tool denied, then one turn per tool that exists).
+
+**AGY, on the test VM, from the repo root:**
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper
+tmux new -s c17                                            # reattach later with: tmux attach -t c17
+MODEL=gemini-3.8-flash-high python3 src/captures/c17_internal_tools.py agy
+```
+
+**What to paste back** (or say "done" to the session on the test VM, which reads the files itself):
+```bash
+cat src/captures/out/c17-agy-*/verdict.txt src/captures/out/c17-agy-*/tool-map.tsv
+```
+
+**Jetski, on the cloud workstation, when it is handy:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+MODEL=gemini-flash-next python3 src/captures/c17_internal_tools.py jetski
+cat src/captures/out/c17-jetski-*/verdict.txt src/captures/out/c17-jetski-*/tool-map.tsv
+```
+
+**Checked before this block was written (2026-11-16, after the T34 script hung on Jetski):**
+- Every launch is bounded. The driver starts the engine with pipes and no terminal, in a session of its own; a turn that brings no result is abandoned at 180 seconds, standard input is closed, and 10 seconds later the process group is killed. A launch can cost about 190 seconds and no more.
+- So the run cannot hang for good. If every launch stalled it would end in about 100 minutes; the 8 minutes the older block states is an estimate from 2026-11-03 that has never been measured.
+- `gemini-3.8-flash-high` is a model AGY 1.5.9 lists (`agy models`). `gemini-flash-next` for Jetski was not rechecked.
+- It writes only to throwaway workspaces and `src/captures/out/`; the script itself changes nothing under `~/.gemini/` (the engine keeps its usual record of each launch there).
+- **Not checked:** the candidate names were chosen on 2026-11-03 against AGY 1.4.7. The run on 1.5.9 says which of them exist; it cannot find a tool that is not on its list. `CANDIDATES="name1 name2"` in front of the command overrides the list.
+- A line reading `oracle calibrated … NO` in the verdict means the method no longer works on this version (a made-up tool name was accepted, or `run_command` refused); paste it as it is.
+
+C15 and C16, the rest of row 13, are in the block "Then: C15–C17" below and do not hold up T14.
+
+## Still owed: the T38 naming inventory on the development server, zero tokens (2026-11-15)
+
+D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
+
+**On the development server:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
+src/captures/t38_naming_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t38-naming-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: `lupin_head`, `configuration_file`, the `survivors` line, the count under `surface 1`, and the block `rename families`. Add `--names` for every distinct name. Later, in lupin, the ratchet is the same script with `--ceiling <occurrences>`, which exits 1 when the count has risen.
+
+**Also on each host, no script:** `grep -nE '(^|_)CC_|CLAUDE_CODE' <the host's environment files and compose overrides>` and say whether anything appears that `src/conf/env-contract.tsv` does not list (T38 spec, Section 14).
+
+Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
+
+## Done 2026-11-16: the T34 deferred-capture readings on the cloud workstation (Jetski), zero tokens
+
+**Done:** `src/captures/out/t34-deferred-captures-rickruiz.c.googlers.com-20261116.txt` (Jetski 2026.11.13); results in the T34 spec, Section 12. Kept for the record of the hung first run.
 
 D73 (the deferred captures) closed every line of the October checklist without a capture run. The test VM's reading on AGY 1.5.9 is in (`src/captures/out/t34-deferred-captures-lupin-host-test-20261116.txt`: the data-directory flag hidden, `mcp(server/tool)` rules in the release notes, a `control_request` on standard input refused as "not supported yet"). Jetski's reading is the one thing owed. The script makes no model call: each engine reply it prints reports zero turns and zero tokens.
 
@@ -20,22 +71,6 @@ src/captures/t34_deferred_captures.sh jetski | tee src/captures/out/t34-deferred
 **What to paste back (or commit and push):** the whole output. The lines that decide things: `version`, `listed_in_help`, the `[version line]` lines, and `event_control_request` (if it no longer says "not supported yet", say so: that opens the item on the interrupt route). A line reading `(cut at N s: …)` means that launch stalled and was ended; paste it as it is. Also say, from memory of the hung run, whether the permissions table looked like an interactive screen or like a model's reply: the second would mean Jetski took the line as a prompt and spent a turn.
 
 Still owed from the blocks below: the T38 naming inventory, the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
-
-## Still owed: the T38 naming inventory on the development server, zero tokens (2026-11-15)
-
-D71 (engine-neutral naming) renames what says `cc` or `claude_code` where a persona is meant, family by family, and puts a ratchet on what is left. The test VM's reading is in (`src/captures/out/t38-naming-lupin-host-test-20261115.txt`, lupin `aabadd221`: 1,498 surviving occurrences in 184 code files, 636 more in files the switch-over list deletes, 87 configuration keys). The development server's checkout may be at a later commit and its `lupin-app.ini` is the production one, so its count is the one the ratchet's ceiling will be taken from at the Switch.
-
-**On the development server:**
-```bash
-git pull --rebase && chmod +x src/captures/*.sh src/captures/*.py
-src/captures/t38_naming_inventory.sh <path to the lupin checkout on the development server> | tee src/captures/out/t38-naming-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
-```
-
-**What to paste back (or commit and push):** the whole output. The lines that decide things: `lupin_head`, `configuration_file`, the `survivors` line, the count under `surface 1`, and the block `rename families`. Add `--names` for every distinct name. Later, in lupin, the ratchet is the same script with `--ceiling <occurrences>`, which exits 1 when the count has risen.
-
-**Also on each host, no script:** `grep -nE '(^|_)CC_|CLAUDE_CODE' <the host's environment files and compose overrides>` and say whether anything appears that `src/conf/env-contract.tsv` does not list (T38 spec, Section 14).
-
-Still owed from the blocks below: the T36 identity inventory and the T35 persona-name inventory on the development server, the T22 engine-account inventory on both hosts, C20 and the T31 dry run on the test VM, the T19 inventory on both hosts.
 
 ## Still owed: the T36 identity inventory on the development server, zero tokens (2026-11-15)
 
