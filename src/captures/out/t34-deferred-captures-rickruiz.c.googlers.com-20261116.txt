@@ -1,0 +1,37 @@
+
+== host and engine ==
+host                                         rickruiz.c.googlers.com
+clock                                        2026-11-16 11:56:47 EST
+engine                                       jetski
+binary                                       /google/bin/images/image-6af7381e-0000-2682-986c-ac3eb14cf4c4/cli
+version                                      2026.11.13
+
+== 1. per-persona data directory ==
+listed_in_help                               1
+help_flag_count                              72
+name_in_binary_app_data_dir                  1
+flag_form_in_binary                          
+default_directory                            /usr/local/google/home/rickruiz/.gemini/config/ /usr/local/google/home/rickruiz/.gemini/jetski/ 
+sign_in_file                                 
+
+== 2. and 3. the vendor's release notes (jetski changelog) ==
+changelog_lines                              1493
+newest_version                               
+[ line 83] · Added a `finished_reason` field to the result of headless `-p` runs with `--output-format json` or `stream-json` that says why a turn ended early, `print_timeout` when `--print-timeout` expired and the response is partial, `interrupted` when the run was canceled such as with `Ctrl+C`, or `error` for any other failure, so scripts can tell a cut-off answer from a complete one, with the field left out when the turn finishes nor
+[ line 171] · Fixed failed tool calls, including calls to a tool that does not exist and canceled or interrupted calls, being passed back to the agent as ordinary or empty results, so the agent now sees them as errors and can recover on its next step.
+lines_naming_control_request                 0
+
+== 3. the rule table the engine prints (-p /permissions, no turn) ==
+skipped on jetski: print mode is only known to answer /permissions without a turn on AGY.
+To try it anyway (it may be taken as a prompt): add --with-slash-commands.
+
+== 4. protocol interrupt: a control_request on standard input, no turn in flight ==
+type_control_request                         exit 1 | ERROR | stream input message is missing the "event" field | turns 0 | tokens 0
+event_control_request                        exit 2 | ERROR | stream input message event "control_request" is not supported yet | turns 0 | tokens 0
+event_interrupt                              exit 0 | no result frame | stderr: [?12l[?25hwarning: ignoring unsupported stream input message event "interrupt"
+refusal_text_in_binary                       
+
+== summary ==
+Read: section 1 (listed_in_help 0 with name_in_binary above 0 = a hidden flag); the [version] lines
+under sections 2 and 3; and the event_control_request line. 'is not supported yet' there means the
+engine still has no protocol interrupt, so the adapter keeps interrupt_mode = signal.
