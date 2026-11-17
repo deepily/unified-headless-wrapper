@@ -1,0 +1,140 @@
+
+== host ==
+host                                         dual-rtx-4090s
+clock                                        2026-11-16 20:54:52 EST
+
+== (a) the account and its neighbours ==
+account                                      rruiz
+uid_gid                                      1001:1001
+home                                         /home/rruiz
+groups                                       rruiz adm cdrom sudo dip plugdev lpadmin lxd sambashare docker
+login accounts (name, uid, shell), uid 1000 and above:
+    bizon                        1000     /bin/bash
+    libvirt-qemu                 64055    /usr/sbin/nologin
+    rruiz                        1001     /bin/bash
+members of the groups that give root's reach, where the group exists:
+    sudo           bizon,rruiz
+    docker         bizon,rruiz
+    lxd            bizon,rruiz
+    libvirt        bizon
+    kvm            bizon
+    disk           (none)
+    adm            syslog,bizon,rruiz
+processes by account, uid 1000 and above (count, account):
+        84  rruiz
+
+== (b) credential kinds in this home (path, what is there; no content is read) ==
+    ~/.config/gcloud                             directory  rruiz:rruiz 775  15 entries
+    ~/.config/gcloud/application_default_credentials.json file       rruiz:rruiz 600  399 bytes
+    ~/.config/gcloud/credentials.db              file       rruiz:rruiz 600  12288 bytes
+    ~/.config/gcloud/legacy_credentials          directory  rruiz:rruiz 775  1 entries
+    ~/.config/gh/hosts.yml                       file       rruiz:rruiz 600  110 bytes
+    ~/.git-credentials                           file       rruiz:rruiz 600  68 bytes
+    ~/.netrc                                     absent
+    ~/.docker/config.json                        file       rruiz:rruiz 600  738 bytes
+    ~/.ssh                                       directory  rruiz:rruiz 700  17 entries
+    ~/.gnupg                                     absent
+    ~/.aws                                       absent
+    ~/.kube                                      absent
+    ~/.npmrc                                     absent
+    ~/.pypirc                                    absent
+    ~/.local/share/keyrings                      absent
+    ~/.claude/.credentials.json                  file       rruiz:rruiz 600  559 bytes
+    ~/.gemini                                    directory  rruiz:rruiz 775  5 entries
+    ~/.lupin                                     directory  rruiz:rruiz 775  33 entries
+    ~/.lupin/config                              file       rruiz:rruiz 600  2323 bytes
+    ~/.lora_env                                  file       rruiz:rruiz 664  717 bytes
+ssh_private_keys                             1
+ssh_authorized_keys_lines                    1
+ssh_agent_socket                             unset
+git_credential_helper                        store
+lupin_config_owner_section                   absent
+
+== (c) daemon sockets this account can write ==
+    /var/run/docker.sock                         root:docker 660  writable=yes
+    /var/snap/lxd/common/lxd/unix.socket         absent
+    /var/lib/lxd/unix.socket                     absent
+    /var/lib/incus/unix.socket                   absent
+    /var/run/libvirt/libvirt-sock                root:libvirt 660  writable=no
+lxd_daemon                                   inactive / inactive
+sudo rules for this account (sudo -n -l; no password is ever offered):
+    User rruiz may run the following commands on dual-rtx-4090s:
+        (ALL : ALL) ALL
+        (root) NOPASSWD: /usr/local/sbin/lupin-install-db-secrets \"\"
+passwordless program                         /usr/local/sbin/lupin-install-db-secrets  root:root 755
+
+== (d) running containers: user, privilege, and what each mounts from this home ==
+docker_server_version                        24.0.4
+docker_runtimes                              io.containerd.runc.v2 runc 
+docker_rootless                              no
+docker_authorization_plugins                 none
+
+lupin-rest-test
+    user | privileged                        1001:1001 | false
+    compose project | service                lupin | lupin-rest-test
+    compose working directory                /mnt/DATA01/include/www.deepily.ai/projects/lupin
+    mounts | writable                        35 | 12
+    from this home or a socket: ro  /home/rruiz/.lora_env  ->  /home/rruiz/.lora_env
+    from this home or a socket: ro  /home/rruiz/.lupin  ->  /home/rruiz/.lupin
+    from this home or a socket: rw  /home/rruiz/.claude/sessions-test  ->  /home/rruiz/.claude/sessions
+    from this home or a socket: ro  /home/rruiz/.claude/plans  ->  /var/external-claude/plans
+    writable bind sources owned by: rruiz(uid=1001) (10)
+
+lupin-rest-dev
+    user | privileged                        1001:1001 | false
+    compose project | service                lupin | lupin-rest-dev
+    compose working directory                /mnt/DATA01/include/www.deepily.ai/projects/lupin
+    mounts | writable                        35 | 12
+    from this home or a socket: ro  /home/rruiz/.lora_env  ->  /home/rruiz/.lora_env
+    from this home or a socket: ro  /home/rruiz/.claude/plans  ->  /var/external-claude/plans
+    from this home or a socket: ro  /home/rruiz/.claude/projects  ->  /home/rruiz/.claude/projects
+    from this home or a socket: rw  /home/rruiz/.claude/sessions  ->  /home/rruiz/.claude/sessions
+    from this home or a socket: ro  /home/rruiz/.lupin  ->  /home/rruiz/.lupin
+    from this home or a socket: ro  /home/rruiz/.config/gcloud  ->  /home/rruiz/.config/gcloud
+    writable bind sources owned by: rruiz(uid=1001) (10)
+
+lupin-model-server
+    user | privileged                        1001:1001 | false
+    compose project | service                lupin | lupin-model-server
+    compose working directory                /mnt/DATA01/include/www.deepily.ai/projects/lupin
+    mounts | writable                        2 | 0
+
+lupin-postgres
+    user | privileged                        (image default) | false
+    compose project | service                lupin | postgres
+    compose working directory                /mnt/DATA01/include/www.deepily.ai/projects/lupin
+    mounts | writable                        4 | 4
+    writable bind sources owned by: rruiz(uid=1001) (3)
+    writable bind sources owned by: UNKNOWN(uid=999) (1)
+
+== (e) what a second account would meet ==
+lupin_checkout_owner                         rruiz:rruiz 775 (uid 1001)
+lupin_checkout_parent_owner                  rruiz:rruiz 744
+lupin_compose_user_lines                     3 ("1001:1001")
+linger                                       Linger=yes
+user units running under this account (names):
+    dbus.service
+    gvfs-afc-volume-monitor.service
+    gvfs-daemon.service
+    gvfs-goa-volume-monitor.service
+    gvfs-gphoto2-volume-monitor.service
+    gvfs-metadata.service
+    gvfs-mtp-volume-monitor.service
+    gvfs-udisks2-volume-monitor.service
+    lupin-arbiter-app.service
+    lupin-bounce-watcher.service
+    lupin-cc-memory-watch.service
+    pipewire-media-session.service
+    pipewire.service
+    pulseaudio.service
+    snap.snapd-desktop-integration.snapd-desktop-integration.service
+    tmux-server.service
+    tmux-watch.service
+    tracker-miner-fs-3.service
+    xdg-document-portal.service
+    xdg-permission-store.service
+crontab_lines                                26
+subuid_entry                                 present
+newuidmap                                    absent
+rootless_setup_tool                          present
+git_safe_directory_entries                   0
