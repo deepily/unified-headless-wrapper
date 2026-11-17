@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-15 (amended after T36) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-16 (amended after row 60) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -86,7 +86,7 @@ Edits are Python read-modify-write scripts that assert each anchor occurs exactl
 2. `chronicle.md`: one entry, `## YYYY-MM-DD · Tnn, <name> → Dnn`, with paragraphs **Asked**, **Read**, **Found**, **Ruled**, **Written**, **Process**, written while the context is still in hand.
 3. `transcripts/YYYY.MM.DD-tNN.md`: a header (As of, how it was rendered), then Rick's turns verbatim with timestamps, the assistant's turns abridged, tool activity in brackets.
 4. Report to Rick: what was written (uncommitted), anything he must decide or run (by its row number in "Outstanding actions"), the next three, and **the commit message as it will be used**.
-5. **Commit only on Rick's word, given after he has seen the message.** Message: `Tnn → Dnn: <the rulings in one line>`. Author `deepily` with the GitHub noreply address (repo-local configuration; never a real email address), plus the attribution trailer. **Push only on his word**; where the shell has no GitHub credential, Rick pushes.
+5. **Commit and push on Rick's word, given after he has seen the message: one word covers both** (Rick, 2026-11-16; the push was a separate word until then). Message: `Tnn → Dnn: <the rulings in one line>`. Author `deepily` with the GitHub noreply address (repo-local configuration; never a real email address), plus the attribution trailer. Where the shell has no GitHub credential, Rick pushes.
 6. Anything destructive (deleting a file or folder, rewriting history) is asked first.
 
 ## 8. Handoff
@@ -104,7 +104,7 @@ When a session must stop before recording, write a handoff for Rick to paste as 
 ## 10. House style (every file and every message)
 
 - Never the section sign; write "Section 4", "Sections 4–8".
-- No abbreviations in new names (`Event`, not `Ev`); engine-neutral names in new code (T38).
+- No abbreviations in new names (`Event`, not `Ev`); engine-neutral names in new code (D71, engine-neutral naming).
 - "Normalize", never "fold", for converting a value into its canonical form (Rick, T35); "merged into" or "runs with" where the record once said a test or a scope was "folded into" another.
 - A register key (D, T, C) carries its name on first use in a section; no bare mile-marker sets; tests and gates carry a word prefix saying what they prove (`Kernel-1`, `Convention-9`). C-numbers stay, because the script files carry them.
 - Clocks and schedules in `app timezone` (US East Coast), never UTC.
