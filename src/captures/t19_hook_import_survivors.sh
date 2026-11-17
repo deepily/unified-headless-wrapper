@@ -17,8 +17,17 @@
 #                     equal to its name), so its imports leave with it
 #           keep      the file is a Keep row of the inventory script; it survives
 #           unlisted  the inventory script has no row for the file; it survives by default
+#           moved     a module of the tree that the list keeps ("Keep and import"); it moves out at
+#                     the Move clock, so a deleted sibling it imports fails it the same way
 #
-# With --check the script exits 1 while any surviving file imports a deleted module: the Delete
+# Then, for the Python files the list deletes outside the tree (file rows, and every file under a
+# dir row), one line per surviving file that imports one:
+#
+#   outside <class> <path>  gone files: <deleted files it imports>
+#
+# Both were added on 2026-11-17 (row 66 of "Outstanding actions", ruling 9).
+#
+# With --check the script exits 1 while any surviving file imports a deleted module or file: the Delete
 # clock's condition (row 28 of "Outstanding actions", ruled 2026-11-16), which
 # t19_switch_over_inventory.sh --clock delete runs.
 #
@@ -28,7 +37,7 @@
 set -u
 here="$(cd "$(dirname "$0")" && pwd)"
 exec python3 - "$here/t19_switch_over_inventory.sh" "$@" <<'PYTHON'
-import os, re, subprocess, sys, datetime
+import ast, os, re, subprocess, sys, datetime
 
 TREE         = "src/lupin_cli/claude_code"
 IMPORT_LINE  = re.compile( r"^\s*(from|import)\s+lupin_cli\.claude_code(\.[\w.]+)?(\s+import\s+(.*))?" )
@@ -83,6 +92,27 @@ def imported_modules( text ):
             modules.add( last )
     return count, modules
 
+def doomed_outside( rows, python_files_under ):
+    """Dotted module name -> path, for every Python file the list deletes outside the tree.
+
+    python_files_under( directory ) yields the Python paths below a `dir` row, relative to the checkout.
+    """
+    doomed = { }
+    for kind, _clock, disposition, target in rows:
+        if disposition != "Delete" or target == TREE or target.startswith( TREE + "/" ): continue
+        paths = [ target ] if kind == "file" and target.endswith( ".py" ) else list( python_files_under( target ) ) if kind == "dir" else [ ]
+        for path in paths: doomed[ path[ len( "src/" ):-len( ".py" ) ].replace( "/", "." ) ] = path
+    return doomed
+
+def dotted_imports( text ):
+    """Every dotted name the text imports, read by Python's parser: `a.b`, and `a.b.c` for `from a.b import c`."""
+    names = set()
+    for node in ast.walk( ast.parse( text ) ):
+        if isinstance( node, ast.ImportFrom ) and node.module and node.level == 0:
+            names.add( node.module ); names.update( node.module + "." + alias.name for alias in node.names )
+        elif isinstance( node, ast.Import ): names.update( alias.name for alias in node.names )
+    return names
+
 def self_test():
     rows = inventory_rows( "x\nrows=$(cat <<'ROWS'\ndir|delete|Delete|src/gone_tree\nfile|delete|Delete|src/a.py\nfile|move|Keep|src/b.py\n"
                            "file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/kept_one.py\nsymbol|delete|Delete|reaper\nsymbol|delete|Delete|send-keys\nROWS\n)\nfile|x|Delete|src/not_a_row.py\n" )
@@ -101,6 +131,9 @@ def self_test():
         ( imported_modules( "import lupin_cli.claude_code.hooks.lib.main_tree as m\n# from lupin_cli.claude_code import no\nfrom lupin_cli.other import no\n" ), ( 1, { "main_tree" } ) ),
         ( bool( TEST_PATH.search( "src/tests/unit/x.py" ) ), True ), ( bool( TEST_PATH.search( "src/a/test_x.py" ) ), True ),
         ( bool( TEST_PATH.search( "src/a/latest_run.py" ) ), False ),
+        ( doomed_outside( rows, lambda directory: [ directory + "/x/y.py" ] ), { "gone_tree.x.y": "src/gone_tree/x/y.py", "a": "src/a.py" } ),
+        ( doomed_outside( [ ( "dir", "delete", "Delete", TREE ), ( "file", "move", "Keep", "src/b.py" ), ( "file", "delete", "Delete", "src/c.sh" ) ], lambda directory: [ "src/no.py" ] ), { } ),
+        ( dotted_imports( "from a.b import c, d as e\nimport f.g\n# import no\ndef h():\n    from i import j\nfrom . import k\n" ), { "a.b", "a.b.c", "a.b.d", "f.g", "i", "i.j" } ),
     ]
     failed = [ ( number, got, expected ) for number, ( got, expected ) in enumerate( checks, 1 ) if got != expected ]
     for number, got, expected in failed: print( f"FAIL case {number}: got {got!r}, expected {expected!r}" )
@@ -118,20 +151,34 @@ def main( inventory_script, arguments ):
     stamp  = subprocess.run( [ "date", "+%Y-%m-%dT%H:%M%z" ], capture_output=True, text=True, env={ **os.environ, "TZ": "America/New_York" } ).stdout.strip()
     print( f"# t19 hook-import survivors · checkout={checkout} · commit={commit} · inventory rows={len( rows )} · kept modules={len( kept )} · {stamp}" )
 
-    found = [ ]
+    def python_files_under( target ):
+        for directory, _directories, files in os.walk( os.path.join( checkout, target ) ):
+            for name in files:
+                if name.endswith( ".py" ): yield os.path.relpath( os.path.join( directory, name ), checkout )
+    doomed = doomed_outside( rows, python_files_under )
+
+    found, outside = [ ], [ ]
     for directory, directories, files in os.walk( os.path.join( checkout, "src" ) ):
         directories[ : ] = [ name for name in directories if name not in ( "node_modules", "__pycache__", ".git" ) ]
         for name in files:
             if not name.endswith( ".py" ): continue
             path = os.path.relpath( os.path.join( directory, name ), checkout )
-            if path.startswith( TREE + "/" ) or TEST_PATH.search( path ): continue
+            if TEST_PATH.search( path ): continue
+            inside = path.startswith( TREE + "/" )
+            if inside and os.path.splitext( name )[ 0 ] not in kept: continue      # of the tree, only the modules that move out are read
             try: text = open( os.path.join( checkout, path ), encoding="utf-8", errors="replace" ).read()
             except OSError: continue
+            kind = "moved" if inside else classify_file( path, rows )
             count, modules = imported_modules( text )
-            if count: found.append( ( classify_file( path, rows ), count, path, sorted( modules - kept ), sorted( modules & kept ) ) )
+            if count and not ( inside and not modules - kept ):
+                found.append( ( kind, count, path, sorted( modules - kept ), sorted( modules & kept ) ) )
+            if kind != "delete" and path not in doomed.values():
+                try: wanted = sorted( { doomed[ dotted ] for dotted in dotted_imports( text ) if dotted in doomed } )
+                except SyntaxError: wanted = [ ]
+                if wanted: outside.append( ( kind, path, wanted ) )
 
-    totals      = { "delete": 0, "keep": 0, "unlisted": 0 }
-    broken      = { "keep": 0, "unlisted": 0 }          # survivors importing at least one deleted module
+    totals      = { "delete": 0, "keep": 0, "unlisted": 0, "moved": 0 }
+    broken      = { "keep": 0, "unlisted": 0, "moved": 0 }   # survivors importing at least one deleted module
     gone_demand = { }                                   # deleted module -> surviving files that import it
     for kind, count, path, gone, moving in sorted( found, key=lambda row: ( row[ 0 ], row[ 2 ] ) ):
         totals[ kind ] += 1
@@ -139,10 +186,13 @@ def main( inventory_script, arguments ):
             broken[ kind ] += 1
             for module in gone: gone_demand[ module ] = gone_demand.get( module, 0 ) + 1
         print( f"{kind:<9}{count:>3} {path:<62} gone: {','.join( gone ) or '-':<60} kept: {','.join( moving ) or '-'}" )
-    print( f"# files={len( found )} delete={totals[ 'delete' ]} keep={totals[ 'keep' ]} unlisted={totals[ 'unlisted' ]}" )
-    print( f"# survivors that import a deleted module: keep={broken[ 'keep' ]} unlisted={broken[ 'unlisted' ]} total={broken[ 'keep' ] + broken[ 'unlisted' ]}" )
+    print( f"# files={len( found )} delete={totals[ 'delete' ]} keep={totals[ 'keep' ]} unlisted={totals[ 'unlisted' ]} moved={totals[ 'moved' ]}" )
+    print( f"# survivors that import a deleted module: keep={broken[ 'keep' ]} unlisted={broken[ 'unlisted' ]} moved={broken[ 'moved' ]} total={sum( broken.values() )}" )
     print( "# deleted modules still imported by survivors (module=files): " + " ".join( f"{module}={files}" for module, files in sorted( gone_demand.items(), key=lambda item: ( -item[ 1 ], item[ 0 ] ) ) ) )
-    return 1 if "--check" in arguments[ 1: ] and broken[ "keep" ] + broken[ "unlisted" ] else 0
+    for kind, path, wanted in sorted( outside, key=lambda row: row[ 1 ] ):
+        print( f"outside  {kind:<9}{path:<62} gone files: {','.join( wanted )}" )
+    print( f"# deleted Python files outside the tree={len( doomed )} · imported by a survivor={len( { target for _kind, _path, wanted in outside for target in wanted } )} · survivors that import one={len( outside )}" )
+    return 1 if "--check" in arguments[ 1: ] and ( sum( broken.values() ) or outside ) else 0
 
 sys.exit( main( sys.argv[ 1 ], sys.argv[ 2: ] ) )
 PYTHON

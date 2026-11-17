@@ -1,0 +1,186 @@
+# t19 switch-over inventory · checkout=../lupin · commit=27e646d0ed · 2026-11-17T12:27-0500
+dir     delete  Delete               src/lupin_cli/claude_code                                              present 29355
+file    delete  Delete               docker/lupin/claude-config/settings.json                               present 4
+file    delete  Delete               src/lupin_cli/claude_code/hooks/stop.py                                present 2428
+file    delete  Delete               src/lupin_cli/claude_code/hooks/notification.py                        present 158
+file    delete  Delete               src/lupin_cli/claude_code/hooks/pre_tool_use.py                        present 228
+file    delete  Delete               src/lupin_cli/claude_code/hooks/permission_request.py                  present 313
+file    delete  Delete               src/lupin_cli/claude_code/hooks/post_tool_use.py                       present 160
+file    delete  Delete               src/lupin_cli/claude_code/hooks/user_prompt_submit.py                  present 147
+file    delete  Delete               src/lupin_cli/claude_code/hooks/register_session.py                    present 2480
+file    delete  Delete               src/lupin_cli/claude_code/hooks/session_end.py                         present 391
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_decision.py              present 253
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_settings.py              present 338
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_work_owed.py             present 794
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_task_state.py            present 229
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_user_gates.py            present 572
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_poke_cap.py              present 145
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_poke_mute.py             present 141
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_acked_ledger.py          present 145
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_hold.py                  present 1512
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_hold_io.py               present 607
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_hold_warn.py             present 165
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/heartbeat_events.py                present 444
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/idle_waiter.py                     present 356
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/idle_settings.py                   present 169
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/anything_else_ask.py               present 245
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/board_sweep.py                     present 424
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/memento_verify_tick.py             present 355
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/cc_notification_listener.py        present 1620
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/listener_processes.py              present 178
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/hook_common.py                     present 1967
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/session_bridge.py                  present 2141
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/answer_catchup.py                  present 425
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/dm_inbox_reconcile.py              present 343
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/dm_inbox_hwm_janitor.py            present 290
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/stale_buffer_janitor.py            present 350
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/bookmark_janitor.py                present 334
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/subagent_governance.py             present 244
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/hook_credentials.py                present 335
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/transcript_reader.py               present 155
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/task_store_mirror.py               present 581
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/task_store_drain.py                present 467
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/task_store_spool.py                present 154
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/task_store_settings.py             present 127
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/manager_figure.py                  present 196
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/worktree_creator_record.py         present 191
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/roster_consistency.py              present 175
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/sessions_dir.py                    present 94
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/process_identity.py                present 66
+file    delete  Delete               src/lupin_cli/claude_code/hooks/lib/main_tree.py                       present 40
+symbol  delete  Delete               send-keys                                                              present 31 files
+symbol  delete  Delete               _try_auto_narrate                                                      present 8 files
+symbol  delete  Delete               speakerphone_exit_reminder                                             present 18 files
+symbol  delete  Delete               _inject_exit_conversation_reminder                                     present 10 files
+symbol  delete  Delete               _update_session_topic                                                  present 4 files
+symbol  delete  Delete               _handle_broadcast_received                                             present 9 files
+symbol  delete  Delete               _DM_GRADE_SENDER_ID                                                    present 1 files
+symbol  delete  Delete               orphan_bridge_reaper                                                   present 17 files
+symbol  delete  Delete               prune_dead_persona_bridges                                             present 16 files
+symbol  delete  Delete               reap_stale_spawned                                                     present 12 files
+symbol  delete  Delete               poke_wake_mechanism                                                    present 14 files
+file    delete  Delete               src/lupin_mcp/bridge_liveness_middleware.py                            present 105
+file    delete  Delete               src/lupin_mcp/self_respin_core.py                                      present 1593
+file    delete  Delete               src/cosa/agents/heartbeat_arbiter/self_respin_observer.py              present 1576
+file    delete  Delete               src/cosa/agents/heartbeat_arbiter/respin_wake_check.py                 present 1048
+file    delete  Delete               src/cosa/agents/heartbeat_arbiter/context_pressure.py                  present 549
+file    delete  Delete               src/cosa/agents/heartbeat_arbiter/turn_age_watchdog.py                 present 431
+file    delete  Delete               src/lupin_arbiter_app/context_pressure_writer.py                       present 354
+file    delete  Delete               src/lupin_arbiter_app/arbiter_live_notify.py                           present 614
+dir     delete  Delete               src/lupin_arbiter_app                                                  present 4235
+unit    delete  Delete               lupin-arbiter-app.service                                              present 40
+file    delete  Delete               src/scripts/run-heartbeat-arbiter.py                                   present 118
+file    delete  Delete               src/scripts/start-cc-with-tmux.sh                                      present 762
+file    delete  Delete               src/cosa/rest/routers/claude_code_queue.py                             present 92
+file    delete  Delete               src/cosa/rest/cc_transcript_mapper.py                                  present 401
+file    delete  Delete               src/lupin_mcp/session_spawner.py                                       present 2753
+file    delete  Delete               src/lupin_mcp/fleet_size_cap.py                                        present 578
+file    delete  Delete               src/lupin_mcp/fleet_cap_admission.py                                   present 679
+file    delete  Delete               src/lupin_mcp/fleet_cap_ini_io.py                                      present 317
+file    delete  Delete               src/lupin_mcp/skeleton_crew.py                                         present 318
+file    delete  Delete               src/lupin_mcp/respin_credit.py                                         present 404
+file    delete  Delete               src/lupin_mcp/reap_memento.py                                          present 1355
+file    delete  Delete               src/scripts/provision-seat-worktree.sh                                 present 252
+file    delete  Delete               src/cosa/utils/seat_worktree.py                                        present 249
+file    delete  Delete               src/scripts/stale-seat-scan.py                                         present 339
+file    delete  Delete               src/cosa/utils/cc_memory_watch.py                                      present 733
+file    delete  Delete               src/scripts/watch-cc-memory.sh                                         present 28
+file    delete  Delete               src/scripts/install-cc-memory-watch.sh                                 present 102
+unit    delete  Delete               lupin-cc-memory-watch.service                                          present 48
+file    delete  Delete               src/scripts/derive_cc_memory_peak.py                                   present 158
+file    delete  Delete               src/lupin_mcp/broadcast_handler.py                                     present 537
+file    delete  Delete               src/lupin_mcp/commons_persona_matcher.py                               present 109
+file    delete  Delete               src/scripts/heartbeat-poke-toggle.sh                                   present 52
+file    delete  Delete               src/scripts/purge-offline-heartbeat-events.py                          present 104
+file    delete  Delete               src/scripts/check-cc-listener-status.sh                                present 107
+file    delete  Delete               src/scripts/restart-cc-listeners.sh                                    present 78
+file    delete  Delete               src/scripts/tail-cc-listeners.sh                                       present 71
+file    delete  Delete               src/scripts/backfill_bridge_sender_id.py                               present 220
+file    delete  Delete               src/scripts/bridge_pin_sweep.py                                        present 213
+file    delete  Delete               src/scripts/run-serial-bridge-guard.sh                                 present 78
+file    delete  Delete               src/scripts/voice-send.sh                                              present 70
+file    delete  Delete               src/scripts/probe_cc_bounded_billing.py                                present 378
+file    delete  Delete               src/scripts/tfe_to_cc_matrix.sh                                        present 173
+file    delete  Delete               src/scripts/tfe_to_cc_phase1_smoke.py                                  present 351
+file    delete  Delete               src/scripts/tfe_to_cc_phase3_live.py                                   present 936
+key     delete  Delete               stop hook idle behavior                                                present 8 files
+unit    switch  Delete               tmux-execve-killtrace.service                                          present 21
+unit    none    Operate              lupin-bounce-watcher.service                                           present 30
+unit    none    Operate              lupin-credential-watcher.service                                       gone
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/kill_guard.py                      present 1685
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/commit_scope_guard.py              present 1118
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/branch_lock_guard.py               present 523
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/merge_head_guard.py                present 412
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/stash_guard.py                     present 407
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/task_store_client.py               present 572
+file    move    Keep and import      src/lupin_cli/claude_code/hooks/lib/task_store_map.py                  present 237
+file    delete  Delete               src/cosa/rest/routers/speakerphone.py                                  present 320
+file    move    Keep                 src/cosa/rest/routers/voice_persona.py                                 present 725
+file    move    Keep and import      src/lupin_mcp/reap_branch.py                                           present 444
+file    move    Keep and import      src/cosa/agents/shared/seat_teardown.py                                present 304
+file    move    Keep and import      src/cosa/agents/shared/worktree_reaper.py                              present 1468
+file    move    Keep and import      src/cosa/agents/shared/worktree_refusal_ledger.py                      present 227
+file    move    Keep and import      src/cosa/agents/shared/worktree_straggler_tickets.py                   present 700
+file    move    Keep and import      src/scripts/link-worktree-venv.sh                                      present 107
+file    move    Keep and import      src/cosa/utils/vertex_env.py                                           present 898
+symbol  move    Keep                 HeartbeatPokerJob                                                      present 30 files
+file    move    Keep                 src/cosa/rest/routers/cc_transcript.py                                 present 256
+file    move    Keep                 src/lupin_mcp/cosa_voice_mcp.py                                        present 5033
+route   delete  Rename               cc-listener-                                                           present 34 files
+route   switch  Rename               broadcast-to-cc-sessions                                               present 184 files
+route   delete  Rename               /api/cc-transcript                                                     present 83 files
+route   move    Rename (repoint)     /api/arbiter/context-pressure                                          present 9 files
+route   move    Rename (repoint)     /api/arbiter/fleet-state                                               present 196 files
+route   move    Rename (repoint)     /api/arbiter/fleet-size-cap                                            present 91 files
+key     switch  Flip                 legacy notifications redirect enabled                                  present 15 files
+key     switch  Flip                 kernel grant required                                                  gone
+key     move    Move key             cc session fleet size cap                                              present 93 files
+key     move    Move key             cc session spawn                                                       present 15 files
+key     move    Move key             cc session skeleton crew enabled                                       present 44 files
+key     move    Move key             cc session reap memento                                                present 3 files
+key     move    Move key             arbiter worktree janitor                                               present 15 files
+symbol  move    Move key             CC_MEM_LIMIT                                                           present 1 files
+symbol  move    Move key             LUPIN_CC_MEMORY_MAX                                                    present 1 files
+symbol  move    Move key             LUPIN_CC_MEMORY_SWAP_MAX                                               present 1 files
+symbol  move    Move key             LUPIN_CC_WINDOW_TOKENS                                                 present 6 files
+symbol  delete  Delete               session_file_role                                                      gone
+file    move    Keep                 src/cosa/rest/routers/tasks.py                                         present 4343
+file    move    Keep                 src/cosa/rest/task_promotion_gate.py                                   present 1079
+file    move    Keep                 src/cosa/rest/task_priority_firewall.py                                present 553
+file    move    Keep                 src/cosa/rest/routers/podcast_proxy.py                                 present 466
+file    delete  Delete               src/scripts/watch-hook-events.py                                       present 260
+dir     delete  Delete               src/cosa/agents/heartbeat_arbiter                                      present 12294
+file    delete  Delete               src/cosa/rest/arbiter_bootstrap.py                                     present 300
+file    delete  Delete               src/cosa/rest/follow_through_escalation_watcher.py                     present 319
+file    delete  Delete               src/cosa/rest/routers/heartbeat.py                                     present 127
+file    delete  Delete               src/scripts/report-orphaned-dm-buffers.py                              present 269
+file    delete  Delete               src/scripts/sweep_persona_slug_canonicalization.py                     present 349
+file    move    Keep                 src/cosa/rest/routers/commons.py                                       present 1156
+file    move    Keep                 src/cosa/rest/routers/arbiter.py                                       present 584
+file    move    Keep                 src/cosa/rest/cc_transcript_tailer.py                                  present 495
+file    move    Keep                 src/cosa/repo/code_health_settings.py                                  present 394
+file    move    Keep                 src/cosa/repo/symindex/paths.py                                        present 81
+file    move    Keep                 src/cosa/repo/symindex/candidates/storage_paths.py                     present 292
+file    move    Keep                 src/cosa/rest/flow_ratio_settings.py                                   present 430
+file    move    Keep                 src/cosa/utils/fleet_base_dir.py                                       present 29
+file    move    Keep                 src/lupin_mcp/config_write_lock.py                                     present 82
+file    move    Keep                 src/lupin_mcp/cron_switch_read.py                                      present 213
+file    move    Keep                 src/lupin_mcp/reuse_ledger.py                                          present 392
+file    move    Keep                 src/lupin_mcp/commons_store.py                                         present 493
+file    move    Keep                 src/lupin_mcp/duplicate_check_daily.py                                 present 1178
+file    move    Keep                 src/lupin_mcp/duplicate_check_filing.py                                present 300
+file    move    Keep                 src/scripts/rejoin-done-blocked-rows.py                                present 233
+file    move    Keep                 src/scripts/scan-epic-key-drift.py                                     present 171
+file    move    Keep                 src/scripts/scan-prose-task-refs.py                                    present 113
+file    move    Keep                 src/cosa/rest/routers/notifications.py                                 present 3990
+file    move    Keep                 src/cosa/rest/notification_fifo_queue.py                               present 909
+file    move    Keep                 src/cosa/rest/voice_persona_helpers.py                                 present 1156
+file    move    Keep                 src/lupin_app/lifespan_steps.py                                        present 668
+file    move    Keep                 src/lupin_app/main.py                                                  present 1218
+file    move    Keep                 src/lupin_mcp/duplicate_check_verdicts.py                              present 206
+file    move    Keep                 src/cosa/rest/routers/dm.py                                            present 3730
+file    move    Keep                 src/cosa/repo/symindex/librarian_tick.py                               present 749
+file    move    Keep                 src/cosa/agents/decision_proxy/trust_tracker.py                        present 810
+file    move    Keep                 src/cosa/agents/deep_research/rate_limiter.py                          present 468
+file    move    Keep                 src/cosa/rest/job_health.py                                            present 299
+# rows=184 unknown=0

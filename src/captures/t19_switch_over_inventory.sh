@@ -178,6 +178,41 @@ file|move|Keep|src/cosa/rest/routers/tasks.py
 file|move|Keep|src/cosa/rest/task_promotion_gate.py
 file|move|Keep|src/cosa/rest/task_priority_firewall.py
 file|move|Keep|src/cosa/rest/routers/podcast_proxy.py
+file|delete|Delete|src/scripts/watch-hook-events.py
+dir|delete|Delete|src/cosa/agents/heartbeat_arbiter
+file|delete|Delete|src/cosa/rest/arbiter_bootstrap.py
+file|delete|Delete|src/cosa/rest/follow_through_escalation_watcher.py
+file|delete|Delete|src/cosa/rest/routers/heartbeat.py
+file|delete|Delete|src/scripts/report-orphaned-dm-buffers.py
+file|delete|Delete|src/scripts/sweep_persona_slug_canonicalization.py
+file|move|Keep|src/cosa/rest/routers/commons.py
+file|move|Keep|src/cosa/rest/routers/arbiter.py
+file|move|Keep|src/cosa/rest/cc_transcript_tailer.py
+file|move|Keep|src/cosa/repo/code_health_settings.py
+file|move|Keep|src/cosa/repo/symindex/paths.py
+file|move|Keep|src/cosa/repo/symindex/candidates/storage_paths.py
+file|move|Keep|src/cosa/rest/flow_ratio_settings.py
+file|move|Keep|src/cosa/utils/fleet_base_dir.py
+file|move|Keep|src/lupin_mcp/config_write_lock.py
+file|move|Keep|src/lupin_mcp/cron_switch_read.py
+file|move|Keep|src/lupin_mcp/reuse_ledger.py
+file|move|Keep|src/lupin_mcp/commons_store.py
+file|move|Keep|src/lupin_mcp/duplicate_check_daily.py
+file|move|Keep|src/lupin_mcp/duplicate_check_filing.py
+file|move|Keep|src/scripts/rejoin-done-blocked-rows.py
+file|move|Keep|src/scripts/scan-epic-key-drift.py
+file|move|Keep|src/scripts/scan-prose-task-refs.py
+file|move|Keep|src/cosa/rest/routers/notifications.py
+file|move|Keep|src/cosa/rest/notification_fifo_queue.py
+file|move|Keep|src/cosa/rest/voice_persona_helpers.py
+file|move|Keep|src/lupin_app/lifespan_steps.py
+file|move|Keep|src/lupin_app/main.py
+file|move|Keep|src/lupin_mcp/duplicate_check_verdicts.py
+file|move|Keep|src/cosa/rest/routers/dm.py
+file|move|Keep|src/cosa/repo/symindex/librarian_tick.py
+file|move|Keep|src/cosa/agents/decision_proxy/trust_tracker.py
+file|move|Keep|src/cosa/agents/deep_research/rate_limiter.py
+file|move|Keep|src/cosa/rest/job_health.py
 ROWS
 )
 
@@ -206,7 +241,7 @@ if [ -n "$trace_pid" ]; then
     exit 0
 fi
 
-echo "# t19 switch-over inventory · checkout=$checkout · commit=$(git -C "$checkout" rev-parse --short HEAD 2>/dev/null) · $(date -u +%Y-%m-%dT%H:%MZ)${clock_filter:+ · clock=$clock_filter}"
+echo "# t19 switch-over inventory · checkout=$checkout · commit=$(git -C "$checkout" rev-parse --short HEAD 2>/dev/null) · $(TZ=America/New_York date +%Y-%m-%dT%H:%M%z)${clock_filter:+ · clock=$clock_filter}"
 failures=0; total=0; unknown=0
 while IFS='|' read -r kind clock disposition target; do
     [ -z "$kind" ] && continue

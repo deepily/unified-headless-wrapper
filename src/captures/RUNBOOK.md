@@ -1,5 +1,19 @@
 # Capture runbook
 
+## Done 2026-11-17: what the surviving files take from the hooks tree, and the widened Delete check, zero tokens (row 66). Nothing here is owed
+
+**Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-survivor-import-symbols-lupin-host-test-20261117.txt` before the rows, `…-after-rows.txt` after; `t19-hook-import-survivors-lupin-host-test-20261117-after-row66.txt`; `t19-inventory-lupin-host-test-20261117.txt`; read in the row 66 narrative and the T19 spec's amendment of 2026-11-17): before the rows, 44 surviving files and 2 kept tree modules imported 14 deleted modules in 70 statements. After them the inventory has 184 rows, none unknown; the check exits 1, with 34 surviving files importing a deleted tree module and 18 importing a Python file deleted outside the tree. It stays at 1 until lupin changes.
+
+**On any host with a lupin checkout** (optional on the development server; it is the same branch):
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t19_survivor_import_symbols.sh --self-test && src/captures/t19_hook_import_survivors.sh --self-test
+src/captures/t19_survivor_import_symbols.sh ../lupin | tee src/captures/out/t19-survivor-import-symbols-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+src/captures/t19_hook_import_survivors.sh ../lupin --check | tee src/captures/out/t19-hook-import-survivors-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+Read-only. The first prints, per deleted module, each import statement of a surviving file (class, line, top of file or inside a function, guarded or not, the names taken and how often each is read), then the Python files deleted outside the tree that a survivor imports. The second is the Delete clock's condition, now also reading the kept tree modules and those outside files.
+
 ## Done 2026-11-16: what a re-read of the settings file costs, zero tokens (row 60). Nothing here is owed
 
 **Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t15-configuration-reread-lupin-host-test-20261116.txt`; read in the row 60 narrative, "Where the record stands"): `lupin-app.ini` is 2,750 lines, six blocks, 967 distinct keys, 51 of them defined in more than one block, no `kernel …` key yet; one `stat` 0.003 ms, one whole ConfigurationManager build 17.5 ms, 22.6 ms with the key dictionary; `init()` refreshes in place with no flag, drops launch overrides unless they are passed again, and prints 26 lines unless silenced.
