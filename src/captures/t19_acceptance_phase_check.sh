@@ -133,13 +133,14 @@ for line in lines:
     if line.startswith( "## " ): inside = line.startswith( "## 15." ); continue
     if not inside or not line.startswith( "|" ): continue
     row = cells( line )
-    if not re.match( r"(Phase \d|Gate G|Switch-over)", row[ 0 ] ): continue
+    stage_row = re.match( r"(Phase \d|Gate G[\d.]+|Switch-over)", row[ 0 ] )   # "Gate G2, parity" is Gate G2 (row 85)
+    if not stage_row: continue
     text = row[ 1 ]
     for test, end in expand( text ):
         tail = text[ end: end + 60 ]
         q = re.match( r"\s*(?:\w+ )?((?:runs? with|with|at|as a capture before) [^,;()]*)", tail )
         qualifier = q.group( 1 ).strip() if q else ""
-        framework_stage.setdefault( test, [] ).append( ( row[ 0 ], qualifier ) )
+        framework_stage.setdefault( test, [] ).append( ( stage_row.group( 1 ), qualifier ) )
 
 # the comparison -----------------------------------------------------------------------------
 print( "checkout %s" % root )

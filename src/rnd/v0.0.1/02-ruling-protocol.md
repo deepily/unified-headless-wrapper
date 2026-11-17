@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-17 (amended after row 63 and again after its commit) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-17 (amended after row 63, again after its commit, and by row 85) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -9,9 +9,9 @@
 | MacBook | Claude Code desktop, through the device bridge | `~/Projects/unified-headless-wrapper` | Folder grants are per chat; `git commit` needs the one-time delete permission for `.git` lock files; the bridge has no GitHub credential, so Rick pushes. Read-only clones: `~/Projects/lupin`, `~/Projects/planning-is-prompting` |
 | Test VM `lupin-host-test` | Claude Code on Fable | `/mnt/lupin-data/unified-headless-wrapper` | Native shell: no grants, no bridge, **no Claude Docs**. The Fable allocation is small, so Section 9 binds. Read-only: `/mnt/lupin-data/lupin` (a git checkout) and `/mnt/lupin-data/planning-is-prompting` (a deployed copy with no `.git`, so it has no HEAD to cite) (Rick, 11-15) |
 | Test VM `lupin-host-test` | Antigravity (AGY) on Fable, the working engine from 2026-11-15 | the same checkout and read-only paths | As the row above. AGY does not read `CLAUDE.md`; the root `AGENTS.md` loads this file instead. `ask_question` stands in for `AskUserQuestion` |
-| Development server `dual-rtx-4090s` | — | `/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper` | Beside the lupin checkout; scripts importing `cosa` run from lupin's `.venv`. Lupin is written here only |
+| Development server `dual-rtx-4090s` | — | `/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper` | Beside the lupin checkout; scripts importing `cosa` run from lupin's `.venv`. Lupin is written here only until the relocation (the kernel package's move into lupin, which closes Phase 1); from then it is also written in the test VM's lupin checkout, on the dedicated branch (Rick, 2026-11-17, row 85) |
 
-Lupin is read, never written, from any UHW session.
+Lupin is read, never written, from any UHW planning session. The Phase 1 builder and the implementer are not planning sessions: they work in their own clone under their own loader, not under this protocol, and write lupin on the test VM from the relocation on (Rick, 2026-11-17, row 85).
 
 ## 2. Opening
 
