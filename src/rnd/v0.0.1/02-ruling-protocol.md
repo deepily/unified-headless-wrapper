@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-16 (amended after row 60) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-17 (amended after row 63) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -74,6 +74,7 @@ In this order:
    - the component sections patched, every `TODO(Tnn)` replaced
    - the Section 20 row struck (`~~<name>~~` … `**resolved: Dnn** (MM-DD)`) and the item struck in Section 16
    - Sections 17 (risks) and 21 (companions) as needed, and "As of" updated
+   - then `src/captures/t19_acceptance_phase_check.sh --check`, which fails while any acceptance test stands in one phase in its own spec and another in Section 15's table; a new family is named in that table at the gate its spec states (Rick, 2026-11-17, row 63)
 4. **Amendments.** Every other spec the ruling changes gets a section appended, `## Amendment (YYYY-MM-DD, Tnn → Dnn)`. The body of a ruled spec is never rewritten.
 5. **RUNBOOK.** Anything Rick must run becomes the new top block, exactly as he will type it; older blocks move down.
 6. **Narrative.** Fill in the rulings column (and, on the laptop, the doc link).

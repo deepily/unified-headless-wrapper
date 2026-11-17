@@ -1,0 +1,190 @@
+checkout /mnt/lupin-data/unified-headless-wrapper
+families 26  tests 179
+id | spec cell | Phase 1 spec | framework Section 15 | verdict
+Inbox-1 | Kernel-1 (unit) | Kernel-1 | Phase 1 | agree
+Inbox-2 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Inbox-3 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Inbox-4 | Kernel-7 extension | Kernel-7 | Phase 1 | agree
+Inbox-5 | Kernel-5 extension | Kernel-5 | Phase 1 | agree
+Inbox-6 | Claude phase (C7 as test) | — | Phase 3 | agree
+Voice-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Voice-2 | Kernel-3 | Kernel-3 | Phase 1 | agree
+Voice-3 | Kernel-3 | Kernel-3 | Phase 1 | agree
+Voice-4 | Kernel-3 | Kernel-3 | Phase 1 | agree
+Voice-5 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Bootstrap-1 | (no column) | Kernel-2 | Phase 1 | no column
+Bootstrap-2 | (no column) | — | Phase 2 | no column
+Bootstrap-3 | (no column) | — | Phase 2 | no column
+Bootstrap-4 | (no column) | — | Phase 2 | no column
+Bootstrap-5 | (no column) | — | Phase 2 | no column
+Bootstrap-6 | (no column) | — | Phase 2 | no column
+Bootstrap-7 | (no column) | — | Phase 2 | no column
+Convention-1 | (no column) | — | Gate G1.5 | no column
+Convention-2 | (no column) | — | Gate G1.5 | no column
+Convention-3 | (no column) | — | Gate G1.5 | no column
+Convention-4 | (no column) | — | Gate G1.5 | no column
+Convention-5 | (no column) | — | Gate G1.5 | no column
+Convention-6 | (no column) | — | Gate G1.5 | no column
+Convention-7 | (no column) | — | Gate G1.5 | no column
+Convention-8 | (no column) | — | Gate G1.5 | no column
+Convention-9 | (no column) | — | Gate G1.5 | no column
+Log-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Log-2 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Log-3 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Log-4 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Log-5 | Kernel-5 | Kernel-5 | Phase 1 | agree
+Log-6 | Kernel-3 (Lupin side after the move) | Kernel-3 | Phase 1 (with Kernel-3); Phase 2 | agree
+Lupin-1 | (no column) | — | Phase 2 | no column
+Lupin-2 | (no column) | — | Phase 2 | no column
+Lupin-3 | (no column) | — | Phase 2 | no column
+Lupin-4 | (no column) | — | Phase 2 | no column
+Lupin-5 | (no column) | — | Phase 2 | no column
+Lupin-6 | (no column) | — | Phase 2 | no column
+Lupin-7 | (no column) | — | Phase 2 | no column
+Lupin-8 | (no column) | — | Phase 2 | no column
+Fleet-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Fleet-2 | Kernel-2, with Bootstrap-1 | Kernel-2 | Phase 1 | agree
+Fleet-3 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-4 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-5 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-6 | after the move | named, no gate | Phase 2 | agree
+Fleet-7 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-8 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-9 | Phase 2 | named, no gate | Phase 2 | agree
+Fleet-10 | Kernel-1 | Kernel-1 | Phase 1; Phase 3 | split
+Console-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Console-2 | Kernel-3; the roll in Kernel-7 | Kernel-3, Kernel-7 | Phase 1 | agree
+Console-3 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Console-4 | after Kernel-8 | — | Phase 2 | unplaced
+Console-5 | after Kernel-8 | — | Phase 2 | unplaced
+Console-6 | Lupin side, after the move | — | Phase 2 | agree
+Console-7 | after the ticket store | — | Phase 2 | agree
+Pressure-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Pressure-2 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Pressure-3 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Pressure-4 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Pressure-5 | Kernel-5 | Kernel-5 | Phase 1 | agree
+Pressure-6 | Kernel-2 | Kernel-2 | Phase 1 | agree
+Lifecycle-1 | Kernel-1 | — | Phase 1 | agree
+Lifecycle-2 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Lifecycle-3 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Lifecycle-4 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Lifecycle-5 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Lifecycle-6 | Kernel-7 | Kernel-7 | Phase 1 | agree
+Lifecycle-7 | Kernel-2 | — | Phase 1 | agree
+TurnEnd-1 | Kernel-3 | — | Phase 1 | agree
+TurnEnd-2 | Kernel-5 | — | Phase 1 | agree
+TurnEnd-3 | Kernel-5 | — | Phase 1 | agree
+TurnEnd-4 | after the ticket store | — | Phase 2 | agree
+TurnEnd-5 | Kernel-5 | — | Phase 1 | agree
+TurnEnd-6 | with the crew layer | — | Phase 2 | agree
+TurnEnd-7 | Kernel-3 | — | Phase 1 | agree
+TurnEnd-8 | Kernel-1 | — | Phase 1 | agree
+Tables-1 | Kernel-1 | — | Phase 1 | agree
+Tables-2 | Kernel-1 | — | Phase 1 | agree
+Tables-3 | Kernel-1 | — | Phase 1 | agree
+Tables-4 | Kernel-1 | — | Phase 1 | agree
+Tables-5 | Kernel-1 | — | Phase 1 | agree
+Reread-1 | Kernel-1 | — | Phase 1 | agree
+Reread-2 | Kernel-1 | — | Phase 1 | agree
+Reread-3 | Kernel-1 | — | Phase 1 | agree
+Reread-4 | Kernel-1 | — | Phase 1 | agree
+Reread-5 | Kernel-1 | — | Phase 1 | agree
+Switch-1 | Phase 2 | — | Phase 2; Phase 2; Phase 2 | agree
+Switch-2 | Phase 2 | — | Phase 2 | agree
+Switch-3 | Phase 2 | — | Phase 2 | agree
+Switch-4 | Phase 4 | — | Phase 4 | agree
+Switch-5 | Gate G2 | — | Gate G2 | agree
+Switch-6 | Switch-over | — | Switch-over | agree
+Capacity-1 | Kernel-1 | named, no gate | Phase 1 | agree
+Capacity-2 | Kernel-1 | named, no gate | Phase 1 | agree
+Capacity-3 | Kernel-1 | named, no gate | Phase 1 | agree
+Capacity-4 | Kernel-1 | named, no gate | Phase 1 | agree
+Capacity-5 | Kernel-1 | named, no gate | Phase 1 | agree
+Capacity-6 | Kernel-2 | named, no gate | Phase 1 | agree
+Capacity-7 | Kernel-2 | named, no gate | Phase 1 | agree
+Broadcast-1 | Kernel-5 extension | Kernel-5 | Phase 1 | agree
+Broadcast-2 | Kernel-5 | Kernel-5 | Phase 1 | agree
+Broadcast-3 | Fleet phase (after D59's hibernation lands) | — | Phase 2 | agree
+Broadcast-4 | Fleet phase | — | Phase 2 | agree
+Broadcast-5 | Lupin phase (door change) | — | Phase 2 | agree
+Broadcast-6 | Lupin phase (after the `payload.kind` change) | — | Phase 2 | agree
+Migrate-1 | Phase 2 | — | Phase 2 | agree
+Migrate-2 | Phase 2 | — | Phase 2 | agree
+Migrate-3 | Phase 2 | — | Phase 2 | agree
+Migrate-4 | Phase 2 | — | Phase 2 | agree
+Migrate-5 | Phase 2 | — | Phase 2 | agree
+Migrate-6 | Phase 2 | — | Phase 2 | agree
+Migrate-7 | Phase 4 | — | Phase 4 | agree
+Contract-1 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Contract-2 | Kernel-1, Kernel-7 | Kernel-7 | Phase 1 | agree
+Contract-3 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Contract-4 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Contract-5 | Kernel-2 | Kernel-2 | Phase 1 | agree
+Contract-6 | Kernel-1, Kernel-5 on real AGY | Kernel-1, Kernel-5 | Phase 1 | agree
+Contract-7 | Kernel-1, Kernel-7 | Kernel-1 | Phase 1 | agree
+Contract-8 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Contract-9 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Contract-10 | Kernel-1 | Kernel-1 | Phase 1 | agree
+Role-1 | Move clock | — | Phase 2 | agree
+Role-2 | Phase 2 | — | Phase 2 | agree
+Role-3 | Phase 2 | — | Phase 2 | agree
+Role-4 | Phase 2 | — | Phase 2 | agree
+Role-5 | Phase 4 shadow | — | Phase 4 | agree
+Role-6 | Phase 2 | — | Phase 2 | agree
+Role-7 | Delete clock | — | Switch-over | agree
+Quota-1 | Kernel-1 | — | Phase 1 | agree
+Quota-2 | Kernel-2 | — | Phase 1 | agree
+Quota-3 | Kernel-2 | — | Phase 1 | agree
+Quota-4 | Kernel-1 | — | Phase 1 | agree
+Quota-5 | Kernel-5 | — | Phase 1 | agree
+Quota-6 | Kernel-5 | — | Phase 1 | agree
+Quota-7 | Kernel-2 | — | Phase 1 | agree
+Quota-8 | Phase 2 | — | Phase 2 | agree
+Quota-9 | Kernel-5 | — | Phase 1 | agree
+Quota-10 | Phase 4 shadow | — | Phase 4 | agree
+Quota-11 | Kernel-5 | — | Phase 1 | agree
+Name-1 | Kernel-1, against the fakes | — | Phase 1 | agree
+Name-2 | Lupin application changes, before the Move clock | — | Phase 2 | agree
+Name-3 | Lupin application changes, before the Move clock | — | Phase 2 | agree
+Name-4 | Lupin application changes, before the Move clock | — | Phase 2 | agree
+Name-5 | Kernel-5, beside Broadcast-1 and Broadcast-2 | — | Phase 1 | agree
+Name-6 | the Switch clock | — | Switch-over | agree
+Name-7 | the Switch clock, rehearsed in the Phase 4 shadow | — | Phase 4; Switch-over | agree
+Name-8 | the Delete clock | — | Switch-over | agree
+Grant-1 | Phase 2, the Move | — | Phase 2 | agree
+Grant-2 | Phase 2 exit | — | Phase 2 | agree
+Grant-3 | Switch-1 | — | Phase 2; Phase 2 (with Switch-1) | agree
+Grant-4 | Phase 2, the Move | — | Phase 2 | agree
+Grant-5 | Phase 2, the Move | — | Phase 2 | agree
+Grant-6 | Phase 2, the Move | — | Phase 2 | agree
+Grant-7 | Phase 2, the Move | — | Phase 2 | agree
+Grant-8 | Switch-1 | — | Phase 2; Phase 2 (with Switch-1) | agree
+Grant-9 | Phase 2, the Move | — | Phase 2 | agree
+Naming-1 | Kernel-1, and every gate after | Kernel-1 | Phase 2 (with Kernel-1 and every gate after) | agree
+Naming-2 | the Lupin changes before the Move, with Name-4 | — | Phase 2 (with the Lupin changes before the move) | agree
+Naming-3 | the Move (Phase 2) | — | Phase 2 (at the move) | agree
+Naming-4 | Switch | — | Phase 2 (with Switch-1) | unplaced
+Naming-5 | Switch | — | Phase 2 (with Switch-1) | unplaced
+Naming-6 | Delete | — | Phase 2 (at Delete) | agree
+Naming-7 | Delete | — | Phase 2 (at Delete) | agree
+Tools-1 | Kernel-1 (Phase 1) | — | Phase 1 (with Kernel-1) | agree
+Tools-2 | Kernel-2 (Phase 1) | — | Phase 1 (with Kernel-2) | agree
+Tools-3 | Kernel-5 (Phase 1) | — | Phase 1 (with Kernel-5) | agree
+Tools-4 | Kernel-5 (Phase 1) | — | Phase 1 (with Kernel-5) | agree
+Tools-5 | Kernel-5 (Phase 1) | — | Phase 1 (with Kernel-5) | agree
+Tools-6 | before Kernel-5 (a capture; row 53 of "Outstanding actions") | — | Phase 1 (as a capture before Kernel-5) | agree
+Timeout-1 | Phase 3, with Kernel-2 repeated on the `claude` adapter | — | Phase 3 | agree
+Interrupt-1 | Kernel-1 | Kernel-1 | Phase 1 (with Kernel-1) | agree
+Interrupt-2 | Kernel-1 | Kernel-1 | Phase 1 (with Kernel-1) | agree
+Interrupt-3 | Kernel-5 (Phase 1 on AGY; Phase 3 does not run it, the Claude process survives) | Kernel-5 | Phase 1 (with Kernel-5) | agree
+Interrupt-4 | Kernel-1 | Kernel-1 | Phase 1 (with Kernel-1) | agree
+Interrupt-5 | Kernel-2 | Kernel-2 | Phase 1 (with Kernel-2) | agree
+
+summary agree 150  no column 24  split 1  unplaced 4
+family Bootstrap: no column 1,2,3,4,5,6,7
+family Console: unplaced 4,5
+family Convention: no column 1,2,3,4,5,6,7,8,9
+family Fleet: split 10
+family Lupin: no column 1,2,3,4,5,6,7,8
+family Naming: unplaced 4,5
