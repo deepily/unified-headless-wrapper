@@ -9,6 +9,9 @@
 # present <lines or matches>, gone, or unknown. With --clock it prints that clock's rows only and
 # exits 1 when a Delete row is present or a Keep row is gone. With --trace it watches a running
 # workload for tmux processes and new bridge files and prints both counts (both must be zero).
+# With --clock delete it also runs t19_hook_import_survivors.sh --check and fails while any file
+# that survives the Delete imports a module the Delete removes (row 28, ruled 2026-11-16).
+# A row whose clock is `none` lies outside the harness and is listed only without --clock.
 # Read-only. Output is meant for src/captures/out/t19-inventory-<host>-<date>.txt.
 
 set -u
@@ -131,9 +134,9 @@ file|delete|Delete|src/scripts/tfe_to_cc_matrix.sh
 file|delete|Delete|src/scripts/tfe_to_cc_phase1_smoke.py
 file|delete|Delete|src/scripts/tfe_to_cc_phase3_live.py
 key|delete|Delete|stop hook idle behavior
-unit|needed|Disposition needed|tmux-execve-killtrace.service
-unit|needed|Disposition needed|lupin-bounce-watcher.service
-unit|needed|Disposition needed|lupin-credential-watcher.service
+unit|switch|Delete|tmux-execve-killtrace.service
+unit|none|Operate|lupin-bounce-watcher.service
+unit|none|Operate|lupin-credential-watcher.service
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/kill_guard.py
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/commit_scope_guard.py
 file|move|Keep and import|src/lupin_cli/claude_code/hooks/lib/branch_lock_guard.py
@@ -170,6 +173,11 @@ symbol|move|Move key|CC_MEM_LIMIT
 symbol|move|Move key|LUPIN_CC_MEMORY_MAX
 symbol|move|Move key|LUPIN_CC_MEMORY_SWAP_MAX
 symbol|move|Move key|LUPIN_CC_WINDOW_TOKENS
+symbol|delete|Delete|session_file_role
+file|move|Keep|src/cosa/rest/routers/tasks.py
+file|move|Keep|src/cosa/rest/task_promotion_gate.py
+file|move|Keep|src/cosa/rest/task_priority_firewall.py
+file|move|Keep|src/cosa/rest/routers/podcast_proxy.py
 ROWS
 )
 
@@ -214,5 +222,10 @@ while IFS='|' read -r kind clock disposition target; do
         esac
     fi
 done <<< "$rows"
+if [ "$clock_filter" = "delete" ]; then
+    survivor_output=$("$(dirname "$0")/t19_hook_import_survivors.sh" "$checkout" --check); survivor_status=$?
+    printf '%s\n' "$survivor_output" | grep '^# survivors'
+    [ "$survivor_status" -eq 0 ] || failures=$(( failures + 1 ))
+fi
 echo "# rows=$total unknown=$unknown${clock_filter:+ failures=$failures}"
 [ "$unknown" -eq 0 ] && [ "$failures" -eq 0 ]

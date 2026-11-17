@@ -1,5 +1,18 @@
 # Capture runbook
 
+## Done 2026-11-16: the files that survive the Delete and import what it removes, zero tokens (row 28). Nothing here is owed
+
+**Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-hook-import-survivors-lupin-host-test-20261116.txt`, and `…-after-rows.txt` once the list had its new rows): 60 files outside `src/lupin_cli/claude_code` import it; the list deletes 14; 44 of the 46 survivors import a module the Delete removes. Read in `src/rnd/v0.0.1/narratives/2026.11.16-row28-switch-over-list-two-rows.md`.
+
+**On any host with a lupin checkout** (optional on the development server; it is the same branch):
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t19_hook_import_survivors.sh --self-test
+src/captures/t19_hook_import_survivors.sh ../lupin | tee src/captures/out/t19-hook-import-survivors-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+**At the Delete clock** (exits non-zero while a Delete row is present, a Keep row is gone, or a surviving file imports a deleted module): `src/captures/t19_switch_over_inventory.sh ../lupin --clock delete`. The survivors' condition alone: `src/captures/t19_hook_import_survivors.sh ../lupin --check`.
+
 ## Done 2026-11-16: the T16 account reach on the development server, zero tokens (row 39). Nothing here is owed
 
 **Result** (Rick, commit `d541d8b`; `src/captures/out/t16-account-reach-dual-rtx-4090s-20261116.txt`; read in the row 39 narrative, "What the host check found"): `rruiz` is user 1001 and owns the checkouts and the containers' writable mounts; its home holds Google, GitHub, SSH, registry and engine sign-ins; the development container mounts the Google sign-in folder read-only and the test container does not; no LXD socket exists; a libvirt socket does, not writable by `rruiz`; the projects folder is mode 744 and `~/.lupin` 775.
