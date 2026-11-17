@@ -1,5 +1,23 @@
 # Capture runbook
 
+## Owed, zero tokens: the T16 account reach on the development server (row 39). Run it before the row 39 walk-through
+
+The narrative for the unprivileged account (`src/rnd/v0.0.1/narratives/2026.11.16-row39-unprivileged-account.md`) rests on four facts about the development server that were read from a compose file on the test VM, or inferred, and not from the host: the numeric identifier of `rruiz`; which kinds of credential sit in its home; what the running containers mount from that home and which user they run as; whether the LXD socket is live. This script reads them. It makes no model call, writes nothing, and prints paths, names, modes and counts, never a file's content.
+
+**On the development server, as `rruiz`:**
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t16_account_reach.sh ../lupin | tee src/captures/out/t16-account-reach-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+Run from this repository's root; `../lupin` is the lupin checkout beside it (give its path if it is elsewhere). A few seconds.
+
+**What to paste back (or commit and push):** the whole output. The lines that decide things: under (a), `uid_gid`, the login accounts and the group members; under (b), which credential paths are present; under (c), which sockets read `writable=yes`; under (d), each container's `user | privileged` line and its `from this home or a socket` lines; under (e), `lupin_checkout_owner` and the user units.
+
+**Read the output with these limits in mind:** (b) checks a fixed list of twenty paths, so a credential kept elsewhere is not seen; (d) lists running containers only; the script was run once on the test VM as a shakedown (`src/captures/out/t16-account-reach-lupin-host-test-20261116.txt`) and has not run on the development server.
+
+---
+
 ## Done 2026-11-16: the T16 account inventory on the development server, zero tokens (row 20). Nothing here is owed; a rerun with the repaired script is optional
 
 **Result** (Rick, commit `40b2916`; `src/captures/out/t16-account-inventory-dual-rtx-4090s-20261116.txt`; read in the T16 spec's last amendment): the fleet runs as `rruiz`, in `docker` and `lxd`, with no passwordless `sudo` but for one named program; 703 direct `docker` calls and about 233 script runs driving Docker on the host in 30 days, `sudo` unused; thirteen repositories, none group-shared, none needing a mode repair. The script was repaired afterwards (remote shells marked, worktree copies merged, a misread redirection); the block below is as it was run.

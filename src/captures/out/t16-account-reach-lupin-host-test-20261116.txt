@@ -1,0 +1,108 @@
+
+== host ==
+host                                         lupin-host-test
+clock                                        2026-11-16 19:00:56 EST
+
+== (a) the account and its neighbours ==
+account                                      admin_rickruiz_altostrat_com
+uid_gid                                      1721846087:1721846087
+home                                         /home/admin_rickruiz_altostrat_com
+groups                                       admin_rickruiz_altostrat_com docker google-sudoers
+login accounts (name, uid, shell), uid 1000 and above:
+    ubuntu                       1000     /bin/bash
+members of the groups that give root's reach, where the group exists:
+    sudo           ubuntu
+    docker         admin_rickruiz_altostrat_com
+    lxd            ubuntu
+    kvm            (none)
+    disk           (none)
+    adm            syslog,ubuntu
+processes by account, uid 1000 and above (count, account):
+         3  1001
+
+== (b) credential kinds in this home (path, what is there; no content is read) ==
+    ~/.config/gcloud                             directory  admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775  11 entries
+    ~/.config/gcloud/application_default_credentials.json absent
+    ~/.config/gcloud/credentials.db              file       admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 600  12288 bytes
+    ~/.config/gcloud/legacy_credentials          absent
+    ~/.config/gh/hosts.yml                       absent
+    ~/.git-credentials                           file       admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 600  69 bytes
+    ~/.netrc                                     absent
+    ~/.docker/config.json                        file       admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 600  69 bytes
+    ~/.ssh                                       absent
+    ~/.gnupg                                     absent
+    ~/.aws                                       absent
+    ~/.kube                                      absent
+    ~/.npmrc                                     absent
+    ~/.pypirc                                    absent
+    ~/.local/share/keyrings                      absent
+    ~/.claude/.credentials.json                  absent
+    ~/.gemini                                    directory  admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 775  2 entries
+    ~/.lupin                                     directory  admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 750  4 entries
+    ~/.lupin/config                              file       admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 640  1850 bytes
+    ~/.lora_env                                  absent
+ssh_private_keys                             0
+ssh_authorized_keys_lines                    0
+ssh_agent_socket                             unset
+git_credential_helper                        store
+lupin_config_owner_section                   absent
+
+== (c) daemon sockets this account can write ==
+    /var/run/docker.sock                         root:docker 660  writable=yes
+    /var/snap/lxd/common/lxd/unix.socket         root:lxd 660  writable=no
+    /var/lib/lxd/unix.socket                     absent
+    /var/lib/incus/unix.socket                   absent
+    /var/run/libvirt/libvirt-sock                absent
+lxd_daemon                                   inactive / inactive
+sudo rules for this account (sudo -n -l; no password is ever offered):
+    User admin_rickruiz_altostrat_com may run the following commands on lupin-host-test:
+        (ALL) NOPASSWD: ALL
+        (ALL : ALL) NOPASSWD: ALL
+
+== (d) running containers: user, privilege, and what each mounts from this home ==
+docker_server_version                        29.7.2
+docker_runtimes                              io.containerd.runc.v2 runc 
+docker_rootless                              no
+docker_authorization_plugins                 none
+
+lupin-rest-test
+    user | privileged                        1001:1001 | false
+    compose project | service                lupin | lupin-rest-test
+    compose working directory                /mnt/lupin-data/lupin
+    mounts | writable                        32 | 11
+    writable bind sources owned by: UNKNOWN(uid=1001) (6)
+    writable bind sources owned by: admin_rickruiz_altostrat_com(uid=1721846087) (2)
+
+lupin-rest-cloud-gpu
+    user | privileged                        1001:1001 | false
+    compose project | service                lupin | lupin-rest
+    compose working directory                /mnt/lupin-data/lupin
+    mounts | writable                        14 | 13
+    from this home or a socket: rw  /home/admin_rickruiz_altostrat_com/.claude/sessions  ->  /home/rruiz/.claude/sessions
+    writable bind sources owned by: UNKNOWN(uid=1001) (4)
+    writable bind sources owned by: admin_rickruiz_altostrat_com(uid=1721846087) (7)
+
+lupin-pgvector-test
+    user | privileged                        (image default) | false
+    compose project | service                lupin | lupin-pgvector-test
+    compose working directory                /mnt/lupin-data/lupin
+    mounts | writable                        3 | 1
+
+lupin-cloudsql-proxy
+    user | privileged                        65532 | false
+    compose project | service                lupin | cloud-sql-proxy
+    compose working directory                /mnt/lupin-data/lupin
+    mounts | writable                        1 | 1
+
+== (e) what a second account would meet ==
+lupin_checkout_owner                         UNKNOWN:google-sudoers 775 (uid 1001)
+lupin_checkout_parent_owner                  admin_rickruiz_altostrat_com:admin_rickruiz_altostrat_com 755
+lupin_compose_user_lines                     3 ("1001:1001")
+linger                                       Linger=yes
+user units running under this account (names):
+    lupin-arbiter-app.service
+crontab_lines                                2
+subuid_entry                                 absent
+newuidmap                                    absent
+rootless_setup_tool                          present
+git_safe_directory_entries                   1
