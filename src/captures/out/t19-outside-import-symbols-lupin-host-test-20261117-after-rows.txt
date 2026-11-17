@@ -1,0 +1,146 @@
+# t19 outside import symbols · checkout=../lupin · commit=27e646d0ed · inventory rows=193 · deleted Python files outside the tree=63 · 2026-11-17T13:13-0500
+
+## src/lupin_mcp/fleet_cap_ini_io.py · lines=317 · files=7 statements=8 distinct names=6
+fleet_cap_ini_io           keep     src/cosa/repo/symindex/librarian_tick.py:111  lazy-guarded in=read_value          .read_value_from_disk=1
+fleet_cap_ini_io           keep     src/cosa/rest/cron_job_switches.py:24  top in=<module>                     .locate_key=1 .write_bool_to_disk=1
+fleet_cap_ini_io           keep     src/cosa/rest/routers/arbiter.py:444  lazy in=put_fleet_size_cap          .KeyDefinedTwice=2 .KeyNotFound=2 .write_bool_to_disk=1 .write_int_to_disk=1
+fleet_cap_ini_io           keep     src/cosa/rest/routers/arbiter.py:567  lazy in=put_skeleton_crew           .KeyDefinedTwice=2 .KeyNotFound=2 .write_bool_to_disk=1 .write_int_to_disk=1
+fleet_cap_ini_io           keep     src/cosa/rest/routers/cron_jobs.py:22  top in=<module>                     .KeyDefinedTwice=1 .KeyNotFound=1
+fleet_cap_ini_io           keep     src/lupin_mcp/cron_switch_read.py:18  top in=<module>                     .read_value_from_disk=1
+fleet_cap_ini_io           keep     src/lupin_mcp/reuse_merge_gate.py:41  top in=<module>                     .read_value_from_disk=2
+fleet_cap_ini_io           keep     src/lupin_mcp/reuse_review_gate.py:30  top in=<module>                     .read_value_from_disk=1
+#   read_value_from_disk                     files=4  function src/lupin_mcp/fleet_cap_ini_io.py:156-182 (27 lines)
+#   KeyDefinedTwice                          files=2  class src/lupin_mcp/fleet_cap_ini_io.py:60-61 (2 lines)
+#   KeyNotFound                              files=2  class src/lupin_mcp/fleet_cap_ini_io.py:56-57 (2 lines)
+#   write_bool_to_disk                       files=2  function src/lupin_mcp/fleet_cap_ini_io.py:292-317 (26 lines)
+#   locate_key                               files=1  function src/lupin_mcp/fleet_cap_ini_io.py:113-153 (41 lines)
+#   write_int_to_disk                        files=1  function src/lupin_mcp/fleet_cap_ini_io.py:263-289 (27 lines)
+
+## src/lupin_mcp/fleet_size_cap.py · lines=578 · files=5 statements=8 distinct names=9
+fleet_size_cap             keep     src/cosa/repo/symindex/librarian_tick.py:111  lazy-guarded in=read_value          .config_file_path=1
+fleet_size_cap             keep     src/cosa/rest/cron_job_switches.py:24  top in=<module>                     .main_checkout_ini_path=1
+fleet_size_cap             keep     src/cosa/rest/routers/arbiter.py:260  lazy-guarded in=_live_fleet_counts  .FLEET_CAP_KEY=2 .FLEET_CEILING_KEY=1 .census=1 .config_file_path=1 .counting_classifier_for=1 .default_disk_cap_reader=1 .resolve_fleet_cap=1 .resolve_fleet_ceiling=2
+fleet_size_cap             keep     src/cosa/rest/routers/arbiter.py:291  lazy in=_fleet_size_cap_payload     .FLEET_CAP_KEY=2 .FLEET_CEILING_KEY=1 .census=1 .config_file_path=1 .counting_classifier_for=1 .default_disk_cap_reader=1 .resolve_fleet_cap=1 .resolve_fleet_ceiling=2
+fleet_size_cap             keep     src/cosa/rest/routers/arbiter.py:443  lazy in=put_fleet_size_cap          .FLEET_CAP_KEY=2 .FLEET_CEILING_KEY=1 .census=1 .config_file_path=1 .counting_classifier_for=1 .default_disk_cap_reader=1 .resolve_fleet_cap=1 .resolve_fleet_ceiling=2
+fleet_size_cap             keep     src/cosa/rest/routers/arbiter.py:567  lazy in=put_skeleton_crew           .FLEET_CAP_KEY=2 .FLEET_CEILING_KEY=1 .census=1 .config_file_path=1 .counting_classifier_for=1 .default_disk_cap_reader=1 .resolve_fleet_cap=1 .resolve_fleet_ceiling=2
+fleet_size_cap             keep     src/lupin_mcp/cron_switch_read.py:183  lazy in=for_job                     .main_checkout_ini_path=1
+fleet_size_cap             keep     src/lupin_mcp/reuse_review_gate.py:30  top in=<module>                     .main_checkout_ini_path=1
+#   main_checkout_ini_path                   files=3  function src/lupin_mcp/fleet_size_cap.py:506-521 (16 lines)
+#   config_file_path                         files=2  function src/lupin_mcp/fleet_size_cap.py:524-549 (26 lines)
+#   FLEET_CAP_KEY                            files=1  value src/lupin_mcp/fleet_size_cap.py:76-76 (1 lines)
+#   FLEET_CEILING_KEY                        files=1  value src/lupin_mcp/fleet_size_cap.py:77-77 (1 lines)
+#   census                                   files=1  function src/lupin_mcp/fleet_size_cap.py:384-446 (63 lines)
+#   counting_classifier_for                  files=1  function src/lupin_mcp/fleet_size_cap.py:353-381 (29 lines)
+#   default_disk_cap_reader                  files=1  function src/lupin_mcp/fleet_size_cap.py:552-578 (27 lines)
+#   resolve_fleet_cap                        files=1  function src/lupin_mcp/fleet_size_cap.py:156-209 (54 lines)
+#   resolve_fleet_ceiling                    files=1  function src/lupin_mcp/fleet_size_cap.py:128-153 (26 lines)
+
+## src/cosa/agents/heartbeat_arbiter/ping_throttle.py · lines=211 · files=3 statements=3 distinct names=1
+ping_throttle              keep     src/cosa/agents/decision_proxy/trust_tracker.py:26  top in=<module>                     prune_window=1
+ping_throttle              keep     src/cosa/agents/deep_research/rate_limiter.py:23  top in=<module>                     prune_window=1
+ping_throttle              keep     src/cosa/rest/job_health.py:16  top in=<module>                     prune_window=1
+#   prune_window                             files=3  function src/cosa/agents/heartbeat_arbiter/ping_throttle.py:95-126 (32 lines)
+
+## src/lupin_mcp/commons_persona_matcher.py · lines=109 · files=2 statements=2 distinct names=2
+commons_persona_matcher    keep     src/cosa/rest/routers/commons.py:43  top in=<module>                     match_persona=1
+commons_persona_matcher    keep     src/lupin_app/lifespan_steps.py:322  lazy in=start_commons               configure_llm_disambiguator=1
+#   configure_llm_disambiguator              files=1  function src/lupin_mcp/commons_persona_matcher.py:22-35 (14 lines)
+#   match_persona                            files=1  function src/lupin_mcp/commons_persona_matcher.py:78-109 (32 lines)
+
+## src/lupin_mcp/reap_memento.py · lines=1355 · files=2 statements=2 distinct names=3
+reap_memento               keep     src/cosa/rest/job_health.py:18  top in=<module>                     _parse_iso_aware=6
+reap_memento               keep     src/lupin_mcp/cosa_voice_mcp.py:3188  lazy in=dismiss_sessions            .coordinate_mementos=1 .recheck_losing_seats=1
+#   _parse_iso_aware                         files=1  function src/lupin_mcp/reap_memento.py:457-463 (7 lines)
+#   coordinate_mementos                      files=1  function src/lupin_mcp/reap_memento.py:883-1123 (241 lines)
+#   recheck_losing_seats                     files=1  function src/lupin_mcp/reap_memento.py:751-828 (78 lines)
+
+## src/lupin_mcp/skeleton_crew.py · lines=318 · files=2 statements=3 distinct names=4
+skeleton_crew              keep     src/cosa/rest/routers/arbiter.py:298  lazy in=_fleet_size_cap_payload     .SKELETON_CREW_KEY=1 .describe=1 .ini_path=1 .write_state_file=1
+skeleton_crew              keep     src/cosa/rest/routers/arbiter.py:567  lazy in=put_skeleton_crew           .SKELETON_CREW_KEY=1 .describe=1 .ini_path=1 .write_state_file=1
+skeleton_crew              keep     src/lupin_mcp/cosa_voice_mcp.py:2577  lazy-guarded in=get_session_info    .describe=1
+#   describe                                 files=2  function src/lupin_mcp/skeleton_crew.py:274-303 (30 lines)
+#   SKELETON_CREW_KEY                        files=1  value src/lupin_mcp/skeleton_crew.py:34-34 (1 lines)
+#   ini_path                                 files=1  function src/lupin_mcp/skeleton_crew.py:47-59 (13 lines)
+#   write_state_file                         files=1  function src/lupin_mcp/skeleton_crew.py:208-233 (26 lines)
+
+## src/cosa/agents/heartbeat_arbiter/manager_resolver.py · lines=384 · files=1 statements=2 distinct names=3
+manager_resolver           keep     src/cosa/agents/shared/worktree_straggler_tickets.py:136  lazy-guarded in=spawn_registry_manager  resolve_manager=2 SOURCE_LINEAGE=1
+manager_resolver           keep     src/cosa/agents/shared/worktree_straggler_tickets.py:165  lazy-guarded in=live_unspawned_persona  resolve_manager=2 SOURCE_UNRESOLVED=1
+#   SOURCE_LINEAGE                           files=1  value src/cosa/agents/heartbeat_arbiter/manager_resolver.py:57-57 (1 lines)
+#   SOURCE_UNRESOLVED                        files=1  value src/cosa/agents/heartbeat_arbiter/manager_resolver.py:59-59 (1 lines)
+#   resolve_manager                          files=1  function src/cosa/agents/heartbeat_arbiter/manager_resolver.py:235-313 (79 lines)
+
+## src/cosa/agents/heartbeat_arbiter/respin_wake_check.py · lines=1048 · files=1 statements=1 distinct names=1
+respin_wake_check          keep     src/lupin_mcp/cosa_voice_mcp.py:3141  lazy-guarded in=_arm_respin_wake_watch  arm_watches_for_spawn=1
+#   arm_watches_for_spawn                    files=1  function src/cosa/agents/heartbeat_arbiter/respin_wake_check.py:947-1008 (62 lines)
+
+## src/cosa/rest/arbiter_bootstrap.py · lines=300 · files=1 statements=1 distinct names=1
+arbiter_bootstrap          keep     src/lupin_app/main.py:864  lazy in=lifespan                    submit_arbiter_if_enabled=1
+#   submit_arbiter_if_enabled                files=1  function src/cosa/rest/arbiter_bootstrap.py:214-257 (44 lines)
+
+## src/cosa/rest/cc_transcript_mapper.py · lines=401 · files=1 statements=1 distinct names=1
+cc_transcript_mapper       keep     src/cosa/rest/cc_transcript_tailer.py:39  top in=<module>                     map_records=2
+#   map_records                              files=1  function src/cosa/rest/cc_transcript_mapper.py:87-116 (30 lines)
+
+## src/cosa/rest/routers/claude_code_queue.py · lines=92 · files=1 statements=1 distinct names=1
+claude_code_queue          keep     src/lupin_app/main.py:92  top in=<module>                     .router=1
+#   router                                   files=1  value src/cosa/rest/routers/claude_code_queue.py:46-46 (1 lines)
+
+## src/cosa/rest/routers/heartbeat.py · lines=127 · files=1 statements=1 distinct names=1
+heartbeat                  keep     src/lupin_app/main.py:92  top in=<module>                     .router=1
+#   router                                   files=1  value src/cosa/rest/routers/heartbeat.py:29-29 (1 lines)
+
+## src/cosa/rest/routers/speakerphone.py · lines=320 · files=1 statements=1 distinct names=1
+speakerphone               keep     src/lupin_app/main.py:92  top in=<module>                     .router=1
+#   router                                   files=1  value src/cosa/rest/routers/speakerphone.py:61-61 (1 lines)
+
+## src/lupin_mcp/bridge_liveness_middleware.py · lines=105 · files=1 statements=1 distinct names=1
+bridge_liveness_middleware keep     src/lupin_mcp/cosa_voice_mcp.py:1164  top in=<module>                     BridgeLivenessMiddleware=1
+#   BridgeLivenessMiddleware                 files=1  class src/lupin_mcp/bridge_liveness_middleware.py:31-65 (35 lines)
+
+## src/lupin_mcp/commons_llm_disambiguator.py · lines=238 · files=1 statements=1 distinct names=1
+commons_llm_disambiguator  keep     src/lupin_app/lifespan_steps.py:321  lazy in=start_commons               CommonsLlmDisambiguator=1
+#   CommonsLlmDisambiguator                  files=1  class src/lupin_mcp/commons_llm_disambiguator.py:70-238 (169 lines)
+
+## src/lupin_mcp/self_respin_core.py · lines=1593 · files=1 statements=1 distinct names=3
+self_respin_core           keep     src/lupin_mcp/cosa_voice_mcp.py:2624  lazy in=self_respin                 self_respin_from_bridge=1 _live_own_pressure=1 resolve_own_identity=1
+#   _live_own_pressure                       files=1  function src/lupin_mcp/self_respin_core.py:1470-1483 (14 lines)
+#   resolve_own_identity                     files=1  function src/lupin_mcp/self_respin_core.py:1354-1373 (20 lines)
+#   self_respin_from_bridge                  files=1  function src/lupin_mcp/self_respin_core.py:1283-1331 (49 lines)
+
+## src/lupin_mcp/session_spawner.py · lines=2753 · files=1 statements=4 distinct names=7
+session_spawner            keep     src/lupin_mcp/cosa_voice_mcp.py:3033  lazy in=spawn_sessions              ._default_reconcile_store_items=1 .dismiss_sessions=1 .list_spawned_sessions=1 .resolve_manager_identity=3 .resolve_spawn_config=2 .spawn_sessions=1
+session_spawner            keep     src/lupin_mcp/cosa_voice_mcp.py:3124  lazy-guarded in=_data_root_of_spawn_record  _resolve_project_root=1
+session_spawner            keep     src/lupin_mcp/cosa_voice_mcp.py:3188  lazy in=dismiss_sessions            ._default_reconcile_store_items=1 .dismiss_sessions=1 .list_spawned_sessions=1 .resolve_manager_identity=3 .resolve_spawn_config=2 .spawn_sessions=1
+session_spawner            keep     src/lupin_mcp/cosa_voice_mcp.py:3280  lazy in=list_spawned_sessions       ._default_reconcile_store_items=1 .dismiss_sessions=1 .list_spawned_sessions=1 .resolve_manager_identity=3 .resolve_spawn_config=2 .spawn_sessions=1
+#   _default_reconcile_store_items           files=1  function src/lupin_mcp/session_spawner.py:1536-1630 (95 lines)
+#   _resolve_project_root                    files=1  function src/lupin_mcp/session_spawner.py:529-607 (79 lines)
+#   dismiss_sessions                         files=1  function src/lupin_mcp/session_spawner.py:1633-2098 (466 lines)
+#   list_spawned_sessions                    files=1  function src/lupin_mcp/session_spawner.py:2101-2212 (112 lines)
+#   resolve_manager_identity                 files=1  function src/lupin_mcp/session_spawner.py:2534-2564 (31 lines)
+#   resolve_spawn_config                     files=1  function src/lupin_mcp/session_spawner.py:2567-2624 (58 lines)
+#   spawn_sessions                           files=1  function src/lupin_mcp/session_spawner.py:766-1266 (501 lines)
+
+## per file
+keep     src/cosa/agents/decision_proxy/trust_tracker.py      statements=1  shapes=top                          targets=ping_throttle
+keep     src/cosa/agents/deep_research/rate_limiter.py        statements=1  shapes=top                          targets=ping_throttle
+keep     src/cosa/agents/shared/worktree_straggler_tickets.py statements=2  shapes=lazy-guarded                 targets=manager_resolver
+keep     src/cosa/repo/symindex/librarian_tick.py             statements=2  shapes=lazy-guarded                 targets=fleet_cap_ini_io,fleet_size_cap
+keep     src/cosa/rest/cc_transcript_tailer.py                statements=1  shapes=top                          targets=cc_transcript_mapper
+keep     src/cosa/rest/cron_job_switches.py                   statements=2  shapes=top                          targets=fleet_cap_ini_io,fleet_size_cap
+keep     src/cosa/rest/job_health.py                          statements=2  shapes=top                          targets=ping_throttle,reap_memento
+keep     src/cosa/rest/routers/arbiter.py                     statements=8  shapes=lazy,lazy-guarded            targets=fleet_cap_ini_io,fleet_size_cap,skeleton_crew
+keep     src/cosa/rest/routers/commons.py                     statements=1  shapes=top                          targets=commons_persona_matcher
+keep     src/cosa/rest/routers/cron_jobs.py                   statements=1  shapes=top                          targets=fleet_cap_ini_io
+keep     src/lupin_app/lifespan_steps.py                      statements=2  shapes=lazy                         targets=commons_llm_disambiguator,commons_persona_matcher
+keep     src/lupin_app/main.py                                statements=4  shapes=lazy,top                     targets=arbiter_bootstrap,claude_code_queue,heartbeat,speakerphone
+keep     src/lupin_mcp/cosa_voice_mcp.py                      statements=9  shapes=lazy,lazy-guarded,top        targets=bridge_liveness_middleware,reap_memento,respin_wake_check,self_respin_core,session_spawner,skeleton_crew
+keep     src/lupin_mcp/cron_switch_read.py                    statements=2  shapes=lazy,top                     targets=fleet_cap_ini_io,fleet_size_cap
+keep     src/lupin_mcp/reuse_merge_gate.py                    statements=1  shapes=top                          targets=fleet_cap_ini_io
+keep     src/lupin_mcp/reuse_review_gate.py                   statements=2  shapes=top                          targets=fleet_cap_ini_io,fleet_size_cap
+
+# surviving files importing a deleted file outside the tree: 16 (keep=16 unlisted=0)
+# files with at least one unguarded module-level import (fail at import after the Delete): 12
+# deleted files wanted: 17 of 63 · import statements: 41
+# NOT PARSED src/cosa/repo/doc_lint/judge_comparison.py: f-string expression part cannot include a backslash (<unknown>, line 471)
+# NOT PARSED src/cosa/rest/v2/source_document.py: f-string: expecting '}' (<unknown>, line 262)

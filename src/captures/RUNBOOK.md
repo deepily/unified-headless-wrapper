@@ -1,5 +1,19 @@
 # Capture runbook
 
+## Done 2026-11-17: what the surviving files take from the Python files deleted outside the hooks tree, zero tokens (row 76). Nothing here is owed
+
+**Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-outside-import-symbols-lupin-host-test-20261117.txt` before the rows, `…-after-rows.txt` after; `t19-hook-import-survivors-lupin-host-test-20261117-after-row76.txt`; `t19-inventory-lupin-host-test-20261117-after-row76.txt`; read in the row 76 narrative and the T19 spec's amendment of 2026-11-17, row 76): before the rows, 15 unmapped surviving files held 35 imports of 12 deleted files. After them the inventory has 193 rows, none unknown; the check exits 1, with 34 surviving files importing a deleted tree module and 16 importing 17 of the 63 Python files the list deletes or renames outside the tree. It stays 1 until lupin changes (rows 75 and 80 of "Outstanding actions").
+
+**On any host with a lupin checkout** (optional on the development server; it is the same branch):
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t19_outside_import_symbols.sh --self-test && src/captures/t19_hook_import_survivors.sh --self-test
+src/captures/t19_outside_import_symbols.sh ../lupin | tee src/captures/out/t19-outside-import-symbols-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+src/captures/t19_hook_import_survivors.sh ../lupin --check | tee src/captures/out/t19-hook-import-survivors-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+The first script lists, for each deleted or renamed file, every import of it by a surviving file with the names taken and the size of each. The second is the Delete clock's condition; a Python file with a Rename row now counts as removed at its old path.
+
 ## Done 2026-11-17: what the surviving files take from the hooks tree, and the widened Delete check, zero tokens (row 66). Nothing here is owed
 
 **Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-survivor-import-symbols-lupin-host-test-20261117.txt` before the rows, `…-after-rows.txt` after; `t19-hook-import-survivors-lupin-host-test-20261117-after-row66.txt`; `t19-inventory-lupin-host-test-20261117.txt`; read in the row 66 narrative and the T19 spec's amendment of 2026-11-17): before the rows, 44 surviving files and 2 kept tree modules imported 14 deleted modules in 70 statements. After them the inventory has 184 rows, none unknown; the check exits 1, with 34 surviving files importing a deleted tree module and 18 importing a Python file deleted outside the tree. It stays at 1 until lupin changes.

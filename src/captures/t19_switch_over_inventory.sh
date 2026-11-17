@@ -106,7 +106,7 @@ file|delete|Delete|src/cosa/rest/cc_transcript_mapper.py
 file|delete|Delete|src/lupin_mcp/session_spawner.py
 file|delete|Delete|src/lupin_mcp/fleet_size_cap.py
 file|delete|Delete|src/lupin_mcp/fleet_cap_admission.py
-file|delete|Delete|src/lupin_mcp/fleet_cap_ini_io.py
+file|move|Rename|src/lupin_mcp/fleet_cap_ini_io.py
 file|delete|Delete|src/lupin_mcp/skeleton_crew.py
 file|delete|Delete|src/lupin_mcp/respin_credit.py
 file|delete|Delete|src/lupin_mcp/reap_memento.py
@@ -213,6 +213,15 @@ file|move|Keep|src/cosa/repo/symindex/librarian_tick.py
 file|move|Keep|src/cosa/agents/decision_proxy/trust_tracker.py
 file|move|Keep|src/cosa/agents/deep_research/rate_limiter.py
 file|move|Keep|src/cosa/rest/job_health.py
+file|move|Keep|src/cosa/utils/configuration_line_editor.py
+file|move|Keep|src/cosa/rest/cron_job_switches.py
+file|move|Keep|src/cosa/rest/routers/cron_jobs.py
+file|move|Keep|src/lupin_mcp/reuse_merge_gate.py
+file|move|Keep|src/lupin_mcp/reuse_review_gate.py
+file|delete|Delete|src/lupin_mcp/memento_slot.py
+file|delete|Delete|src/lupin_mcp/memento_slot_audit.py
+file|delete|Delete|src/lupin_mcp/commons_llm_disambiguator.py
+file|move|Keep|src/cosa/utils/service_login.py
 ROWS
 )
 

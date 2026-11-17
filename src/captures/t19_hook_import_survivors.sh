@@ -25,7 +25,9 @@
 #
 #   outside <class> <path>  gone files: <deleted files it imports>
 #
-# Both were added on 2026-11-17 (row 66 of "Outstanding actions", ruling 9).
+# Both were added on 2026-11-17 (row 66 of "Outstanding actions", ruling 9). A Python file with a
+# Rename row counts as removed at its old path, since an import of that path fails after the rename
+# as it would after a deletion (row 76, ruled 2026-11-17).
 #
 # With --check the script exits 1 while any surviving file imports a deleted module or file: the Delete
 # clock's condition (row 28 of "Outstanding actions", ruled 2026-11-16), which
@@ -99,7 +101,7 @@ def doomed_outside( rows, python_files_under ):
     """
     doomed = { }
     for kind, _clock, disposition, target in rows:
-        if disposition != "Delete" or target == TREE or target.startswith( TREE + "/" ): continue
+        if not ( disposition == "Delete" or ( disposition == "Rename" and kind == "file" ) ) or target == TREE or target.startswith( TREE + "/" ): continue
         paths = [ target ] if kind == "file" and target.endswith( ".py" ) else list( python_files_under( target ) ) if kind == "dir" else [ ]
         for path in paths: doomed[ path[ len( "src/" ):-len( ".py" ) ].replace( "/", "." ) ] = path
     return doomed
@@ -133,6 +135,7 @@ def self_test():
         ( bool( TEST_PATH.search( "src/a/latest_run.py" ) ), False ),
         ( doomed_outside( rows, lambda directory: [ directory + "/x/y.py" ] ), { "gone_tree.x.y": "src/gone_tree/x/y.py", "a": "src/a.py" } ),
         ( doomed_outside( [ ( "dir", "delete", "Delete", TREE ), ( "file", "move", "Keep", "src/b.py" ), ( "file", "delete", "Delete", "src/c.sh" ) ], lambda directory: [ "src/no.py" ] ), { } ),
+        ( doomed_outside( [ ( "file", "move", "Rename", "src/d/e.py" ), ( "route", "delete", "Rename", "src/f.py" ), ( "dir", "move", "Rename", "src/g" ) ], lambda directory: [ directory + "/h.py" ] ), { "d.e": "src/d/e.py" } ),
         ( dotted_imports( "from a.b import c, d as e\nimport f.g\n# import no\ndef h():\n    from i import j\nfrom . import k\n" ), { "a.b", "a.b.c", "a.b.d", "f.g", "i", "i.j" } ),
     ]
     failed = [ ( number, got, expected ) for number, ( got, expected ) in enumerate( checks, 1 ) if got != expected ]

@@ -115,7 +115,7 @@ def outside_tree( checkout, rows ):
     """The same question for the Python files the list deletes outside the tree: which survivors import them."""
     doomed = { }                                        # dotted module name -> path
     for kind, _clock, disposition, target in rows:
-        if disposition != "Delete" or target == TREE or target.startswith( TREE + "/" ): continue
+        if not ( disposition == "Delete" or ( disposition == "Rename" and kind == "file" ) ) or target == TREE or target.startswith( TREE + "/" ): continue
         if kind == "file" and target.endswith( ".py" ): doomed[ target[ 4:-3 ].replace( "/", "." ) ] = target
         if kind == "dir":
             for directory, _directories, files in os.walk( os.path.join( checkout, target ) ):
