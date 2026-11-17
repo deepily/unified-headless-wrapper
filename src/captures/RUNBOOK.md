@@ -1,5 +1,17 @@
 # Capture runbook
 
+## Done 2026-11-16: what a re-read of the settings file costs, zero tokens (row 60). Nothing here is owed
+
+**Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t15-configuration-reread-lupin-host-test-20261116.txt`; read in the row 60 narrative, "Where the record stands"): `lupin-app.ini` is 2,750 lines, six blocks, 967 distinct keys, 51 of them defined in more than one block, no `kernel …` key yet; one `stat` 0.003 ms, one whole ConfigurationManager build 17.5 ms, 22.6 ms with the key dictionary; `init()` refreshes in place with no flag, drops launch overrides unless they are passed again, and prints 26 lines unless silenced.
+
+**On any host with a lupin checkout and its `.venv`** (optional on the development server; only the timings would differ):
+```bash
+git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t15_configuration_reread.sh ../lupin | tee src/captures/out/t15-configuration-reread-$( hostname )-$( TZ=America/New_York date +%Y%m%d ).txt
+```
+
+Read-only on the checkout; the manager's behavior is probed on a fixture in a temporary folder. A second argument names the block (default `Lupin: Development`).
+
 ## Done 2026-11-16: the files that survive the Delete and import what it removes, zero tokens (row 28). Nothing here is owed
 
 **Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-hook-import-survivors-lupin-host-test-20261116.txt`, and `…-after-rows.txt` once the list had its new rows): 60 files outside `src/lupin_cli/claude_code` import it; the list deletes 14; 44 of the 46 survivors import a module the Delete removes. Read in `src/rnd/v0.0.1/narratives/2026.11.16-row28-switch-over-list-two-rows.md`.

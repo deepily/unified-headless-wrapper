@@ -1,0 +1,44 @@
+host                                         lupin-host-test
+when                                         2026-11-16 22:48 EST (app timezone)
+python                                       3.10.12 /mnt/lupin-data/lupin/.venv/bin/python
+lupin_head                                   27e646d0ed (lupin-app.ini modified in the working tree)
+block                                        Lupin: Development
+
+(a) the file
+ini_lines_bytes                              2750 179995
+splainer_lines_bytes                         1369 336929
+block [default]                              keys=1 inherits=- inherits_a_file=False
+block [Lupin: Production]                    keys=7 inherits=Lupin: Baseline inherits_a_file=False
+block [Lupin: Development]                   keys=229 inherits=Lupin: Baseline inherits_a_file=False
+block [Lupin: Testing]                       keys=12 inherits=Lupin: Development inherits_a_file=False
+block [Lupin: Testing-GCS]                   keys=47 inherits=Lupin: Development inherits_a_file=False
+block [Lupin: Baseline]                      keys=734 inherits=- inherits_a_file=False
+keys_distinct                                967
+keys_in_more_than_one_block                  51
+kernel_keys_present                          0
+
+(b) the cost
+stat                                         0.003 ms (max 0.035)
+bare_configparser_parse                      10.698 ms (max 15.887)
+whole_manager_build                          17.489 ms (max 19.006)
+whole_manager_build_and_pairs                22.597 ms (max 24.930)
+keys_in_force_for_block                      961
+
+(c) the manager, on a fixture
+second_instance_is_separate                  True; the singleton is untouched=True; both read cap=14,14
+singleton_sees_edit_without_reread           False
+second_instance_sees_edit                    True
+init_in_place_on_broken_file                 raises ParsingError; afterwards cap reads None (was '14')
+init_in_place_after_repair                   cap reads '14'
+reset_singleton_on_broken_file               raises ParsingError; the old instance still reads '14'; the next plain call raises ParsingError
+second_instance_on_broken_file               raises ParsingError; nothing else is touched
+override_across_init                         before '3', after '14'
+set_config_across_init                       set 5, after init '14'
+init_with_no_arguments                       prints 26 lines; silent is now False
+file_cut_short_in_the_parent_block           builds without error; batch cap reads None
+file_cut_short_before_the_parent_block       raises AssertionError
+file_empty                                   raises AssertionError
+key_written_twice_in_one_block               raises DuplicateOptionError
+key_in_child_and_parent                      builds; cap reads '9' (the child's)
+read_while_init_is_half_done                 an inherited key reads None inside init(), '14' after
+atomic_replace_same_bytes                    inode changed=True; size changed=False; mtime_ns changed=True
