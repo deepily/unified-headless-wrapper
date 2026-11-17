@@ -1,6 +1,8 @@
 # Capture runbook
 
-## Owed, zero tokens: the T16 account reach on the development server (row 39). Run it before the row 39 walk-through
+## Done 2026-11-16: the T16 account reach on the development server, zero tokens (row 39). Nothing here is owed
+
+**Result** (Rick, commit `d541d8b`; `src/captures/out/t16-account-reach-dual-rtx-4090s-20261116.txt`; read in the row 39 narrative, "What the host check found"): `rruiz` is user 1001 and owns the checkouts and the containers' writable mounts; its home holds Google, GitHub, SSH, registry and engine sign-ins; the development container mounts the Google sign-in folder read-only and the test container does not; no LXD socket exists; a libvirt socket does, not writable by `rruiz`; the projects folder is mode 744 and `~/.lupin` 775.
 
 The narrative for the unprivileged account (`src/rnd/v0.0.1/narratives/2026.11.16-row39-unprivileged-account.md`) rests on four facts about the development server that were read from a compose file on the test VM, or inferred, and not from the host: the numeric identifier of `rruiz`; which kinds of credential sit in its home; what the running containers mount from that home and which user they run as; whether the LXD socket is live. This script reads them. It makes no model call, writes nothing, and prints paths, names, modes and counts, never a file's content.
 
