@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-17 (amended after row 63, again after its commit, and by row 85) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-17 (amended after row 63, again after its commit, by row 85 and by row 87) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -9,9 +9,10 @@
 | MacBook | Claude Code desktop, through the device bridge | `~/Projects/unified-headless-wrapper` | Folder grants are per chat; `git commit` needs the one-time delete permission for `.git` lock files; the bridge has no GitHub credential, so Rick pushes. Read-only clones: `~/Projects/lupin`, `~/Projects/planning-is-prompting` |
 | Test VM `lupin-host-test` | Claude Code on Fable | `/mnt/lupin-data/unified-headless-wrapper` | Native shell: no grants, no bridge, **no Claude Docs**. The Fable allocation is small, so Section 9 binds. Read-only: `/mnt/lupin-data/lupin` (a git checkout) and `/mnt/lupin-data/planning-is-prompting` (a deployed copy with no `.git`, so it has no HEAD to cite) (Rick, 11-15) |
 | Test VM `lupin-host-test` | Antigravity (AGY) on Fable, the working engine from 2026-11-15 | the same checkout and read-only paths | As the row above. AGY does not read `CLAUDE.md`; the root `AGENTS.md` loads this file instead. `ask_question` stands in for `AskUserQuestion` |
+| Test VM `lupin-host-test` | the Phase 1 builder: Claude Code under AH4L, **not a planning session** | `/mnt/lupin-data/unified-headless-wrapper-builder` | A second clone of the one branch, made and checked by `src/captures/t19_builder_clone_setup.sh`. The root `CLAUDE.md` and `AGENTS.md` are left out of its tree by sparse checkout; its loader is `03-builder-loader.md`, through an untracked `CLAUDE.local.md`. It writes `src/uhw_kernel/` and `tests/` only, and reports in `src/uhw_kernel/BUILD.md`. No planning session opens there (Rick, 2026-11-17, row 87) |
 | Development server `dual-rtx-4090s` | — | `/mnt/DATA01/include/www.deepily.ai/projects/unified-headless-wrapper` | Beside the lupin checkout; scripts importing `cosa` run from lupin's `.venv`. Lupin is written here only until the relocation (the kernel package's move into lupin, which closes Phase 1); from then it is also written in the test VM's lupin checkout, on the dedicated branch (Rick, 2026-11-17, row 85) |
 
-Lupin is read, never written, from any UHW planning session. The Phase 1 builder and the implementer are not planning sessions: they work in their own clone under their own loader, not under this protocol, and write lupin on the test VM from the relocation on (Rick, 2026-11-17, row 85).
+Lupin is read, never written, from any UHW planning session. The Phase 1 builder and the implementer are not planning sessions: they work in their own clone under their own loader (`03-builder-loader.md`, which planning owns and changes only by ruling), not under this protocol, and write lupin on the test VM from the relocation on (Rick, 2026-11-17, row 85).
 
 ## 2. Opening
 
@@ -20,10 +21,11 @@ Lupin is read, never written, from any UHW planning session. The Phase 1 builder
 1. One chat per item, titled after it: "T35, canonical persona name".
 2. Rick names the item, normally one of the next three on `00-status.md`.
 3. If he asks for progress first, compute it from the live repo (status page, framework Sections 16 and 20), never from memory, on the scale in use since 2026-11-08: share of what is needed to begin the kernel, share of what Phase 1 needs, share of the register. Flag any inconsistency found while counting.
-4. Read `00-status.md`. Run `git status -sb` and `git log --oneline -3`; note the HEAD of this repo and of lupin, because the chronicle cites both.
+4. Read `00-status.md`. Run `git pull --rebase` (the builder writes the same branch; row 87), then `git status -sb` and `git log --oneline -3`; note the HEAD of this repo and of lupin, because the chronicle cites both.
 5. When resuming from a handoff (Section 8), read it and the files it names, and do not redo research it marks done.
 6. **Read the usage meter once, before any other work,** at zero tokens (under Antigravity: `agy -p "/usage" --output-format json`), and state the starting figure for the model group the session draws on. Read it once more at the close; both figures go in the session log line.
 7. Read the "Outstanding actions" table in `00-status.md` for rows the item touches or closes.
+8. Once `src/uhw_kernel/BUILD.md` exists, read its entries newer than the status page's last session: the builder never edits the status page, so what it finished and what it owes is carried into the "Outstanding actions" table by this session, at its close (Rick, 2026-11-17, row 87).
 
 ## 3. Grounding
 
@@ -87,7 +89,7 @@ Edits are Python read-modify-write scripts that assert each anchor occurs exactl
 2. `chronicle.md`: one entry, `## YYYY-MM-DD · Tnn, <name> → Dnn`, with paragraphs **Asked**, **Read**, **Found**, **Ruled**, **Written**, **Process**, written while the context is still in hand.
 3. `transcripts/YYYY.MM.DD-tNN.md`: a header (As of, how it was rendered), then Rick's turns verbatim with timestamps, the assistant's turns abridged, tool activity in brackets.
 4. Report to Rick: what was written (uncommitted), anything he must decide or run (by its row number in "Outstanding actions"), the next three, and **the commit message as it will be used**.
-5. **Commit and push on Rick's word, given after he has seen the message: one word covers both** (Rick, 2026-11-16; the push was a separate word until then). Message: `Tnn → Dnn: <what changed>`, **one short line of about 80 characters at most** (Rick, 2026-11-17, after row 63's first draft ran to a paragraph); it names the change, never lists the rulings, which the status page's session log and the chronicle already hold. Author `deepily` with the GitHub noreply address (repo-local configuration; never a real email address), plus the attribution trailer. Where the shell has no GitHub credential, Rick pushes.
+5. **Commit and push on Rick's word, given after he has seen the message: one word covers both** (Rick, 2026-11-16; the push was a separate word until then). Message: `Tnn → Dnn: <what changed>`, **one short line of about 80 characters at most** (Rick, 2026-11-17, after row 63's first draft ran to a paragraph); it names the change, never lists the rulings, which the status page's session log and the chronicle already hold. Author `deepily` with the GitHub noreply address (git configuration, host-wide on the test VM; never a real email address), plus the attribution trailer. **Commit first, then `git pull --rebase`, then push:** the builder writes the same branch, and a pull refuses while any edit is uncommitted (row 87). Where the shell has no GitHub credential, Rick pushes.
 6. Anything destructive (deleting a file or folder, rewriting history) is asked first.
 
 ## 8. Handoff

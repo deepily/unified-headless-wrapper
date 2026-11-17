@@ -1,5 +1,23 @@
 # Capture runbook
 
+## Current: make the Phase 1 builder's clone on the test VM, zero tokens (rows 87 and 91). Owed once, after the row 87 commit is pushed
+
+**On the test VM**, from planning's checkout:
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase && chmod +x src/captures/*.sh
+src/captures/t19_builder_clone_setup.sh --self-test
+src/captures/t19_builder_clone_setup.sh /mnt/lupin-data/unified-headless-wrapper-builder
+```
+
+The last line clones the branch from GitHub, leaves the root `CLAUDE.md` and `AGENTS.md` out of the new tree by sparse checkout, writes the one-line `CLAUDE.local.md` that imports `src/rnd/v0.0.1/03-builder-loader.md`, and prints fourteen checks, each `ok`. It refuses a path that exists and deletes nothing. It must run after the push, because the loader's text reaches the clone from the remote.
+
+**At any later time**, to see that the clone has not drifted (exit 1 and a `FAILS` line if it has):
+```bash
+/mnt/lupin-data/unified-headless-wrapper/src/captures/t19_builder_clone_setup.sh --check /mnt/lupin-data/unified-headless-wrapper-builder
+```
+
+**Done 2026-11-17, nothing owed:** `src/captures/t19_builder_clone_check.sh` (the host's facts and the three mechanisms tried in a temporary folder; `src/captures/out/t19-builder-clone-check-lupin-host-test-20261117.txt`; read in the row 87 narrative).
+
 ## Done 2026-11-17: what the surviving files take from the Python files deleted outside the hooks tree, zero tokens (row 76). Nothing here is owed
 
 **Result** (a UHW session on the test VM, lupin at `27e646d0ed`; `src/captures/out/t19-outside-import-symbols-lupin-host-test-20261117.txt` before the rows, `…-after-rows.txt` after; `t19-hook-import-survivors-lupin-host-test-20261117-after-row76.txt`; `t19-inventory-lupin-host-test-20261117-after-row76.txt`; read in the row 76 narrative and the T19 spec's amendment of 2026-11-17, row 76): before the rows, 15 unmapped surviving files held 35 imports of 12 deleted files. After them the inventory has 193 rows, none unknown; the check exits 1, with 34 surviving files importing a deleted tree module and 16 importing 17 of the 63 Python files the list deletes or renames outside the tree. It stays 1 until lupin changes (rows 75 and 80 of "Outstanding actions").

@@ -1,0 +1,67 @@
+# (a) the host
+host                                                 lupin-host-test
+read_at                                              2026-11-17 14:45 EST
+checkout                                             /mnt/lupin-data/unified-headless-wrapper
+checkout_head                                        32672e0 on wip-v0.0.1-2026.10.15-planning-prep
+git_version                                          2.34.1
+claude_code_version                                  2.1.326
+agy_version                                          1.5.10
+claude_binary_mentions[claudeMdExcludes]             5
+claude_binary_mentions[CLAUDE.local.md]              32
+claude_binary_mentions[append-system-prompt-file]    14
+root_loader[CLAUDE.md]                               187 bytes, tracked yes
+root_loader[AGENTS.md]                               625 bytes, tracked yes
+tracked_loader_files_anywhere                        2
+git_ignores[CLAUDE.local.md]                         yes
+git_ignores[.claude/settings.local.json]             yes
+git_ignores[.claude/CLAUDE.md]                       yes
+git_ignores[.claude/rules/builder.md]                yes
+git_ignores[.agents/rules/builder.md]                no
+checkout_has_dot_claude                              no
+kernel_package_exists                                no
+tests_folder_exists                                  no
+host_global_mandates                                 53141 bytes, modified 2026-07-24
+kit_global_mandates                                  45664 bytes, modified 2026-11-15
+host_global_equals_kit                               no
+host_user_commands_folder                            no
+host_user_skills_folder                              no
+ah4l_hook_commands                                   9 over 8 events, 8 from lupin's hooks tree
+commit_identity                                      deepily <42214371+deepily@users.noreply.github.com>
+commits_with_bracket_prefix                          7 of 102
+commit_identity_set_in                               global
+credential_helper                                    global store 
+remote                                               https://github.com/deepily/unified-headless-wrapper.git
+remote_answers                                       yes
+push_dry_run                                         Everything up-to-date
+checkout_size                                        25M, .git 12M
+free_beside_checkout                                 60G
+worktrees                                            1
+
+# (b) the trials, in a temporary folder
+sparse.root_loaders_present_in_tree                  0
+sparse.other_tracked_files_missing                   0
+sparse.status_lines_after_local_files                0
+sparse.pull_after_planning_changes_a_root_loader     succeeds
+sparse.has_planning_document_change                  yes
+sparse.status_lines_after_pull                       0
+sparse.root_loaders_present_after_pull               0
+skip_worktree.status_lines_after_local_files         0
+skip_worktree.pull_after_planning_changes_a_root_loader FAILS
+skip_worktree.has_planning_document_change           no
+skip_worktree.status_lines_after_pull                0
+skip_worktree.loader_still_the_builders              yes
+plain.root_loaders_present_in_tree                   2
+plain.status_lines_after_local_files                 0
+plain.pull_after_planning_changes_a_root_loader      succeeds
+plain.has_planning_document_change                   yes
+plain.status_lines_after_pull                        0
+
+# (c) two writers on one branch, disjoint paths (builder = the sparse clone)
+builder_pull_before_it_starts                        succeeds
+builder_commit_touches_root_loaders                  0
+builder_push                                         succeeds
+planning_pull_with_uncommitted_edit                  FAILS
+planning_pull_with_autostash                         succeeds
+planning_has_builder_file                            yes
+planning_root_loaders_intact                         2
+planning_edit_survives                               yes
