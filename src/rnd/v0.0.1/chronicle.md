@@ -568,3 +568,13 @@ Then the Jetski run arrived, which the narrative's first decision had proposed n
 **Written.** `narratives/2026.11.17-review-gaps-after-the-sequence-rulings.md`; `charts/2026.11.17-build-phases-and-drivers.html` with its generator `charts/build_phase_chart.py` (the output is reproduced byte for byte); one row in framework Section 21; on the status page, the "Phase" row, the last session, rows 96 and 97 and the session log line; this entry; `transcripts/2026.11.17-row96.md`. Uncommitted.
 
 **Process.** This is the first session to write here from claude.ai through the device bridge since planning moved to the test VM. It followed the protocol where the surface allows: there is no usage meter on it, and the narrative was reviewed by Rick in conversation before it was written rather than walked here; the walk-through belongs to a planning session on the test VM, opened by row 96's title. Counting the lower-case lines before writing changed point 3 from "a gap in the rule" to "a collision with the checklist", which is the protocol's lesson about counting before asking, applied to a review.
+
+## 2026-11-17 (after the row 87 commit; the same chat, continued) · Row 91, the builder's clone made
+
+**Asked.** After the row 87 commit Rick asked, before the clone was made, why a builder's clone must exist at all, given that the repository is Phase 1's home and has its own instruction set; then how planning's documents are kept current in it; then whether making it creates anything on GitHub.
+
+**Found.** The clone is needed only while planning also runs on the test VM: one folder has one index, and the repository's instruction set is planning's. Rick confirmed planning stays on the VM, so the ruling stands. Documents reach the builder by push and pull alone, with three limits: nothing travels unpushed, a running builder session does not see a ruling made meanwhile, and a loader change waits for the builder's next start. The laptop session's two commits (row 96) touched none of row 87's files.
+
+**Written.** The clone, at `/mnt/lupin-data/unified-headless-wrapper-builder`, fourteen checks `ok`; row 91 struck and the runbook's block marked done (`79e4d27`); a session-log line; this entry; the transcript's continuation.
+
+**Process.** "Commit and push" was read as covering only the commit and the push, though the report had offered to make the clone on the same word; the clone waited for its own word, which cost one exchange and let Rick's questions come first. Those questions showed the narrative had not said plainly when the second folder is unnecessary (planning on another host), which is the first thing a reader asks.
