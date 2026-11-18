@@ -1,8 +1,10 @@
 # Capture runbook
 
-## Current: make the Phase 1 builder's clone on the test VM, zero tokens (rows 87 and 91). Owed once, after the row 87 commit is pushed
+## Done 2026-11-17: the Phase 1 builder's clone made on the test VM, zero tokens (rows 87 and 91). Nothing here is owed; the `--check` line below is for any later time
 
-**On the test VM**, from planning's checkout:
+**Result** (the row 87 session, 2026-11-17 22:45 US Eastern): the clone is at `/mnt/lupin-data/unified-headless-wrapper-builder`, at `d9a81f9`, fourteen checks `ok`.
+
+**As it was run on the test VM**, from planning's checkout (on another host, the same three lines):
 ```bash
 cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase && chmod +x src/captures/*.sh
 src/captures/t19_builder_clone_setup.sh --self-test
