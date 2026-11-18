@@ -1382,3 +1382,4 @@ All in `unified-headless-wrapper/src/rnd/v0.0.1/`, the single source of truth (D
 | `captures/` | raw capture output pasted back from the engines |
 | `transcripts/` | session transcripts: Rick's turns and the assistant's replies verbatim, tool calls as one-line brackets; the lossless companion to `chronicle.md` (from 2026-11-06) |
 | `kernel-explainer/` | the shareable explainer and diagrams |
+| `charts/` | dated snapshots of the build sequence as swimlanes (who drives each stage, on which host), each built by `build_phase_chart.py` beside it; Section 15 stays the authority; first snapshot 2026-11-17, its standing open as row 96, decision 5 |
