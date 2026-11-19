@@ -1,13 +1,17 @@
 """Build the UHW phase chart: who drives each build phase, and where.
 
-A dated snapshot, not a living document: framework Section 15 stays the
-authority. Run: python3 build_phase_chart.py OUTPUT.html [OUTPUT.svg]
+Framework Section 15 stays the authority. The chart is kept current by
+check_phase_chart.py beside this file (Rick, 2026-11-18, row 96), which fails
+when the text the chart was drawn from has changed: redraw here, then set
+SOURCES_DIGEST to the digest that check prints with --digest.
+Run: python3 build_phase_chart.py build-phases-and-drivers.html build-phases-and-drivers.svg
 The .svg is the chart alone, standalone: white background, fixed fonts.
 """
 import html
 import sys
 
-AS_OF = "2026-11-17, after rows 85 and 87 (this repository at 7e30b71)"
+AS_OF = "2026-11-18, after row 96"
+SOURCES_DIGEST = "7e54c8fd9b284391"  # check_phase_chart.py --digest, taken when the chart was last drawn
 AMBER = "#d97706"
 LANE_WIDTH = 220
 LANE_X = {"plan": 16, "rick": 248, "builder": 480, "agy": 712, "dev": 944}
@@ -108,18 +112,18 @@ box("before", "rick", 182, "Before the build", ["destructive-test Lupin :8000 (r
 parts.append(f'<path d="M{LANE_X["rick"] + LANE_WIDTH + 2},205 L{LANE_X["rick"] + LANE_WIDTH + 44},205" '
              f'stroke="{AMBER}" stroke-width="2" marker-start="url(#amberStart)"/>')
 text(LANE_X["builder"] + 36, 201, "we are here", 11, "700", fill=AMBER)
-text(LANE_X["builder"] + 36, 215, "11-17, no kernel code", 10.5, fill=AMBER)
+text(LANE_X["builder"] + 36, 215, "11-18, no kernel code", 10.5, fill=AMBER)
 
 # The Phase 1 builder
 box("phase1", "builder", 330, "Phase 1 · kernel + AGY adapter", ["src/uhw_kernel/, tests/ only", "loader: 03-builder-loader.md", "reports in src/uhw_kernel/BUILD.md", "kernel under test → :8000", "Kernel-1 to 8 (bootstrap 1 to 4)", "proof: one AGY persona by voice,", "  one working day, no terminal"])
 box("kit", "builder", 488, "Convention kit port", ["~25 workflows (T37 spec Sect. 5)"])
-box("relocation", "builder", 568, "The relocation", ["closes Phase 1", "src/uhw_kernel/ →", "  lupin/src/lupin_kernel/", "lupin_compat.py → imports (row 89)", "writes lupin on the test VM,", "  dedicated branch (row 86)"], kind="gate", questions=(1, 2))
+box("relocation", "builder", 568, "The relocation", ["closes Phase 1", "src/uhw_kernel/ →", "  lupin/src/lupin_kernel/", "lupin_compat.py → imports (row 89)", "written in its own lupin clone,", "  which :8000 then runs (rows 86, 100)", "exit: Kernel-1 to 8 green again"], kind="gate")
 
 # The AGY implementer
 box("gate15", "agy", 730, "Gate G1.5", ["Convention-1 to 9", "an AGY implementer follows the kit", "  on one kernel task, in lupin"], kind="gate", tag="GATE")
-box("phase2", "agy", 834, "Phase 2 · fleet, crew, Lupin side", ["the Move clock's lupin wiring", "  (Section 4.1, steps 2 to 6)", "Fleet, Bootstrap, Console, grant,", "  ticket store, Lupin-1 to 8, crew", "proof: cascade review, AGY", "  manager + workers, scratch repo"], questions=(3,))
+box("phase2", "agy", 834, "Phase 2 · fleet, crew, Lupin side", ["the Move clock's lupin wiring", "  (Section 4.1, steps 2 to 6)", "Fleet, Bootstrap, Console, grant,", "  ticket store, Lupin-1 to 8, crew", "proof: cascade review, AGY", "  manager + workers, scratch repo"])
 box("move", "agy", 990, "Move inventory run", ["closes the Move clock and Phase 2;", "every Move row resolved"], kind="gate", tag="CLOCK")
-box("phase3", "agy", 1078, "Phase 3 · Claude adapter", ["AGY implementer builds it", "Claude persona under the kernel", "  tests or reviews (row 90)", "Kernel-1 to 8 on claude; C15b,", "  Inbox-6, Timeout-1"], questions=(4,))
+box("phase3", "agy", 1078, "Phase 3 · Claude adapter", ["AGY implementer builds it", "Claude persona under the kernel", "  tests or reviews (row 90)", "Kernel-1 to 8 on claude; C15b,", "  Inbox-6, Timeout-1"])
 
 # The development server
 box("phase4", "dev", 1234, "Phase 4 · parity + shadow", ["every family green on Claude", "dev-server roles under the kernel", "  beside AH4L; baseline recorded"])
@@ -172,7 +176,7 @@ STAGES = [
     ("Before the build (open)", "Rick", "test VM, development server", "captures; destructive-test Lupin on :8000; the builder's clone", "—", "rows 17, 91, 93, 95; C20 and the T22 inventory before Kernel-2; C18 before Kernel-5"),
     ("Phase 1", "Claude Code session under AH4L, voice via the :7999 test instance, loader <code>03-builder-loader.md</code>", "test VM, <code>/mnt/lupin-data/unified-headless-wrapper-builder</code>", "<code>src/uhw_kernel/</code>, <code>tests/</code>; reports in <code>BUILD.md</code>", "AGY", "Kernel-1 to 8; one AGY persona by voice for a working day, no terminal"),
     ("Convention kit port", "the same session", "test VM", "the kit (T37 spec, Sect. 5)", "—", "—"),
-    ("The relocation <span class=\"badge\">1</span><span class=\"badge\">2</span>", "the same session; it closes Phase 1", "test VM", "<code>lupin/src/lupin_kernel/</code>, on the dedicated branch (row 86)", "—", "<code>lupin_compat.py</code> replaced by imports (row 89)"),
+    ("The relocation", "the same session; it closes Phase 1", "test VM", "<code>lupin/src/lupin_kernel/</code>, in a lupin clone of its own on the dedicated branch (row 86), which the server on :8000 then runs (row 100); the tree behind :7999 is never written", "AGY", "<code>lupin_compat.py</code> replaced by imports (row 89); Kernel-1 to 8 green again from lupin"),
     ("Gate G1.5", "AGY implementer persona, observed", "test VM", "one kernel task, in lupin", "AGY", "Convention-1 to 9"),
     ("Phase 2 <span class=\"badge\">3</span>", "AGY persona under the kernel", "test VM", "the test VM's lupin checkout, dedicated branch", "AGY", "its families; cascade review by AGY manager and workers on a scratch repo"),
     ("Move inventory run", "AGY persona under the kernel", "test VM", "—", "—", "every Move row resolved; closes Phase 2"),
@@ -184,10 +188,11 @@ STAGES = [
     ("The Delete", "the kernel-run Claude persona", "development server, merged to main", "the Delete commit", "—", "Switch-6, Name-8, Role-7; commit merged"),
 ]
 QUESTIONS = [
-    ("1", "The relocated code is not tested again before gate G1.5."),
-    ("2", "Nothing says which lupin checkout serves :7999, which serves :8000, and which one is written."),
-    ("3", "The reading rule sends the kernel's imports to the relocation; the Move clock's step 2 imports the kept modules; lupin-side lines are not covered."),
-    ("4", "The build-platform decision (D32) says Claude adapter testing on the test VM is “constrained (see open items)”; no open item says how."),
+    ("1", "The relocation is done only when Kernel-1 to Kernel-8 are green again, run from lupin against the server on :8000; the day-long proof workload is not repeated."),
+    ("2", "Three lupin trees on the test VM: :7999 stays on the deployed tree, never written; the kernel is written in a separate clone on the dedicated branch; :8000 is re-pointed at that clone."),
+    ("3", "Lower-case “the move” is read three ways: what lupin_compat.py stands for, at the relocation; what the kernel had not done in Phase 1, under the Move clock; lupin's side, the Move clock. A sweep holds the reading of every such line."),
+    ("4", "The build-platform decision's caveat, that Claude adapter testing on the test VM is “constrained”, is struck: no constraint holds."),
+    ("5", "This chart is kept current by a zero-token check at every planning session's close."),
 ]
 rows = "\n".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in STAGES)
 questions = "\n".join(f'<li><span class="badge">{n}</span>{html.escape(t)}</li>' for n, t in QUESTIONS)
@@ -213,21 +218,21 @@ code{{font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace}}
 .note{{color:var(--mute);font-size:13px;margin-top:28px;border-top:1px solid var(--rule);padding-top:10px}}
 </style></head><body><main>
 <h1>UHW: phases, places and who drives them</h1>
-<p class="sub">Snapshot as of {AS_OF}. Drawn from <code>00-status.md</code>, framework Section 15 and the rulings of rows 85 and 87. Framework Section 15 is the authority; this chart is not kept current.</p>
+<p class="sub">As of {AS_OF}. Drawn from <code>00-status.md</code>, framework Section 15 and the rulings of rows 85, 87 and 96. Framework Section 15 is the authority; <code>check_phase_chart.py</code>, run at every planning session’s close, fails when the text this chart was drawn from has changed.</p>
 <figure>
 {svg}
-<figcaption>Time runs top to bottom. A box sits in the lane of whoever drives that stage; thick borders are gates and clocks; dashed boxes are still open. Rows named in boxes are open rows of “Outstanding actions”. Amber numbers are the decisions of row 96, “Review: what the sequence rulings left open” (<code>narratives/2026.11.17-review-gaps-after-the-sequence-rulings.md</code>).</figcaption>
+<figcaption>Time runs top to bottom. A box sits in the lane of whoever drives that stage; thick borders are gates and clocks; dashed boxes are still open. Rows named in boxes are open rows of “Outstanding actions”.</figcaption>
 </figure>
 <h2>Stage by stage</h2>
 <table>
 <tr><th>Stage</th><th>Driven by</th><th>Host</th><th>Writes to</th><th>Engine under test</th><th>Exit</th></tr>
 {rows}
 </table>
-<h2>Questions still open on this sequence (row 96)</h2>
+<h2>Ruled on 2026-11-18 (row 96, “Review: what the sequence rulings left open”)</h2>
 <ol>
 {questions}
 </ol>
-<p class="note">Generated by <code>build_phase_chart.py</code> beside this file: <code>python3 build_phase_chart.py 2026.11.17-build-phases-and-drivers.html 2026.11.17-build-phases-and-drivers.svg</code>. Edit the script, not the page.</p>
+<p class="note">Generated by <code>build_phase_chart.py</code> beside this file: <code>python3 build_phase_chart.py build-phases-and-drivers.html build-phases-and-drivers.svg</code>. Edit the script, not the page.</p>
 </main></body></html>
 """
 

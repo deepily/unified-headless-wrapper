@@ -1,5 +1,24 @@
 # Capture runbook
 
+## Done 2026-11-18: which lupin tree serves which port on the test VM, and the two standing checks of row 96, zero tokens. Nothing here is owed
+
+**Result** (the row 96 session, 2026-11-18 13:28 US Eastern; `src/captures/out/t19-lupin-trees-lupin-host-test-20261118.txt`): ports 7999 and 8000 are two containers of one image with one code mount, `/mnt/lupin-data/lupin/src`; that tree's only remote is a bundle file; 60 GB free. Read in the T19 spec's amendment of 2026-11-18.
+
+**On the test VM, at any later time** (read-only: `docker ps`, `docker inspect`, `git -C`, `df`, `du`, `grep`; it prints no environment value):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_lupin_trees_test_vm.sh
+```
+
+**The two checks, on any host with this checkout** (each exits 1 with a line saying why):
+```bash
+src/captures/t19_move_reading_sweep.py --check       # every lower-case "the move" has a reading; run at every recording
+src/rnd/v0.0.1/charts/check_phase_chart.py           # the phase chart is drawn from the record as it stands; run at every close
+src/rnd/v0.0.1/charts/check_phase_chart.py --self-test
+```
+
+When the chart's check fails: edit `src/rnd/v0.0.1/charts/build_phase_chart.py`, then from `src/rnd/v0.0.1/charts/` run `python3 build_phase_chart.py build-phases-and-drivers.html build-phases-and-drivers.svg`, and set `SOURCES_DIGEST` in the generator to what `check_phase_chart.py --digest` prints.
+
 ## Done 2026-11-17: the Phase 1 builder's clone made on the test VM, zero tokens (rows 87 and 91). Nothing here is owed; the `--check` line below is for any later time
 
 **Result** (the row 87 session, 2026-11-17 22:45 US Eastern): the clone is at `/mnt/lupin-data/unified-headless-wrapper-builder`, at `d9a81f9`, fourteen checks `ok`.

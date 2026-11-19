@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-17 (amended after row 63, again after its commit, by row 85 and by row 87) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-18 (amended after row 63, again after its commit, by row 85, by row 87 and by row 96) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -77,6 +77,7 @@ In this order:
    - the Section 20 row struck (`~~<name>~~` … `**resolved: Dnn** (MM-DD)`) and the item struck in Section 16
    - Sections 17 (risks) and 21 (companions) as needed, and "As of" updated
    - then `src/captures/t19_acceptance_phase_check.sh --check`, which fails while any acceptance test stands in one phase in its own spec and another in Section 15's table; a new family is named in that table at the gate its spec states (Rick, 2026-11-17, row 63)
+   - then `src/captures/t19_move_reading_sweep.py --check`, which fails while any lower-case "the move" in the framework, the status page or a spec has no reading (the relocation, or the Move clock); a new line is written with the name it means, or given a reading in the script (row 96)
 4. **Amendments.** Every other spec the ruling changes gets a section appended, `## Amendment (YYYY-MM-DD, Tnn → Dnn)`. The body of a ruled spec is never rewritten.
 5. **RUNBOOK.** Anything Rick must run becomes the new top block, exactly as he will type it; older blocks move down.
 6. **Narrative.** Fill in the rulings column (and, on the laptop, the doc link).
@@ -89,8 +90,9 @@ Edits are Python read-modify-write scripts that assert each anchor occurs exactl
 2. `chronicle.md`: one entry, `## YYYY-MM-DD · Tnn, <name> → Dnn`, with paragraphs **Asked**, **Read**, **Found**, **Ruled**, **Written**, **Process**, written while the context is still in hand.
 3. `transcripts/YYYY.MM.DD-tNN.md`: a header (As of, how it was rendered), then Rick's turns verbatim with timestamps, the assistant's turns abridged, tool activity in brackets.
 4. Report to Rick: what was written (uncommitted), anything he must decide or run (by its row number in "Outstanding actions"), the next three, and **the commit message as it will be used**.
-5. **Commit and push on Rick's word, given after he has seen the message: one word covers both** (Rick, 2026-11-16; the push was a separate word until then). Message: `Tnn → Dnn: <what changed>`, **one short line of about 80 characters at most** (Rick, 2026-11-17, after row 63's first draft ran to a paragraph); it names the change, never lists the rulings, which the status page's session log and the chronicle already hold. Author `deepily` with the GitHub noreply address (git configuration, host-wide on the test VM; never a real email address), plus the attribution trailer. **Commit first, then `git pull --rebase`, then push:** the builder writes the same branch, and a pull refuses while any edit is uncommitted (row 87). Where the shell has no GitHub credential, Rick pushes.
-6. Anything destructive (deleting a file or folder, rewriting history) is asked first.
+5. **Before the commit message is shown, run `src/rnd/v0.0.1/charts/check_phase_chart.py`** (zero tokens). It fails when the text the phase chart was drawn from has changed since the drawing. Then redraw the chart (edit `build_phase_chart.py`, run it, set its `SOURCES_DIGEST`), or, short of budget, add a row to "Outstanding actions": "redraw the phase chart" (Rick, 2026-11-18, row 96).
+6. **Commit and push on Rick's word, given after he has seen the message: one word covers both** (Rick, 2026-11-16; the push was a separate word until then). Message: `Tnn → Dnn: <what changed>`, **one short line of about 80 characters at most** (Rick, 2026-11-17, after row 63's first draft ran to a paragraph); it names the change, never lists the rulings, which the status page's session log and the chronicle already hold. Author `deepily` with the GitHub noreply address (git configuration, host-wide on the test VM; never a real email address), plus the attribution trailer. **Commit first, then `git pull --rebase`, then push:** the builder writes the same branch, and a pull refuses while any edit is uncommitted (row 87). Where the shell has no GitHub credential, Rick pushes.
+7. Anything destructive (deleting a file or folder, rewriting history) is asked first.
 
 ## 8. Handoff
 

@@ -1,6 +1,6 @@
 # UHW · the Phase 1 builder's loader
 
-**As of:** 2026-11-17 (row 87 of "Outstanding actions") · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
+**As of:** 2026-11-18 (row 87 of "Outstanding actions"; amended by row 96) · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
 
 You are the Phase 1 builder: the Claude Code session, under AH4L, that writes the Lupin kernel's first phase in this clone. You are not a planning session and the ruling protocol (`02-ruling-protocol.md`) is not yours. This file stands in for what the kernel will render for a persona once it exists (framework Section 5.4, layers 1 to 5). It ends at the relocation: from then you work in lupin, under lupin's own `CLAUDE.md`.
 
@@ -14,7 +14,7 @@ You are the Phase 1 builder: the Claude Code session, under AH4L, that writes th
 ## Where you write
 
 - `src/uhw_kernel/` and `tests/`, nothing else in this repository.
-- Never `src/rnd/` (this file included), `src/captures/`, the root loaders, or lupin (`../lupin` is read-only until the relocation).
+- Never `src/rnd/` (this file included), `src/captures/`, the root loaders, or lupin. `/mnt/lupin-data/lupin` is the deployed tree behind both test servers and is never written, before the relocation or after. At the relocation you write a separate lupin clone on the dedicated branch; Rick gives you its path and branch (row 86), and the server on port 8000 then runs from it (row 100).
 - The specs are the design. Where a spec is wrong, silent or contradicts another, stop, write the question in `BUILD.md` under "Owed to planning", and tell Rick. Do not improvise around it.
 
 ## What binds the code (each rule lives where it is cited; read it there)
@@ -27,6 +27,8 @@ You are the Phase 1 builder: the Claude Code session, under AH4L, that writes th
 ## Gates
 
 Work in the order of the Phase 1 spec's Section 13. At each of Kernel-1 to Kernel-8: run the gate's acceptance tests yourself, record the result in `BUILD.md`, and stop for Rick's word before the next. A test you did not run is not green.
+
+The relocation has an exit of its own (Rick, 2026-11-18, row 96). After it, run Kernel-1 to Kernel-8 again from `lupin/src/lupin_kernel/` against the destructive-test server, not the day-long proof workload, and record the run in `BUILD.md`; name there each point at which the server on port 8000 must be restarted. The relocation is done only when all eight are green.
 
 ## Reporting
 

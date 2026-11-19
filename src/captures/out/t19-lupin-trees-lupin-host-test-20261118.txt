@@ -1,0 +1,70 @@
+t19_lupin_trees_test_vm.sh · host lupin-host-test · 2026-11-18 13:28 EST · UHW f33c057
+
+== A. The container behind each port
+port 7999:
+  container        /lupin-rest-cloud-gpu
+  image tag        us-central1-docker.pkg.dev/hello-world-foo-423219/lupin-images/lupin:1.1.7-candidate
+  image id         sha256:1b2627bcb11335fcdcbfe27c1a0d6d88545235817da94aaa270385f4f677a4e1
+  created          2026-11-17T03:21:21.544198051Z
+  compose folder   /mnt/lupin-data/lupin
+  compose files    /mnt/lupin-data/lupin/docker-compose.cloud-gpu.yml
+  compose service  lupin-rest
+  command          ["/bin/bash","/var/lupin/src/scripts/run-fastapi-lupin.sh"]
+  code mount       /mnt/lupin-data/lupin/src -> /var/lupin/src (writable: true)
+
+port 8000:
+  container        /lupin-rest-test
+  image tag        us-central1-docker.pkg.dev/hello-world-foo-423219/lupin-images/lupin:1.1.7-candidate
+  image id         sha256:1b2627bcb11335fcdcbfe27c1a0d6d88545235817da94aaa270385f4f677a4e1
+  created          2026-11-17T02:41:20.423813253Z
+  compose folder   /mnt/lupin-data/lupin
+  compose files    /mnt/lupin-data/lupin/docker-compose.cloud-gpu.yml,/mnt/lupin-data/lupin/docker-compose.vm-test-overlay.yml
+  compose service  lupin-rest-test
+  command          ["/bin/bash","/var/lupin/src/scripts/run-fastapi-lupin-test.sh"]
+  code mount       /mnt/lupin-data/lupin/src -> /var/lupin/src (writable: true)
+  code mount       /mnt/lupin-data/lupin -> /var/lupin (writable: true)
+
+other listeners on 8001 to 8009:
+  port :8001
+
+== B. Each compose folder as a git tree
+/mnt/lupin-data/lupin:
+  branch           wip-v0.2.3-2026.11.04-online-preference-learning
+  HEAD             27e646d0ed (2026-11-16T21:24:12-05:00)
+  tracked, changed 3
+                    M docker-compose.cloud-gpu.yml
+                    M src/conf/lupin-app-splainer.ini
+                    M src/conf/lupin-app.ini
+  untracked        13
+  work trees       1
+  remote           origin	/mnt/lupin-data/lupin-wip.bundle (fetch)
+  remote           origin	/mnt/lupin-data/lupin-wip.bundle (push)
+  .deployed-ref    27e646d0edc7fd64e8b9c8fbe962016ce06d4f38 2026-11-17T02:39:55Z push-bundle-reset
+  size             3.3G
+
+== C. Disk
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/sdb        196G  127G   60G  69% /mnt/lupin-data
+  present: /mnt/lupin-data/lupin
+  present: /mnt/lupin-data/lupin-src-backup-20260923.tgz
+  present: /mnt/lupin-data/lupin-vm-local-diff-20260923.patch
+  present: /mnt/lupin-data/lupin-wip.bundle
+  present: /mnt/lupin-data/unified-headless-wrapper
+  present: /mnt/lupin-data/unified-headless-wrapper-builder
+
+== D. Lower-case "the move" (narrative, problem 3)
+  pattern          (before|after|at|from|until) the move\b (case-sensitive; the framework, the status page, the specs)
+  lines            36
+  files            12
+    01-framework.md:11
+    00-status.md:2
+    specs/2026.11.03-t10-stable-id-spec.md:2
+    specs/2026.11.08-t17-log-schema-and-rotation-spec.md:3
+    specs/2026.11.09-t16-fleet-spec.md:4
+    specs/2026.11.09-t20-console-spec.md:2
+    specs/2026.11.10-t08-kernel-lifecycle-spec.md:3
+    specs/2026.11.10-t15-turn-end-policy-spec.md:2
+    specs/2026.11.10-t19-exit-criteria-and-switch-over-spec.md:1
+    specs/2026.11.10-t28-broadcasts-spec.md:2
+    specs/2026.11.15-t35-canonical-persona-name-spec.md:1
+    specs/2026.11.15-t38-engine-neutral-naming-spec.md:3
