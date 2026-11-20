@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-18 (amended after row 63, again after its commit, by row 85, by row 87, by row 96 and by row 71) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-18 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71 and by row 94) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -26,6 +26,7 @@ Lupin is read, never written, from any UHW planning session. The Phase 1 builder
 6. **Read the usage meter once, before any other work,** at zero tokens (under Antigravity: `agy -p "/usage" --output-format json`), and state the starting figure for the model group the session draws on. Read it once more at the close; both figures go in the session log line.
 7. Read the "Outstanding actions" table in `00-status.md` for rows the item touches or closes.
 8. Once `src/uhw_kernel/BUILD.md` exists, read its entries newer than the status page's last session: the builder never edits the status page, so what it finished and what it owes is carried into the "Outstanding actions" table by this session, at its close (Rick, 2026-11-17, row 87).
+9. Run `src/captures/t19_builder_clone_setup.sh --check /mnt/lupin-data/unified-headless-wrapper-builder` (zero tokens, fourteen lines). A line that fails is a clone that has drifted; it is reported to Rick before any other work (Rick, 2026-11-19, row 94).
 
 ## 3. Grounding
 

@@ -11,7 +11,7 @@ import html
 import sys
 
 AS_OF = "2026-11-18, after row 96"
-SOURCES_DIGEST = "7e54c8fd9b284391"  # check_phase_chart.py --digest, taken when the chart was last drawn
+SOURCES_DIGEST = "3990f3019395739a"  # check_phase_chart.py --digest, taken when the chart was last drawn
 AMBER = "#d97706"
 LANE_WIDTH = 220
 LANE_X = {"plan": 16, "rick": 248, "builder": 480, "agy": 712, "dev": 944}
@@ -112,7 +112,7 @@ box("before", "rick", 182, "Before the build", ["destructive-test Lupin :8000 (r
 parts.append(f'<path d="M{LANE_X["rick"] + LANE_WIDTH + 2},205 L{LANE_X["rick"] + LANE_WIDTH + 44},205" '
              f'stroke="{AMBER}" stroke-width="2" marker-start="url(#amberStart)"/>')
 text(LANE_X["builder"] + 36, 201, "we are here", 11, "700", fill=AMBER)
-text(LANE_X["builder"] + 36, 215, "11-18, no kernel code", 10.5, fill=AMBER)
+text(LANE_X["builder"] + 36, 215, "11-19, no kernel code", 10.5, fill=AMBER)
 
 # The Phase 1 builder
 box("phase1", "builder", 330, "Phase 1 · kernel + AGY adapter", ["src/uhw_kernel/, tests/ only", "loader: 03-builder-loader.md", "reports in src/uhw_kernel/BUILD.md", "kernel under test → :8000", "Kernel-1 to 8 (bootstrap 1 to 4)", "proof: one AGY persona by voice,", "  one working day, no terminal"])
