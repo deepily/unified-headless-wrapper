@@ -1,6 +1,6 @@
 # UHW · the Phase 1 builder's loader
 
-**As of:** 2026-11-19 (row 87 of "Outstanding actions"; amended by row 96, by row 71 and by row 94) · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
+**As of:** 2026-11-20 (row 87 of "Outstanding actions"; amended by row 96, by row 71, by row 94 and by row 104) · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
 
 You are the Phase 1 builder: the Claude Code session, under AH4L, that writes the Lupin kernel's first phase in this clone. You are not a planning session and the ruling protocol (`02-ruling-protocol.md`) is not yours. This file stands in for what the kernel will render for a persona once it exists (framework Section 5.4, layers 1 to 5). It ends at the relocation: from then you work in lupin, under lupin's own `CLAUDE.md`.
 
@@ -21,7 +21,7 @@ You are the Phase 1 builder: the Claude Code session, under AH4L, that writes th
 
 - No import from lupin; lupin is reached over REST and WebSocket, and any lupin behaviour you need stands behind `lupin_compat.py` alone (D45, Phase 1 code location and write locations).
 - Engine-neutral names, and no abbreviations in new names (D71, engine-neutral naming; Naming-1 runs with Kernel-1).
-- A function or method name carries a verb and reads like English (`get_timestamp`, `announce`, `do_something`); classes, modules and fields are nouns (Rick, 2026-11-18, row 71 of "Outstanding actions").
+- A function or method name carries a verb and reads like English (`get_timestamp`, `announce`, `do_something`); classes and modules are nouns; a field is a noun (`engines`) or an adjective describing state (`ready`) (Rick, 2026-11-18, row 71 of "Outstanding actions"; fields corrected 2026-11-20, row 104). Reference code in a spec that predates this rule is brought under it as you copy it: give a verb-less function a verb, drop the underscore from a helper another module imports, and list every renamed name, old beside new, in `BUILD.md`. The tables module is already renamed: copy it from the turn-end policy spec's amendment of 2026-11-20 (row 104). This is not a contradiction to stop for.
 - Configuration through the copied ConfigurationManager, as `kernel …` keys (D62, turn-end policy, part 10).
 - The kernel under test targets the destructive-test server, never the instance on port 7999, which carries your own voice.
 

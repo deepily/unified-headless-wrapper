@@ -1,6 +1,6 @@
 # UHW and the Lupin kernel: master design and implementation framework
 
-**As of:** 2026-11-19 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
+**As of:** 2026-11-20 (created 2026-10-14) · **Author:** Rick Ruiz · **Status:** the master design. It holds every decision, every component and every open issue for building the Lupin kernel and retiring AH4L. Companion documents (Section 21) hold detail and evidence, and branch out from here.
 
 **How to read it:**
 - Decisions are locked in Section 1.
@@ -790,12 +790,12 @@ One kernel per host starts every engine and holds one registry, so the registry 
 | 5 | `login == lapsed`, or the model's pool blocked by an observed exhaustion, or (spawn only) its five-hour remainder under 0.15 or weekly under 0.05 (D68) | `engine_login`, or `engine_quota` with the pool, the window, the remainder, the floor and the reset as `Retry-After`; unknown admits |
 
 - Rick's rulings of 2026-09-03 stand: one number for the whole fleet; over the cap new spawns are refused and nobody is reaped; every persona counts, managers included. Every row not `closed` counts, hibernated ones too.
-- The four `kernel fleet …` keys the checks read are checked at each admission and read again when the file has changed (row 60, 2026-11-16; Section 19). `fleet.admitted` and `fleet.refused` carry the census the decision saw.
+- The four `kernel fleet …` keys the checks read are checked at each admission and read again when the file has changed (row 60, 2026-11-16; Section 19). `fleet.admitted` and `fleet.refused` carry the census the decision saw. A spawn refused for a bad settings key carries the four counts and no limits: `size_cap`, `batch_cap` and `skeleton_crew` are null (row 104, 2026-11-20).
 - There is no fail-open rule: the census is the kernel's memory.
 - **Re-spin is not staffing.** The persona keeps its id, tree, voice and task rows; no admission, no credit, no reconciliation. A memory re-spin (D60) is no exception.
 - **A wake under check 5** (D68): deferred only while the sign-in is lapsed or its pool is blocked (`session.resume_deferred { reason: engine_login | engine_quota }`); never refused for a low meter.
-- **A wake re-acquires room** (D60): a hibernated persona's resume runs check 4 with `requested = 1`; refused, the message stays queued, `session.resume_deferred` is written, the manager is advised, the human hears one line, and the sampler retries each pass.
-- **A wake met by a bad settings key** (row 71, 2026-11-18): any missing or out-of-range admission key defers it, `session.resume_deferred { reason: configuration, key }`; the message stays queued and the manager is advised; the human hears one line for each refused state of the file, naming the key, whether a spawn or a wake met it first; the refused file is not read again until it changes. A spawn is refused `admission_refused`, `detail: { check: configuration, key, reason }`, its message one sentence.
+- **A wake re-acquires room** (D60): a hibernated persona's resume runs check 4 with `requested = 1`; refused, the message stays queued, `session.resume_deferred` is written, the manager is advised, the human hears one line, and the sampler retries each pass. The manager's line is a `kernel` block in its inbox, not urgent, headed `[kernel HH:MM:SS report deferred <id8>]`: `<name>'s wake is deferred: the host has no room for it. Its message is kept, and it wakes when room is freed.`; the line the human hears is `priority: low`, `type: info` (row 104, 2026-11-20).
+- **A wake met by a bad settings key** (row 71, 2026-11-18): any missing or out-of-range admission key defers it, `session.resume_deferred { reason: configuration, key }`; the message stays queued and the manager is advised; the human hears one line for each refused state of the file, naming the key, whether a spawn or a wake met it first; the refused file is not read again until it changes. A spawn is refused `admission_refused`, `detail: { check: configuration, key, reason }`, its message one sentence. The line the human hears is `priority: high`, `type: alert`; the manager's block is headed `[kernel HH:MM:SS alert deferred <id8>]`, names the key and never interrupts its turn; a persona with no manager tells the human by one card at the same level (row 104, 2026-11-20).
 
 ### 10.3 The persona worktree
 
