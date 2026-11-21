@@ -35,6 +35,7 @@ STAGES = [
         ( 16, "Rick (host run)", "the credential inventory on the test VM" ),
     ] ),
     ( "Before Kernel-5", [
+        ( 111, "Rick, then lupin's implementer", "Lupin gains the notification type `info`; the kernel sends it with no fallback (Kernel-3)" ),
         ( 25, "Rick", "the ticket store lands in Phase 2 but Kernel-5's `ask` rules need it: decide the order" ),
         ( 13, "Rick (host run)", "C15, whose result goes into `launch.py` (C16 and C15b have no stated gate)" ),
         ( 14, "Rick (host run)", "C18, tool approval, after row 13" ),
