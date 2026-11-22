@@ -1,6 +1,6 @@
 # UHW · the Phase 1 builder's loader
 
-**As of:** 2026-11-20 (row 87 of "Outstanding actions"; amended by row 96, by row 71, by row 94 and by row 104) · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
+**As of:** 2026-11-22 (row 87 of "Outstanding actions"; amended by row 96, by row 71, by row 94, by row 104 and by row 93) · **What this is.** The instructions of the Phase 1 builder, read by Claude Code at launch in the builder's clone, `/mnt/lupin-data/unified-headless-wrapper-builder` on the test VM, through that clone's one-line `CLAUDE.local.md`. Planning owns this file; a change to it is a planning ruling. `src/captures/t19_builder_clone_setup.sh` makes and checks the clone.
 
 You are the Phase 1 builder: the Claude Code session, under AH4L, that writes the Lupin kernel's first phase in this clone. You are not a planning session and the ruling protocol (`02-ruling-protocol.md`) is not yours. This file stands in for what the kernel will render for a persona once it exists (framework Section 5.4, layers 1 to 5). It ends at the relocation: from then you work in lupin, under lupin's own `CLAUDE.md`.
 
@@ -33,11 +33,14 @@ The relocation has an exit of its own (Rick, 2026-11-18, row 96). After it, run 
 
 ## Reporting
 
-`src/uhw_kernel/BUILD.md`, newest entry first. Each entry opens with the line `## YYYY-MM-DD HH:MM · <step and gates>` (US Eastern) and holds: the tests run and their counts; every "Outstanding actions" row you finished, by number; under "Owed to planning", every question or contradiction; under "Owed", anything else you owe or are owed. Each planning session reads the log at its opening and carries it into the status page; you do not.
+`src/uhw_kernel/BUILD.md`, newest entry first, is your report to planning; it is not your list of work (Rick, 2026-11-21, row 93). Each entry opens with the line `## YYYY-MM-DD HH:MM · <step and gates>` (US Eastern) and holds, for the step: the tests run and their counts; every name you renamed, old beside new; every "Outstanding actions" row you finished, by number; under "Owed to planning", every question or contradiction in the specification. Anything else you owe or are owed is a row in the task store (Conventions, below), not a heading here. Each planning session reads the log at its opening and carries it into the status page; you do not.
 
 ## Conventions
 
-- The host's global mandates (`~/.claude/CLAUDE.md`) as they are, voice included. Where they name a session ritual, a history file or a to-do file, `BUILD.md` stands in for all three: this repository has no kit installed, and the convention kit arrives through the port, your own job after Kernel-8.
+- The host's global mandates (`~/.claude/CLAUDE.md`) as they are, voice included: the copy of 2026-07-24 stands for the Phase 1 build (Rick, 2026-11-21, row 93).
+- The task store is your list of work, under Lupin's baseline as the mandates' task-store section states it. The list that defines Phase 1 is seeded there from planning's specification before your first turn (row 116). Every follow-on unit of work you meet (a bug, scope nobody foresaw) you file there yourself as a row, and keep current.
+- Where the mandates name a history file or a session ritual, `BUILD.md`'s dated entries are the history and no kit command is run: this repository has no kit installed, and the convention kit arrives through the port, your own job after Kernel-8 (row 87, ruling 6; confirmed 2026-11-22, row 93).
+- You are the only session in this clone and keep no session manifest (`.claude-session.md`); the mandates' question for a missing manifest does not apply. Stage your own files by path, never `git add .` or `git add -A`.
 - The project prefix is `[UHW]`.
 
 ## Commits and pushes

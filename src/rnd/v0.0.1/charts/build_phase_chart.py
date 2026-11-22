@@ -11,7 +11,7 @@ import html
 import sys
 
 AS_OF = "2026-11-18, after row 96"
-SOURCES_DIGEST = "3990f3019395739a"  # check_phase_chart.py --digest, taken when the chart was last drawn
+SOURCES_DIGEST = "08832f88755464eb"  # check_phase_chart.py --digest, taken when the chart was last drawn
 AMBER = "#d97706"
 LANE_WIDTH = 220
 LANE_X = {"plan": 16, "rick": 248, "builder": 480, "agy": 712, "dev": 944}
@@ -108,7 +108,7 @@ planning_note(300, 1400, "Every phase", [
 
 # Rick
 box("phase0", "rick", 70, "Phase 0 · captures", ["C1 to C14; gate G1 passed", "work laptop (Jetski),", "test VM (AGY)"], kind="done", tag="DONE")
-box("before", "rick", 182, "Before the build", ["destructive-test Lupin :8000 (row 17)", "builder's clone (row 91)", "global mandates (row 93)", "AH4L launch, voice (row 95)", "C20, T22 inventory → Kernel-2", "C18 → Kernel-5 ask rules"], kind="open", tag="OPEN")
+box("before", "rick", 182, "Before the build", ["destructive-test Lupin :8000 (row 17)", "builder's clone (row 91)", "plan stub manifest (row 116)", "AH4L launch, voice (row 95)", "C20, T22 inventory → Kernel-2", "C18 → Kernel-5 ask rules"], kind="open", tag="OPEN")
 parts.append(f'<path d="M{LANE_X["rick"] + LANE_WIDTH + 2},205 L{LANE_X["rick"] + LANE_WIDTH + 44},205" '
              f'stroke="{AMBER}" stroke-width="2" marker-start="url(#amberStart)"/>')
 text(LANE_X["builder"] + 36, 201, "we are here", 11, "700", fill=AMBER)

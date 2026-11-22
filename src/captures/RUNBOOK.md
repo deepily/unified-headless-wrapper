@@ -1,5 +1,15 @@
 # Capture runbook
 
+## Done 2026-11-21: the test VM's global mandates compared with the kit's copy, zero tokens (row 93). Nothing here is owed
+
+**Result** (the row 93 session, 2026-11-21 15:40 US Eastern; `src/captures/out/t19-global-mandates-comparison-lupin-host-test-20261121.txt`): the host's `~/.claude/CLAUDE.md` is 53,141 bytes of 2026-07-24, the kit's `global/CLAUDE.md` 45,664 bytes of 2026-11-15; 9 shared sections identical, 14 changed; the kit's sync, run dry, refuses all 37 drifted paragraphs. Ruled 2026-11-22: the July copy stands for the Phase 1 build. Read in the T19 spec's amendment of 2026-11-22.
+
+**On the test VM, at any later time**, to see whether the two copies still differ (read-only; it writes neither copy):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_global_mandates_comparison.sh
+```
+
 ## Done 2026-11-18: which lupin tree serves which port on the test VM, and the two standing checks of row 96, zero tokens. Nothing here is owed
 
 **Result** (the row 96 session, 2026-11-18 13:28 US Eastern; `src/captures/out/t19-lupin-trees-lupin-host-test-20261118.txt`): ports 7999 and 8000 are two containers of one image with one code mount, `/mnt/lupin-data/lupin/src`; that tree's only remote is a bundle file; 60 GB free. Read in the T19 spec's amendment of 2026-11-18.
