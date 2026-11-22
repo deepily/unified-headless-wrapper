@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-22 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104 and by row 93) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-22 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104, by row 93 and by Rick during row 116) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -112,6 +112,7 @@ When a session must stop before recording, write a handoff for Rick to paste as 
 - Never the section sign; write "Section 4", "Sections 4–8".
 - No abbreviations in new names (`Event`, not `Ev`); engine-neutral names in new code (D71, engine-neutral naming).
 - A function or method name carries a verb and reads like English (`get_timestamp`, `announce`, `do_something`); classes and modules are nouns; a field is a noun (`engines`) or an adjective describing state (`ready`) (Rick, 2026-11-18, row 71; fields corrected 2026-11-20, row 104).
+- Never "the kit": the repository of workflows, global mandates and scripts is named in full with its short form on first use in a session or a document, "planning-is-prompting (PiP)", and "PiP" after that. Names already ruled keep their words ("the convention-kit port", step 8 of the Phase 1 order of work) (Rick, 2026-11-22, during row 116).
 - "Normalize", never "fold", for converting a value into its canonical form (Rick, T35); "merged into" or "runs with" where the record once said a test or a scope was "folded into" another.
 - A register key (D, T, C) carries its name on first use in a section; no bare mile-marker sets; tests and gates carry a word prefix saying what they prove (`Kernel-1`, `Convention-9`). C-numbers stay, because the script files carry them.
 - Clocks and schedules in `app timezone` (US East Coast), never UTC.

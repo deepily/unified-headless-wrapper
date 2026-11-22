@@ -3,16 +3,16 @@
 # manifest must fit, for row 116 of "Outstanding actions": the manifest that seeds the task store
 # with the builder's list of work (T19 spec, the amendment of 2026-11-22, row 93, ruling 4).
 #
-#   t19_plan_stub_manifest_facts.sh [kit root] [correlation key]
+#   t19_plan_stub_manifest_facts.sh [PiP root] [correlation key]
 #       defaults: $PLANNING_IS_PROMPTING_ROOT or /mnt/lupin-data/planning-is-prompting;
 #                 epic:uhw-phase1-kernel
 #
 # Five parts, one line per fact, `name value`:
 #
 #   (a) the plan as written   steps in the Phase 1 spec's Section 13, Kernel rows in its Section 12,
-#                             and the headings the kit's importer would read as phase headings
-#   (b) the kit               the manifest rule, the importer, its sample; the importer's own limits
-#   (c) this repository       whether the kit's folder for manifests exists; what the builder's
+#                             and the headings the importer of planning-is-prompting (PiP) would read as phase headings
+#   (b) PiP                   the manifest rule, the importer, its sample; the importer's own limits
+#   (c) this repository       whether PiP's folder for manifests exists; what the builder's
 #                             clone leaves out of its tree
 #   (d) the task store        the instance the importer reads by default: reachable or not, rows in
 #                             all, rows under the correlation key, projects, owners, managers
