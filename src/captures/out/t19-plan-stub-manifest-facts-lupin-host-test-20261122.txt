@@ -1,0 +1,42 @@
+# (a) the plan as written
+host                                         lupin-host-test
+read_at                                      2026-11-22 12:45 EST
+order_of_work_steps                          8
+kernel_gate_rows                             8
+spec_amendments                              7
+# (b) the kit
+workflow/plan-stub-manifest.md               11788 bytes, 145 lines
+workflow/scripts/plan_stub_import.py         47970 bytes, 1018 lines
+src/docs/plan-stubs/plan-stub-sample.stubs.json 1776 bytes, 49 lines
+kit_is_a_git_checkout                        no
+# (c) this repository
+src_docs_exists                              no
+json_files_under_src_rnd                     5
+builder_sparse_patterns                      /* !/CLAUDE.md !/AGENTS.md 
+# (a, continued) what the importer reads as phase headings in the Phase 1 spec
+phase_heading_ids_in_spec                    ['1']
+# (a, continued) the modules of the spec's Section 3 layout, against its Section 13 order of work
+layout_modules                               26
+marked_phase_2_in_layout                     2: gate_claims.py fleet_rules.py
+named_by_file_in_order_of_work               12: events.py jetski_family.py session.py inbox.py registry.py manifest.py vetting.py gate.py notifications.py pyramid.py session_log.py api.py
+not_named_by_file_in_order_of_work           12: lifecycle.py jobs.py admission.py worktree.py capacity.py launch.py log/sweep.py log/mapper.py watch.py __main__.py jetski_family_hook.py cli.py
+py_files_in_order_of_work_not_in_layout      cli/lupin.py first_turn.py respin.py
+# (b, continued) the importer's limits
+title_cap                                    120
+item_classes                                 ('task', 'decision', 'gate')
+gate_classes                                 ('none', 'manager', 'operator')
+# (d) the task store
+api_base                                     http://localhost:7999
+api_key_readable                             yes
+rows_under_epic:uhw-phase1-kernel            0
+rows_in_all                                  69 (has_more False)
+project                                      weil-nda-drafting-suite 52, skills-distillation 13, weil-parallel-search 3, mcp-and-a2ui-apps 1
+owner_persona                                cheech 34, maya 9, sam 8, john 7, rick 5, chloe 5, maria 1
+accountable_manager                          None 38, cheech 31
+status                                       done 39, dropped 15, queued 4, blocked 4, not_approved 3, in_progress 3, parked 1
+rows_titled_[UHW]                            0
+# (e) the title budget, for a plan named as the second argument's slug suggests
+name_room[Kernel first build]                64
+stub_name_and_trigger_room[Kernel first build] 56
+name_room[Kernel build]                      70
+stub_name_and_trigger_room[Kernel build]     62
