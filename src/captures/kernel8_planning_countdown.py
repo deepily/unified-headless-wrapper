@@ -22,9 +22,9 @@ STAGES = [
         ( 108, "Rick", "confirm the details the row 104 amendment set without a click (Kernel-1)" ),
         ( 93, "Rick", "refresh the test VM's July global mandates from the kit, or say they stand" ),
         ( 116, "a session, then Rick", "make the plan of the Single persona kernel MVP (Phase 1) ready for PiP's cascaded review: nine phases, every module placed" ),
-        ( 117, "Rick", "run PiP's cascaded review on that plan; its handoff writes the plan stub manifest; import it and approve the rows" ),
         ( 95, "Rick", "how the builder's AH4L session is launched: launch line, folder, voice" ),
         ( 92, "Rick, with the builder", "prove the builder's loader with one turn (the first turn itself)" ),
+        ( 117, "Rick", "last of all, run PiP's cascaded review on the plan; its handoff writes the plan stub manifest; import it and approve the rows" ),
     ] ),
     ( "Before Kernel-2", [
         ( 17, "Rick", "say whether the destructive-test server on port 8000 is done" ),
