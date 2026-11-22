@@ -1,0 +1,105 @@
+# (a) the two files
+host                                                 lupin-host-test
+read_at                                              2026-11-21 15:40 EST
+host_file                                            /home/admin_rickruiz_altostrat_com/.claude/CLAUDE.md
+host_bytes                                           53141
+host_lines                                           731
+host_modified                                        2026-07-24 17:16 EDT
+host_sha256                                          a9fdfc110f1b3502
+kit_file                                             /mnt/lupin-data/planning-is-prompting/global/CLAUDE.md
+kit_bytes                                            45664
+kit_lines                                            571
+kit_modified                                         2026-11-15 00:22 EST
+kit_sha256                                           dd776f9a7ee6beab
+files_identical                                      no
+lines_only_in_host                                   332
+lines_only_in_kit                                    172
+kit_is_git_checkout                                  no
+kit_newest_file                                      2026-11-15
+kit_readme_snapshot_line                             - **Captured**: 2026.10.02 (the deployed file as last changed 2026.09.29; first captured 2025.10.04)
+
+# (b) section by section (second-level headings; lines of body, host then kit)
+same         0    0  (before the first heading)
+changed     90   38  BREVITY MANDATE  READ BEFORE YOU TYPE ANYTHING
+changed     11   11  Session Workflows
+changed     19    9  UNIFIED TASK-STORE  ALWAYS-CREATE-A-TASK-ITEM MANDATE
+changed     40   47  PARALLEL SESSION SAFETY (v2.0)
+changed     28    9  TODO.md MANAGEMENT
+same        17   17  DOCUMENT SEPARATION RULES
+changed     19   11  INTERACTIVE REQUIREMENTS ELICITATION
+same        16   16  Environment Configuration
+same        15   15  Python Development
+same        26   26  POST-EDIT VERIFICATION (Python)
+changed      9    9  General Preferences
+changed     83   70  CLAUDE CODE NOTIFICATION SYSTEM
+changed     21   15  CROSS-SESSION COMMUNICATION
+changed     15   16  MANAGER SPAWN/HARVEST AUTONOMY
+same       103  103  Code Style
+same        23   23  PATH MANAGEMENT
+changed     63   40  TESTING & INCREMENTAL DEVELOPMENT
+changed     28    7  HISTORY DOCUMENT MANAGEMENT
+changed     37   17  PLAN FILE SERIALIZATION
+same         7    7  MERMAID DIAGRAMS
+same         5    5  CODEBASE ANALYSIS
+changed     17   13  Final instructions
+host_only   17    -  BEFORE YOU REPLY  THE THREE ACRONYMS
+kit_only     -   25  MANAGER CONTEXT MONITORING  THE 10-MINUTE TICK
+sections_same                                        9
+sections_changed                                     14
+sections_host_only                                   1
+sections_kit_only                                    1
+
+# (c) the kit's own tools, neither asked to write
+detector_exit                                        1 (0 none drifted, 1 drifted, 2 unreadable)
+detector_drifted_paragraphs                          37
+sync_dry_run_exit                                    2 (0 would write or nothing to do, 2 refused, 3 no input)
+sync_paragraphs_it_refuses                           37
+host_file_unchanged_by_this_part                     yes
+
+# (d) rules by presence (matching lines: host, kit)
+rule[git stash is repo-global, do not use it]        host 0  kit 1
+rule[a copy does not merge, it replaces]             host 0  kit 1
+rule[no test or job touches a GPU]                   host 0  kit 1
+rule[manager context monitoring, the 10-minute tick] host 0  kit 1
+rule[commit once green AND reviewed]                 host 1  kit 1
+rule[push to origin stays gated]                     host 1  kit 1
+rule[never git add . or -A]                          host 1  kit 2
+rule[curl prohibited for API testing]                host 1  kit 1
+rule[test ownership mandate]                         host 1  kit 1
+rule[the three acronyms recap at the end]            host 1  kit 0
+
+# (e) what each copy names (matching lines: host, kit), and whether it is here
+rule[history.md]                                     host 9  kit 8
+rule[TODO.md]                                        host 12  kit 8
+rule[a /plan- command]                               host 7  kit 5
+rule[the task store (task_create, task_query)]       host 8  kit 4
+rule[the voice tools (cosa-voice, converse, notify)] host 23  kit 18
+rule[.claude-session.md manifest]                    host 2  kit 1
+rule[stash_guard.py]                                 host 0  kit 1
+host_has_global_commands                             no
+host_has_global_skills                               no
+builder_clone_present                                yes
+builder_clone_has_commands                           no
+builder_clone_has_history_md                         no
+builder_clone_has_todo_md                            no
+global_settings_hook_events                          8
+global_hooks_run_from_lupin                          8 commands
+
+# (f) who reads the host's file
+claude_project_folders                               6
+    -mnt-lupin-data-google-buganizer-time-keeper
+    -mnt-lupin-data-google-mcp-and-a2ui-apps
+    -mnt-lupin-data-google-skills-distillation
+    -mnt-lupin-data-google-weil-ge-mcp-server
+    -mnt-lupin-data-google-weil-nda-drafting-suite
+    -mnt-lupin-data-unified-headless-wrapper
+live_claude_processes                                1
+backups_of_host_file                                 0
+
+# (g) AH4L's stash guard, called as a function on the git lines the builder may type
+stash_guard_wired_into_pre_tool_use                  yes
+guard[git pull --rebase --autostash]                 allowed
+guard[git pull --rebase]                             allowed
+guard[git stash]                                     denied
+guard[git stash pop]                                 denied
+guard[git stash list]                                allowed
