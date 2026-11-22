@@ -1,5 +1,23 @@
 # Capture runbook
 
+## Done 2026-11-22: the plan of the Single persona kernel MVP (Phase 1) checked, zero tokens (row 116). Owed: row 117, the cascaded review
+
+**Result** (the row 116 sessions, 2026-11-22; `src/captures/out/t19-plan-stub-manifest-facts-lupin-host-test-20261122.txt`, 12:45 US Eastern, and `src/captures/out/t19-mvp-phase-modules-check-lupin-host-test-20261122.txt`, 18:45): the Phase 1 spec, retitled and amended, carries nine phase headings; each of the 24 modules the MVP needs stands under exactly one. Read in the T19 spec's amendment of 2026-11-22 (row 116).
+
+**On any host with this checkout, after any change to the spec's layout or to its phase headings** (each exits 1 with a line saying why):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_mvp_phase_modules_check.py --check
+src/captures/t19_mvp_phase_modules_check.py --self-test
+```
+
+**On the test VM, before the import of row 117**, to read the task store and the importer's limits again (read-only; it needs planning-is-prompting (PiP) at `/mnt/lupin-data/planning-is-prompting` and the store on port 7999):
+```bash
+src/captures/t19_plan_stub_manifest_facts.sh
+```
+
+**Row 117, Rick's:** the plan file handed to PiP's cascaded review (`workflow/plan-review-cascaded.md`) is `src/rnd/v0.0.1/specs/2026.10.24-phase1-kernel-and-jetski-family-adapter-spec.md`; its input, the eight recommendations not ruled, is in `src/rnd/v0.0.1/narratives/2026.11.22-row116-phase1-plan-stub-manifest.md`. The review's handoff writes the manifest; the lines for `validate` and `import --write` are written into this block once the manifest's path and the importing actor are known.
+
 ## Done 2026-11-21: the test VM's global mandates compared with the kit's copy, zero tokens (row 93). Nothing here is owed
 
 **Result** (the row 93 session, 2026-11-21 15:40 US Eastern; `src/captures/out/t19-global-mandates-comparison-lupin-host-test-20261121.txt`): the host's `~/.claude/CLAUDE.md` is 53,141 bytes of 2026-07-24, the kit's `global/CLAUDE.md` 45,664 bytes of 2026-11-15; 9 shared sections identical, 14 changed; the kit's sync, run dry, refuses all 37 drifted paragraphs. Ruled 2026-11-22: the July copy stands for the Phase 1 build. Read in the T19 spec's amendment of 2026-11-22.

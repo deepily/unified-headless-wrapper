@@ -1,0 +1,23 @@
+# t19_mvp_phase_modules_check.py --self-test, then --check; lupin-host-test, 2026-11-22 18:45 EST
+self_test[every module once]                 ok
+self_test[a module under no phase]           ok
+self_test[a module under two phases]         ok
+self_test[a Phase 2 module placed]           ok
+self_test[a file the layout lacks]           ok
+self_test[a port module allowed]             ok
+self_test[a gap in the numbering]            ok
+self_test[the title read as a phase]         ok
+layout_modules_needed                        24
+layout_modules_marked_phase_2                2: gate_claims.py fleet_rules.py
+phase_headings                               [1, 2, 3, 4, 5, 6, 7, 8, 9]
+phase_1[line 430]                            6: events.py jetski_family.py pyramid.py session_log.py mapper.py watch.py
+phase_2[line 438]                            6: session.py inbox.py lifecycle.py jobs.py admission.py capacity.py
+phase_3[line 446]                            7: registry.py manifest.py api.py cli.py worktree.py launch.py __main__.py
+phase_4[line 455]                            2: notifications.py sweep.py
+phase_5[line 463]                            2: gate.py jetski_family_hook.py
+phase_6[line 470]                            0: 
+phase_7[line 478]                            1: vetting.py
+phase_8[line 485]                            3: provision.py first_turn.py respin.py
+phase_9[line 493]                            0: 
+named_in_a_phase_and_not_in_the_layout       3: first_turn.py provision.py respin.py
+verdict                                      every needed module stands under exactly one phase
