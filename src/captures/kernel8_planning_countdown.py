@@ -42,6 +42,7 @@ STAGES = [
         ( 25, "Rick", "the ticket store lands in Phase 2 but Kernel-5's `ask` rules need it: decide the order" ),
         ( 13, "Rick (host run)", "C15, whose result goes into `launch.py` (C16 and C15b have no stated gate)" ),
         ( 14, "Rick (host run)", "C18, tool approval, after row 13" ),
+        ( 121, "a session, then Rick", "the sign-in and quota spec's older kernel lines and its warning card, under the ruled grammar; `pool blocked` worded with \"token buffet\"" ),
     ] ),
 ]
 
