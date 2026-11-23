@@ -35,6 +35,7 @@ STAGES = [
         ( 9, "Rick (host run)", "the engine-account inventory, both hosts" ),
         ( 10, "Rick (host run)", "C20, the relaunch tree, on the test VM" ),
         ( 16, "Rick (host run)", "the credential inventory on the test VM" ),
+        ( 122, "a session, then Rick", "whether the two quota keys (spawn floor, reserve) are required and bounded" ),
     ] ),
     ( "Before Kernel-5", [
         ( 111, "Rick, then lupin's implementer", "Lupin gains the notification type `info`; the kernel sends it with no fallback (Kernel-3)" ),

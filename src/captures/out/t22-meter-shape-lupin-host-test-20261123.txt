@@ -1,0 +1,101 @@
+# The usage meter's shape (row 21; zero tokens)
+read at            : 2026-11-23 13:13:15 EST
+engine version     : 1.5.15
+reply status       : SUCCESS | turns: 0 | tokens: 0
+command name       : usage
+
+## Groups, as the meter prints them
+- group "Gemini Pro Next" (1 bucket)
+    models         : Gemini Pro Next, Gemini Pro Orchestrator
+    bucket         : id gemini-next-v2 | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 1.0000
+    reset          : 2026-11-24 09:13:08 EST (20.00 h from the read)
+    bucket fields  : ['id', 'name', 'remaining_fraction', 'reset_time', 'window']
+- group "Gemini Flash Next" (1 bucket)
+    models         : Gemini Flash Next
+    bucket         : id gemini-flash-next | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 1.0000
+    reset          : 2026-11-24 09:13:08 EST (20.00 h from the read)
+    bucket fields  : ['id', 'name', 'remaining_fraction', 'reset_time', 'window']
+- group "Gemini Teamfood Models" (1 bucket)
+    models         : Gemini 4 Neon (XHigh), Gemini 4 Neon (High), Gemini 4 Neon (Medium), Gemini 4 Neon (Low), Gemini 4 Carbon (High), Gemini 4 Carbon (Medium), Gemini 4 Carbon (Low)
+    bucket         : id gemini-google-teamfood-wtu-v2 | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 1.0000
+    reset          : 2026-11-24 09:13:08 EST (20.00 h from the read)
+    bucket fields  : ['id', 'name', 'remaining_fraction', 'reset_time', 'window']
+- group "Gemini Flash" (1 bucket)
+    models         : Gemini 4 Hydrogen (XHigh), Gemini 4 Hydrogen (High), Gemini 4 Hydrogen (Medium)
+    bucket         : id gemini-2.5-flash | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 1.0000
+    reset          : 2026-11-24 09:13:08 EST (20.00 h from the read)
+    bucket fields  : ['id', 'name', 'remaining_fraction', 'reset_time', 'window']
+- group "Gemini Flash Lite" (1 bucket)
+    models         : Gemini 3.5 Flash Lite
+    bucket         : id gemini-2.5-flash-lite | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 1.0000
+    reset          : 2026-11-24 09:08:09 EST (19.91 h from the read)
+    bucket fields  : ['description', 'id', 'name', 'remaining_fraction', 'reset_time', 'window']
+- group "Third-Party Models" (1 bucket)
+    models         : Claude Fable 5.2 (Max), Claude Fable 5.2 (XHigh), Claude Fable 5.2 (High), Claude Fable 5.2 (Medium), Claude Fable 5.2 (Low), Claude Fable 5.1 (Max), Claude Fable 5.1 (High), Claude Fable 5.1 (Medium), Claude Fable 5.1 (Low), Claude Opus 5.5 (Max), Claude Opus 5.5 (High), Claude Opus 5.5 (Medium), Claude Opus 5.5 (Low)
+    bucket         : id 3p-wtu-daily | window 20h | name "Twenty Hour Limit Remaining"
+    remaining      : 0.9909
+    reset          : 2026-11-24 09:08:09 EST (19.91 h from the read)
+    bucket fields  : ['description', 'id', 'name', 'remaining_fraction', 'reset_time', 'window']
+
+groups             : 6
+buckets            : 6
+distinct windows   : ['20h']
+
+## Does a reset time stand still? (two reads)
+- Gemini Pro Next          remaining 1.0000 | drawn on: no  | reset moved +6 s between the reads
+- Gemini Flash Next        remaining 1.0000 | drawn on: no  | reset moved +6 s between the reads
+- Gemini Teamfood Models   remaining 1.0000 | drawn on: no  | reset moved +6 s between the reads
+- Gemini Flash             remaining 1.0000 | drawn on: no  | reset moved +6 s between the reads
+- Gemini Flash Lite        remaining 1.0000 | drawn on: yes | reset moved +0 s between the reads
+- Third-Party Models       remaining 0.9909 | drawn on: yes | reset moved +0 s between the reads
+
+## The spec's parser on this reply (specs/t22-reference/engine_account.py, unchanged)
+group names it knows   : ['claude and gpt models', 'gemini 4 argon', 'gemini models']
+window names it knows  : ['5h', 'weekly']
+group names matched    : 0 of 6
+window names matched   : 0 of 1
+buckets it returns     : 0 of 6
+default role model fable-5.1-high  -> pool `third_party`; remaining it would read: unknown (admits)
+default role model opus-5.5-high   -> pool `third_party`; remaining it would read: unknown (admits)
+
+## `agy models` (the identifiers a manifest carries)
+    Fetching available models...
+    auto	Gemini Pro Next
+    gemini-flash-next	Gemini Flash Next
+    gemini-pro-coordinator	Gemini Pro Orchestrator
+    gemini-4-neon-xhigh	Gemini 4 Neon (XHigh)
+    gemini-4-neon-high	Gemini 4 Neon (High)
+    gemini-4-neon-medium	Gemini 4 Neon (Medium)
+    gemini-4-neon-low	Gemini 4 Neon (Low)
+    gemini-4-carbon-high	Gemini 4 Carbon (High)
+    gemini-4-carbon-medium	Gemini 4 Carbon (Medium)
+    gemini-4-carbon-low	Gemini 4 Carbon (Low)
+    hydrogen-l-tf-xhigh	Gemini 4 Hydrogen (XHigh)
+    hydrogen-l-tf-high	Gemini 4 Hydrogen (High)
+    hydrogen-l-tf-medium	Gemini 4 Hydrogen (Medium)
+    gemini-3.5-flash-lite	Gemini 3.5 Flash Lite
+    fable-5.2-max	Claude Fable 5.2 (Max)
+    fable-5.2-xhigh	Claude Fable 5.2 (XHigh)
+    fable-5.2-high	Claude Fable 5.2 (High)
+    fable-5.2-medium	Claude Fable 5.2 (Medium)
+    fable-5.2-low	Claude Fable 5.2 (Low)
+    fable-5.1-max	Claude Fable 5.1 (Max)
+    fable-5.1-high	Claude Fable 5.1 (High)
+    fable-5.1-medium	Claude Fable 5.1 (Medium)
+    fable-5.1-low	Claude Fable 5.1 (Low)
+    opus-5.5-max	Claude Opus 5.5 (Max)
+    opus-5.5-high	Claude Opus 5.5 (High)
+    opus-5.5-medium	Claude Opus 5.5 (Medium)
+    opus-5.5-low	Claude Opus 5.5 (Low)
+
+## Readings the record holds for the third-party group (00-status.md and transcripts/)
+distinct readings              : 47
+lowest reading                 : 57.5
+opening and closing pairs      : 23
+draw of one planning session   : median 2.7 | largest 5.6 points
+(a planning session is one persona at work; no reading of a fleet exists)

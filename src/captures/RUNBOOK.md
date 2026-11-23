@@ -1,5 +1,18 @@
 # Capture runbook
 
+## Row 21: the usage meter's shape, zero tokens (done on the test VM 2026-11-23; owed on the other hosts, with row 9)
+
+**On the development server and on the work laptop, as the account the engines run under:**
+```bash
+cd <this checkout> && git pull --rebase
+src/captures/t22_meter_shape.sh
+```
+It reads `agy -p "/usage"` twice and `agy models` once, prints the groups, their models and their clocks, runs the reader of 2026-11-11 on the reply to show what it misses, and writes `src/captures/out/t22-meter-shape-<host>-<date>.txt`. Commit that file. It prints no secret, token or email address.
+
+**Result on the test VM** (2026-11-23, 13:13 US Eastern, AGY 1.5.15; `src/captures/out/t22-meter-shape-lupin-host-test-20261123.txt`): six groups, one `20h` clock each; the older reader returns 0 of 6. Ruled the same day (the sign-in and quota spec's amendment, row 21): every group is a pool and every clock is checked, so another shape on another host changes no code.
+
+**To ping Rick from an Antigravity session** (ruling protocol, Section 12; zero tokens): `src/captures/operator_ping.py "<one or two sentences>"`.
+
 ## Launch the builder (row 95; proved by row 92 on 2026-11-22). Owed: row 117, the cascaded review
 
 **On the test VM, in an interactive shell** (the first line must print a path; if it prints nothing, open a new login shell: the hooks' interpreter reaches the session only through the shell that starts tmux, row 119):

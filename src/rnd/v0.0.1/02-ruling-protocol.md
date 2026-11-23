@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-22 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104, by row 93 and by Rick during row 116) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-23 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104, by row 93, by Rick during row 116 and by Rick during row 21) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -124,3 +124,15 @@ When a session must stop before recording, write a handoff for Rick to paste as 
 ## 11. Names
 
 AH4L is the ad hoc harness for Lupin, which the kernel retires; UHW is this repo; the Lupin kernel is the host service it designs. In Rick's dictated messages, "Colonel" means the kernel and "Levine" means lupin.
+
+## 12. Pinging Rick
+
+A **ping** is a notification that Lupin speaks aloud (Rick, 2026-11-23, during row 21). Rick is away from the keyboard on and off, so a session pings him:
+
+- when it needs his attention;
+- when it stops to wait for his answer: the narrative is ready, a question is about to be put (the ping goes immediately before the question), the commit message is shown;
+- when a long-running process ends.
+
+One ping for each such moment, never for routine progress. It says in a sentence or two what is waiting; the reply in the chat still carries the detail. A ping that fails is reported in the reply and does not stop the work.
+
+Under Antigravity, which loads no voice tool server, the ping is `src/captures/operator_ping.py "<the sentence>"` (zero tokens): it signs in to Lupin as the checkout's own account and posts to `/api/notify`, addressed to the operator's account named in `~/.lupin/config`, as `agy.cli@<project>.deepily.ai`. Its default priority is `high`, which is spoken; `medium` is a ding with no speech (both measured 2026-11-23); `urgent` is kept for a session that cannot go on without him. Under Claude Code the voice tool server does this job.
