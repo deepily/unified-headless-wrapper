@@ -1,5 +1,25 @@
 # Capture runbook
 
+## Row 92, Rick's: launch the builder (row 95 ruled 2026-11-22). Then row 117, the cascaded review
+
+**On the test VM, in an interactive shell** (the first line must print a path; if it prints nothing, open a new login shell: the hooks' interpreter reaches the session only through the shell that starts tmux, row 119):
+```bash
+echo "$LUPIN_CC_VENV"
+cd /mnt/lupin-data/unified-headless-wrapper-builder
+cctmx
+```
+Accept Claude Code's trust question for the folder, once. Every launch is a new conversation; a session whose tmux is still alive is rejoined with `tmux attach`. Do not rehearse with the launcher's `--dry-run`: it starts a tmux session of its own.
+
+**The proving turn (row 92).** Ask the builder which instruction files it was given (the answer names `03-builder-loader.md` and not the ruling protocol), which persona it has (Maria), and which project its session carries (`unified-headless-wrapper-builder`). An urgent "no credentials for project" notice, or a persona other than Maria, is reported to planning.
+
+**To read the host again** (zero tokens, read-only; it does not run the launcher):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_builder_launch_facts.sh
+```
+
+**Result** (the row 95 session, 2026-11-22; `src/captures/out/t19-builder-launch-facts-lupin-host-test-20261122.txt`, the run of 21:07 US Eastern): the account's section and the roster's key for the builder's project are present; one tool server carries the voice and the 13 task-store tools to port 7999; Claude Code 2.1.330 has never been started in the builder's clone; no tmux server was running. Read in the T19 spec's amendment of 2026-11-22 (row 95).
+
 ## Done 2026-11-22: the plan of the Single persona kernel MVP (Phase 1) checked, zero tokens (row 116). Owed: row 117, the cascaded review
 
 **Result** (the row 116 sessions, 2026-11-22; `src/captures/out/t19-plan-stub-manifest-facts-lupin-host-test-20261122.txt`, 12:45 US Eastern, and `src/captures/out/t19-mvp-phase-modules-check-lupin-host-test-20261122.txt`, 18:45): the Phase 1 spec, retitled and amended, carries nine phase headings; each of the 24 modules the MVP needs stands under exactly one. Read in the T19 spec's amendment of 2026-11-22 (row 116).

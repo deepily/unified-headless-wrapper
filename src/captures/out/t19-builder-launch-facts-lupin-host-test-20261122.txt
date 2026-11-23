@@ -1,0 +1,93 @@
+# (a) the launcher
+host                                           lupin-host-test
+read_at                                        2026-11-22 21:07 EST
+lupin_head                                     e8f253162d
+launcher                                       /mnt/lupin-data/lupin/src/scripts/start-cc-with-tmux.sh
+launcher_present                               yes
+launcher_lines                                 762
+alias_cctmx                                    1
+flag[--work-dir]                               yes
+flag[--headless]                               yes
+flag[--prompt]                                 yes
+flag[--vertex]                                 yes
+flag[--dry-run]                                yes
+first_positional_is_tmux_session_name          yes
+dry_run_starts_a_tmux_session                  yes
+sources_fleet_roster                           yes
+runs_fleet_cap_admission                       yes
+memory_ceiling_default                         8G
+lupin_venv_activate_present                    yes
+hooks_interpreter_variable_set_in_this_shell   yes
+launcher_forwards_that_variable                no
+hooks_can_import[lupin's .venv]                no
+hooks_can_import[the variable's venv]          yes
+launch_guard_can_import[lupin's .venv]         yes
+# (b) the engine
+claude_code                                    2.1.330 (Claude Code)
+tmux                                           tmux 3.2a
+systemd_run                                    yes
+xdg_runtime_dir_set                            yes
+settings_hook_events                           8 (Notification, PermissionRequest, PostToolUse, PreToolUse, SessionEnd, SessionStart, Stop, UserPromptSubmit)
+settings_hooks_run_from_lupin                  8
+settings_route_to_vertex                       1
+settings_model                                 opus
+settings_opus_model                            claude-opus-5-5[1m]
+settings_permission_mode                       auto
+settings_allow_rules                           111
+settings_allows_tool_server                    yes
+settings_time_zone                             America/New_York
+# (c) the folder
+builder_clone                                  /mnt/lupin-data/unified-headless-wrapper-builder
+builder_clone_present                          yes
+builder_head                                   c4151f0
+planning_head                                  3677cae
+builder_local_loader                           @src/rnd/v0.0.1/03-builder-loader.md
+builder_clone_checks_ok                        14 of 14
+builder_has_kernel_package                     no
+claude_knows_folder[builder]                   no
+claude_transcripts[builder]                    no folder
+claude_knows_folder[planning]                  yes, trust accepted: True
+claude_transcripts[planning]                   9
+project_name[builder]                          unified-headless-wrapper-builder (from the folder's name)
+project_name[planning]                         unified-headless-wrapper (from the folder's name)
+project_aliases_in_lupin                       1
+# (d) the voice
+tool_servers_account_wide                      1 (cosa-voice)
+voice_server_script                            /mnt/lupin-data/lupin/src/lupin_mcp/cosa_voice_mcp.py
+voice_server_environment_keys                  LUPIN_CONFIG_MGR_CLI_ARGS, LUPIN_ROOT, PYTHONPATH
+voice_server_names_an_instance                 no
+shell_names_an_instance                        no
+instance_when_none_is_named                    http://localhost:7999
+health[7999]                                   200
+container[7999]                                lupin-rest-cloud-gpu
+health[8000]                                   200
+container[8000]                                lupin-rest-test
+credentials_file_present                       yes
+credentials_project_sections                   18 sections in all
+credentials_section[unified-headless-wrapper]  yes
+credentials_section[unified-headless-wrapper-builder] yes
+credentials_section[owner]                     no
+account_lookup_collapses_a_worktree            yes
+# (e) the task store's tools
+tools_on_the_voice_server                      41
+task_store_tools_among_them                    13
+task_store_tool_names                          task_create task_transition task_query task_get task_approve_line task_approve_batch_line task_promotion_status task_correlate task_reassign task_amend task_request task_ask_unpark task_edit 
+task_store_tools_call                          13 of them the instance of part (d)
+write_gate_module_present                      yes
+# (f) the persona
+persona_pool_size                              14
+persona_pool                                   maria, mr radio, Rachel, Tiberius, Rio, Tiffany, Krishna, sam, Clayton, Cheech, maya, pocholo, chloe, john
+roster_file_present                            yes
+roster_projects_with_a_manager                 WEIL_NDA_DRAFTING_SUITE WEIL_PARALLEL_SEARCH UNIFIED_HEADLESS_WRAPPER_BUILDER 
+roster_managers_named                          Cheech Maria 
+roster_key[UNIFIED_HEADLESS_WRAPPER]           no
+roster_key[UNIFIED_HEADLESS_WRAPPER_BUILDER]   yes
+past_claude_sessions[planning]                 2
+  session                                      2026-11-21 persona=None manager=False
+  session                                      2026-11-22 persona=absent manager=False
+past_claude_sessions[builder]                  0
+# (g) tmux
+tmux_server_running                            no
+tmux_sessions                                  0
+tmux_processes                                 0
+memory_slices_left_behind                      3
