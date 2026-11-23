@@ -1,16 +1,17 @@
 # Capture runbook
 
-## Row 92, Rick's: launch the builder (row 95 ruled 2026-11-22). Then row 117, the cascaded review
+## Launch the builder (row 95; proved by row 92 on 2026-11-22). Owed: row 117, the cascaded review
 
 **On the test VM, in an interactive shell** (the first line must print a path; if it prints nothing, open a new login shell: the hooks' interpreter reaches the session only through the shell that starts tmux, row 119):
 ```bash
 echo "$LUPIN_CC_VENV"
 cd /mnt/lupin-data/unified-headless-wrapper-builder
+git pull --rebase --autostash
 cctmx
 ```
-Accept Claude Code's trust question for the folder, once. Every launch is a new conversation; a session whose tmux is still alive is rejoined with `tmux attach`. Do not rehearse with the launcher's `--dry-run`: it starts a tmux session of its own.
+The pull comes before the launch because Claude Code reads the loader at launch, before the loader's own first step pulls (Rick, 2026-11-22, row 92: the clone was 12 commits behind). The trust question for the folder was accepted on 2026-11-22 and is not asked again. Every launch is a new conversation; a session whose tmux is still alive is rejoined with `tmux attach`. Do not rehearse with the launcher's `--dry-run`: it starts a tmux session of its own.
 
-**The proving turn (row 92).** Ask the builder which instruction files it was given (the answer names `03-builder-loader.md` and not the ruling protocol), which persona it has (Maria), and which project its session carries (`unified-headless-wrapper-builder`). An urgent "no credentials for project" notice, or a persona other than Maria, is reported to planning.
+**The proving turn (row 92), done 2026-11-22:** the builder named `~/.claude/CLAUDE.md`, `CLAUDE.local.md` and `03-builder-loader.md` "as of row 95", and not the ruling protocol; its persona is María; its session's record on the host names the builder's clone, Maria as manager, and an account found. Not asked again unless the loader's mechanism changes. Two things were found: the listener's summaries fall back to a five-word prefix (row 120), and the session records had moved to `~/.claude/lupin-sessions`, which the script below now reads. As it was put: ask the builder which instruction files it was given (the answer names `03-builder-loader.md` and not the ruling protocol), which persona it has (Maria), and which project its session carries (`unified-headless-wrapper-builder`). An urgent "no credentials for project" notice, or a persona other than Maria, is reported to planning.
 
 **To read the host again** (zero tokens, read-only; it does not run the launcher):
 ```bash

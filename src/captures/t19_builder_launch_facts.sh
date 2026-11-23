@@ -169,14 +169,19 @@ PLANNING="$here" BUILDER="$builder" python3 -B - <<'PY'
 import glob, json, os
 def say(name, value): print('%-46s %s' % (name, value))
 found = {'planning': [], 'builder': []}
-for path in sorted(glob.glob(os.path.expanduser('~/.claude/sessions/cc-[0-9]*.json'))):
+def get_persona_name(persona):
+    return persona.get('name', 'absent') if isinstance(persona, dict) else persona
+# lupin e8f253162d moved the bridges to ~/.claude/lupin-sessions; both folders are read (row 92)
+paths = [path for folder in ('sessions', 'lupin-sessions')
+         for path in glob.glob(os.path.expanduser('~/.claude/%s/cc-[0-9]*.json' % folder))]
+for path in sorted(paths):
     try: bridge = json.load(open(path))
     except Exception: continue
     for label in found:
         if bridge.get('cwd') == os.environ[label.upper()]:
             found[label].append('%s persona=%s manager=%s' % (
                 (bridge.get('idle_detection') or {}).get('last_interaction_at', '?')[:10],
-                bridge.get('voice_persona', 'absent'), bridge.get('manager_figure_implicit', 'absent')))
+                get_persona_name(bridge.get('voice_persona', 'absent')), bridge.get('manager_figure_implicit', 'absent')))
 for label, rows in found.items():
     say('past_claude_sessions[%s]' % label, len(rows))
     for row in rows: say('  session', row)

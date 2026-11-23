@@ -720,3 +720,17 @@ Then the Jetski run arrived, which the narrative's first decision had proposed n
 **Written.** `src/captures/t19_builder_launch_facts.sh` and its output; the narrative; an amendment to the exit-criteria and switch-over spec; two sentences of the builder's loader; D45's row; the RUNBOOK's top block; the status page (row 95 struck, rows 92 and 117 widened, row 119 for the launcher's defect); a transcript.
 
 **Process.** Three things. A ruling of five days earlier (a folder named apart) had a consequence on another system (an account per project) that only reading the code that consumes the name turned up; a name chosen for one reader should be followed to every reader. Second, Rick acts on a ruling while the walk-through is still running: the account and the roster's line both existed before the next question, and the line carried a different name from the one just ruled. Reading the host again between questions, a few seconds at zero tokens, is what caught it. Third, the recommended launch line was built for failure modes Rick does not have; the simpler line won, and what it gives up (resuming a conversation) is written down rather than argued.
+
+## 2026-11-22 · Row 92, the proving turn → the builder's loader is read; no decision row
+
+**Asked.** Whether the builder, launched as row 95 ruled, is given `03-builder-loader.md` and not the ruling protocol: an import from `CLAUDE.local.md` was documented for Claude Code and never tested. With it, what row 95 could not show: the trust question, the persona, the project, the hooks.
+
+**Read.** The row and the four beside it; the RUNBOOK's launch block; the loader in planning's clone and in the builder's; the host, by the launch-facts script, before and after. This repository at `6d39ec0`, lupin at `e8f253162d`.
+
+**Found.** Before anything was launched: the builder's clone stood 12 commits behind, at the commit of row 94, and its loader knew nothing of Maria, the task store's seeding or the launch. Claude Code reads the loader when it starts; the loader's instruction to pull comes too late for the text already read. Fourteen checks said `ok` throughout, because none compares the clone with the branch. After the turn: the session's record was not where the script looked, lupin having moved those records the same day; and the listener, summarizing Rick's messages, fails for want of a module and says so only in its log.
+
+**Ruled.** One finding, as recommended: the launch block pulls before `cctmx`.
+
+**Written.** An amendment to the exit-criteria and switch-over spec; the RUNBOOK's top block; the launch-facts script, reading both folders of session records; the status page (row 92 struck, row 117 annotated, row 120 added); a transcript. No narrative.
+
+**Process.** Three things. The session was asked to run a turn and did not run it: the row was Rick's, the trust question his, and the shell that carries the hooks' interpreter his; planning's part was to read the host first, and that reading found the stale clone before the proof could be spoiled by it. Second, a check that says `ok` fourteen times says nothing about what it does not test; the clone's drift from the branch was visible in the launch-facts script's own output on the day before and nobody had to look at it. Third, the builder's answer was taken as far as it went and no further: it did not name its project, so the record says the host did.
