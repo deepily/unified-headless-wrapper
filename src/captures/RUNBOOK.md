@@ -133,6 +133,7 @@ src/captures/t19_lupin_trees_test_vm.sh
 **The two checks, on any host with this checkout** (each exits 1 with a line saying why):
 ```bash
 src/captures/t19_move_reading_sweep.py --check       # every lower-case "the move" has a reading; run at every recording
+src/captures/t15_kernel_settings_without_splainer_line.py --check   # every kernel setting the record names has a splainer line; run at every recording (row 138)
 src/rnd/v0.0.1/charts/check_phase_chart.py           # the phase chart is drawn from the record as it stands; run at every close
 src/rnd/v0.0.1/charts/check_phase_chart.py --self-test
 ```

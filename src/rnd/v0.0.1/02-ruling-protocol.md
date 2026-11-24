@@ -1,6 +1,6 @@
 # UHW · ruling protocol
 
-**As of:** 2026-11-23 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104, by row 93, by Rick during row 116 and by Rick during row 21) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
+**As of:** 2026-11-24 (amended after row 63, again after its commit, by row 85, by row 87, by row 96, by row 71, by row 94, by row 104, by row 93, by Rick during row 116, by Rick during row 21 and by row 138) · **What this is.** How a register item (a T-number in framework Section 20) goes from open to ruled to recorded. Distilled from the sessions of 2026-11-05 to 2026-11-11 (T12 through T22); `chronicle.md` holds their arc, `transcripts/` their record. The root `CLAUDE.md` loads this file into every Claude Code session opened in the repo, and the root `AGENTS.md` into every Antigravity (AGY) session. If a later ruling contradicts this file, the ruling wins and this file is corrected in the same session.
 
 ## 1. Where this runs
 
@@ -79,6 +79,7 @@ In this order:
    - Sections 17 (risks) and 21 (companions) as needed, and "As of" updated
    - then `src/captures/t19_acceptance_phase_check.sh --check`, which fails while any acceptance test stands in one phase in its own spec and another in Section 15's table; a new family is named in that table at the gate its spec states (Rick, 2026-11-17, row 63)
    - then `src/captures/t19_move_reading_sweep.py --check`, which fails while any lower-case "the move" in the framework, the status page or a spec has no reading (the relocation, or the Move clock); a new line is written with the name it means, or given a reading in the script (row 96)
+   - then `src/captures/t15_kernel_settings_without_splainer_line.py --check`, which fails while any `kernel …` setting the framework or a spec names has no splainer line; an amendment that adds a setting writes the line in a block that opens `[default]`, and one that withdraws a setting names it in the script's `WITHDRAWN` (Rick, 2026-11-24, row 138)
 4. **Amendments.** Every other spec the ruling changes gets a section appended, `## Amendment (YYYY-MM-DD, Tnn → Dnn)`. The body of a ruled spec is never rewritten.
 5. **RUNBOOK.** Anything Rick must run becomes the new top block, exactly as he will type it; older blocks move down.
 6. **Narrative.** Fill in the rulings column (and, on the laptop, the doc link).
