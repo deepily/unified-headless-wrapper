@@ -1,0 +1,62 @@
+# t22_settings_family.sh on lupin-host-test, 2026-11-23 20:18 US Eastern
+# A marker count is the number of lines of the binary that hold the string; 0 means the string is absent.
+agy.version                                          1.5.15
+agy.marker[GEMINI_FORCE_FILE_STORAGE]                0
+agy.marker[FORCE_FILE_STORAGE]                       0
+agy.marker[antigravity-oauth-token]                  0
+agy.marker[oauth-token]                              2
+agy.marker[useG1Credits]                             4
+agy.marker[useAiCredits]                             4
+agy.marker[AGY_ADC_AUTH]                             13
+agy.marker[keyring]                                  52
+
+jetski.binary                                        not on PATH
+
+claude.version                                       2.1.331 (Claude Code)
+claude.marker[GEMINI_FORCE_FILE_STORAGE]             0
+claude.marker[FORCE_FILE_STORAGE]                    0
+claude.marker[antigravity-oauth-token]               0
+claude.marker[oauth-token]                           12
+claude.marker[useG1Credits]                          0
+claude.marker[useAiCredits]                          0
+claude.marker[AGY_ADC_AUTH]                          0
+claude.marker[keyring]                               5
+
+GEMINI_FORCE_FILE_STORAGE_in_this_shell              unset
+sign_in_directory.mode                               755
+sign_in_directory.age_hours                          0
+sign_in_file.mode                                    600
+sign_in_file.age_hours                               0
+other_files_named_oauth_or_credentials               0
+engine_settings.useG1Credits                         not present
+engine_settings.useAiCredits                         not present
+shared_config                                        absent
+
+lupin_ini.kernel_keys                                0
+
+# Each key: lines naming it in the sign-in and quota spec; lines naming it in every other spec and the framework.
+key[kernel engine login check seconds]               3 here; 0 elsewhere
+key[kernel engine login remind hours]                4 here; 1 elsewhere
+key[kernel engine login warn hours]                  3 here; 0 elsewhere
+key[kernel engine meter seconds]                     3 here; 0 elsewhere
+key[kernel engine meter max age seconds]             3 here; 0 elsewhere
+key[kernel engine quota reopen card min minutes]     2 here; 0 elsewhere
+key[kernel engine overage]                           4 here; 1 elsewhere
+key[kernel engine force file storage]                2 here; 0 elsewhere
+key[kernel engine prices]                            4 here; 2 elsewhere
+key[kernel usage rollup at]                          2 here; 0 elsewhere
+keys_in_the_spec_section_14_block                    15
+keys_of_this_family_already_ruled                    4
+pool_name_keys_named_in_the_spec                     3 lines
+
+# Fields of the reference code (the spec's latest engine_account.py) that hold one of the ten settings.
+reference_code_lines[sample_max_age]                 4
+reference_code_lines[login_check]                    0
+reference_code_lines[remind]                         0
+reference_code_lines[warn_hours]                     0
+reference_code_lines[meter_seconds]                  0
+reference_code_lines[reopen]                         0
+reference_code_lines[overage]                        2
+reference_code_lines[force_file]                     0
+reference_code_lines[prices]                         0
+reference_code_lines[rollup]                         0

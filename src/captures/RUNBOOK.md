@@ -1,5 +1,16 @@
 # Capture runbook
 
+## Rows 124 and 125: what each host holds behind the sign-in and quota settings, zero tokens (done on the test VM 2026-11-23; owed on the development server and the cloud workstation, with row 9)
+
+**On the development server and on the cloud workstation, as the account the engines run under:**
+```bash
+cd <this checkout> && git pull --rebase
+src/captures/t22_settings_family.sh
+```
+It starts no engine turn. For `agy`, `jetski` and `claude` it counts marker strings in the binary (`GEMINI_FORCE_FILE_STORAGE`, the two overage fields, `keyring`); it prints the mode and age of the sign-in file and its directory (never the file's contents), whether the two overage fields are in the engine's settings files, and how many kernel keys lupin's settings file holds; it writes `src/captures/out/t22-settings-family-<host>-<date>.txt`. Commit that file. On the development server pass the lupin checkout's path as the one argument. It prints no secret, token or email address.
+
+**Result on the test VM** (2026-11-23, 20:18 US Eastern; `src/captures/out/t22-settings-family-lupin-host-test-20261123.txt`): the variable's name is absent from `agy` 1.5.15; the sign-in is in a file, mode 600, with the variable unset; its directory is 755; the overage fields are known to the binary and absent from the settings file. Ruled the same day (the sign-in and quota spec's amendment, rows 124 and 125): the variable is always sent and has no settings key; five keys of the family are required and four are withdrawn.
+
 ## Rows 86, 100 and 17: lupin's trees, GitHub and the server on port 8000, zero tokens (done on the test VM 2026-11-23). Owed: rows 126 to 130
 
 **To read the host again** (read-only; it pushes nothing, not even as a dry run):

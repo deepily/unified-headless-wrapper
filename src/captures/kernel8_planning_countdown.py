@@ -38,6 +38,7 @@ STAGES = [
         ( 122, "a session, then Rick", "whether the two quota keys (spawn floor, reserve) are required and bounded" ),
         ( 124, "a session, then Rick", "whether the sign-in and quota family's other ten keys are required and bounded" ),
         ( 125, "Rick", "confirm the details the amendments of 2026-11-23 set without a click (Quota-12 and Capacity-8 run with Kernel-1)" ),
+        ( 133, "Rick", "confirm the details the rows 124 and 125 amendment set without a click (Quota-14 runs with Kernel-1)" ),
         ( 129, "Rick, then the builder", "which account the kernel signs in with on port 8000, and that it exists there" ),
     ] ),
     ( "Before Kernel-5", [
