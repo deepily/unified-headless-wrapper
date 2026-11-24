@@ -1,0 +1,47 @@
+# t25_engine_runtime.sh on lupin-host-test, 2026-11-23 15:06 US Eastern
+# A marker count is the number of lines of the binary that hold the string; 0 means the string is absent.
+agy.binary                         /home/admin_rickruiz_altostrat_com/.local/bin/agy
+agy.version                        1.5.15
+agy.file                           ELF 64-bit LSB pie executable, x86-64
+agy.size_bytes                     273879752
+agy.go_runtime_strings             1
+agy.go_version_string              go1.26.
+agy.v8_strings                     0
+agy.bun_strings                    0
+agy.max_old_space_size             0
+agy.node_options_string            1
+agy.no_relaunch_string             0
+agy.live[2879116].executable       agy.1795457266083137558.old (deleted)
+agy.live[2879116].rss_kB           380576
+agy.live[2879116].threads          17
+agy.live[2879116].child            bash
+agy.live_processes                 1
+
+jetski.binary                      not on PATH
+
+claude.binary                      /home/admin_rickruiz_altostrat_com/.local/share/claude/versions/2.1.330
+claude.version                     2.1.330 (Claude Code)
+claude.file                        ELF 64-bit LSB executable, x86-64
+claude.size_bytes                  381121040
+claude.go_runtime_strings          0
+claude.go_version_string           
+claude.v8_strings                  4
+claude.bun_strings                 202
+claude.max_old_space_size          2
+claude.node_options_string         18
+claude.no_relaunch_string          0
+claude.live[1963556].executable    2.1.330
+claude.live[1963556].rss_kB        295928
+claude.live[1963556].threads       18
+claude.live[1963556].child         python
+claude.live[2878197].executable    2.1.330
+claude.live[2878197].rss_kB        224980
+claude.live[2878197].threads       10
+claude.live[2878197].child         python
+claude.live_processes              2
+
+node_processes_of_this_account     0
+NODE_OPTIONS_in_this_shell         unset
+lupin_ini.kernel_keys              0
+lupin_ini.heap_keys                0
+lupin_ini.quota_keys               0

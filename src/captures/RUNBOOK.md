@@ -1,5 +1,16 @@
 # Capture runbook
 
+## Row 123: what runtime each engine is, zero tokens (done on the test VM 2026-11-23; owed on the cloud workstation and the development server)
+
+**On the cloud workstation (Jetski) and on the development server, as the account the engines run under:**
+```bash
+cd <this checkout> && git pull --rebase
+src/captures/t25_engine_runtime.sh
+```
+It starts no engine turn. For `agy`, `jetski` and `claude` it prints the binary's type and counts of marker strings (a Go runtime, a V8 heap, `max-old-space-size`, `GEMINI_CLI_NO_RELAUNCH`), and the process tree of each session already running; it writes `src/captures/out/t25-engine-runtime-<host>-<date>.txt`. Commit that file. On the development server pass the lupin checkout's path as the one argument. It prints no secret, token or email address.
+
+**Result on the test VM** (2026-11-23, 15:06 US Eastern; `src/captures/out/t25-engine-runtime-lupin-host-test-20261123.txt`): `agy` 1.5.15 is a Go program; its binary holds neither the heap flag's name nor the relaunch variable's; its one running session is one process. Ruled the same day (the host-capacity spec's amendment, row 61): both settings are withdrawn for `agy` and kept for Jetski until this script has read it. **C20 is no longer owed on the test VM** (row 10, struck); the blocks below that still list it are history.
+
 ## Row 21: the usage meter's shape, zero tokens (done on the test VM 2026-11-23; owed on the other hosts, with row 9)
 
 **On the development server and on the work laptop, as the account the engines run under:**
