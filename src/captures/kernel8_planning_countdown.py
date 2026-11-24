@@ -38,6 +38,7 @@ STAGES = [
         ( 122, "a session, then Rick", "whether the two quota keys (spawn floor, reserve) are required and bounded" ),
         ( 124, "a session, then Rick", "whether the sign-in and quota family's other ten keys are required and bounded" ),
         ( 125, "Rick", "confirm the details the amendments of 2026-11-23 set without a click (Quota-12 and Capacity-8 run with Kernel-1)" ),
+        ( 129, "Rick, then the builder", "which account the kernel signs in with on port 8000, and that it exists there" ),
     ] ),
     ( "Before Kernel-5", [
         ( 111, "Rick, then lupin's implementer", "Lupin gains the notification type `info`; the kernel sends it with no fallback (Kernel-3)" ),

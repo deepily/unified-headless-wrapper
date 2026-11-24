@@ -1,0 +1,109 @@
+t19_lupin_branch_and_test_server.sh · host lupin-host-test · 2026-11-23 19:38 EST · UHW debf00d
+
+== A. The deployed tree (/mnt/lupin-data/lupin)
+  branch           promote/test-89d6a56115af
+  HEAD             89d6a56115 (2026-11-23T14:54:44-05:00)
+  tracked, changed 0
+  untracked        14
+  remote           origin	/mnt/lupin-data/lupin-wip.bundle (fetch)
+  remote           origin	/mnt/lupin-data/lupin-wip.bundle (push)
+  local branches   12 (4 named promote/…)
+  .deployed-ref    89d6a56115af7f9e08682a10d4450ccddb349b0a 2026-11-23T23:00:54Z push-bundle-reset
+  deployed at      2026-11-23 18:00 EST
+  owner            uid 1001, gid 1001 (google-sudoers), mode 775
+  this account     uid 1721846087, groups 1721846087,998,1001
+
+== B. What a deploy does to that tree (lupin: src/scripts/lupin-vm.sh, 2006 lines)
+  34:VM_ROOT="/mnt/lupin-data/lupin"                 # UID-1001-owned on-VM checkout
+  35:VM_DISCARD_DIR="/mnt/lupin-data/deploy-discards"  # where a reset deploy saves the VM's uncommitted edits as a patch before discarding them (row 41b836a5)
+  lines that reset the tree:
+    line 409
+    line 431
+    line 501
+  lines of the dirty-tree guard (comment):
+    481:    # DIRTY-TREE GUARD for `reset` (row 41b836a5, 2026-11-17). `git reset --hard` discards every
+    485:    # names each file; WITHOUT --discard-vm-changes it exits non-zero (the &&-chain stops before
+    489:    # The two INI config files are exempt (Rick, 21 Nov 2026, row 138c1c8f): a deploy always overwrites them with
+  patches a deploy has saved under /mnt/lupin-data/deploy-discards:
+    20261122T163916Z.diff · 8108 bytes · files: 3
+      docker-compose.cloud-gpu.yml
+      src/conf/lupin-app-splainer.ini
+      src/conf/lupin-app.ini
+
+== C. GitHub from this host (https://github.com/deepily/lupin.git)
+  credential helper  store
+  stored hosts       github.com 
+  read               ok, 21 branches (0 named promote/…)
+    exp-0.0.8-2025.09.20-claude-code
+    exp-0.0.8-2025.09.20-codex
+    main
+    v0.6.0-2025.07.10-wip-home-phased-websocket-to-identity-mapping
+    wip-v0.0.7-2025.08.01-spit-n-polish-fastapi-sockets-docstrings-n-testing
+    wip-v0.0.9-2025.09.27-refactoring-snapshot-lookups-and-representations
+    wip-v0.1.1-2025.12.31-mcp-and-agentic-codegen-via-cosa-vox
+    wip-v0.1.2-2026.01.28-job-state-change-refactoring
+    wip-v0.1.3-2026.01.29-spit-and-polish-for-agentic-jobs-and-notifications-ui
+    wip-v0.1.4-2026.02.04-end-to-end-vox-io-for-agentics
+    wip-v0.1.5-2026.02.16-spit-and-polish-for-end-to-end-vox-io-for-agentics
+    wip-v0.1.6-2026.03.12-cjflow-upe-and-playwrite
+    wip-v0.1.7-2026.04.22-spit-and-polish-for-cjflow-tfe-and-bfe
+    wip-v0.1.8-2026.05.29-preparing-for-gcp-deployment
+    wip-v0.1.9-2026.06.19-bug-fix-planning
+    wip-v0.1.9-2026.06.21-bug-fix-implementation
+    wip-v0.2.0-2026.08.03-present-and-demo
+    wip-v0.2.1-2026.08.29-cjflow-v2-followup
+    wip-v0.2.2-2026.09.30-code-wiki-and-jev-for-reuse-planning-review
+    wip-v0.2.3-2026.11.04-online-preference-learning
+    wip-v0.2.4-2026.11.17-context-aware-online-preference-learning
+  newest wip branch  wip-v0.2.4-2026.11.17-context-aware-online-preference-learning
+    on GitHub        293806a789
+    in the tree      89d6a56115
+    GitHub is behind by 58 commits (its head is dated 2026-11-22T23:10:50-05:00)
+  write              not tried (a push, even a dry run, runs the tree's pre-push hook)
+  hooks installed in the deployed tree:
+    pre-commit -> /mnt/lupin-data/lupin/src/scripts/pre-commit-chain.sh
+    pre-push -> /mnt/lupin-data/lupin/src/scripts/pre-push-chain.sh
+  the hook's interpreter  /mnt/lupin-data/lupin/.venv/bin/python3: Python 3.10.12
+  other interpreters      python3: Python 3.10.12; claude-agent-sdk: Python 3.13.14; lupin-arbiter: Python 3.10.12; 
+
+== D. The server on port 8000
+  container        /lupin-rest-test
+  image tag        us-central1-docker.pkg.dev/hello-world-foo-423219/lupin-images/lupin:1.1.7-candidate
+  restart policy   unless-stopped
+  compose project  lupin
+  compose folder   /mnt/lupin-data/lupin
+  health           healthy
+  created          2026-11-23 18:02 EST
+  env              DB_HOST=lupin-pgvector-test
+  env              DB_NAME=lupin_db_test
+  env              LUPIN_ENV=testing
+  env              LUPIN_MODEL_SERVER_URL=https://lupin-model-server-um6r4fv7nq-uc.a.run.app
+  env              LUPIN_ROOT=/var/lupin
+  bind mounts      29, of which 22 under /mnt/lupin-data/lupin
+  /health on 8000   {"status":"ok","timestamp":"2026-11-23T19:38:30.958815-05:00"}
+  /health on 7999   {"status":"ok","timestamp":"2026-11-23T19:38:30.973996-05:00"}
+  database         lupin-pgvector-test, created 2026-11-16 21:43 EST, publishes 1 port(s) inside the network, none on the host
+    tables in public: 31
+    rows in users: 6
+
+== E. How the paths are named
+  overlay (docker-compose.vm-test-overlay.yml, 225 lines):
+    mounts written relative to the compose folder (./…)   21
+    mounts written with a variable (${…})                 0
+    mounts .git of the tree                                1
+  lupin-vm.sh:
+    the test server is driven from $VM_ROOT at line 377
+    the test server is driven from $VM_ROOT at line 1977
+    mentions of $VM_ROOT                                   39
+    it is run from                                         26 `gcloud compute ssh` call sites (the development server drives the VM)
+
+== F. Disk, and the folders beside the tree
+  Filesystem      Size  Used Avail Use% Mounted on
+  /dev/sdb        196G  128G   59G  69% /mnt/lupin-data
+  the tree         3.8G (its .git: 1.2G)
+  present: /mnt/lupin-data/lupin
+  present: /mnt/lupin-data/lupin-src-backup-20260923.tgz
+  present: /mnt/lupin-data/lupin-vm-local-diff-20260923.patch
+  present: /mnt/lupin-data/lupin-wip.bundle
+  present: /mnt/lupin-data/unified-headless-wrapper
+  present: /mnt/lupin-data/unified-headless-wrapper-builder

@@ -1,5 +1,20 @@
 # Capture runbook
 
+## Rows 86, 100 and 17: lupin's trees, GitHub and the server on port 8000, zero tokens (done on the test VM 2026-11-23). Owed: rows 126 to 130
+
+**To read the host again** (read-only; it pushes nothing, not even as a dry run):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_lupin_branch_and_test_server.sh
+```
+It prints the deployed tree's branch and deploy stamp, what lupin's deploy script does to hand edits, whether the stored credential reads lupin on GitHub and how far GitHub is behind, the hooks and their interpreter, the container on port 8000 with its database, and how the overlay names its paths; it writes `src/captures/out/t19-lupin-branch-and-test-server-<host>-<date>.txt`. Commit that file.
+
+**Result on the test VM** (2026-11-23, 19:38 US Eastern; lupin at `89d6a56115`): the deployed tree is on a `promote/…` branch that every deploy replaces; GitHub is 58 commits behind it; lupin's push gate cannot pass under this host's Python 3.10.12; port 8000 is healthy with its own database (31 tables, 6 users). Ruled the same day (the exit-criteria and switch-over spec's amendment): the kernel's branch is `wip-kernel-<YYYY.MM.DD>-single-persona-kernel`, in the clone `/mnt/lupin-data/lupin-kernel`, pushed to GitHub; port 8000 is re-pointed by `LUPIN_TEST_TREE`; row 17 is done.
+
+**Owed before the relocation, none of it runnable today:** an interpreter of Python 3.12 or newer for lupin's hooks on the test VM (row 127); the overlay change, deployed (row 128); the clone's setup script (row 130). **At the relocation,** once those exist: the setup script makes the clone and cuts the branch; the first push proves write access (row 126); then, in the test VM's environment file, `LUPIN_TEST_TREE=/mnt/lupin-data/lupin-kernel` and, from the development server, `src/scripts/lupin-vm.sh test-server recreate` (row 128).
+
+**Never run `git push`, with or without `--dry-run`, from `/mnt/lupin-data/lupin`:** the push hook writes inside that tree.
+
 ## Row 123: what runtime each engine is, zero tokens (done on the test VM 2026-11-23; owed on the cloud workstation and the development server)
 
 **On the cloud workstation (Jetski) and on the development server, as the account the engines run under:**
