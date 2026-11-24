@@ -41,6 +41,7 @@ STAGES = [
         ( 133, "Rick", "confirm the details the rows 124 and 125 amendment set without a click (Quota-14 runs with Kernel-1)" ),
         ( 129, "Rick, then the builder", "which account the kernel signs in with on port 8000, and that it exists there" ),
         ( 136, "Rick", "confirm the details the rows 129, 9 and 16 amendment set without a click (the two `kernel lupin` settings)" ),
+        ( 138, "a session, then Rick", "write the splainer line of every kernel setting ruled before 2026-11-24 that has none (Splainer-2)" ),
     ] ),
     ( "Before Kernel-5", [
         ( 111, "Rick, then lupin's implementer", "Lupin gains the notification type `info`; the kernel sends it with no fallback (Kernel-3)" ),
