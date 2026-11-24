@@ -1,5 +1,26 @@
 # Capture runbook
 
+## Rows 129, 9 and 16: the kernel's account on port 8000 and the two inventories, zero tokens (done on the test VM 2026-11-23). Owed: row 134, on the other hosts
+
+**Owed, on the development server (all three) and on the cloud workstation (the last two), as the account the engines run under** (row 134; gated on the Move clock, not on Kernel-2):
+```bash
+cd <this checkout> && git pull --rebase
+src/captures/t22_engine_account_inventory.sh | tee src/captures/out/t22-account-$( hostname )-$( date +%Y%m%d ).txt
+src/captures/t22_meter_shape.sh
+src/captures/t22_settings_family.sh
+```
+Commit the three `src/captures/out/*.txt` files. What each prints is in its own block below.
+
+**To read the test VM again** (it sends the host's key once to each port, on a read; Lupin stamps the key's `last_used_at`; nothing else is written):
+```bash
+cd /mnt/lupin-data/unified-headless-wrapper && git pull --rebase
+src/captures/t19_kernel_account_on_test_server.sh
+( cd /mnt/lupin-data/lupin/src && PYTHONDONTWRITEBYTECODE=1 LUPIN_ROOT=/mnt/lupin-data/lupin /mnt/lupin-data/lupin/.venv/bin/python /mnt/lupin-data/unified-headless-wrapper/src/captures/t32_credential_inventory.py )
+```
+The first prints the users and keys of `lupin_db_test` (a human login masked; never a key or a hash), which of this host's service logins are user rows there, and what each port answers to the host's key on `GET /api/tasks/approval-settings`; it writes `src/captures/out/t19-kernel-account-on-test-server-<host>-<date>.txt`. The second is the credential inventory; run it with byte-code writing off, as written, so that nothing is left in the deployed tree.
+
+**Result on the test VM** (2026-11-23, 22:18 to 22:20 US Eastern; lupin at `89d6a56115`): the host's key file is admitted on port 8000 (and on port 7999) as `claude.code@lupin.deepily.ai`, a `service_account` among the six user rows; the engine-account inventory ran clean, a systemd user unit with no terminal reading the meter in 0.9 seconds; the credential inventory's verdict is `both expectations hold`, confirmed on the servers' own route because the script itself fell back to lupin's file defaults (its repair is row 135). Ruled the same evening: the kernel is that account on port 8000; `kernel lupin url` and `kernel lupin key file` are required, with no defaults; row 9 is split.
+
 ## Rows 124 and 125: what each host holds behind the sign-in and quota settings, zero tokens (done on the test VM 2026-11-23; owed on the development server and the cloud workstation, with row 9)
 
 **On the development server and on the cloud workstation, as the account the engines run under:**

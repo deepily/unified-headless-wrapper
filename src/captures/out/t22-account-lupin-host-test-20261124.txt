@@ -1,0 +1,143 @@
+
+== host ==
+host                                   lupin-host-test
+account                                admin_rickruiz_altostrat_com uid=1721846087
+clock                                  2026-11-24 03:18:05 UTC
+engine_binary                          /home/admin_rickruiz_altostrat_com/.local/bin/agy
+engine_version                         1.5.15
+engine_processes_running               1
+
+== environment that selects a sign-in route (set or unset only) ==
+AGY_ADC_AUTH                           unset
+GEMINI_FORCE_FILE_STORAGE              unset
+GEMINI_API_KEY                         unset
+GOOGLE_API_KEY                         unset
+ANTIGRAVITY_API_KEY                    unset
+GOOGLE_APPLICATION_CREDENTIALS         unset
+GOOGLE_CLOUD_PROJECT                   unset
+GOOGLE_CLOUD_QUOTA_PROJECT             unset
+GOOGLE_CLOUD_LOCATION                  unset
+GOOGLE_GENAI_USE_VERTEXAI              unset
+DBUS_SESSION_BUS_ADDRESS               set
+XDG_RUNTIME_DIR                        set
+AGY_ADC_AUTH_value                     
+GEMINI_FORCE_FILE_STORAGE_value        
+
+== where the sign-in is kept (presence, mode, age; never content) ==
+token_file                             present mode=600 bytes=558 modified=2026-11-24 03:07 UTC age_hours=0
+credentials_enc                        absent
+google_accounts_json                   absent
+gcloud_adc_file                        absent
+app_dir_mode                           755
+other_oauth_named_files                ~/.gemini/antigravity-cli/antigravity-oauth-token 
+keyring_entry                          secret-tool not installed
+secret_service_on_bus                  0
+
+== settings that bear on billing and route (named keys only) ==
+/home/admin_rickruiz_altostrat_com/.gemini/antigravity-cli/settings.json: readable
+  model = 'Claude Fable 5.2 (Medium)'
+/home/admin_rickruiz_altostrat_com/.gemini/config/config.json: absent
+
+== usage meter, from this shell (zero tokens; signed out exits 1 in under a second) ==
+shell_exit                             0
+shell_seconds                          1.0
+shell_stderr                           
+  top-level keys: ['command', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+  status: SUCCESS | num_turns: 0 | total_tokens: 0
+  command.name: usage | command.data keys: ['groups']
+  'Gemini Pro Next'            'gemini-next-v2'   window='20h'     remaining=1 reset=2026-11-24T23:18:06Z extra_keys=['name']
+  'Gemini Flash Next'          'gemini-flash-next' window='20h'     remaining=1 reset=2026-11-24T23:18:06Z extra_keys=['name']
+  'Gemini Teamfood Models'     'gemini-google-teamfood-wtu-v2' window='20h'     remaining=1 reset=2026-11-24T23:18:06Z extra_keys=['name']
+  'Gemini Flash'               'gemini-2.5-flash' window='20h'     remaining=1 reset=2026-11-24T23:18:06Z extra_keys=['name']
+  'Gemini Flash Lite'          'gemini-2.5-flash-lite' window='20h'     remaining=0.9999099969863892 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+  'Third-Party Models'         '3p-wtu-daily'     window='20h'     remaining=0.7821146249771118 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+
+== usage meter, from a systemd user unit with no terminal (how the kernel will start engines) ==
+unit_exit                              0
+unit_seconds                           0.9
+unit_stderr                            
+  top-level keys: ['command', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+  status: SUCCESS | num_turns: 0 | total_tokens: 0
+  command.name: usage | command.data keys: ['groups']
+  'Gemini Pro Next'            'gemini-next-v2'   window='20h'     remaining=1 reset=2026-11-24T23:18:07Z extra_keys=['name']
+  'Gemini Flash Next'          'gemini-flash-next' window='20h'     remaining=1 reset=2026-11-24T23:18:07Z extra_keys=['name']
+  'Gemini Teamfood Models'     'gemini-google-teamfood-wtu-v2' window='20h'     remaining=1 reset=2026-11-24T23:18:07Z extra_keys=['name']
+  'Gemini Flash'               'gemini-2.5-flash' window='20h'     remaining=1 reset=2026-11-24T23:18:07Z extra_keys=['name']
+  'Gemini Flash Lite'          'gemini-2.5-flash-lite' window='20h'     remaining=0.9999099969863892 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+  'Third-Party Models'         '3p-wtu-daily'     window='20h'     remaining=0.7821146249771118 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+unit_file_exit                         0
+unit_file_seconds                      0.9
+unit_file_stderr                       
+  top-level keys: ['command', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+  status: SUCCESS | num_turns: 0 | total_tokens: 0
+  command.name: usage | command.data keys: ['groups']
+  'Gemini Pro Next'            'gemini-next-v2'   window='20h'     remaining=1 reset=2026-11-24T23:18:08Z extra_keys=['name']
+  'Gemini Flash Next'          'gemini-flash-next' window='20h'     remaining=1 reset=2026-11-24T23:18:08Z extra_keys=['name']
+  'Gemini Teamfood Models'     'gemini-google-teamfood-wtu-v2' window='20h'     remaining=1 reset=2026-11-24T23:18:08Z extra_keys=['name']
+  'Gemini Flash'               'gemini-2.5-flash' window='20h'     remaining=1 reset=2026-11-24T23:18:08Z extra_keys=['name']
+  'Gemini Flash Lite'          'gemini-2.5-flash-lite' window='20h'     remaining=0.9999099969863892 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+  'Third-Party Models'         '3p-wtu-daily'     window='20h'     remaining=0.7821146249771118 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+
+== usage meter, from this shell with file storage forced ==
+shell_file_exit                        0
+shell_file_seconds                     0.9
+shell_file_stderr                      
+  top-level keys: ['command', 'conversation_id', 'duration_seconds', 'num_turns', 'response', 'status', 'usage']
+  status: SUCCESS | num_turns: 0 | total_tokens: 0
+  command.name: usage | command.data keys: ['groups']
+  'Gemini Pro Next'            'gemini-next-v2'   window='20h'     remaining=1 reset=2026-11-24T23:18:09Z extra_keys=['name']
+  'Gemini Flash Next'          'gemini-flash-next' window='20h'     remaining=1 reset=2026-11-24T23:18:09Z extra_keys=['name']
+  'Gemini Teamfood Models'     'gemini-google-teamfood-wtu-v2' window='20h'     remaining=1 reset=2026-11-24T23:18:09Z extra_keys=['name']
+  'Gemini Flash'               'gemini-2.5-flash' window='20h'     remaining=1 reset=2026-11-24T23:18:09Z extra_keys=['name']
+  'Gemini Flash Lite'          'gemini-2.5-flash-lite' window='20h'     remaining=0.9999099969863892 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+  'Third-Party Models'         '3p-wtu-daily'     window='20h'     remaining=0.7821146249771118 reset=2026-11-24T14:08:09Z extra_keys=['description', 'name']
+
+== commands print mode answers itself, and the model list (zero tokens) ==
+  mentions usage: True | quota: True | credits: True | num_turns: 0
+  auto	Gemini Pro Next
+  gemini-flash-next	Gemini Flash Next
+  gemini-pro-coordinator	Gemini Pro Orchestrator
+  gemini-4-neon-xhigh	Gemini 4 Neon (XHigh)
+  gemini-4-neon-high	Gemini 4 Neon (High)
+  gemini-4-neon-medium	Gemini 4 Neon (Medium)
+  gemini-4-neon-low	Gemini 4 Neon (Low)
+  gemini-4-carbon-high	Gemini 4 Carbon (High)
+  gemini-4-carbon-medium	Gemini 4 Carbon (Medium)
+  gemini-4-carbon-low	Gemini 4 Carbon (Low)
+  hydrogen-l-tf-xhigh	Gemini 4 Hydrogen (XHigh)
+  hydrogen-l-tf-high	Gemini 4 Hydrogen (High)
+  hydrogen-l-tf-medium	Gemini 4 Hydrogen (Medium)
+  gemini-3.5-flash-lite	Gemini 3.5 Flash Lite
+  fable-5.2-max	Claude Fable 5.2 (Max)
+  fable-5.2-xhigh	Claude Fable 5.2 (XHigh)
+  fable-5.2-high	Claude Fable 5.2 (High)
+  fable-5.2-medium	Claude Fable 5.2 (Medium)
+  fable-5.2-low	Claude Fable 5.2 (Low)
+  fable-5.1-max	Claude Fable 5.1 (Max)
+  fable-5.1-high	Claude Fable 5.1 (High)
+  fable-5.1-medium	Claude Fable 5.1 (Medium)
+  fable-5.1-low	Claude Fable 5.1 (Low)
+  opus-5.5-max	Claude Opus 5.5 (Max)
+  opus-5.5-high	Claude Opus 5.5 (High)
+  opus-5.5-medium	Claude Opus 5.5 (Medium)
+  opus-5.5-low	Claude Opus 5.5 (Low)
+
+== what this host's engine logs already hold (counts, then the three newest of each kind) ==
+log_files                              163
+oldest_log                             cli-20261115_182902.log
+count: Individual quota reached        0
+count: RESOURCE_EXHAUSTED              0
+count: Resets in                       0
+count: code 429                        0
+count: authentication required         0
+count: attempt [0-9]+ failed           0
+count: code 503                        0
+count: MODEL_CAPACITY_EXHAUSTED        0
+count: Eligibility check failed        0
+  newest "Individual quota reached":
+  newest "authentication required":
+  newest "code 429":
+
+== done ==
+output_directory                       /mnt/lupin-data/unified-headless-wrapper/src/captures/out/t22-lupin-host-test-20261124-031805
+Paste this whole output back, or commit /mnt/lupin-data/unified-headless-wrapper/src/captures/out/t22-lupin-host-test-20261124-031805 and push.

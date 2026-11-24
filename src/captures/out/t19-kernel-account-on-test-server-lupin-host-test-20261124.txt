@@ -1,0 +1,52 @@
+
+== host ==
+  host     lupin-host-test
+  account  admin_rickruiz_altostrat_com
+  clock    2026-11-23 22:19 EST
+container  lupin-rest-test  Up 4 hours (healthy)  0.0.0.0:8000->7999/tcp, [::]:8000->7999/tcp
+container  lupin-rest-cloud-gpu  Up 4 hours (healthy)  0.0.0.0:7999->7999/tcp, [::]:7999->7999/tcp
+container  lupin-pgvector-test  Up 2 days (healthy)  5432/tcp
+
+== users in lupin_db_test (login | active | roles | created | last login, US Eastern) ==
+  <a human account> | t | ["admin"] | 2026-07-22 | never
+  claude.code@lupin.deepily.ai | t | ["service_account"] | 2026-07-24 | never
+  interactive.job.tester@lupin.deepily.ai | t | ["user"] | 2026-07-27 | 2026-11-16 22:09
+  admin@lupin.deepily.ai | f | ["user"] | 2026-11-11 | never
+  claude.code@deepily.ai | f | ["user"] | 2026-11-11 | never
+  mock.job.tester@lupin.deepily.ai | f | ["user"] | 2026-11-11 | never
+
+== keys in lupin_db_test (owner | active | description | created | last used, US Eastern; never the hash) ==
+  claude.code@lupin.deepily.ai | t | Claude Code cosa-voice notifications on lupin-host-test VM (created 2026-07-24) | 2026-07-24 | never
+  claude.code@lupin.deepily.ai | t | Claude Code cosa-voice notifications on lupin-host-test VM (created 2026-07-24) | 2026-07-24 | 2026-11-16 22:08
+  keys: 2, active: 2
+
+== the stored approval settings in lupin_db_test (key | updated by | updated) ==
+  _legacy_file_imported | <a human account> | 2026-11-10 22:00
+  manager_pull_disabled | <a human account> | 2026-11-10 22:00
+  rows: 2
+
+== this host's service logins (/home/admin_rickruiz_altostrat_com/.lupin/config), and whether each is a user row in lupin_db_test ==
+owner_section|absent
+  [lupin]                              claude.code@lupin.deepily.ai                               user row, active
+  [plan]                               claude.code@plan.deepily.ai                                no user row
+  [lupin-mobile]                       claude.code@lupin-mobile.deepily.ai                        no user row
+  [google-project-wonderwall]          claude.code@google-project-wonderwall.deepily.ai           no user row
+  [skills-distillation]                claude.code@skills-distillation.deepily.ai                 no user row
+  [weil-nda-drafting-suite]            claude.code@weil-nda-drafting-suite.deepily.ai             no user row
+  [harvey-labs]                        claude.code@harvey-labs.deepily.ai                         no user row
+  [scratchpad]                         claude.code@scratchpad.deepily.ai                          no user row
+  [parallel-search]                    claude.code@parallel-search.deepily.ai                     no user row
+  [weil-parallel-search]               claude.code@weil-parallel-search.deepily.ai                no user row
+  [mcp-and-a2ui-apps]                  claude.code@mcp-and-a2ui-apps.deepily.ai                   no user row
+  [weil-ge-mcp-server]                 claude.code@weil-ge-mcp-server.deepily.ai                  no user row
+  [buganizer-time-keeper]              claude.code@buganizer-time-keeper.deepily.ai               no user row
+  [unified-headless-wrapper]           claude.code@unified-headless-wrapper.deepily.ai            no user row
+  [unified-headless-wrapper-builder]   claude.code@unified-headless-wrapper-builder.deepily.ai    no user row
+
+== the host's key, sent to each port (GET /api/tasks/approval-settings; the key is never printed) ==
+  key file  ~/.lupin/notification-api.key  mode=640  bytes=73
+  port 7999  http 200  top-level keys: ['approver_accounts', 'approvers', 'default_to_holding', 'enforcement_active', 'manager_pull_disabled', 'sword_of_damocles_active'] | approver_accounts: 1 account(s), service logins among them: none
+  port 8000  http 200  top-level keys: ['approver_accounts', 'approvers', 'default_to_holding', 'enforcement_active', 'manager_pull_disabled', 'sword_of_damocles_active'] | approver_accounts: 1 account(s), service logins among them: none
+
+== done ==
+  written to /mnt/lupin-data/unified-headless-wrapper/src/captures/out/t19-kernel-account-on-test-server-lupin-host-test-20261124.txt
