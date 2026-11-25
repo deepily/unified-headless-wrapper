@@ -1,5 +1,30 @@
 # Unified Headless Wrapper
-One wrapper, three headless agent CLIs: Claude Code, Jetski and AGY, all driven as NDJSON on stdin and stdout with one warm process per conversation. This repo also holds the design record for the Lupin kernel, the host service that will run every Lupin persona on any of those engines and replace AH4L, the Claude-only harness Lupin uses today.
+
+![The Lupin kernel drawn as a walking castle in cutaway: a top deck of services brokered from the Lupin server, two decks of services the kernel owns, and five build phases in the undercarriage](images/walking-castle-cutaway-systems-as-above-ground-brokered-or-owned-services.png)
+
+*The Lupin kernel as a walking castle. Top deck: what the kernel brokers from the Lupin server on port 7999. Middle decks: what the kernel owns. Undercarriage: the five build phases.*
+
+This repository is scaffolding. It exists to design, measure and build the first version of the **Lupin kernel**: one service per host that runs every Lupin persona as a warm, headless agent process on any of three engines (Claude Code, Jetski and Antigravity (AGY)), each driven as NDJSON on stdin and stdout with one process per conversation. The kernel retires AH4L, the Claude-only ad hoc harness Lupin uses today. The picture is the design in one frame. The kernel owns whatever must be engine-neutral and local to the host: agent processes, identity and roles, conversations, workspaces and configuration, the tool gate, inbox routing, narration, asks and escalation, fleet health and capacity, and the session logs. Everything else it brokers from the running Lupin server over REST and WebSocket instead of building again: notifications, tasks, direct messages and the commons, ticketed asks, the preference learner, files and documents.
+
+The repository is short-lived by design. The work runs in the five phases under the castle: a survey of the three engines' headless behavior (done); a single-persona kernel with the AGY adapter, specified here and built here under `src/uhw_kernel/`; then fleet and crew, a second adapter for Claude Code, and last, parity with AH4L and its excision. Once the Phase 1 acceptance tests (Kernel-1 to Kernel-8) pass, the package relocates to `src/lupin_kernel/` in [deepily/lupin](https://github.com/deepily/lupin), and every later phase is written there. From then on this repository is no longer where the kernel is developed; what it keeps is the record of how the design was reached, one ruled decision at a time.
+
+## Architecture
+
+The diagram is narrower than the picture above: it shows the v0.0.1 prototype wrapper in `src/`, a single-persona loop whose adapters and frame handling the kernel's engine layer reuses.
+
+```mermaid
+flowchart TB
+    inbox["Utterance inbox"] --> loop["run_persona loop"]
+    loop --> speaker["Speaker"]
+    loop --> session["Session<br/>one warm process per conversation"]
+    session --> store["PersonaStore"]
+    session --> cc["ClaudeCode adapter"]
+    session --> jf["JetskiFamily adapter"]
+    cc <--> claude["claude"]
+    jf <--> jet["jetski or agy"]
+```
+
+Adapters translate each engine's protocol into one normalized event stream, so nothing above the adapter is engine-specific. Adding an engine means writing one adapter class.
 
 ## Status
 
@@ -27,6 +52,7 @@ unified-headless-wrapper/
 ├── .gitignore
 ├── hook.ndjson                   empty; committed with "Add hooks", candidate for removal
 ├── hook_block.ndjson             empty; committed with "Add hooks", candidate for removal
+├── images/                       the README's hero image
 └── src/
     ├── lupin_headless.py         the v0.0.1 prototype wrapper
     ├── fake_engine.py            mock engine for the prototype
@@ -104,22 +130,6 @@ Scripts that measure engine behavior or inventory a host before a design depends
 | Kernel-1, Convention-9, Quota-1 … | Acceptance tests and gates, each prefixed with a word saying what it proves |
 
 The working branch is `wip-v0.0.1-2026.10.15-planning-prep`.
-
-## Architecture
-
-```mermaid
-flowchart TB
-    inbox["Utterance inbox"] --> loop["run_persona loop"]
-    loop --> speaker["Speaker"]
-    loop --> session["Session<br/>one warm process per conversation"]
-    session --> store["PersonaStore"]
-    session --> cc["ClaudeCode adapter"]
-    session --> jf["JetskiFamily adapter"]
-    cc <--> claude["claude"]
-    jf <--> jet["jetski or agy"]
-```
-
-Adapters translate each engine's protocol into one normalized event stream, so nothing above the adapter is engine-specific. Adding an engine means writing one adapter class.
 
 ## Usage
 
