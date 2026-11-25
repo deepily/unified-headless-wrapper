@@ -42,6 +42,7 @@ WITHDRAWN = {
     "kernel job log sweep every seconds"        : "the same ruling",
     "kernel job tree sweep every seconds"       : "the same ruling",
     "kernel log sweep interval minutes"         : "log schema and rotation spec, amendment of 2026-11-24 (row 138), ruling 1",
+    "kernel inbox dm grades"                    : "broadcasts spec, amendment of 2026-11-24 (row 142), ruling 8a: renamed `kernel inbox grade dms`",
 }
 NOT_SETTINGS = {
     "kernel fleet"                               : "a prefix (engine-neutral naming spec, ruling 2)",

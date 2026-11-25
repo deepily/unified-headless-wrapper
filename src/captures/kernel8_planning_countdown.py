@@ -43,6 +43,8 @@ STAGES = [
         ( 136, "Rick", "confirm the details the rows 129, 9 and 16 amendment set without a click (the two `kernel lupin` settings)" ),
         ( 138, "a session, then Rick", "write the splainer line of every kernel setting ruled before 2026-11-24 that has none (Splainer-2)" ),
         ( 142, "a session, then Rick", "whether the 55 older settings no ruling covers are required and bounded; their splainer lines are amended with it" ),
+        ( 145, "Rick", "confirm the details the row 142 amendment set without a click (Settings-1 to Settings-3 run with Kernel-1)" ),
+        ( 146, "not established, then Rick", "the kernel's settings written into the test VM's lupin files: the baseline values, a class in every host block, the splainer lines (Settings-4)" ),
     ] ),
     ( "Before Kernel-5", [
         ( 111, "Rick, then lupin's implementer", "Lupin gains the notification type `info`; the kernel sends it with no fallback (Kernel-3)" ),
